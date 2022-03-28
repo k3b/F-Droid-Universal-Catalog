@@ -1,0 +1,118 @@
+{
+  "title": "index-v1ex.small",
+  "description": "Auto generated JSON schema based on the 'index-v1ex.small' file",
+  "type": "object",
+  "properties": {
+    "repo": {
+      "type": "object",
+      "properties": {
+        "address": {"type": "string"},
+        "maxage": {"type": "number"},
+        "mirrors": {
+          "type": "array",
+          "items": {}
+        },
+        "name": {"type": "string"},
+        "icon": {"type": "string"},
+        "description": {"type": "string"},
+        "version": {"type": "number"},
+        "timestamp": {"type": "number"}
+      }
+    },
+
+
+
+    "packages": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "package": {"type": "string"
+          },
+          "versions": {
+            "type": "array",
+            "items": {
+              "properties": {
+                "sig": {"type": "string"},
+                "minSdkVersion": {"type": "number"},
+                "apkName": {"type": "string"},
+                "size": {"type": "number"},
+                "srcname": {"type": "string"},
+                "added": {"type": "number"},
+                "targetSdkVersion": {"type": "number"},
+                "versionName": {"type": "string"},
+                "hashType": {"type": "string"},
+                "hash": {"type": "string"},
+                "versionCode": {"type": "number"},
+                "signer": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "apps": {
+      "type": "array",
+      "items": {
+        "properties": {
+          "webSite": {"type": "string"},
+          "suggestedVersionCode": {"type": "string"},
+          "license": {"type": "string"},
+          "sourceCode": {"type": "string"},
+          "lastUpdated": {"type": "number"},
+          "issueTracker": {"type": "string"},
+          "added": {"type": "number"},
+          "suggestedVersionName": {"type": "string"},
+          "icon": {"type": "string"},
+
+
+          "localized": {
+            "type": "map",
+            "items": {
+              "properties": {
+                "summary": {"type": "string"},
+                "phoneScreenshots": {
+                  "type": "array",
+                  "items": {}
+                },
+                "name": {"type": "string"},
+                "description": {"type": "string"}
+              }
+            }
+          },
+          "changelog": {"type": "string"},
+          "categories": {
+            "type": "array",
+            "items": {}
+          }
+        }
+      }
+    },
+
+    "_comment": "// #!!!! non standard",
+    "myLocaleMap": {
+      "type": "map",
+      "key" : "string",
+      "value" : {"$ref": "#/definitions/mapLocalized"},
+      "definitions": {
+        "mapLocalized": {
+          "type": "object",
+          "additionalProperties": {"type": "localized"}
+        },
+        "localized": {
+          "type": "object",
+
+          "properties": {
+            "summary": {"type": "string"},
+            "phoneScreenshots": {
+              "type": "array",
+              "items": {}
+            },"name": {"type": "string"},
+            "description": {"type": "string"},
+            "locale": {"type": "string"}
+          }
+        }
+      }
+    }
+  }
+}
+

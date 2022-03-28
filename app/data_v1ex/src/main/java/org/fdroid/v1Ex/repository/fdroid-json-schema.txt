@@ -1,0 +1,74 @@
+https://apt.izzysoft.de/fdroid/repo/index.jar
+https://f-droid.org/repo/index-v1.jar
+
+https://f-droid.org/repo/index-v2.jar
+ index-v1.
+
+
+{
+
+      "name": "F-Droid Data metadata",
+
+      "description": "Schema for F-Droid Data app metadata files",
+
+      "fileMatch": [
+
+        "metadata/*.yml"
+
+      ],
+
+      "url": "https://gitlab.com/fdroid/fdroiddata/-/raw/master/schemas/metadata.json"
+
+    },
+
+https://gitlab.com/fdroid/fdroiddata/-/raw/master/schemas/metadata.json
+
+Is there a JSON Schema for F-Droid repository data "index-v1.json" that is inside https://f-droid.org/repo/index-v2.jar ?
+
+I want to generate java code that can read the catalog https://f-droid.org/repo/index-v2.jar.
+
+I tried https://www.jsonschema2pojo.org/ to generate java from a short json example containing 2 apps and 2 packages.
+The codegenerator generates one java class for every included app which is not what i want.
+
+I found https://forum.f-droid.org/t/json-schema-for-f-droid-data-metadata-files-is-now-available/14079 but this info points to
+Schema for an app description of an app and not to a schema of the catalog.
+
+I want to generate
+
+
+ metadata files is now available
+
+-----
+
+* Device OS and version: 
+* Device model/manufacturer: 
+* F-Droid version (in the _About_ screen): 
+* F-Droid privileged extension version (if installed): 
+
+## What did you do? (clear steps if possible)
+
+I want to create a java program that can read/write the f-droid app catalog using a codegenerator like https://www.jsonschema2pojo.org/ that generates typed classes for App, Package, Locale, ...
+
+## What did you expect to see?
+
+Json that is compatible to json-schema like
+
+
+       [{"locale":"de", "summary": "Gro\u00dfe Digitaluhr im 24-Stunden-Format"},
+        {"locale":"en-US","summary": "Large digital clock in 24 hour format"}]
+
+## What did you see instead?
+
+valid json that is not compatible with json-schema (below json-apps)
+
+            "localized": {
+                "de": {
+                    "summary": "Gro\u00dfe Digitaluhr im 24-Stunden-Format"
+                },
+                "en-US": {
+                    "summary": "Large digital clock in 24 hour format"
+                }
+            }
+
+
+
