@@ -1,13 +1,31 @@
-package org.fdroid.v1Ex.repository;
+/*
+ * Copyright (c) 2022 by k3b.
+ *
+ * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>
+ */
+
+package org.fdroid.v1.repository;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
-import org.fdroid.v1Ex.model.Repo;
-import org.fdroid.v1Ex.model.Version;
+import org.fdroid.v1.model.Repo;
+import org.fdroid.v1.model.Version;
+import org.fdroid.v1.model.App;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,8 +33,22 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
+/**
+ * Abstract Json Stream parser for FDroid-Catalog-v1 format.
+ *
+ * To implement overwrite the abstract methods
+ * {@link #onRepo(Repo)}, {@link #onApp(App)}, {@link #onVersion(String, Version)}
+ */
 public abstract class FDroidCatalogJsonStreamParserBase {
+
+    /**
+     * parse the FDroid-Catalog-v1-Json into a stream of calls to consuming
+     * {@link #onRepo(Repo)}, {@link #onApp(App)}, {@link #onVersion(String, Version)}
+     * @param in uncompressed Json inputstream
+     * @throws IOException if there are errors in the JSON inputstream
+     */
     public void readJsonStream(InputStream in) throws IOException {
         try (JsonReader reader = new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
 
@@ -80,7 +112,7 @@ public abstract class FDroidCatalogJsonStreamParserBase {
         JsonToken token = reader.peek();
         while (!JsonToken.END_ARRAY.equals(token)) {
             if (JsonToken.BEGIN_OBJECT.equals(token)) {
-                JsonObject app = gson.fromJson(reader, JsonObject.class);
+                App app = gson.fromJson(reader, App.class);
                 onApp(app);
                 token = reader.peek();
             } else {
@@ -128,29 +160,23 @@ public abstract class FDroidCatalogJsonStreamParserBase {
         return "";
     }
 
-    protected abstract String log(String s);
-
-    protected abstract void onRepo(Repo repo);
-
-    // cannot use generated java class App because of localisation map
-    // example usage: app.getAsJsonObject("localized").getAsJsonObject("en-US").get("summary");
-    protected abstract void onApp(JsonObject app);
-
-    public String asDateString(JsonElement lastUpdated) {
-        if (lastUpdated == null) return "";
-
-        long longDate = lastUpdated.getAsLong();
-        return asDateString(longDate);
-    }
-
     public String asDateString(long longDate) {
         if (longDate == 0) return "";
 
         Date date = new Date(longDate);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = format.format(date);
-        return dateString;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        return format.format(date);
     }
 
+    /** Stream event, when something has to be logged */
+    protected abstract String log(String s);
+
+    /** Stream event, when a {@link org.fdroid.v1.model.Repo} was read */
+    protected abstract void onRepo(Repo repo);
+
+    /** Stream event, when a {@link org.fdroid.v1.model.App} was read */
+    protected abstract void onApp(App app);
+
+    /** Stream event, when a {@link org.fdroid.v1.model.Version} was read */
     protected abstract void onVersion(String name, Version version);
 }

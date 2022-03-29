@@ -1,17 +1,36 @@
+/*
+ * Copyright (c) 2022 by k3b.
+ *
+ * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>
+ */
 
-package org.fdroid.v1Ex.model.deprecated;
+package org.fdroid.v1.model;
 
 import java.util.List;
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Data for a Localisation (Translation) of an android app (read from FDroid-Catalog-v1-Json format).
+ *
+ * Generated with https://www.jsonschema2pojo.org/ from JSON example Data in Format Gson.
+ */
 @Generated("jsonschema2pojo")
 public class Localized {
-
-    @SerializedName("locale")
-    @Expose
-    private String locale;
     @SerializedName("description")
     @Expose
     private String description;
@@ -33,14 +52,6 @@ public class Localized {
     @SerializedName("whatsNew")
     @Expose
     private String whatsNew;
-
-    public String getLocale() {
-        return locale;
-    }
-
-    public void setLocale(String locale) {
-        this.locale = locale;
-    }
 
     public String getDescription() {
         return description;
@@ -102,25 +113,21 @@ public class Localized {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(Localized.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append("locale");
+        sb.append("name");
         sb.append('=');
-        sb.append(((this.locale == null)?"<null>":this.locale));
+        sb.append(((this.name == null)?"<null>":this.name));
+        sb.append(',');
+        sb.append("summary");
+        sb.append('=');
+        sb.append(((this.summary == null)?"<null>":this.summary));
         sb.append(',');
         sb.append("description");
         sb.append('=');
         sb.append(((this.description == null)?"<null>":this.description));
         sb.append(',');
-        sb.append("name");
-        sb.append('=');
-        sb.append(((this.name == null)?"<null>":this.name));
-        sb.append(',');
         sb.append("phoneScreenshots");
         sb.append('=');
         sb.append(((this.phoneScreenshots == null)?"<null>":this.phoneScreenshots));
-        sb.append(',');
-        sb.append("summary");
-        sb.append('=');
-        sb.append(((this.summary == null)?"<null>":this.summary));
         sb.append(',');
         sb.append("icon");
         sb.append('=');

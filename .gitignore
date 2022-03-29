@@ -1,11 +1,10 @@
 *.iml
 .gradle
-/local.properties
+local.properties
 .idea
 .DS_Store
 build
 captures
 .externalNativeBuild
 .cxx
-local.properties
-/app/data_v1ex/src/main/java/org/fdroid/v1Ex/repository/index-v1.full.json
+/app/data_v1ex/src/main/java/org/fdroid/v1/repository/index-v1.full.json
