@@ -25,15 +25,22 @@ import java.io.InputStream;
 
 /** a tiny j2se cli app to read the repository */
 public class CliMain {
-    public static void main(String[] args) throws IOException {
-        FDroidCatalogJsonStreamParserBase repo = new FDroidCatalogJsonStreamParserDemo();
+    public static void main(String[] args)  {
+        try {
+            FDroidCatalogJsonStreamParserBase repo = new FDroidCatalogJsonStreamParserDemo();
 
-        // InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/data_v1ex/src/main/java/org/fdroid/v1Ex/repository/index-v1.small.json");
-        InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/data_v1ex/src/main/java/org/fdroid/v1Ex/repository/index-v1.full.json");
-        //index-v1ex.small.json");
+            // InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/data_v1ex/src/main/java/org/fdroid/v1/repository/index-v1.small.json");
+            // InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/data_v1ex/src/main/java/org/fdroid/v1/repository/index-v1.full.json");
+            //index-v1ex.small.json");
 
-        repo.readJsonStream(is);
+            // repo.readJsonStream(is);
 
-        is.close();
+            InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/data_v1ex/src/main/java/org/fdroid/v1/repository/index-v1.jar");
+            repo.readFromJar(is);
+            is.close();
+            System.exit(0);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

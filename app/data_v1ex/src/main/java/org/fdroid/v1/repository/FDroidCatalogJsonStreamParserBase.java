@@ -34,6 +34,8 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.jar.JarInputStream;
+import java.util.zip.ZipEntry;
 
 /**
  * Abstract Json Stream parser for FDroid-Catalog-v1 format.
@@ -43,14 +45,17 @@ import java.util.Locale;
  */
 public abstract class FDroidCatalogJsonStreamParserBase {
 
+    public static final String SIGNED_FILE_NAME = "index-v1.jar";
+    public static final String DATA_FILE_NAME = "index-v1.json";
+
     /**
      * parse the FDroid-Catalog-v1-Json into a stream of calls to consuming
      * {@link #onRepo(Repo)}, {@link #onApp(App)}, {@link #onVersion(String, Version)}
-     * @param in uncompressed Json inputstream
-     * @throws IOException if there are errors in the JSON inputstream
+     * @param jsonInputStream uncompressed Json inputstream
+     * @throws IOException if there are errors jsonInputStream the JSON inputstream
      */
-    public void readJsonStream(InputStream in) throws IOException {
-        try (JsonReader reader = new JsonReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
+    public void readJsonStream(InputStream jsonInputStream) throws IOException {
+        try (JsonReader reader = new JsonReader(new InputStreamReader(jsonInputStream, StandardCharsets.UTF_8))) {
 
             Gson gson = new Gson();
             while (reader.hasNext()) {
@@ -59,6 +64,20 @@ public abstract class FDroidCatalogJsonStreamParserBase {
                     readNameValue(gson, reader);
                 } else {
                     debug(reader);
+                }
+            }
+        }
+    }
+
+    public void readFromJar(InputStream jarInputStream) throws IOException {
+        try (JarInputStream zipInputStream = new JarInputStream(jarInputStream)) {
+            ZipEntry entry;
+            while (null != (entry = zipInputStream.getNextEntry())) {
+                if (DATA_FILE_NAME.equalsIgnoreCase(entry.getName())) {
+                    readJsonStream(zipInputStream);
+
+                    // stream was closed by caller
+                    return ;
                 }
             }
         }

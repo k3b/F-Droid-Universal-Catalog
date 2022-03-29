@@ -72,8 +72,8 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
                 ")");
     }
 
-    public void readJsonStream(InputStream in) throws IOException {
-        super.readJsonStream(in);
+    public void readJsonStream(InputStream jsonInputStream) throws IOException {
+        super.readJsonStream(jsonInputStream);
         log(statistics.toString());
     }
 }
