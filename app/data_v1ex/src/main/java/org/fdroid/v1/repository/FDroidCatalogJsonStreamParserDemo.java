@@ -19,6 +19,7 @@
 
 package org.fdroid.v1.repository;
 
+import org.fdroid.util.Formatter;
 import org.fdroid.v1.model.App;
 import org.fdroid.v1.model.Localized;
 import org.fdroid.v1.model.LocalizedStatistics;
@@ -32,6 +33,7 @@ import java.util.Set;
 
 /** json stream praser demo für FDroid.org index v1 format that logs found data to the console. */
 public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamParserBase {
+    FixLocaleService fixLocaleService = new FixLocaleService();
     LocalizedStatistics statistics = new LocalizedStatistics();
     @Override
     protected String log(String s) {
@@ -46,8 +48,9 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
 
     @Override
     protected void onApp(App app) {
+        fixLocaleService.fix(app);
         StringBuilder nameWithLocales = new StringBuilder();
-        String lastUpdated = asDateString(app.getLastUpdated());
+        String lastUpdated = Formatter.asDateString(app.getLastUpdated());
         if (lastUpdated != null) {
             nameWithLocales.append(lastUpdated).append(" ");
         }
@@ -68,7 +71,7 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
     @Override
     protected void onVersion(String name, Version version) {
         log("onVersion(" + name +
-                "," + version.getVersionName() + "," + asDateString(version.getAdded()) +
+                "," + version.getVersionName() + "," + Formatter.asDateString(version.getAdded()) +
                 ")");
     }
 

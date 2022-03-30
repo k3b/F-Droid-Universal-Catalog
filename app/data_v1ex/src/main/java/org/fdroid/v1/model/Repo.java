@@ -24,6 +24,8 @@ import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.fdroid.util.Formatter;
+
 /**
  * Data for a FDroid-Repository (read from FDroid-Catalog-v1-Json format).
  *
@@ -124,39 +126,15 @@ public class Repo {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Repo.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append("timestamp");
-        sb.append('=');
-        sb.append(this.timestamp);
-        sb.append(',');
-        sb.append("version");
-        sb.append('=');
-        sb.append(this.version);
-        sb.append(',');
-        sb.append("maxage");
-        sb.append('=');
-        sb.append(this.maxage);
-        sb.append(',');
-        sb.append("name");
-        sb.append('=');
-        sb.append(((this.name == null)?"<null>":this.name));
-        sb.append(',');
-        sb.append("icon");
-        sb.append('=');
-        sb.append(((this.icon == null)?"<null>":this.icon));
-        sb.append(',');
-        sb.append("address");
-        sb.append('=');
-        sb.append(((this.address == null)?"<null>":this.address));
-        sb.append(',');
-        sb.append("description");
-        sb.append('=');
-        sb.append(((this.description == null)?"<null>":this.description));
-        sb.append(',');
-        sb.append("mirrors");
-        sb.append('=');
-        sb.append(((this.mirrors == null)?"<null>":this.mirrors));
-        sb.append(',');
+        sb.append(Repo.class.getSimpleName()).append('[');
+        Formatter.add(sb, "name", this.name);
+        Formatter.addDate(sb, "timestamp", this.timestamp);
+        Formatter.add(sb, "version", this.version);
+        Formatter.add(sb, "maxage", this.maxage);
+        Formatter.add(sb, "icon", this.icon);
+        Formatter.add(sb, "address", this.address);
+        Formatter.add(sb, "description", this.description);
+        Formatter.add(sb, "mirrors", this.mirrors);
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -164,5 +142,4 @@ public class Repo {
         }
         return sb.toString();
     }
-
 }

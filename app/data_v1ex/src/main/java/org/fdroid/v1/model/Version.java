@@ -24,6 +24,8 @@ import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.fdroid.util.Formatter;
+
 /**
  * Data for the program version of an android app (read from FDroid-Catalog-v1-Json format).
  *
@@ -179,59 +181,20 @@ public class Version {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Version.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append("added");
-        sb.append('=');
-        sb.append(this.added);
-        sb.append(',');
-        sb.append("apkName");
-        sb.append('=');
-        sb.append(((this.apkName == null)?"<null>":this.apkName));
-        sb.append(',');
-        sb.append("hash");
-        sb.append('=');
-        sb.append(((this.hash == null)?"<null>":this.hash));
-        sb.append(',');
-        sb.append("hashType");
-        sb.append('=');
-        sb.append(((this.hashType == null)?"<null>":this.hashType));
-        sb.append(',');
-        sb.append("minSdkVersion");
-        sb.append('=');
-        sb.append(this.minSdkVersion);
-        sb.append(',');
-        sb.append("sig");
-        sb.append('=');
-        sb.append(((this.sig == null)?"<null>":this.sig));
-        sb.append(',');
-        sb.append("signer");
-        sb.append('=');
-        sb.append(((this.signer == null)?"<null>":this.signer));
-        sb.append(',');
-        sb.append("size");
-        sb.append('=');
-        sb.append(this.size);
-        sb.append(',');
-        sb.append("srcname");
-        sb.append('=');
-        sb.append(((this.srcname == null)?"<null>":this.srcname));
-        sb.append(',');
-        sb.append("targetSdkVersion");
-        sb.append('=');
-        sb.append(this.targetSdkVersion);
-        sb.append(',');
-        sb.append("versionCode");
-        sb.append('=');
-        sb.append(this.versionCode);
-        sb.append(',');
-        sb.append("versionName");
-        sb.append('=');
-        sb.append(((this.versionName == null)?"<null>":this.versionName));
-        sb.append(',');
-        sb.append("nativecode");
-        sb.append('=');
-        sb.append(((this.nativecode == null)?"<null>":this.nativecode));
-        sb.append(',');
+        sb.append(Version.class.getSimpleName()).append('[');
+        Formatter.add(sb, "apkName",this.apkName);
+        Formatter.addDate(sb, "added",this.added);
+        Formatter.add(sb, "hash",this.hash);
+        Formatter.add(sb, "hashType",this.hashType);
+        Formatter.add(sb, "minSdkVersion",this.minSdkVersion);
+        Formatter.add(sb, "sig",this.sig);
+        Formatter.add(sb, "signer",this.signer);
+        Formatter.add(sb, "size",this.size);
+        Formatter.add(sb, "srcname",this.srcname);
+        Formatter.add(sb, "targetSdkVersion",this.targetSdkVersion);
+        Formatter.add(sb, "versionCode",this.versionCode);
+        Formatter.add(sb, "versionName",this.versionName);
+        Formatter.add(sb, "nativecode",this.nativecode);
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -239,5 +202,4 @@ public class Version {
         }
         return sb.toString();
     }
-
 }

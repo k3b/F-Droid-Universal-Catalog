@@ -179,14 +179,6 @@ public abstract class FDroidCatalogJsonStreamParserBase {
         return "";
     }
 
-    public String asDateString(long longDate) {
-        if (longDate == 0) return "";
-
-        Date date = new Date(longDate);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        return format.format(date);
-    }
-
     /** Stream event, when something has to be logged */
     protected abstract String log(String s);
 

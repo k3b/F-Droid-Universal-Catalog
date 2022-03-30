@@ -24,6 +24,8 @@ import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.fdroid.util.Formatter;
+
 /**
  * Data for a Localisation (Translation) of an android app (read from FDroid-Catalog-v1-Json format).
  *
@@ -112,35 +114,14 @@ public class Localized {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(Localized.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append("name");
-        sb.append('=');
-        sb.append(((this.name == null)?"<null>":this.name));
-        sb.append(',');
-        sb.append("summary");
-        sb.append('=');
-        sb.append(((this.summary == null)?"<null>":this.summary));
-        sb.append(',');
-        sb.append("description");
-        sb.append('=');
-        sb.append(((this.description == null)?"<null>":this.description));
-        sb.append(',');
-        sb.append("phoneScreenshots");
-        sb.append('=');
-        sb.append(((this.phoneScreenshots == null)?"<null>":this.phoneScreenshots));
-        sb.append(',');
-        sb.append("icon");
-        sb.append('=');
-        sb.append(((this.icon == null)?"<null>":this.icon));
-        sb.append(',');
-        sb.append("video");
-        sb.append('=');
-        sb.append(((this.video == null)?"<null>":this.video));
-        sb.append(',');
-        sb.append("whatsNew");
-        sb.append('=');
-        sb.append(((this.whatsNew == null)?"<null>":this.whatsNew));
-        sb.append(',');
+        sb.append(Localized.class.getSimpleName()).append('[');
+        Formatter.add(sb, "name",this.name);
+        Formatter.add(sb, "summary",this.summary);
+        Formatter.add(sb, "description",this.description);
+        Formatter.add(sb, "phoneScreenshots",this.phoneScreenshots);
+        Formatter.add(sb, "icon",this.icon);
+        Formatter.add(sb, "video",this.video);
+        Formatter.add(sb, "whatsNew",this.whatsNew);
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
@@ -148,5 +129,4 @@ public class Localized {
         }
         return sb.toString();
     }
-
 }

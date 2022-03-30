@@ -28,6 +28,8 @@ import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.fdroid.util.Formatter;
+
 /**
  * Data for an android app (read from FDroid-Catalog-v1-Json format).
  *
@@ -177,58 +179,40 @@ public class App {
         return localized;
     }
 
+    public void setLocalized(Map<String, Localized> localized) {
+        this.localized = localized;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(App.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append("categories");
-        sb.append('=');
-        sb.append(((this.categories == null)?"<null>":this.categories));
-        sb.append(',');
-        sb.append("changelog");
-        sb.append('=');
-        sb.append(((this.changelog == null)?"<null>":this.changelog));
-        sb.append(',');
-        sb.append("suggestedVersionName");
-        sb.append('=');
-        sb.append(((this.suggestedVersionName == null)?"<null>":this.suggestedVersionName));
-        sb.append(',');
-        sb.append("suggestedVersionCode");
-        sb.append('=');
-        sb.append(((this.suggestedVersionCode == null)?"<null>":this.suggestedVersionCode));
-        sb.append(',');
-        sb.append("issueTracker");
-        sb.append('=');
-        sb.append(((this.issueTracker == null)?"<null>":this.issueTracker));
-        sb.append(',');
-        sb.append("license");
-        sb.append('=');
-        sb.append(((this.license == null)?"<null>":this.license));
-        sb.append(',');
-        sb.append("sourceCode");
-        sb.append('=');
-        sb.append(((this.sourceCode == null)?"<null>":this.sourceCode));
-        sb.append(',');
-        sb.append("webSite");
-        sb.append('=');
-        sb.append(((this.webSite == null)?"<null>":this.webSite));
-        sb.append(',');
-        sb.append("added");
-        sb.append('=');
-        sb.append(this.added);
-        sb.append(',');
-        sb.append("icon");
-        sb.append('=');
-        sb.append(((this.icon == null)?"<null>":this.icon));
-        sb.append(',');
-        sb.append("lastUpdated");
-        sb.append('=');
-        sb.append(this.lastUpdated);
-        sb.append(',');
-        sb.append("packageName");
-        sb.append('=');
-        sb.append(((this.packageName == null)?"<null>":this.packageName));
-        sb.append(',');
+        sb.append(App.class.getSimpleName()).append('[');
+        Formatter.add(sb, "packageName", this.packageName);
+        Formatter.add(sb, "categories",this.categories);
+        Formatter.add(sb, "changelog", this.changelog);
+        Formatter.add(sb, "suggestedVersionName", this.suggestedVersionName);
+        Formatter.add(sb, "suggestedVersionCode", this.suggestedVersionCode);
+        Formatter.add(sb, "issueTracker", this.issueTracker);
+        Formatter.add(sb, "license", this.license);
+        Formatter.add(sb, "sourceCode", this.sourceCode);
+        Formatter.add(sb, "webSite", this.webSite);
+        Formatter.addDate(sb,"added",this.added);
+        Formatter.addDate(sb,"lastUpdated",this.lastUpdated);
+        Formatter.add(sb, "icon", this.icon);
+        if (localized != null) {
+            sb.append("localized");
+            sb.append("={");
+            for (Map.Entry<String, Localized> l : localized.entrySet()) {
+                sb.append(l.getKey()).append(":").append(l.getValue()).append(",");
+            }
+            if (sb.charAt((sb.length()- 1)) == ',') {
+                sb.setCharAt((sb.length()- 1), '}');
+            } else {
+                sb.append('}');
+            }
+            sb.append(",");
+        }
+
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
         } else {
