@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e5c0e1de1669018618fe93f67024ba9f",
+    "identityHash": "62d9b8098f092c87c1ba93d54ef4c636",
     "entities": [
       {
         "tableName": "App",
@@ -143,12 +143,24 @@
       },
       {
         "tableName": "Locale",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `code` TEXT, `symbol` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "code",
+            "columnName": "code",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "symbol",
+            "columnName": "symbol",
+            "affinity": "TEXT",
             "notNull": false
           }
         ],
@@ -243,7 +255,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e5c0e1de1669018618fe93f67024ba9f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '62d9b8098f092c87c1ba93d54ef4c636')"
     ]
   }
 }
