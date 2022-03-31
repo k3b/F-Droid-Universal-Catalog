@@ -20,7 +20,6 @@
 package org.fdroid.model.v1;
 
 import org.fdroid.model.RepoCommon;
-import org.fdroid.util.Formatter;
 
 import java.util.List;
 
@@ -43,8 +42,8 @@ public class Repo extends RepoCommon {
         this.mirrors = mirrors;
     }
 
-    protected void toString(StringBuilder sb) {
-        super.toString(sb);
-        Formatter.add(sb, "mirrors", this.mirrors);
+    protected void toStringBuilder(StringBuilder sb) {
+        super.toStringBuilder(sb);
+        toStringBuilder(sb, "mirrors", this.mirrors);
     }
 }

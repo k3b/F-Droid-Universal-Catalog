@@ -20,7 +20,6 @@
 package org.fdroid.model.v1;
 
 import org.fdroid.model.VersionCommon;
-import org.fdroid.util.Formatter;
 
 import java.util.List;
 
@@ -41,8 +40,8 @@ public class Version extends VersionCommon {
         this.nativecode = nativecode;
     }
 
-    protected void toString(StringBuilder sb) {
-        super.toString(sb);
-        Formatter.add(sb, "nativecode", this.nativecode);
+    protected void toStringBuilder(StringBuilder sb) {
+        super.toStringBuilder(sb);
+        toStringBuilder(sb, "nativecode", this.nativecode);
     }
 }

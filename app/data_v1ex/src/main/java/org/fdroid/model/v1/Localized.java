@@ -20,7 +20,6 @@
 package org.fdroid.model.v1;
 
 import org.fdroid.model.LocalizedCommon;
-import org.fdroid.util.Formatter;
 
 import java.util.List;
 
@@ -41,8 +40,8 @@ public class Localized extends LocalizedCommon {
         this.phoneScreenshots = phoneScreenshots;
     }
 
-    protected void toString(StringBuilder sb) {
-        super.toString(sb);
-        Formatter.add(sb, "phoneScreenshots", this.phoneScreenshots);
+    protected void toStringBuilder(StringBuilder sb) {
+        super.toStringBuilder(sb);
+        toStringBuilder(sb, "phoneScreenshots", this.phoneScreenshots);
     }
 }

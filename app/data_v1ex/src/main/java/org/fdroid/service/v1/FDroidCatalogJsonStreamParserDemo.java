@@ -19,12 +19,12 @@
 
 package org.fdroid.service.v1;
 
+import org.fdroid.model.PojoCommon;
 import org.fdroid.model.v1.App;
 import org.fdroid.model.v1.Localized;
 import org.fdroid.model.v1.LocalizedStatistics;
 import org.fdroid.model.v1.Repo;
 import org.fdroid.model.v1.Version;
-import org.fdroid.util.Formatter;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,7 +50,7 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
     protected void onApp(App app) {
         fixLocaleService.fix(app);
         StringBuilder nameWithLocales = new StringBuilder();
-        String lastUpdated = Formatter.asDateString(app.getLastUpdated());
+        String lastUpdated = PojoCommon.asDateString(app.getLastUpdated());
         if (lastUpdated != null) {
             nameWithLocales.append(lastUpdated).append(" ");
         }
@@ -71,7 +71,7 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
     @Override
     protected void onVersion(String name, Version version) {
         log("onVersion(" + name +
-                "," + version.getVersionName() + "," + Formatter.asDateString(version.getAdded()) +
+                "," + version.getVersionName() + "," + PojoCommon.asDateString(version.getAdded()) +
                 ")");
     }
 

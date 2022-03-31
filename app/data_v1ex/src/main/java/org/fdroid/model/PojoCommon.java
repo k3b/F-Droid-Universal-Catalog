@@ -19,13 +19,42 @@
 
 package org.fdroid.model;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+/**
+ * what all Pojo-s have in Common: Currently only toString() support. Properties are not allowed
+ */
 public class PojoCommon {
+    public static String asDateString(long longDate) {
+        if (longDate == 0) return "";
+
+        Date date = new Date(longDate);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        return format.format(date);
+    }
+
+    public void toStringBuilder(StringBuilder sb, String name, Object value) {
+        if (value != null)
+            sb.append(name).append('=').append(value).append(',');
+    }
+
+    public void toStringBuilder(StringBuilder sb, String name, long value) {
+        if (value != 0)
+            sb.append(name).append('=').append(value).append(',');
+    }
+
+    public void toDateStringBuilder(StringBuilder sb, String name, long value) {
+        if (value != 0)
+            sb.append(name).append('=').append(asDateString(value)).append(',');
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(this.getClass().getSimpleName()).append('[');
-        toString(sb);
-        // Formatter.add(sb, "mirrors", this.mirrors);
+        toStringBuilder(sb);
         if (sb.charAt((sb.length() - 1)) == ',') {
             sb.setCharAt((sb.length() - 1), ']');
         } else {
@@ -34,6 +63,6 @@ public class PojoCommon {
         return sb.toString();
     }
 
-    protected void toString(StringBuilder sb) {
+    protected void toStringBuilder(StringBuilder sb) {
     }
 }

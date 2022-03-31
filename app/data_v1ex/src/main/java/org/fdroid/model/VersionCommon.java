@@ -19,8 +19,11 @@
 
 package org.fdroid.model;
 
-import org.fdroid.util.Formatter;
-
+/**
+ * Common data for v1-Gson-json and android-room-database-Entities.
+ * Only primitive types are allowed. No relations, no Objects, no Lists
+ * as these are Gson/Android-Room-Database specific.
+ */
 public class VersionCommon extends PojoCommon {
     private long added;
     private String apkName;
@@ -34,6 +37,21 @@ public class VersionCommon extends PojoCommon {
     private long targetSdkVersion;
     private long versionCode;
     private String versionName;
+
+    public static void copyCommon(VersionCommon dest, VersionCommon src) {
+        dest.setAdded(src.getAdded());
+        dest.setApkName(src.getApkName());
+        dest.setHash(src.getHash());
+        dest.setHashType(src.getHashType());
+        dest.setMinSdkVersion(src.getMinSdkVersion());
+        dest.setSig(src.getSig());
+        dest.setSigner(src.getSigner());
+        dest.setSize(src.getSize());
+        dest.setSrcname(src.getSrcname());
+        dest.setTargetSdkVersion(src.getTargetSdkVersion());
+        dest.setVersionCode(src.getVersionCode());
+        dest.setVersionName(src.getVersionName());
+    }
 
     public long getAdded() {
         return added;
@@ -131,20 +149,19 @@ public class VersionCommon extends PojoCommon {
         this.versionName = versionName;
     }
 
-    protected void toString(StringBuilder sb) {
-        super.toString(sb);
-        Formatter.add(sb, "apkName", this.apkName);
-        Formatter.addDate(sb, "added", this.added);
-        Formatter.add(sb, "hash", this.hash);
-        Formatter.add(sb, "hashType", this.hashType);
-        Formatter.add(sb, "minSdkVersion", this.minSdkVersion);
-        Formatter.add(sb, "sig", this.sig);
-        Formatter.add(sb, "signer", this.signer);
-        Formatter.add(sb, "size", this.size);
-        Formatter.add(sb, "srcname", this.srcname);
-        Formatter.add(sb, "targetSdkVersion", this.targetSdkVersion);
-        Formatter.add(sb, "versionCode", this.versionCode);
-        Formatter.add(sb, "versionName", this.versionName);
+    protected void toStringBuilder(StringBuilder sb) {
+        super.toStringBuilder(sb);
+        toStringBuilder(sb, "apkName", this.apkName);
+        toDateStringBuilder(sb, "added", this.added);
+        toStringBuilder(sb, "hash", this.hash);
+        toStringBuilder(sb, "hashType", this.hashType);
+        toStringBuilder(sb, "minSdkVersion", this.minSdkVersion);
+        toStringBuilder(sb, "sig", this.sig);
+        toStringBuilder(sb, "signer", this.signer);
+        toStringBuilder(sb, "size", this.size);
+        toStringBuilder(sb, "srcname", this.srcname);
+        toStringBuilder(sb, "targetSdkVersion", this.targetSdkVersion);
+        toStringBuilder(sb, "versionCode", this.versionCode);
+        toStringBuilder(sb, "versionName", this.versionName);
     }
-
 }

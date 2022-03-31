@@ -19,8 +19,11 @@
 
 package org.fdroid.model;
 
-import org.fdroid.util.Formatter;
-
+/**
+ * Common data for v1-Gson-json and android-room-database-Entities.
+ * Only primitive types are allowed. No relations, no Objects, no Lists
+ * as these are Gson/Android-Room-Database specific.
+ */
 public class RepoCommon extends PojoCommon {
     private String name;
     private long timestamp;
@@ -29,6 +32,16 @@ public class RepoCommon extends PojoCommon {
     private String icon;
     private String address;
     private String description;
+
+    public static void copyCommon(RepoCommon dest, RepoCommon src) {
+        dest.setName(src.getName());
+        dest.setTimestamp(src.getTimestamp());
+        dest.setVersion(src.getVersion());
+        dest.setMaxage(src.getMaxage());
+        dest.setIcon(src.getIcon());
+        dest.setAddress(src.getAddress());
+        dest.setDescription(src.getDescription());
+    }
 
     public String getName() {
         return name;
@@ -86,13 +99,13 @@ public class RepoCommon extends PojoCommon {
         this.description = description;
     }
 
-    protected void toString(StringBuilder sb) {
-        Formatter.add(sb, "name", this.name);
-        Formatter.addDate(sb, "timestamp", this.timestamp);
-        Formatter.add(sb, "version", this.version);
-        Formatter.add(sb, "maxage", this.maxage);
-        Formatter.add(sb, "icon", this.icon);
-        Formatter.add(sb, "address", this.address);
-        Formatter.add(sb, "description", this.description);
+    protected void toStringBuilder(StringBuilder sb) {
+        toStringBuilder(sb, "name", this.name);
+        toDateStringBuilder(sb, "timestamp", this.timestamp);
+        toStringBuilder(sb, "version", this.version);
+        toStringBuilder(sb, "maxage", this.maxage);
+        toStringBuilder(sb, "icon", this.icon);
+        toStringBuilder(sb, "address", this.address);
+        toStringBuilder(sb, "description", this.description);
     }
 }

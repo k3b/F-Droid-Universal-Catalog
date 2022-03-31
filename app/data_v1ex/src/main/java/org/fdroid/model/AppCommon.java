@@ -19,8 +19,11 @@
 
 package org.fdroid.model;
 
-import org.fdroid.util.Formatter;
-
+/**
+ * Common data for v1-Gson-json and android-room-database-Entities.
+ * Only primitive types are allowed. No relations, no Objects, no Lists
+ * as these are Gson/Android-Room-Database specific.
+ */
 public class AppCommon extends PojoCommon {
     private String packageName;
     private String changelog;
@@ -33,6 +36,20 @@ public class AppCommon extends PojoCommon {
     private long added;
     private String icon;
     private long lastUpdated;
+
+    public static void copyCommon(AppCommon dest, AppCommon src) {
+        dest.setIcon(src.getIcon());
+        dest.setPackageName(src.getPackageName());
+        dest.setChangelog(src.getChangelog());
+        dest.setSuggestedVersionName(src.getSuggestedVersionName());
+        dest.setSuggestedVersionCode(src.getSuggestedVersionCode());
+        dest.setIssueTracker(src.getIssueTracker());
+        dest.setLicense(src.getLicense());
+        dest.setSourceCode(src.getSourceCode());
+        dest.setWebSite(src.getWebSite());
+        dest.setAdded(src.getAdded());
+        dest.setLastUpdated(src.getLastUpdated());
+    }
 
     public String getChangelog() {
         return changelog;
@@ -122,19 +139,19 @@ public class AppCommon extends PojoCommon {
         this.packageName = packageName;
     }
 
-    protected void toString(StringBuilder sb) {
-        super.toString(sb);
-        Formatter.add(sb, "packageName", this.packageName);
-        Formatter.add(sb, "changelog", this.changelog);
-        Formatter.add(sb, "suggestedVersionName", this.suggestedVersionName);
-        Formatter.add(sb, "suggestedVersionCode", this.suggestedVersionCode);
-        Formatter.add(sb, "issueTracker", this.issueTracker);
-        Formatter.add(sb, "license", this.license);
-        Formatter.add(sb, "sourceCode", this.sourceCode);
-        Formatter.add(sb, "webSite", this.webSite);
-        Formatter.addDate(sb, "added", this.added);
-        Formatter.addDate(sb, "lastUpdated", this.lastUpdated);
-        Formatter.add(sb, "icon", this.icon);
+    protected void toStringBuilder(StringBuilder sb) {
+        super.toStringBuilder(sb);
+        toStringBuilder(sb, "packageName", this.packageName);
+        toStringBuilder(sb, "changelog", this.changelog);
+        toStringBuilder(sb, "suggestedVersionName", this.suggestedVersionName);
+        toStringBuilder(sb, "suggestedVersionCode", this.suggestedVersionCode);
+        toStringBuilder(sb, "issueTracker", this.issueTracker);
+        toStringBuilder(sb, "license", this.license);
+        toStringBuilder(sb, "sourceCode", this.sourceCode);
+        toStringBuilder(sb, "webSite", this.webSite);
+        toDateStringBuilder(sb, "added", this.added);
+        toDateStringBuilder(sb, "lastUpdated", this.lastUpdated);
+        toStringBuilder(sb, "icon", this.icon);
     }
 
 }

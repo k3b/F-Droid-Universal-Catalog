@@ -20,7 +20,6 @@
 package org.fdroid.model.v1;
 
 import org.fdroid.model.AppCommon;
-import org.fdroid.util.Formatter;
 
 import java.util.List;
 import java.util.Map;
@@ -55,9 +54,9 @@ public class App extends AppCommon {
     }
 
     @Override
-    protected void toString(StringBuilder sb) {
-        super.toString(sb);
-        Formatter.add(sb, "categories", this.categories);
+    protected void toStringBuilder(StringBuilder sb) {
+        super.toStringBuilder(sb);
+        toStringBuilder(sb, "categories", this.categories);
         if (localized != null) {
             sb.append("localized");
             sb.append("={");

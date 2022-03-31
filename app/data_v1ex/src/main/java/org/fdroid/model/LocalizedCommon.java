@@ -19,8 +19,11 @@
 
 package org.fdroid.model;
 
-import org.fdroid.util.Formatter;
-
+/**
+ * Common data for v1-Gson-json and android-room-database-Entities.
+ * Only primitive types are allowed. No relations, no Objects, no Lists
+ * as these are Gson/Android-Room-Database specific.
+ */
 public class LocalizedCommon extends PojoCommon {
     private String name;
     private String summary;
@@ -28,6 +31,15 @@ public class LocalizedCommon extends PojoCommon {
     private String icon;
     private String video;
     private String whatsNew;
+
+    public static void copyCommon(LocalizedCommon dest, LocalizedCommon src) {
+        dest.setName(src.getName());
+        dest.setIcon(src.getIcon());
+        dest.setDescription(src.getDescription());
+        dest.setSummary(src.getSummary());
+        dest.setVideo(src.getVideo());
+        dest.setWhatsNew(src.getWhatsNew());
+    }
 
     public String getDescription() {
         return description;
@@ -77,14 +89,14 @@ public class LocalizedCommon extends PojoCommon {
         this.whatsNew = whatsNew;
     }
 
-    protected void toString(StringBuilder sb) {
-        super.toString(sb);
-        Formatter.add(sb, "name", this.name);
-        Formatter.add(sb, "summary", this.summary);
-        Formatter.add(sb, "description", this.description);
-        Formatter.add(sb, "icon", this.icon);
-        Formatter.add(sb, "video", this.video);
-        Formatter.add(sb, "whatsNew", this.whatsNew);
+    protected void toStringBuilder(StringBuilder sb) {
+        super.toStringBuilder(sb);
+        toStringBuilder(sb, "name", this.name);
+        toStringBuilder(sb, "summary", this.summary);
+        toStringBuilder(sb, "description", this.description);
+        toStringBuilder(sb, "icon", this.icon);
+        toStringBuilder(sb, "video", this.video);
+        toStringBuilder(sb, "whatsNew", this.whatsNew);
     }
 
 }
