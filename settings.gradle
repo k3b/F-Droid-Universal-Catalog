@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "FDroid Json Parser"
 include ':app'
 include ':app:data_v1ex'
+include ':app:data_db'
