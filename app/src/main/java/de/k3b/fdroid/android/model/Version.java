@@ -24,7 +24,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Version {
     @PrimaryKey(autoGenerate = true)
-    public Integer id;
+    public int id;
 
-    public Integer appId;
+    public int appId;
 }

@@ -21,12 +21,14 @@ package de.k3b.fdroid.android.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import org.fdroid.model.LocalizedCommon;
+
 @Entity
-public class Localized {
+public class Localized extends LocalizedCommon {
     @PrimaryKey(autoGenerate = true)
-    public Integer id;
+    public int id;
 
-    public Integer appId;
+    public int appId;
 
-    public Integer localeId;
+    public int localeId;
 }

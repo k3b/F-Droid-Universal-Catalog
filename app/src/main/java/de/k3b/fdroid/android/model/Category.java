@@ -24,6 +24,6 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Category {
     @PrimaryKey(autoGenerate = true)
-    public Integer id;
+    public int id;
 
 }

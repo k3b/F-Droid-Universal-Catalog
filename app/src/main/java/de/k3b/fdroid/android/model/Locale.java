@@ -24,7 +24,7 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Locale {
     @PrimaryKey(autoGenerate = true)
-    public Integer id;
+    public int id;
 
     /** locale-language-code. Usually two-letter-lowercase. i.e. it for italian */
     public String code;

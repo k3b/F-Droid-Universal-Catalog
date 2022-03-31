@@ -25,11 +25,13 @@ import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(foreignKeys = @ForeignKey(entity = Repo.class,parentColumns = "id",
-                                            childColumns = "repoId", onDelete = CASCADE),
+import org.fdroid.model.AppCommon;
+
+@Entity(foreignKeys = @ForeignKey(entity = Repo.class, parentColumns = "id",
+        childColumns = "repoId", onDelete = CASCADE),
         indices = {@Index("repoId")}
 )
-public class App {
+public class App extends AppCommon {
     @PrimaryKey(autoGenerate = true)
     public Integer id;
 

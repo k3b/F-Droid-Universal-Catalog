@@ -24,14 +24,16 @@ import androidx.room.ForeignKey;
 import androidx.room.Index;
 
 @Entity(primaryKeys = {"appId", "categoryId"}, foreignKeys = {
-        @ForeignKey(entity = App.class,parentColumns = "id",childColumns = "appId"),
-        @ForeignKey(entity = Category.class,parentColumns = "id",childColumns = "categoryId")},
+        @ForeignKey(entity = App.class, parentColumns = "id", childColumns = "appId"),
+        @ForeignKey(entity = Category.class, parentColumns = "id", childColumns = "categoryId")},
         indices = {@Index("appId"), @Index("categoryId")})
 public class AppCategory {
-    @NonNull public final Integer appId;
-    @NonNull public final Integer categoryId;
+    @NonNull
+    public final int appId;
+    @NonNull
+    public final int categoryId;
 
-    public AppCategory(@NonNull Integer appId, @NonNull Integer categoryId) {
+    public AppCategory(int appId, int categoryId) {
         this.appId = appId;
         this.categoryId = categoryId;
     }
