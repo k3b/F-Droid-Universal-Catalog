@@ -28,8 +28,6 @@ import javax.annotation.Generated;
 
 /**
  * Data for a FDroid-Repository (read from FDroid-Catalog-v1-Json format).
- * <p>
- * Generated with https://www.jsonschema2pojo.org/ from JSON example Data in Format Gson.
  */
 @Generated("jsonschema2pojo")
 public class Repo extends RepoCommon {
