@@ -19,9 +19,7 @@
 
 package org.fdroid.model.v1;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
+import org.fdroid.model.RepoCommon;
 import org.fdroid.util.Formatter;
 
 import java.util.List;
@@ -30,92 +28,14 @@ import javax.annotation.Generated;
 
 /**
  * Data for a FDroid-Repository (read from FDroid-Catalog-v1-Json format).
- *
+ * <p>
  * Generated with https://www.jsonschema2pojo.org/ from JSON example Data in Format Gson.
  */
 @Generated("jsonschema2pojo")
-public class Repo {
+public class Repo extends RepoCommon {
 
-    @SerializedName("timestamp")
-    @Expose
-    private long timestamp;
-    @SerializedName("version")
-    @Expose
-    private long version;
-    @SerializedName("maxage")
-    @Expose
-    private long maxage;
-    @SerializedName("name")
-    @Expose
-    private String name;
-    @SerializedName("icon")
-    @Expose
-    private String icon;
-    @SerializedName("address")
-    @Expose
-    private String address;
-    @SerializedName("description")
-    @Expose
-    private String description;
-    @SerializedName("mirrors")
-    @Expose
     private List<String> mirrors = null;
 
-    public long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public long getVersion() {
-        return version;
-    }
-
-    public void setVersion(long version) {
-        this.version = version;
-    }
-
-    public long getMaxage() {
-        return maxage;
-    }
-
-    public void setMaxage(long maxage) {
-        this.maxage = maxage;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public List<String> getMirrors() {
         return mirrors;
@@ -125,23 +45,8 @@ public class Repo {
         this.mirrors = mirrors;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Repo.class.getSimpleName()).append('[');
-        Formatter.add(sb, "name", this.name);
-        Formatter.addDate(sb, "timestamp", this.timestamp);
-        Formatter.add(sb, "version", this.version);
-        Formatter.add(sb, "maxage", this.maxage);
-        Formatter.add(sb, "icon", this.icon);
-        Formatter.add(sb, "address", this.address);
-        Formatter.add(sb, "description", this.description);
+    protected void toString(StringBuilder sb) {
+        super.toString(sb);
         Formatter.add(sb, "mirrors", this.mirrors);
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
-        } else {
-            sb.append(']');
-        }
-        return sb.toString();
     }
 }

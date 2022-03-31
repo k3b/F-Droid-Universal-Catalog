@@ -19,9 +19,7 @@
 
 package org.fdroid.model.v1;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
+import org.fdroid.model.LocalizedCommon;
 import org.fdroid.util.Formatter;
 
 import java.util.List;
@@ -30,48 +28,12 @@ import javax.annotation.Generated;
 
 /**
  * Data for a Localisation (Translation) of an android app (read from FDroid-Catalog-v1-Json format).
- *
+ * <p>
  * Generated with https://www.jsonschema2pojo.org/ from JSON example Data in Format Gson.
  */
 @Generated("jsonschema2pojo")
-public class Localized {
-    @SerializedName("description")
-    @Expose
-    private String description;
-    @SerializedName("name")
-    @Expose
-    private String name;
-    @SerializedName("phoneScreenshots")
-    @Expose
+public class Localized extends LocalizedCommon {
     private List<String> phoneScreenshots = null;
-    @SerializedName("summary")
-    @Expose
-    private String summary;
-    @SerializedName("icon")
-    @Expose
-    private String icon;
-    @SerializedName("video")
-    @Expose
-    private String video;
-    @SerializedName("whatsNew")
-    @Expose
-    private String whatsNew;
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public List<String> getPhoneScreenshots() {
         return phoneScreenshots;
@@ -81,54 +43,8 @@ public class Localized {
         this.phoneScreenshots = phoneScreenshots;
     }
 
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getVideo() {
-        return video;
-    }
-
-    public void setVideo(String video) {
-        this.video = video;
-    }
-
-    public String getWhatsNew() {
-        return whatsNew;
-    }
-
-    public void setWhatsNew(String whatsNew) {
-        this.whatsNew = whatsNew;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(Localized.class.getSimpleName()).append('[');
-        Formatter.add(sb, "name",this.name);
-        Formatter.add(sb, "summary",this.summary);
-        Formatter.add(sb, "description",this.description);
-        Formatter.add(sb, "phoneScreenshots",this.phoneScreenshots);
-        Formatter.add(sb, "icon",this.icon);
-        Formatter.add(sb, "video",this.video);
-        Formatter.add(sb, "whatsNew",this.whatsNew);
-        if (sb.charAt((sb.length()- 1)) == ',') {
-            sb.setCharAt((sb.length()- 1), ']');
-        } else {
-            sb.append(']');
-        }
-        return sb.toString();
+    protected void toString(StringBuilder sb) {
+        super.toString(sb);
+        Formatter.add(sb, "phoneScreenshots", this.phoneScreenshots);
     }
 }
