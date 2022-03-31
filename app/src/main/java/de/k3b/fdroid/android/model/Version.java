@@ -21,8 +21,10 @@ package de.k3b.fdroid.android.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import org.fdroid.model.VersionCommon;
+
 @Entity
-public class Version {
+public class Version extends VersionCommon {
     @PrimaryKey(autoGenerate = true)
     public int id;
 

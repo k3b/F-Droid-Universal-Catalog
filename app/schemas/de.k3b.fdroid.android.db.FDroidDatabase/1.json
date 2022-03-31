@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7cbe07b29059db126a47a3582fa07774",
+    "identityHash": "eda8cf9be3b9328ce0f53e2edbb9bb22",
     "entities": [
       {
         "tableName": "App",
@@ -371,7 +371,7 @@
       },
       {
         "tableName": "Version",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `added` INTEGER NOT NULL, `apkName` TEXT, `hash` TEXT, `hashType` TEXT, `minSdkVersion` INTEGER NOT NULL, `sig` TEXT, `signer` TEXT, `size` INTEGER NOT NULL, `srcname` TEXT, `targetSdkVersion` INTEGER NOT NULL, `versionCode` INTEGER NOT NULL, `versionName` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -384,6 +384,78 @@
             "columnName": "appId",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "added",
+            "columnName": "added",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "apkName",
+            "columnName": "apkName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hash",
+            "columnName": "hash",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "hashType",
+            "columnName": "hashType",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "minSdkVersion",
+            "columnName": "minSdkVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sig",
+            "columnName": "sig",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "signer",
+            "columnName": "signer",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "size",
+            "columnName": "size",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "srcname",
+            "columnName": "srcname",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "targetSdkVersion",
+            "columnName": "targetSdkVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "versionCode",
+            "columnName": "versionCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "versionName",
+            "columnName": "versionName",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -399,7 +471,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7cbe07b29059db126a47a3582fa07774')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'eda8cf9be3b9328ce0f53e2edbb9bb22')"
     ]
   }
 }
