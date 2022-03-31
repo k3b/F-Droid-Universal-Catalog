@@ -21,6 +21,7 @@ package org.fdroid.v1.repository;
 
 import org.fdroid.model.v1.App;
 import org.fdroid.model.v1.Localized;
+import org.fdroid.service.v1.FixLocaleService;
 import org.junit.Assert;
 import org.junit.Test;
 
