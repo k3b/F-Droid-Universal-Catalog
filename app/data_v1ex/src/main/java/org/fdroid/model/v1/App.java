@@ -21,6 +21,7 @@ package org.fdroid.model.v1;
 
 import org.fdroid.model.AppCommon;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -32,7 +33,7 @@ import javax.annotation.Generated;
  */
 @Generated("jsonschema2pojo")
 public class App extends AppCommon {
-    private List<String> categories = null;
+    private List<String> categories = new ArrayList<>();
 
     // preserve insertion order
     private Map<String, Localized> localized = new TreeMap<>();
@@ -56,8 +57,9 @@ public class App extends AppCommon {
     @Override
     protected void toStringBuilder(StringBuilder sb) {
         super.toStringBuilder(sb);
-        toStringBuilder(sb, "categories", this.categories);
-        if (localized != null) {
+        if (this.categories != null && !this.categories.isEmpty())
+            toStringBuilder(sb, "categories", this.categories);
+        if (localized != null && !localized.isEmpty()) {
             sb.append("localized");
             sb.append("={");
             for (Map.Entry<String, Localized> l : localized.entrySet()) {

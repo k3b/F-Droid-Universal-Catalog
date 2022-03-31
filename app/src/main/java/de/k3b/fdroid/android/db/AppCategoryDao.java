@@ -21,8 +21,10 @@ package de.k3b.fdroid.android.db;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.Query;
 
-import de.k3b.fdroid.android.model.App;
+import java.util.List;
+
 import de.k3b.fdroid.android.model.AppCategory;
 
 @Dao
@@ -33,4 +35,6 @@ public interface AppCategoryDao {
     @Delete
     void delete(AppCategory appCategory);
 
+    @Query("SELECT * FROM AppCategory WHERE AppCategory.appId = :appId")
+    List<AppCategory> findForApp(int appId);
 }
