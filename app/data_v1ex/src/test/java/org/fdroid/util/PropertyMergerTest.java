@@ -19,14 +19,14 @@
 
 package org.fdroid.util;
 
-import org.fdroid.v1.model.Localized;
+import org.fdroid.model.v1.Localized;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
 
 public class PropertyMergerTest {
-    private PropertyMerger sut = new PropertyMerger();
+    private final PropertyMerger sut = new PropertyMerger();
 
     @Test
     public void merge() {

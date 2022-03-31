@@ -19,8 +19,8 @@
 
 package org.fdroid.v1.repository;
 
-import org.fdroid.v1.model.App;
-import org.fdroid.v1.model.Localized;
+import org.fdroid.model.v1.App;
+import org.fdroid.model.v1.Localized;
 import org.junit.Assert;
 import org.junit.Test;
 

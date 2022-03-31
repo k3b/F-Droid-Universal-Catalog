@@ -19,8 +19,10 @@
 
 package org.fdroid.v1.repository;
 
+import org.fdroid.service.v1.FDroidCatalogJsonStreamParserBase;
+import org.fdroid.service.v1.FDroidCatalogJsonStreamParserDemo;
+
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 
 /** a tiny j2se cli app to read the repository */

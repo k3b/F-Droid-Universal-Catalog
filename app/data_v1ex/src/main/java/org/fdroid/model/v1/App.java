@@ -17,18 +17,18 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-package org.fdroid.v1.model;
+package org.fdroid.model.v1;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import org.fdroid.util.Formatter;
 
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import javax.annotation.Generated;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
-import org.fdroid.util.Formatter;
 
 /**
  * Data for an android app (read from FDroid-Catalog-v1-Json format).

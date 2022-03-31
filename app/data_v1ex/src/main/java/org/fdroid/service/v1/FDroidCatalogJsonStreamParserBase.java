@@ -17,23 +17,20 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-package org.fdroid.v1.repository;
+package org.fdroid.service.v1;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
-import org.fdroid.v1.model.Repo;
-import org.fdroid.v1.model.Version;
-import org.fdroid.v1.model.App;
+import org.fdroid.model.v1.App;
+import org.fdroid.model.v1.Repo;
+import org.fdroid.model.v1.Version;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.jar.JarInputStream;
 import java.util.zip.ZipEntry;
 

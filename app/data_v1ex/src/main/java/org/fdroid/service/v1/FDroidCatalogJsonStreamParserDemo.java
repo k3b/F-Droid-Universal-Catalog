@@ -17,14 +17,14 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-package org.fdroid.v1.repository;
+package org.fdroid.service.v1;
 
+import org.fdroid.model.v1.App;
+import org.fdroid.model.v1.Localized;
+import org.fdroid.model.v1.LocalizedStatistics;
+import org.fdroid.model.v1.Repo;
+import org.fdroid.model.v1.Version;
 import org.fdroid.util.Formatter;
-import org.fdroid.v1.model.App;
-import org.fdroid.v1.model.Localized;
-import org.fdroid.v1.model.LocalizedStatistics;
-import org.fdroid.v1.model.Repo;
-import org.fdroid.v1.model.Version;
 
 import java.io.IOException;
 import java.io.InputStream;

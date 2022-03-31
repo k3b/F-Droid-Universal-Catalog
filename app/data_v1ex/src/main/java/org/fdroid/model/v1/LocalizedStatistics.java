@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package org.fdroid.v1.model;
+package org.fdroid.model.v1;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,8 +25,8 @@ import java.util.HashMap;
  * Count how many translations exist per language/locale
  */
 public class LocalizedStatistics {
-    private HashMap<String,Integer> locale2summaryCount = new HashMap<>();
-    private HashMap<String,Integer> locale2descriptionCount = new HashMap<>();
+    private final HashMap<String, Integer> locale2summaryCount = new HashMap<>();
+    private final HashMap<String, Integer> locale2descriptionCount = new HashMap<>();
 
     public void addStatistics(String locale, Localized localized) {
         addStatistics(locale2summaryCount, locale, localized.getSummary());
