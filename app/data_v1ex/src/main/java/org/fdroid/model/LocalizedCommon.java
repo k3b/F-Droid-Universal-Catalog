@@ -41,14 +41,6 @@ public class LocalizedCommon extends PojoCommon {
         dest.setWhatsNew(src.getWhatsNew());
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getName() {
         return name;
     }
@@ -63,6 +55,14 @@ public class LocalizedCommon extends PojoCommon {
 
     public void setSummary(String summary) {
         this.summary = summary;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getIcon() {

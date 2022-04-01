@@ -33,10 +33,30 @@ import javax.annotation.Generated;
  */
 @Generated("jsonschema2pojo")
 public class App extends AppCommon {
-    private List<String> categories = new ArrayList<>();
 
+    // redundant fallback if there is no localized (converted to locale)
+    private String summary;
+    private String description;
+
+    private List<String> categories = new ArrayList<>();
     // preserve insertion order
     private Map<String, Localized> localized = new TreeMap<>();
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public List<String> getCategories() {
         return categories;
@@ -49,7 +69,6 @@ public class App extends AppCommon {
     public Map<String, Localized> getLocalized() {
         return localized;
     }
-
     public void setLocalized(Map<String, Localized> localized) {
         this.localized = localized;
     }
@@ -57,6 +76,9 @@ public class App extends AppCommon {
     @Override
     protected void toStringBuilder(StringBuilder sb) {
         super.toStringBuilder(sb);
+        toStringBuilder(sb, "summary", this.summary);
+        toStringBuilder(sb, "description", this.description);
+
         if (this.categories != null && !this.categories.isEmpty())
             toStringBuilder(sb, "categories", this.categories);
         if (localized != null && !localized.isEmpty()) {

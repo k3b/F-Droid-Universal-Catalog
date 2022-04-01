@@ -31,10 +31,18 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Set;
 
-/** json stream praser demo für FDroid.org index v1 format that logs found data to the console. */
+/**
+ * json stream praser demo für FDroid.org index v1 format that logs found data to the console.
+ */
 public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamParserBase {
     FixLocaleService fixLocaleService = new FixLocaleService();
+
+    private final StringBuilder appWithNoLocale = new StringBuilder();
+    private final StringBuilder appWithNoEnLocale = new StringBuilder();
+    // statistics
     LocalizedStatistics statistics = new LocalizedStatistics();
+    private int numberOfApps = 0;
+
     @Override
     protected String log(String s) {
         System.out.println(s);
@@ -48,6 +56,8 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
 
     @Override
     protected void onApp(App app) {
+        numberOfApps++;
+        Map<String, Localized> oldLocales = app.getLocalized();
         fixLocaleService.fix(app);
         StringBuilder nameWithLocales = new StringBuilder();
         String lastUpdated = PojoCommon.asDateString(app.getLastUpdated());
@@ -64,6 +74,11 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
                 nameWithLocales.append(" ").append(locale);
                 statistics.addStatistics(locale, locales.get(locale));
             }
+            if (!locales.containsKey("en")) {
+                appWithNoEnLocale.append(app.getPackageName()).append("\n\t").append(app).append("\n");
+            }
+        } else {
+            appWithNoLocale.append(app.getPackageName()).append("\n\t").append(app).append("\n");
         }
         log("onApp(" + nameWithLocales + ")");
     }
@@ -78,5 +93,8 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
     public void readJsonStream(InputStream jsonInputStream) throws IOException {
         super.readJsonStream(jsonInputStream);
         log(statistics.toString());
+        log("appWithNoLocale  : " + appWithNoLocale);
+        log("appWithNoEnLocale: " + appWithNoEnLocale);
+        log("Apps " + numberOfApps);
     }
 }

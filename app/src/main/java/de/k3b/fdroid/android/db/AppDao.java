@@ -39,4 +39,7 @@ public interface AppDao {
 
     @Query("SELECT * FROM App WHERE App.repoId = :repoId AND App.packageName = :packageName")
     App findByPackageName(int repoId, String packageName);
+
+    @Query("SELECT App.id FROM App WHERE App.repoId = :repoId AND App.packageName = :packageName")
+    Integer findIdByPackageName(int repoId, String packageName);
 }

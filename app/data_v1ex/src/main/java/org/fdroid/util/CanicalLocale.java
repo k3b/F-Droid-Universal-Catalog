@@ -40,6 +40,7 @@ public class CanicalLocale {
     public static String getCanonicalLocale(String fdroidLocale) {
         String normalized = fdroidLocale;
         if (normalized != null) {
+            if (normalized.compareToIgnoreCase("zh") == 0) return "zh-CN";
             if (normalized.length() <= 2) {
                 return normalized.toLowerCase(Locale.ROOT);
             }
@@ -57,18 +58,28 @@ public class CanicalLocale {
             if (normalized.charAt(2) == '-' && !normalizedLowerCase.startsWith("zh-")) {
                 // chinese mainland zh-CN and taiwan zh-TW use different symbols: no canonical
                 // ie "en-US" => "en"
-                return normalizedLowerCase.substring(0,2);
+                return normalizedLowerCase.substring(0, 2);
             }
         }
         return normalized;
     }
 
-    /** return array of keys-offsets where canonical locale changes. keys are sorted */
+    /**
+     * true if eigher 2 char locale or 5 char zh-xx
+     */
+    public static boolean isValidCanonical(String canonical) {
+        int length = canonical == null ? 0 : canonical.length();
+        return ((length == 2) || (length == 5 && canonical.startsWith("zh-")));
+    }
+
+    /**
+     * return array of keys-offsets where canonical locale changes. keys are sorted
+     */
     public static Integer[] getCanonicalLocaleChangeIndex(String[] keys) {
         Arrays.sort(keys, 0, keys.length, String.CASE_INSENSITIVE_ORDER);
 
         List<Integer> result = new ArrayList<>();
-        String last="";
+        String last = "";
         int i = 0;
         while (i < keys.length) {
             String canonical = CanicalLocale.getCanonicalLocale(keys[i]);

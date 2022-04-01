@@ -22,24 +22,27 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
-import de.k3b.fdroid.android.model.App;
 import de.k3b.fdroid.android.model.Version;
 
 @Dao
-public abstract class VersionDao {
+public interface VersionDao {
     @Insert
-    public abstract void insertAll(Version... versions);
+    void insertAll(Version... versions);
+
+    @Update
+    void updateAll(Version... roomVersion);
 
     @Delete
-    public abstract void delete(Version version);
+    void delete(Version version);
 
     @Query("SELECT * FROM Version WHERE Version.appId = :appId")
-    public abstract List<Version> findVersionsForApp(Integer appId);
+    List<Version> findVersionsForApp(int appId);
 
-    public List<Version> findVersionsForApp(App app) {
-        return findVersionsForApp(app.id);
-    }
+    @Query("SELECT Version.* FROM Version inner join App on Version.appId = App.id " +
+            "WHERE Version.versionCode = :versionCode AND App.repoId = :repoId AND App.packageName = :packageName")
+    Version findForPackageNameAndVersionCode(int repoId, String packageName, long versionCode);
 }
