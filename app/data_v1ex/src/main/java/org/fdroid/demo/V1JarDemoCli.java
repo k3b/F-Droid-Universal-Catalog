@@ -17,7 +17,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-package org.fdroid.v1.repository;
+package org.fdroid.demo;
 
 import org.fdroid.service.v1.FDroidCatalogJsonStreamParserBase;
 import org.fdroid.service.v1.FDroidCatalogJsonStreamParserDemo;
@@ -25,19 +25,21 @@ import org.fdroid.service.v1.FDroidCatalogJsonStreamParserDemo;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-/** a tiny j2se cli app to read the repository */
-public class CliMain {
-    public static void main(String[] args)  {
+/**
+ * a tiny j2se cli app to read the repository from a local v1-jar file
+ */
+public class V1JarDemoCli {
+    public static void main(String[] args) {
         try {
             FDroidCatalogJsonStreamParserBase repo = new FDroidCatalogJsonStreamParserDemo();
 
-            // InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/data_v1ex/src/main/java/org/fdroid/v1/repository/index-v1.small.json");
-            // InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/data_v1ex/src/main/java/org/fdroid/v1/repository/index-v1.full.json");
+            // InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/data_v1ex/src/main/java/org/fdroid/demo/index-v1.small.json");
+            // InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/data_v1ex/src/main/java/org/fdroid/demo/index-v1.full.json");
             //index-v1ex.small.json");
 
             // repo.readJsonStream(is);
 
-            InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/data_v1ex/src/main/java/org/fdroid/v1/repository/index-v1.jar");
+            InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/data_v1ex/src/main/java/org/fdroid/demo/index-v1.jar");
             repo.readFromJar(is);
             is.close();
             System.exit(0);

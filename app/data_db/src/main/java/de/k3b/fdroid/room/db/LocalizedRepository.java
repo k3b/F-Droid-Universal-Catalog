@@ -22,7 +22,9 @@ import java.util.List;
 
 import de.k3b.fdroid.room.model.Localized;
 
-
+/**
+ * Android independant interfaces to use the Database
+ */
 public interface LocalizedRepository {
     void insertAll(Localized... localized);
 

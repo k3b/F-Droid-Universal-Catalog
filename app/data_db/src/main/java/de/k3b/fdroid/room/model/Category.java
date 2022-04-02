@@ -21,6 +21,10 @@ package de.k3b.fdroid.room.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+/**
+ * Android independant: Pojo-s with all properties that are persisted in the Database.
+ * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
+ */
 @Entity
 public class Category {
     @PrimaryKey(autoGenerate = true)

@@ -16,23 +16,10 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.room.model;
-
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 /**
- * Android independant: Pojo-s with all properties that are persisted in the Database.
- * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
+ * Services that operate on Json-FDroid-Catalog-v1 format.
  */
-@Entity
-public class Locale {
-    @PrimaryKey(autoGenerate = true)
-    public int id;
 
-    /** locale-language-code. Usually two-letter-lowercase. i.e. it for italian */
-    public String code;
+package org.fdroid.service.v1;
 
-    /** a flag to symbolize the language. i.e. 🇮🇹 */
-    public String symbol;
-}

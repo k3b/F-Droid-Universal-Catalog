@@ -9,3 +9,5 @@ captures
 .cxx
 /app/data_v1ex/src/main/java/org/fdroid/v1/repository/index-v1.full.json
 /app/data_v1ex/src/main/java/org/fdroid/v1/repository/index-v1.jar
+/app/data_v1ex/src/main/java/org/fdroid/demo/index-v1.full.json
+/app/data_v1ex/src/main/java/org/fdroid/demo/index-v1.jar

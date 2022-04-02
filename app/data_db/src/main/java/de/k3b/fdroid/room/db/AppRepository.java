@@ -20,6 +20,9 @@ package de.k3b.fdroid.room.db;
 
 import de.k3b.fdroid.room.model.App;
 
+/**
+ * Android independant interfaces to use the Database
+ */
 public interface AppRepository {
     void insertAll(App... apps);
 

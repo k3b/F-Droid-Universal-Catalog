@@ -23,6 +23,10 @@ import androidx.room.PrimaryKey;
 
 import org.fdroid.model.common.VersionCommon;
 
+/**
+ * Android independant: Pojo-s with all properties that are persisted in the Database.
+ * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
+ */
 @Entity
 public class Version extends VersionCommon {
     @PrimaryKey(autoGenerate = true)

@@ -23,6 +23,10 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 
+/**
+ * Android independant: Pojo-s with all properties that are persisted in the Database.
+ * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
+ */
 @Entity(primaryKeys = {"appId", "categoryId"}, foreignKeys = {
         @ForeignKey(entity = App.class, parentColumns = "id", childColumns = "appId"),
         @ForeignKey(entity = Category.class, parentColumns = "id", childColumns = "categoryId")},
