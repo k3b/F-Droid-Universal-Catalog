@@ -24,30 +24,26 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import de.k3b.fdroid.android.model.App;
-import de.k3b.fdroid.android.model.Repo;
+import de.k3b.fdroid.room.db.RepoRepository;
+import de.k3b.fdroid.room.model.Repo;
 
 @Dao
-public abstract class RepoDao {
+public interface RepoDao extends RepoRepository {
     @Insert
-    public abstract void insertAll(Repo... repos);
+    void insertAll(Repo... repos);
 
     @Update
-    public abstract void updateAll(Repo... repos);
+    void updateAll(Repo... repos);
 
     @Delete
-    public abstract void delete(Repo repo);
+    void delete(Repo repo);
 
     @Query("SELECT * FROM Repo WHERE Repo.id = :repoId")
-    public abstract Repo findById(Integer repoId);
+    Repo findById(Integer repoId);
 
     @Query("SELECT * FROM Repo WHERE Repo.address = :address")
-    public abstract Repo findByAddress(String address);
-
-    public Repo findByApp(App app) {
-        return findById(app.repoId);
-    }
+    Repo findByAddress(String address);
 
     @Query("SELECT * FROM Repo")
-    public abstract Repo[] findAll();
+    Repo[] findAll();
 }

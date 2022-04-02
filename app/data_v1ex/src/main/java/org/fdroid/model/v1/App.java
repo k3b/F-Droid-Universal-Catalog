@@ -19,7 +19,7 @@
 
 package org.fdroid.model.v1;
 
-import org.fdroid.model.AppCommon;
+import org.fdroid.model.common.AppCommon;
 
 import java.util.ArrayList;
 import java.util.List;

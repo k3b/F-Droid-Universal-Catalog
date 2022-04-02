@@ -19,7 +19,7 @@
 
 package org.fdroid.model.v1;
 
-import org.fdroid.model.RepoCommon;
+import org.fdroid.model.common.RepoCommon;
 
 import java.util.List;
 

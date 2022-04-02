@@ -19,7 +19,7 @@
 
 package org.fdroid.model.v1;
 
-import org.fdroid.model.VersionCommon;
+import org.fdroid.model.common.VersionCommon;
 
 import java.util.List;
 

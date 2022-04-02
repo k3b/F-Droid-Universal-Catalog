@@ -24,7 +24,13 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import de.k3b.fdroid.android.model.*;
+import de.k3b.fdroid.room.model.App;
+import de.k3b.fdroid.room.model.AppCategory;
+import de.k3b.fdroid.room.model.Category;
+import de.k3b.fdroid.room.model.Locale;
+import de.k3b.fdroid.room.model.Localized;
+import de.k3b.fdroid.room.model.Repo;
+import de.k3b.fdroid.room.model.Version;
 
 @Database(version = 1, entities = {App.class, AppCategory.class, Category.class, Locale.class,
         Localized.class, Repo.class, Version.class})

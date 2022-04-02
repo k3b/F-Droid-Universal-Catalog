@@ -23,10 +23,11 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import de.k3b.fdroid.android.model.Category;
+import de.k3b.fdroid.room.db.CategoryRepository;
+import de.k3b.fdroid.room.model.Category;
 
 @Dao
-public interface CategoryDao {
+public interface CategoryDao extends CategoryRepository {
     @Insert
     void insertAll(Category... categories);
 

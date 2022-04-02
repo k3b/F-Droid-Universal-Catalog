@@ -23,10 +23,11 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import de.k3b.fdroid.android.model.Locale;
+import de.k3b.fdroid.room.db.LocaleRepository;
+import de.k3b.fdroid.room.model.Locale;
 
 @Dao
-public interface LocaleDao {
+public interface LocaleDao extends LocaleRepository {
     @Insert
     void insertAll(Locale... locales);
 

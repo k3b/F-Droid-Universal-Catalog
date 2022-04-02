@@ -39,7 +39,7 @@ public class FixLocaleService {
             Integer[] changes = CanicalLocale.getCanonicalLocaleChangeIndex(keys);
             Arrays.sort(keys, 0, keys.length, String.CASE_INSENSITIVE_ORDER);
 
-            Map<String, Localized> localesNew = new TreeMap();
+            Map<String, Localized> localesNew = new TreeMap<>();
 
             List<Localized> sameLocale = new ArrayList<>();
             for (int i = 1; i < changes.length; i++) {

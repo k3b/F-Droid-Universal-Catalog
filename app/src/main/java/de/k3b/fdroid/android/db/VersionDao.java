@@ -26,10 +26,11 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import de.k3b.fdroid.android.model.Version;
+import de.k3b.fdroid.room.db.VersionRepository;
+import de.k3b.fdroid.room.model.Version;
 
 @Dao
-public interface VersionDao {
+public interface VersionDao extends VersionRepository {
     @Insert
     void insertAll(Version... versions);
 

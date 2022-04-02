@@ -19,7 +19,7 @@
 
 package org.fdroid.service.v1;
 
-import org.fdroid.model.PojoCommon;
+import org.fdroid.model.common.PojoCommon;
 import org.fdroid.model.v1.App;
 import org.fdroid.model.v1.Localized;
 import org.fdroid.model.v1.LocalizedStatistics;

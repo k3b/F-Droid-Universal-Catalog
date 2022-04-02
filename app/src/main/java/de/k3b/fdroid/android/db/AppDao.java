@@ -24,10 +24,11 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import de.k3b.fdroid.android.model.App;
+import de.k3b.fdroid.room.db.AppRepository;
+import de.k3b.fdroid.room.model.App;
 
 @Dao
-public interface AppDao {
+public interface AppDao extends AppRepository {
     @Insert
     void insertAll(App... apps);
 

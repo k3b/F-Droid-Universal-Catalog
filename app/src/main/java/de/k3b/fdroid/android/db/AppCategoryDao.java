@@ -25,10 +25,11 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import de.k3b.fdroid.android.model.AppCategory;
+import de.k3b.fdroid.room.db.AppCategoryRepository;
+import de.k3b.fdroid.room.model.AppCategory;
 
 @Dao
-public interface AppCategoryDao {
+public interface AppCategoryDao extends AppCategoryRepository {
     @Insert
     void insertAll(AppCategory... appCategorys);
 

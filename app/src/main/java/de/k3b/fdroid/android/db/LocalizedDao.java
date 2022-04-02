@@ -26,30 +26,23 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import de.k3b.fdroid.android.model.App;
-import de.k3b.fdroid.android.model.Localized;
+import de.k3b.fdroid.room.db.LocalizedRepository;
+import de.k3b.fdroid.room.model.Localized;
 
 @Dao
-public abstract class LocalizedDao {
+public interface LocalizedDao extends LocalizedRepository {
     @Insert
-    public abstract void insertAll(Localized... localized);
+    void insertAll(Localized... localized);
 
     @Update
-    public abstract void updateAll(Localized... roomLocalized);
+    void updateAll(Localized... roomLocalized);
 
     @Delete
-    public abstract void delete(Localized localized);
+    void delete(Localized localized);
 
     @Query("SELECT * FROM Localized WHERE Localized.appId = :appId ")
-    public abstract List<Localized> findLocalizedForApp(int appId);
+    List<Localized> findLocalizedForApp(int appId);
 
     @Query("SELECT * FROM Localized WHERE Localized.appId = :appId and Localized.localeId in (:localeIds) ")
-    public abstract List<Localized> findLocalizedForApp(int appId, List<Integer> localeIds);
-
-    public List<Localized> findLocalizedForApp(App app, List<Integer> localeIds) {
-        if (localeIds == null || localeIds.isEmpty()) {
-            return findLocalizedForApp(app.id);
-        }
-        return findLocalizedForApp(app.id, localeIds);
-    }
+    List<Localized> findLocalizedForApp(int appId, List<Integer> localeIds);
 }

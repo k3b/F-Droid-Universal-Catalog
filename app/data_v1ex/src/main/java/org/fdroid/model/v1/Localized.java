@@ -19,7 +19,7 @@
 
 package org.fdroid.model.v1;
 
-import org.fdroid.model.LocalizedCommon;
+import org.fdroid.model.common.LocalizedCommon;
 
 import java.util.List;
 
