@@ -24,23 +24,28 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.List;
+
 import de.k3b.fdroid.room.db.AppRepository;
 import de.k3b.fdroid.room.model.App;
 
 @Dao
 public interface AppDao extends AppRepository {
     @Insert
-    void insertAll(App... apps);
+    void insert(App apps);
 
     @Update
-    void updateAll(App... roomApp);
+    void update(App roomApp);
 
     @Delete
     void delete(App app);
 
     @Query("SELECT * FROM App WHERE App.repoId = :repoId AND App.packageName = :packageName")
-    App findByPackageName(int repoId, String packageName);
+    App findByRepoIdAndPackageName(Integer repoId, String packageName);
 
     @Query("SELECT App.id FROM App WHERE App.repoId = :repoId AND App.packageName = :packageName")
-    Integer findIdByPackageName(int repoId, String packageName);
+    Integer findIdByRepoIdAndPackageName(Integer repoId, String packageName);
+
+    @Query("SELECT * FROM App")
+    List<App> findAll2();
 }

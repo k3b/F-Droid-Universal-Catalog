@@ -16,26 +16,13 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.room.db;
-
-import java.util.List;
-
-import de.k3b.fdroid.room.model.App;
 
 /**
- * Android independant interfaces to use the Database
+ * Android independant: Pojo-s with all properties that are persisted in the Database.
+ * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  */
-public interface AppRepository {
-    void insert(App apps);
+package org.fdroid.jpa.db;
 
-    void update(App roomApp);
-
-    void delete(App app);
-
-    App findByRepoIdAndPackageName(Integer repoId, String packageName);
-
-    Integer findIdByRepoIdAndPackageName(Integer repoId, String packageName);
-
-    // must be renamed to avoid colliding with jpa Iterable<t> findAll
-    List<App> findAll2();
-}
+/**
+ * non-android-j2se-jpa implementation of XxxRepository
+ */

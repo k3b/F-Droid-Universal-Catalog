@@ -30,6 +30,6 @@ import org.fdroid.model.common.RepoCommon;
 @Entity
 public class Repo extends RepoCommon {
     @PrimaryKey(autoGenerate = true)
-    public int id;
+    public Integer id;
 
 }

@@ -16,26 +16,18 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.room.db;
-
-import java.util.List;
-
-import de.k3b.fdroid.room.model.App;
+package org.fdroid.jpa.db;
 
 /**
- * Android independant interfaces to use the Database
+ * non-android-j2se-jpa implementation of XxxRepository
+ * /
+ * public interface AppRepositoryJpa extends AppRepository, CrudRepository<App, Integer>, CustomRoomMethods<App> {
+ * // void delete(App app);
+ * <p>
+ * // @Query(value = "SELECT App.id FROM App WHERE App.repoId = ?1 AND App.packageName = ?2")
+ * // Integer findIdByRepoIdAndPackageName(Integer repoId, String packageName);
+ * <p>
+ * // @Query(value = "SELECT App FROM App WHERE App.repoId = ?1 AND App.packageName = ?2")
+ * App findByRepoIdAndPackageName(Integer repoId, String packageName);
+ * }
  */
-public interface AppRepository {
-    void insert(App apps);
-
-    void update(App roomApp);
-
-    void delete(App app);
-
-    App findByRepoIdAndPackageName(Integer repoId, String packageName);
-
-    Integer findIdByRepoIdAndPackageName(Integer repoId, String packageName);
-
-    // must be renamed to avoid colliding with jpa Iterable<t> findAll
-    List<App> findAll2();
-}

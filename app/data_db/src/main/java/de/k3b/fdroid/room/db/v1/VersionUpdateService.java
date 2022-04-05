@@ -23,6 +23,7 @@ import org.fdroid.model.common.VersionCommon;
 
 import de.k3b.fdroid.room.db.AppRepository;
 import de.k3b.fdroid.room.db.VersionRepository;
+import de.k3b.fdroid.room.model.App;
 import de.k3b.fdroid.room.model.Version;
 
 /**
@@ -40,10 +41,10 @@ public class VersionUpdateService {
     public Version update(int repoId, String packageName, org.fdroid.model.v1.Version v1Version) {
         Version roomVersion = versionRepository.findForPackageNameAndVersionCode(repoId, packageName, v1Version.getVersionCode());
         if (roomVersion == null) {
-            Integer appId = appRepository.findIdByPackageName(repoId, packageName);
-            if (appId != null) {
+            App app = appRepository.findByRepoIdAndPackageName(repoId, packageName);
+            if (app != null) {
                 roomVersion = new Version();
-                roomVersion.appId = appId;
+                roomVersion.appId = app.id;
                 VersionCommon.copyCommon(roomVersion, v1Version);
                 versionRepository.insertAll(roomVersion);
             }

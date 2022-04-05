@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f2df037ab35f46ee5403a8d883345bdf",
+    "identityHash": "74ebfa552d9ff9c1926506a1caf7b2b3",
     "entities": [
       {
         "tableName": "App",
@@ -315,13 +315,13 @@
       },
       {
         "tableName": "Repo",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `timestamp` INTEGER NOT NULL, `version` INTEGER NOT NULL, `maxage` INTEGER NOT NULL, `icon` TEXT, `address` TEXT, `description` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT, `timestamp` INTEGER NOT NULL, `version` INTEGER NOT NULL, `maxage` INTEGER NOT NULL, `icon` TEXT, `address` TEXT, `description` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "name",
@@ -477,7 +477,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f2df037ab35f46ee5403a8d883345bdf')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '74ebfa552d9ff9c1926506a1caf7b2b3')"
     ]
   }
 }

@@ -41,15 +41,15 @@ public class AppUpdateService {
     }
 
     public App update(int repoId, org.fdroid.model.v1.App v1App) {
-        App roomApp = appRepository.findByPackageName(repoId, v1App.getPackageName());
+        App roomApp = appRepository.findByRepoIdAndPackageName(repoId, v1App.getPackageName());
         if (roomApp == null) {
             roomApp = new App();
             roomApp.repoId = repoId;
             AppCommon.copyCommon(roomApp, v1App);
-            appRepository.insertAll(roomApp);
+            appRepository.insert(roomApp);
         } else {
             AppCommon.copyCommon(roomApp, v1App);
-            appRepository.updateAll(roomApp);
+            appRepository.update(roomApp);
         }
         if (appCategoryUpdateService != null)
             appCategoryUpdateService.update(roomApp.id, v1App.getCategories());
