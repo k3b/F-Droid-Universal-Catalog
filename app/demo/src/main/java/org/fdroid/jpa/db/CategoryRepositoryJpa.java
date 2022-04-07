@@ -16,21 +16,15 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.room.db;
+package org.fdroid.jpa.db;
 
-import java.util.List;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import de.k3b.fdroid.room.model.Locale;
+import de.k3b.fdroid.room.model.Category;
 
-/**
- * Android independant interfaces to use the Database
- */
-public interface LocaleRepository {
-    void insert(Locale locale);
-
-    void update(Locale locale);
-
-    void delete(Locale locale);
-
-    List<Locale> findAll();
+@Repository
+public interface CategoryRepositoryJpa extends CrudRepository<Category, Integer> {
+    Category findByName(String name);
 }
+

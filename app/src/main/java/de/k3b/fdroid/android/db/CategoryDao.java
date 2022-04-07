@@ -23,18 +23,22 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 
+import java.util.List;
+
 import de.k3b.fdroid.room.db.CategoryRepository;
 import de.k3b.fdroid.room.model.Category;
 
 @Dao
 public interface CategoryDao extends CategoryRepository {
     @Insert
-    void insertAll(Category... categories);
+    void insert(Category category);
 
     @Delete
     void delete(Category category);
 
     @Query("SELECT * FROM Category")
-    Category[] findAll();
+    List<Category> findAll();
 
+    @Query("SELECT * FROM Category where Category.name = :name")
+    Category findByName(String name);
 }

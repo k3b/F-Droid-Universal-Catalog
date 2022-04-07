@@ -42,7 +42,7 @@ public class AppCategoryUpdateService {
     }
 
     public AppCategoryUpdateService init() {
-        Category[] categories = categoryRepository.findAll();
+        List<Category> categories = categoryRepository.findAll();
 
         for (Category category : categories) {
             init(category);
@@ -67,7 +67,7 @@ public class AppCategoryUpdateService {
                 // create on demand
                 category = new Category();
                 category.name = categoryName;
-                categoryRepository.insertAll(category);
+                categoryRepository.insert(category);
                 init(category);
             }
             return category.id;

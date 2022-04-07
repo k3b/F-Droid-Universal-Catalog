@@ -18,15 +18,21 @@
  */
 package de.k3b.fdroid.room.db;
 
+import java.util.List;
+
 import de.k3b.fdroid.room.model.Category;
 
 /**
  * Android independant interfaces to use the Database
  */
 public interface CategoryRepository {
-    void insertAll(Category... categories);
+    void insert(Category category);
+
+    void update(Category category);
 
     void delete(Category category);
 
-    Category[] findAll();
+    List<Category> findAll();
+
+    Category findByName(String name);
 }
