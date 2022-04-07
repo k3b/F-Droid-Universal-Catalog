@@ -1,5 +1,6 @@
 pluginManagement {
     repositories {
+        // maven { url 'https://repo.spring.io/milestone' }
         gradlePluginPortal()
         google()
         mavenCentral()
@@ -10,6 +11,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // maven { url 'https://repo.spring.io/milestone' }
     }
 }
 rootProject.name = "FDroid Json Parser"
