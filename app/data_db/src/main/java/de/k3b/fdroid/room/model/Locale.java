@@ -18,21 +18,36 @@
  */
 package de.k3b.fdroid.room.model;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+import org.fdroid.model.common.PojoCommon;
 
 /**
  * Android independant: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
+ * Database Entity compatible with Android-Room and non-android-j2se-jpa
  */
-@Entity
-public class Locale {
-    @PrimaryKey(autoGenerate = true)
+@androidx.room.Entity
+@javax.persistence.Entity
+@javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
+public class Locale extends PojoCommon {
+    @javax.persistence.Id
+    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    @androidx.room.PrimaryKey(autoGenerate = true)
     public int id;
 
-    /** locale-language-code. Usually two-letter-lowercase. i.e. it for italian */
+    /**
+     * locale-language-code. Usually two-letter-lowercase. i.e. it for italian
+     */
     public String code;
 
-    /** a flag to symbolize the language. i.e. 🇮🇹 */
+    /**
+     * a flag to symbolize the language. i.e. 🇮🇹
+     */
     public String symbol;
+
+    protected void toStringBuilder(StringBuilder sb) {
+        toStringBuilder(sb, "id", this.id);
+        super.toStringBuilder(sb);
+        toStringBuilder(sb, "code", this.code);
+        toStringBuilder(sb, "symbol", this.symbol);
+    }
 }

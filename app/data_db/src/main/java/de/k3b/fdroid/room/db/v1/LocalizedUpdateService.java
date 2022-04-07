@@ -46,7 +46,7 @@ public class LocalizedUpdateService {
     }
 
     public LocalizedUpdateService init() {
-        Locale[] locales = localeRepository.findAll();
+        List<Locale> locales = localeRepository.findAll();
         id2Locale = new HashMap<>();
         code2Locale = new HashMap<>();
 
@@ -74,7 +74,7 @@ public class LocalizedUpdateService {
                 // create on demand
                 locale = new Locale();
                 locale.code = localeCode;
-                localeRepository.insertAll(locale);
+                localeRepository.insert(locale);
                 init(locale);
             }
             return locale.id;

@@ -18,15 +18,17 @@
  */
 package de.k3b.fdroid.room.db;
 
+import java.util.List;
+
 import de.k3b.fdroid.room.model.Locale;
 
 /**
  * Android independant interfaces to use the Database
  */
 public interface LocaleRepository {
-    void insertAll(Locale... locales);
+    void insert(Locale locale);
 
     void delete(Locale locale);
 
-    Locale[] findAll();
+    List<Locale> findAll();
 }

@@ -16,27 +16,17 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.db;
+package org.fdroid.jpa.db;
 
-import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Query;
-
-import java.util.List;
+import org.fdroid.jpa.db.base.RepositoryAdapterBase;
+import org.springframework.stereotype.Service;
 
 import de.k3b.fdroid.room.db.LocaleRepository;
 import de.k3b.fdroid.room.model.Locale;
 
-@Dao
-public interface LocaleDao extends LocaleRepository {
-    @Insert
-    void insert(Locale locale);
-
-    @Delete
-    void delete(Locale locale);
-
-    @Query("SELECT * FROM Locale")
-    List<Locale> findAll();
-
+@Service
+public class LocaleRepositoryAdapter extends RepositoryAdapterBase<Locale, LocaleRepositoryJpa> implements LocaleRepository {
+    public LocaleRepositoryAdapter(LocaleRepositoryJpa jpa) {
+        super(jpa);
+    }
 }
