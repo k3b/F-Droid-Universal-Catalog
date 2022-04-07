@@ -16,15 +16,13 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package org.fdroid.jpa.db;
 
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+/**
+ * Android independant: Pojo-s with all properties that are persisted in the Database.
+ * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
+ */
+package org.fdroid.jpa.db.base;
 
-import de.k3b.fdroid.room.model.App;
-
-@Repository
-public interface AppRepositoryJpa extends CrudRepository<App, Integer> {
-    App findByRepoIdAndPackageName(int repoId, String packageName);
-}
-
+/**
+ * Helper to implement Room-Jpa compatibility layer
+ */

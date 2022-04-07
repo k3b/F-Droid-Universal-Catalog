@@ -86,11 +86,11 @@ public class DemoApplication {
 		TestEntity testEntity = new TestEntity();
 		testEntity.name = "my.demo.testEntity";
 		testEntity.familyName = "smith";
-		repository.insert(testEntity);
+		repository.save(testEntity);
 
 		log.info("Customers found with findAll():");
 		log.info("-------------------------------");
-		for (TestEntity customer : repository.findAll2()) {
+		for (TestEntity customer : repository.findAll()) {
 			log.info("id: " + customer.id +
 					", name: " + customer.name +
 					", familyName: " + customer.familyName);

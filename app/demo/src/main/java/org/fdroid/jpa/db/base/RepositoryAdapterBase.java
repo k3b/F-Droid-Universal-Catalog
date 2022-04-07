@@ -16,30 +16,36 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package org.fdroid.jpa.db;
+package org.fdroid.jpa.db.base;
 
-import org.fdroid.jpa.db.base.RepositoryAdapterBase;
-import org.springframework.stereotype.Service;
+import org.springframework.data.repository.CrudRepository;
 
-import de.k3b.fdroid.room.db.AppRepository;
-import de.k3b.fdroid.room.model.App;
+import java.util.List;
 
-@Service
-public class AppRepositoryAdapter extends RepositoryAdapterBase<App, AppRepositoryJpa> implements AppRepository {
-    public AppRepositoryAdapter(AppRepositoryJpa jpa) {
-        super(jpa);
+/**
+ * Android-Room/JPA compatibility layer:
+ * implement room aliase.
+ */
+public class RepositoryAdapterBase<T, R extends CrudRepository<T, Integer>> {
+    protected final R jpa;
+
+    public RepositoryAdapterBase(R jpa) {
+        this.jpa = jpa;
     }
 
-    @Override
-    public App findByRepoIdAndPackageName(int repoId, String packageName) {
-        return jpa.findByRepoIdAndPackageName(repoId, packageName);
+    public void insert(T roomApp) {
+        jpa.save(roomApp);
     }
 
-    @Override
-    public int findIdByRepoIdAndPackageName(int repoId, String packageName) {
-        App app = findByRepoIdAndPackageName(repoId, packageName);
-        if (app != null) return app.id;
-        return -1;
+    public void update(T roomApp) {
+        jpa.save(roomApp);
     }
 
+    public void delete(T roomApp) {
+        jpa.delete(roomApp);
+    }
+
+    public List<T> findAll() {
+        return (List<T>) jpa.findAll();
+    }
 }

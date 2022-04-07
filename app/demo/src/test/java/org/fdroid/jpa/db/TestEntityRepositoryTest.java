@@ -25,30 +25,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.util.Assert;
 
-import de.k3b.fdroid.room.db.AppRepository;
-import de.k3b.fdroid.room.model.App;
+import java.util.List;
 
 @DataJpaTest
-public class AppRepositoryTest {
-    private static final String MY_PACKAGE_NAME = "my.package.name";
-    private static final String MY_ICON = "myIcon.ico";
-    private static final int MY_REPO_ID = 47110815;
-
+public class TestEntityRepositoryTest {
+    private static final String MY_NAME = "name peter";
+    private static final String MY_FAMILY_NAME = "familyname smith";
     @Autowired
-    private AppRepositoryJpa jpa;
-    @Autowired
-    private AppRepository repo;
+    private TestRepositoryJpa jpa;
 
     private int id = 0;
 
     @BeforeEach
     public void init() {
-        App app = new App();
-        app.repoId = MY_REPO_ID;
-        app.setPackageName(MY_PACKAGE_NAME);
-        app.setIcon(MY_ICON);
-        repo.insert(app);
-        id = app.id;
+        TestEntity testEntity = new TestEntity();
+        testEntity.name = MY_NAME;
+        testEntity.familyName = MY_FAMILY_NAME;
+        jpa.save(testEntity);
+        id = testEntity.id;
     }
 
     @AfterEach
@@ -60,12 +54,17 @@ public class AppRepositoryTest {
     @Test
     public void injectedComponentsAreNotNull() {
         Assert.notNull(jpa, "jpa");
-        Assert.notNull(repo, "repo");
     }
 
     @Test
-    public void findByRepoIdAndPackageName() {
-        App app = repo.findByRepoIdAndPackageName(MY_REPO_ID, MY_PACKAGE_NAME);
-        Assert.notNull(app, "found");
+    public void findByName() {
+        TestEntity test = jpa.findByName(MY_NAME);
+        Assert.notNull(test, "found");
+    }
+
+    @Test
+    public void findByFamilyName() {
+        List<TestEntity> test = jpa.findByFamilyName(MY_FAMILY_NAME);
+        Assert.notEmpty(test, "found");
     }
 }
