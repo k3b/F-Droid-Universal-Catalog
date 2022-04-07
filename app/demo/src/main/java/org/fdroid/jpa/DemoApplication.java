@@ -92,8 +92,8 @@ public class DemoApplication {
 		log.info("-------------------------------");
 		for (TestEntity customer : repository.findAll2()) {
 			log.info("id: " + customer.id +
-					", name:" + customer.name +
-					", familyName" + customer.familyName);
+					", name: " + customer.name +
+					", familyName: " + customer.familyName);
 		}
 		log.info("");
 		List<TestEntity> testEntity2 = repository.findByFamilyName("smith");

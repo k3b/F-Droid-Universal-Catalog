@@ -32,15 +32,13 @@ public class AppRepositoryAdapter implements AppRepository {
 
     @Override
     public App findByRepoIdAndPackageName(int repoId, String packageName) {
-        List<App> result = jpa.findByRepoIdAndPackageName(repoId, packageName);
-        if (!result.isEmpty()) return result.get(0);
-        return null;
+        return jpa.findByRepoIdAndPackageName(repoId, packageName);
     }
 
     @Override
     public int findIdByRepoIdAndPackageName(int repoId, String packageName) {
-        List<Integer> result = jpa.findIdByRepoIdAndPackageName(repoId, packageName);
-        if (!result.isEmpty()) return result.get(0);
+        App app = findByRepoIdAndPackageName(repoId, packageName);
+        if (app != null) return app.id;
         return -1;
     }
 
