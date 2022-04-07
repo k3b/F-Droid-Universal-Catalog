@@ -76,7 +76,7 @@ public class AppCategoryUpdateService {
     }
 
     public void update(int appId, List<String> v1Categories) {
-        List<AppCategory> roomAppCategories = appCategoryRepository.findForApp(appId);
+        List<AppCategory> roomAppCategories = appCategoryRepository.findByAppId(appId);
 
         deleteRemoved(roomAppCategories, v1Categories);
         for (String v1Category : v1Categories) {
@@ -85,7 +85,7 @@ public class AppCategoryUpdateService {
             AppCategory roomAppCategory = findByCategoryId(roomAppCategories, categoryId);
             if (roomAppCategory == null) {
                 roomAppCategory = new AppCategory(appId, categoryId);
-                appCategoryRepository.insertAll(roomAppCategory);
+                appCategoryRepository.insert(roomAppCategory);
                 roomAppCategories.add(roomAppCategory);
             } else {
                 // category already assigned. Nothing to do

@@ -16,21 +16,24 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.room.db;
+package org.fdroid.jpa.db;
+
+import org.fdroid.jpa.db.base.RepositoryAdapterBase;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import de.k3b.fdroid.room.db.AppCategoryRepository;
 import de.k3b.fdroid.room.model.AppCategory;
 
-/**
- * Android independant interfaces to use the Database
- */
-public interface AppCategoryRepository {
-    void insert(AppCategory appCategory);
+@Service
+public class AppCategoryRepositoryAdapter extends RepositoryAdapterBase<AppCategory, AppCategoryRepositoryJpa> implements AppCategoryRepository {
+    public AppCategoryRepositoryAdapter(AppCategoryRepositoryJpa jpa) {
+        super(jpa);
+    }
 
-    void update(AppCategory appCategory);
-
-    void delete(AppCategory appCategory);
-
-    List<AppCategory> findByAppId(int appId);
+    @Override
+    public List<AppCategory> findByAppId(int appId) {
+        return jpa.findByAppId(appId);
+    }
 }

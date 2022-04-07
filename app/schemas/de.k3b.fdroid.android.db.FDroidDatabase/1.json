@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "72d38afbaab5bbca9a490c2f336df4ee",
+    "identityHash": "95174ac4ec5665eb4e4c4a961d569351",
     "entities": [
       {
         "tableName": "App",
@@ -95,13 +95,23 @@
         },
         "indices": [
           {
-            "name": "index_App_repoId",
+            "name": "index_App_id",
             "unique": false,
             "columnNames": [
-              "repoId"
+              "id"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_App_repoId` ON `${TABLE_NAME}` (`repoId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_App_id` ON `${TABLE_NAME}` (`id`)"
+          },
+          {
+            "name": "index_App_repoId_packageName",
+            "unique": false,
+            "columnNames": [
+              "repoId",
+              "packageName"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_App_repoId_packageName` ON `${TABLE_NAME}` (`repoId`, `packageName`)"
           }
         ],
         "foreignKeys": [
@@ -120,8 +130,14 @@
       },
       {
         "tableName": "AppCategory",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`appId` INTEGER NOT NULL, `categoryId` INTEGER NOT NULL, PRIMARY KEY(`appId`, `categoryId`), FOREIGN KEY(`appId`) REFERENCES `App`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`categoryId`) REFERENCES `Category`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `categoryId` INTEGER NOT NULL, FOREIGN KEY(`appId`) REFERENCES `App`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`categoryId`) REFERENCES `Category`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
           {
             "fieldPath": "appId",
             "columnName": "appId",
@@ -137,10 +153,9 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "appId",
-            "categoryId"
+            "id"
           ],
-          "autoGenerate": false
+          "autoGenerate": true
         },
         "indices": [
           {
@@ -210,7 +225,17 @@
           ],
           "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_Category_id",
+            "unique": false,
+            "columnNames": [
+              "id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Category_id` ON `${TABLE_NAME}` (`id`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
@@ -477,7 +502,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '72d38afbaab5bbca9a490c2f336df4ee')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '95174ac4ec5665eb4e4c4a961d569351')"
     ]
   }
 }

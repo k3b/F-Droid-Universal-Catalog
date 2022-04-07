@@ -22,6 +22,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -31,11 +32,14 @@ import de.k3b.fdroid.room.model.AppCategory;
 @Dao
 public interface AppCategoryDao extends AppCategoryRepository {
     @Insert
-    void insertAll(AppCategory... appCategorys);
+    void insert(AppCategory appCategory);
+
+    @Update
+    void update(AppCategory appCategory);
 
     @Delete
     void delete(AppCategory appCategory);
 
     @Query("SELECT * FROM AppCategory WHERE AppCategory.appId = :appId")
-    List<AppCategory> findForApp(int appId);
+    List<AppCategory> findByAppId(int appId);
 }

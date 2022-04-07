@@ -18,27 +18,37 @@
  */
 package de.k3b.fdroid.room.model;
 
-import androidx.annotation.NonNull;
-import androidx.room.Entity;
-import androidx.room.ForeignKey;
-import androidx.room.Index;
+import org.fdroid.model.common.PojoCommon;
 
 /**
  * Android independant: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  */
-@Entity(primaryKeys = {"appId", "categoryId"}, foreignKeys = {
-        @ForeignKey(entity = App.class, parentColumns = "id", childColumns = "appId"),
-        @ForeignKey(entity = Category.class, parentColumns = "id", childColumns = "categoryId")},
-        indices = {@Index("appId"), @Index("categoryId")})
-public class AppCategory {
-    @NonNull
+@androidx.room.Entity(foreignKeys = {
+        @androidx.room.ForeignKey(entity = App.class, parentColumns = "id", childColumns = "appId"),
+        @androidx.room.ForeignKey(entity = Category.class, parentColumns = "id", childColumns = "categoryId")},
+        indices = {@androidx.room.Index("appId"), @androidx.room.Index("categoryId")})
+@javax.persistence.Entity
+@javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
+public class AppCategory extends PojoCommon {
+    @javax.persistence.Id
+    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    @androidx.room.PrimaryKey(autoGenerate = true)
+    public int id;
+
     public final int appId;
-    @NonNull
     public final int categoryId;
 
     public AppCategory(int appId, int categoryId) {
         this.appId = appId;
         this.categoryId = categoryId;
     }
+
+    protected void toStringBuilder(StringBuilder sb) {
+        toStringBuilder(sb, "id", this.id);
+        super.toStringBuilder(sb);
+        toStringBuilder(sb, "appId", this.appId);
+        toStringBuilder(sb, "categoryId", this.categoryId);
+    }
+
 }
