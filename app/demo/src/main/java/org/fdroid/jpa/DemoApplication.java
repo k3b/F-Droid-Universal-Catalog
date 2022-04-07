@@ -18,7 +18,7 @@
  */
 package org.fdroid.jpa;
 
-import org.fdroid.jpa.db.Test;
+import org.fdroid.jpa.db.TestEntity;
 import org.fdroid.jpa.db.TestRepositoryJpa;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,19 +27,21 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+
+import java.util.List;
+
+import de.k3b.fdroid.room.db.AppRepository;
+import de.k3b.fdroid.room.model.App;
 
 /**
  * j2se-jpa-db implementation that reads from fdroid-v1-jar and updates a jpa database
  */
 
-// @EntityScan("de.k3b.fdroid.room.model,org.fdroid.model.common, org.fdroid.jpa.db, org.fdroid.jpa.db")
-// @EntityScan("org.fdroid.jpa.db")
-// @EnableJpaRepositories("org.fdroid.jpa.db.*")
-
-@EnableJpaRepositories // ("org.fdroid.jpa.db.*")
-// @ComponentScan(basePackages = { "org.fdroid.jpa.db.*" })
-@EntityScan // ("org.fdroid.jpa.db.*")
+@EnableJpaRepositories(basePackages = {"de.k3b.fdroid.room.db", "de.k3b.fdroid.room.model", "org.fdroid.jpa.db", "org.fdroid.model.common"})
+@ComponentScan(basePackages = {"de.k3b.fdroid.room.db", "de.k3b.fdroid.room.model", "org.fdroid.jpa.db", "org.fdroid.model.common"})
+@EntityScan({"de.k3b.fdroid.room.db", "de.k3b.fdroid.room.model", "org.fdroid.jpa.db", "org.fdroid.model.common"})
 @SpringBootApplication
 public class DemoApplication {
 	private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);
@@ -49,21 +51,55 @@ public class DemoApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(TestRepositoryJpa repository) {
+	public CommandLineRunner demo(TestRepositoryJpa repository, AppRepository appRepo) {
 		return (args) -> {
-			// save a few customers
-			Test test = new Test();
-			test.name = "my.demo.test";
-			repository.insert(test);
+			demoTestEntity(repository);
 
-			log.info("Customers found with findAll():");
-			log.info("-------------------------------");
-			for (Test customer : repository.findAll2()) {
-				log.info(customer.name);
-			}
-			log.info("");
-
+			demoAppEntity(appRepo);
 		};
+	}
+
+	private void demoAppEntity(AppRepository appRepo) {
+		App app = new App();
+		app.repoId = 1;
+		app.setPackageName("my.package.name");
+		app.setIcon("myIcon.ico");
+		appRepo.insert(app);
+		log.info("Customers found with findAll():");
+		log.info("-------------------------------");
+		for (App app2 : appRepo.findAll()) {
+			log.info(app2.toString());
+		}
+		log.info("");
+
+
+		App app3 = appRepo.findByRepoIdAndPackageName(1, "my.package.name");
+		log.info("search result " + app3.toString());
+
+		// not working
+		int id = appRepo.findIdByRepoIdAndPackageName(1, "my.package.name");
+		log.info("search result " + id);
+	}
+
+	private void demoTestEntity(TestRepositoryJpa repository) {
+		// save a few customers
+		TestEntity testEntity = new TestEntity();
+		testEntity.name = "my.demo.testEntity";
+		testEntity.familyName = "smith";
+		repository.insert(testEntity);
+
+		log.info("Customers found with findAll():");
+		log.info("-------------------------------");
+		for (TestEntity customer : repository.findAll2()) {
+			log.info("id: " + customer.id +
+					", name:" + customer.name +
+					", familyName" + customer.familyName);
+		}
+		log.info("");
+		List<TestEntity> testEntity2 = repository.findByFamilyName("smith");
+		log.info("search result " + testEntity2.get(0).toString());
+		TestEntity testEntity3 = repository.findByName("my.demo.testEntity");
+		log.info("search result " + testEntity3.toString());
 	}
 
 }

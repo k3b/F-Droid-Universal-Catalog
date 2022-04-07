@@ -41,7 +41,7 @@ public class PojoCommon {
     }
 
     public void toStringBuilder(StringBuilder sb, String name, long value) {
-        if (value != 0)
+        if (value != 0 && value != -1)
             sb.append(name).append('=').append(value).append(',');
     }
 

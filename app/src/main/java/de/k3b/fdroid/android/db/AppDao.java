@@ -41,11 +41,11 @@ public interface AppDao extends AppRepository {
     void delete(App app);
 
     @Query("SELECT * FROM App WHERE App.repoId = :repoId AND App.packageName = :packageName")
-    App findByRepoIdAndPackageName(Integer repoId, String packageName);
+    App findByRepoIdAndPackageName(int repoId, String packageName);
 
     @Query("SELECT App.id FROM App WHERE App.repoId = :repoId AND App.packageName = :packageName")
-    Integer findIdByRepoIdAndPackageName(Integer repoId, String packageName);
+    int findIdByRepoIdAndPackageName(int repoId, String packageName);
 
     @Query("SELECT * FROM App")
-    List<App> findAll2();
+    List<App> findAll();
 }

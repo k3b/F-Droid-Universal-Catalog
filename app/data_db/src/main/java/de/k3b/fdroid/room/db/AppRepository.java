@@ -32,10 +32,9 @@ public interface AppRepository {
 
     void delete(App app);
 
-    App findByRepoIdAndPackageName(Integer repoId, String packageName);
+    App findByRepoIdAndPackageName(int repoId, String packageName);
 
-    Integer findIdByRepoIdAndPackageName(Integer repoId, String packageName);
+    int findIdByRepoIdAndPackageName(int repoId, String packageName);
 
-    // must be renamed to avoid colliding with jpa Iterable<t> findAll
-    List<App> findAll2();
+    List<App> findAll();
 }

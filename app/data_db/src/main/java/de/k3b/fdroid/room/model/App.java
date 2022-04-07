@@ -18,41 +18,35 @@
  */
 package de.k3b.fdroid.room.model;
 
-import androidx.room.ForeignKey;
-import androidx.room.Index;
-import androidx.room.PrimaryKey;
-
 import org.fdroid.model.common.AppCommon;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 /**
  * Android independant: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  * Database Entity compatible with Android-Room and non-android-j2se-jpa
  */
-@androidx.room.Entity(foreignKeys = @ForeignKey(entity = Repo.class, parentColumns = "id",
-        childColumns = "repoId", onDelete = ForeignKey.CASCADE),
-        indices = {@Index("repoId")}
+@androidx.room.Entity(foreignKeys = @androidx.room.ForeignKey(entity = Repo.class,
+        parentColumns = "id", childColumns = "repoId",
+        onDelete = androidx.room.ForeignKey.CASCADE),
+        indices = {@androidx.room.Index("repoId")}
 )
 @javax.persistence.Entity
+@javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 public class App extends AppCommon {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @PrimaryKey(autoGenerate = true)
-    public Integer id;
+    @javax.persistence.Id
+    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    @androidx.room.PrimaryKey(autoGenerate = true)
+    public int id;
 
-    public Integer repoId;
+    public int repoId = -1;
     // public Repo repo;
 
     // public List<Localized> localisations;
     // public List<Version> versions;
 
-
-    public String getPackageName() {
-        return super.getPackageName();
+    protected void toStringBuilder(StringBuilder sb) {
+        toStringBuilder(sb, "id", this.id);
+        toStringBuilder(sb, "repoId", this.repoId);
+        super.toStringBuilder(sb);
     }
-
 }

@@ -2,23 +2,23 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "74ebfa552d9ff9c1926506a1caf7b2b3",
+    "identityHash": "72d38afbaab5bbca9a490c2f336df4ee",
     "entities": [
       {
         "tableName": "App",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `repoId` INTEGER, `packageName` TEXT, `changelog` TEXT, `suggestedVersionName` TEXT, `suggestedVersionCode` TEXT, `issueTracker` TEXT, `license` TEXT, `sourceCode` TEXT, `webSite` TEXT, `added` INTEGER NOT NULL, `icon` TEXT, `lastUpdated` INTEGER NOT NULL, FOREIGN KEY(`repoId`) REFERENCES `Repo`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `repoId` INTEGER NOT NULL, `packageName` TEXT, `changelog` TEXT, `suggestedVersionName` TEXT, `suggestedVersionCode` TEXT, `issueTracker` TEXT, `license` TEXT, `sourceCode` TEXT, `webSite` TEXT, `added` INTEGER NOT NULL, `icon` TEXT, `lastUpdated` INTEGER NOT NULL, FOREIGN KEY(`repoId`) REFERENCES `Repo`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "repoId",
             "columnName": "repoId",
             "affinity": "INTEGER",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "packageName",
@@ -477,7 +477,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '74ebfa552d9ff9c1926506a1caf7b2b3')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '72d38afbaab5bbca9a490c2f336df4ee')"
     ]
   }
 }
