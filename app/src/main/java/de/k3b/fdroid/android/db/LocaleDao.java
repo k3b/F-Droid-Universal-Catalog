@@ -22,6 +22,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -32,6 +33,9 @@ import de.k3b.fdroid.room.model.Locale;
 public interface LocaleDao extends LocaleRepository {
     @Insert
     void insert(Locale locale);
+
+    @Update
+    void update(Locale locale);
 
     @Delete
     void delete(Locale locale);

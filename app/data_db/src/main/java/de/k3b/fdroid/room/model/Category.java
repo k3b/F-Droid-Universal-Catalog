@@ -25,7 +25,7 @@ import org.fdroid.model.common.PojoCommon;
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  * Database Entity compatible with Android-Room and non-android-j2se-jpa
  */
-@androidx.room.Entity(indices = {@androidx.room.Index("catId")})
+@androidx.room.Entity(indices = {@androidx.room.Index("id")})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 public class Category extends PojoCommon {

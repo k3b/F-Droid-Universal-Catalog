@@ -28,7 +28,7 @@ import org.fdroid.model.common.AppCommon;
 @androidx.room.Entity(foreignKeys = @androidx.room.ForeignKey(entity = Repo.class,
         parentColumns = "id", childColumns = "repoId",
         onDelete = androidx.room.ForeignKey.CASCADE),
-        indices = {@androidx.room.Index("appId")}
+        indices = {@androidx.room.Index("id"), @androidx.room.Index({"repoId", "packageName"})}
 )
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)

@@ -22,6 +22,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -32,6 +33,9 @@ import de.k3b.fdroid.room.model.Category;
 public interface CategoryDao extends CategoryRepository {
     @Insert
     void insert(Category category);
+
+    @Update
+    void update(Category category);
 
     @Delete
     void delete(Category category);
