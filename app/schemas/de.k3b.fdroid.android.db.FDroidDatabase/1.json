@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "95174ac4ec5665eb4e4c4a961d569351",
+    "identityHash": "b4aac81e09e7393a0068d8e0b91c3e8f",
     "entities": [
       {
         "tableName": "App",
@@ -130,7 +130,7 @@
       },
       {
         "tableName": "AppCategory",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `categoryId` INTEGER NOT NULL, FOREIGN KEY(`appId`) REFERENCES `App`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`categoryId`) REFERENCES `Category`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `categoryId` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -159,48 +159,17 @@
         },
         "indices": [
           {
-            "name": "index_AppCategory_appId",
+            "name": "index_AppCategory_appId_categoryId",
             "unique": false,
             "columnNames": [
-              "appId"
-            ],
-            "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_AppCategory_appId` ON `${TABLE_NAME}` (`appId`)"
-          },
-          {
-            "name": "index_AppCategory_categoryId",
-            "unique": false,
-            "columnNames": [
+              "appId",
               "categoryId"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_AppCategory_categoryId` ON `${TABLE_NAME}` (`categoryId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_AppCategory_appId_categoryId` ON `${TABLE_NAME}` (`appId`, `categoryId`)"
           }
         ],
-        "foreignKeys": [
-          {
-            "table": "App",
-            "onDelete": "NO ACTION",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "appId"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
-          },
-          {
-            "table": "Category",
-            "onDelete": "NO ACTION",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "categoryId"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
-          }
-        ]
+        "foreignKeys": []
       },
       {
         "tableName": "Category",
@@ -335,7 +304,27 @@
           ],
           "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_Localized_id",
+            "unique": false,
+            "columnNames": [
+              "id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Localized_id` ON `${TABLE_NAME}` (`id`)"
+          },
+          {
+            "name": "index_Localized_appId_localeId",
+            "unique": false,
+            "columnNames": [
+              "appId",
+              "localeId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Localized_appId_localeId` ON `${TABLE_NAME}` (`appId`, `localeId`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
@@ -502,7 +491,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '95174ac4ec5665eb4e4c4a961d569351')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b4aac81e09e7393a0068d8e0b91c3e8f')"
     ]
   }
 }

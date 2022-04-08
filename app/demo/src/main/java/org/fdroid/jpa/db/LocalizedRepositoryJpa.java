@@ -16,23 +16,20 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.room.db;
+package org.fdroid.jpa.db;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import de.k3b.fdroid.room.model.Localized;
 
-/**
- * Android independant interfaces to use the Database
- */
-public interface LocalizedRepository {
-    void insert(Localized localized);
-
-    void update(Localized localized);
-
-    void delete(Localized localized);
-
+@Repository
+public interface LocalizedRepositoryJpa extends CrudRepository<Localized, Integer> {
     List<Localized> findByAppId(int appId);
 
-    List<Localized> findByAppIdAndLocaleIds(int appId, List<Integer> localeIds);
+    @Query(value = "select l from Localized l where l.appId = ?1 and l.localeId in (?2)")
+    List<Localized> findForAppIdAndLocales(int appId, List<Integer> localeIds);
 }

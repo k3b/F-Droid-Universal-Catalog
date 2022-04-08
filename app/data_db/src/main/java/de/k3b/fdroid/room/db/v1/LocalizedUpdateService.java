@@ -83,7 +83,7 @@ public class LocalizedUpdateService {
     }
 
     public List<Localized> update(int appId, Map<String, org.fdroid.model.v1.Localized> v1LocalizedMap) {
-        List<Localized> roomLocalizedList = localizedRepository.findLocalizedForApp(appId);
+        List<Localized> roomLocalizedList = localizedRepository.findByAppId(appId);
 
         deleteRemoved(roomLocalizedList, v1LocalizedMap);
         for (Map.Entry<String, org.fdroid.model.v1.Localized> v1Entry : v1LocalizedMap.entrySet()) {
@@ -95,11 +95,11 @@ public class LocalizedUpdateService {
                 roomLocalized.appId = appId;
                 roomLocalized.localeId = localeId;
                 LocalizedCommon.copyCommon(roomLocalized, v1Localized);
-                localizedRepository.insertAll(roomLocalized);
+                localizedRepository.insert(roomLocalized);
                 roomLocalizedList.add(roomLocalized);
             } else {
                 LocalizedCommon.copyCommon(roomLocalized, v1Localized);
-                localizedRepository.updateAll(roomLocalized);
+                localizedRepository.update(roomLocalized);
             }
         }
         return roomLocalizedList;

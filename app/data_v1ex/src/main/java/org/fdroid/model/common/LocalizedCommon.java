@@ -19,6 +19,7 @@
 
 package org.fdroid.model.common;
 
+@javax.persistence.MappedSuperclass
 /**
  * Common data for v1-Gson-json and android-room-database-Entities.
  * Only primitive types are allowed. No relations, no Objects, no Lists

@@ -32,17 +32,17 @@ import de.k3b.fdroid.room.model.Localized;
 @Dao
 public interface LocalizedDao extends LocalizedRepository {
     @Insert
-    void insertAll(Localized... localized);
+    void insert(Localized localized);
 
     @Update
-    void updateAll(Localized... roomLocalized);
+    void update(Localized localized);
 
     @Delete
     void delete(Localized localized);
 
     @Query("SELECT * FROM Localized WHERE Localized.appId = :appId ")
-    List<Localized> findLocalizedForApp(int appId);
+    List<Localized> findByAppId(int appId);
 
     @Query("SELECT * FROM Localized WHERE Localized.appId = :appId and Localized.localeId in (:localeIds) ")
-    List<Localized> findLocalizedForApp(int appId, List<Integer> localeIds);
+    List<Localized> findByAppIdAndLocaleIds(int appId, List<Integer> localeIds);
 }
