@@ -23,6 +23,12 @@ import org.springframework.stereotype.Repository;
 
 import de.k3b.fdroid.room.model.Locale;
 
+/**
+ * Spring-Boot-Jpa (Non-Android) specific Database-Repository implementation:
+ * Entity-Pojo-s are transfered from/to database using Spring-Boot-Jpa.
+ * XxxxRepositoryJpa implements the Database transfer.
+ * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
+ */
 @Repository
 public interface LocaleRepositoryJpa extends CrudRepository<Locale, Integer> {
 }

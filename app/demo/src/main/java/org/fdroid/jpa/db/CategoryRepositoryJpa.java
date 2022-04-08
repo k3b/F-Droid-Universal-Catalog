@@ -23,6 +23,12 @@ import org.springframework.stereotype.Repository;
 
 import de.k3b.fdroid.room.model.Category;
 
+/**
+ * Spring-Boot-Jpa (Non-Android) specific Database-Repository implementation:
+ * Entity-Pojo-s are transfered from/to database using Spring-Boot-Jpa.
+ * XxxxRepositoryJpa implements the Database transfer.
+ * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
+ */
 @Repository
 public interface CategoryRepositoryJpa extends CrudRepository<Category, Integer> {
     Category findByName(String name);

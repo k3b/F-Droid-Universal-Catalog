@@ -26,6 +26,12 @@ import java.util.List;
 import de.k3b.fdroid.room.db.LocalizedRepository;
 import de.k3b.fdroid.room.model.Localized;
 
+/**
+ * Spring-Boot-Jpa (Non-Android) specific Database-Repository implementation:
+ * Entity-Pojo-s are transfered from/to database using Spring-Boot-Jpa.
+ * XxxxRepositoryJpa implements the Database transfer.
+ * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
+ */
 @Service
 public class LocalizedRepositoryAdapter extends RepositoryAdapterBase<Localized, LocalizedRepositoryJpa> implements LocalizedRepository {
     public LocalizedRepositoryAdapter(LocalizedRepositoryJpa jpa) {

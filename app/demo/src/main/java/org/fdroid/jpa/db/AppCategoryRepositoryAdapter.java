@@ -26,6 +26,12 @@ import java.util.List;
 import de.k3b.fdroid.room.db.AppCategoryRepository;
 import de.k3b.fdroid.room.model.AppCategory;
 
+/**
+ * Spring-Boot-Jpa (Non-Android) specific Database-Repository implementation:
+ * Entity-Pojo-s are transfered from/to database using Spring-Boot-Jpa.
+ * XxxxRepositoryJpa implements the Database transfer.
+ * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
+ */
 @Service
 public class AppCategoryRepositoryAdapter extends RepositoryAdapterBase<AppCategory, AppCategoryRepositoryJpa> implements AppCategoryRepository {
     public AppCategoryRepositoryAdapter(AppCategoryRepositoryJpa jpa) {
