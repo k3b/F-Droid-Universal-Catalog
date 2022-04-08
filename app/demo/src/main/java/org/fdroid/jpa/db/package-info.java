@@ -18,8 +18,10 @@
  */
 
 /**
- * Android independant: Pojo-s with all properties that are persisted in the Database.
- * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
+ * Spring-Boot-Jpa (Non-Android) specific Database-Repository implementation:
+ * Entity-Pojo-s are transfered from/to database using Spring-Boot-Jpa.
+ * XxxxRepositoryJpa implements the Database transfer.
+ * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
  */
 package org.fdroid.jpa.db;
 

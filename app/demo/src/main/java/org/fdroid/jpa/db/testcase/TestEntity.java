@@ -1,4 +1,4 @@
-package org.fdroid.jpa.db;
+package org.fdroid.jpa.db.testcase;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

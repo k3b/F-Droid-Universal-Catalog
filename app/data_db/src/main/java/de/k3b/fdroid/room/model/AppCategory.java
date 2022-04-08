@@ -24,10 +24,8 @@ import org.fdroid.model.common.PojoCommon;
  * Android independant: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  */
-@androidx.room.Entity(foreignKeys = {
-        @androidx.room.ForeignKey(entity = App.class, parentColumns = "id", childColumns = "appId"),
-        @androidx.room.ForeignKey(entity = Category.class, parentColumns = "id", childColumns = "categoryId")},
-        indices = {@androidx.room.Index("appId"), @androidx.room.Index("categoryId")})
+@androidx.room.Entity(
+        indices = {@androidx.room.Index({"appId", "categoryId"})})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 public class AppCategory extends PojoCommon {

@@ -18,8 +18,8 @@
  */
 package org.fdroid.jpa;
 
-import org.fdroid.jpa.db.TestEntity;
-import org.fdroid.jpa.db.TestRepositoryJpa;
+import org.fdroid.jpa.db.testcase.TestEntity;
+import org.fdroid.jpa.db.testcase.TestRepositoryJpa;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -39,9 +39,18 @@ import de.k3b.fdroid.room.model.App;
  * j2se-jpa-db implementation that reads from fdroid-v1-jar and updates a jpa database
  */
 
-@EnableJpaRepositories(basePackages = {"de.k3b.fdroid.room.db", "de.k3b.fdroid.room.model", "org.fdroid.jpa.db", "org.fdroid.model.common"})
-@ComponentScan(basePackages = {"de.k3b.fdroid.room.db", "de.k3b.fdroid.room.model", "org.fdroid.jpa.db", "org.fdroid.model.common"})
-@EntityScan({"de.k3b.fdroid.room.db", "de.k3b.fdroid.room.model", "org.fdroid.jpa.db", "org.fdroid.model.common"})
+@EnableJpaRepositories(basePackages = {
+		"de.k3b.fdroid.room.db", "de.k3b.fdroid.room.model",
+		"org.fdroid.jpa.db",
+		"org.fdroid.model.common"})
+@ComponentScan(basePackages = {
+		"de.k3b.fdroid.room.db", "de.k3b.fdroid.room.model",
+		"org.fdroid.jpa.db",
+		"org.fdroid.model.common"})
+@EntityScan({
+		"de.k3b.fdroid.room.db", "de.k3b.fdroid.room.model",
+		"org.fdroid.jpa.db",
+		"org.fdroid.model.common"})
 @SpringBootApplication
 public class DemoApplication {
 	private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);
@@ -96,10 +105,12 @@ public class DemoApplication {
 					", familyName: " + customer.familyName);
 		}
 		log.info("");
+
 		List<TestEntity> testEntity2 = repository.findByFamilyName("smith");
 		log.info("search result " + testEntity2.get(0).toString());
 		TestEntity testEntity3 = repository.findByName("my.demo.testEntity");
 		log.info("search result " + testEntity3.toString());
+
 	}
 
 }

@@ -83,6 +83,49 @@ Database format
 
 -----
 
+Architecture (high level)
+
+* Userinterface Android-app (i.e. fdroid, mdroid, gdroid, ...) or web interface (i.e. fdroid.org) or
+  pc app (does not exist yet)
+* Services (platform independant) (i.e. search-engine, import data from Repository)
+* Repositoriy (platform independant java interface with platform specific implementations for
+  android-room and Spring-Boot-JPA
+
+-----
+
+Architecture (detailed)
+
+* Userinterface out of scope: This work tries to esablish a platform independant service
+  architecture in the fdroid ecosystem.
+* Services (non-Android Code that uses other Services und Repository-Interfaces)
+    * V1UpdateService Reads reads Android Catalog json data [fdroid-v1] and updates the Database via
+      XxxxxxRepositories
+
+> > * FDroidCatalogJsonStreamParserXxxx : reads Android Catalog json data [fdroid-v1] as a Stream of Events: on[Repo], on[App], on[Version]
+          * XxxxUpdateService : translates [fdroid-v1] to database updates via XxxxRepository: [Repo]UpdateService, [App]UpdateService, [App]UpdateService, ...
+      !!  * CanonicalLocale: Merges [Localized] to non-locale-languages: i.e. en, en-AU, en-GB, en-US, en-rUS, en-us and en_US will all be mapped to "en"
+      ??  * LocaleImportFilter : Filter out languages that the user does not understand and that is not stored in the local database to save memory.       * Example: I can read de, en, nds, nl but not ja, cn, ar, ...... ??  * [Repo]SecurityService: Make shure that catalogdata [index-v1.jar] is not tampered with (checksum and signature is ok)
+      ??* DeviceCompatibilitySearchFilter:
+          * If i have a Android-5 device and the software requires Android-6 or later     * If i have installed an [App] from [Repo] f-droid.org i cannot install an update[Version] from [Repo] f-droid.org because the [App]-[Version]-signature does not match. ??* [App]-[Category]-SearchFilter/Sorter:
+          * show [App]s that match one or more [Category]s: Example I want to see [App]s of [Category] "games"
+      ??* FulltextSearchFilter over [Packagename] and [Localized]- name, summary, description, whatIsNew of all languages the user understands. ??* RelevanceSorter: Relevance in app-title is higher than app-summay than app-description.     * Example when i search for "FDroid" i want to see the FDroid-Client-app before apps that contain "Available for download in FDroid. ??* LastUpdateSorter/Filter: Which app was updated in the last 90 days? ??* LanguageFilter:
+          * app that has a translated catalog summary/description in one or more languages.     * the app-userinterface has been translated in one or more languages. ??* App-Rating/App-Comments (FDroid.org independant)
+      ??* Userdefined Software collection and Software-Categories (FDroid.org independant)
+      ??* Android-Specific app-Installation/Update/Deinstallation-Service
+
+* Repository-Interface (database abstraction) with implementatino in Android-Room (XxxxxDao) and
+  Spring-Boot-JPA XxxxRepositoryJpa + XxxxRepositoryAdapter
+    * [Repo]Repository with [Repo]Dao and Spring-Boot-JPA [Repo]RepositoryJpa + [Repo]
+      RepositoryAdapter,
+    * [App]Repository with ...
+    * [Localized]Repository with ...
+    * [Version]Repository with ...
+
+> > =current work in progress
+!!=todo ??=not implemented yet
+
+-----
+
 Software Moduls
 
 * app (Android)
