@@ -16,36 +16,28 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.db;
+package org.fdroid.jpa.db;
 
-import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Query;
-import androidx.room.Update;
-
-import java.util.List;
+import org.fdroid.jpa.db.base.RepositoryAdapterBase;
+import org.springframework.stereotype.Service;
 
 import de.k3b.fdroid.room.db.RepoRepository;
 import de.k3b.fdroid.room.model.Repo;
 
-@Dao
-public interface RepoDao extends RepoRepository {
-    @Insert
-    void insert(Repo repo);
+/**
+ * Spring-Boot-Jpa (Non-Android) specific Database-Repository implementation:
+ * Entity-Pojo-s are transfered from/to database using Spring-Boot-Jpa.
+ * XxxxRepositoryJpa implements the Database transfer.
+ * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
+ */
+@Service
+public class RepoRepositoryAdapter extends RepositoryAdapterBase<Repo, RepoRepositoryJpa> implements RepoRepository {
+    public RepoRepositoryAdapter(RepoRepositoryJpa jpa) {
+        super(jpa);
+    }
 
-    @Update
-    void update(Repo repo);
-
-    @Delete
-    void delete(Repo repo);
-
-    @Query("SELECT * FROM Repo WHERE Repo.id = :repoId")
-    Repo findById(Integer repoId);
-
-    @Query("SELECT * FROM Repo WHERE Repo.address = :address")
-    Repo findByAddress(String address);
-
-    @Query("SELECT * FROM Repo")
-    List<Repo> findAll();
+    @Override
+    public Repo findByAddress(String address) {
+        return jpa.findByAddress(address);
+    }
 }

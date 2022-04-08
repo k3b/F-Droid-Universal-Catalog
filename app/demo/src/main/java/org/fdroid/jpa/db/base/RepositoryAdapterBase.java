@@ -21,6 +21,9 @@ package org.fdroid.jpa.db.base;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
+
+import de.k3b.fdroid.room.model.Repo;
 
 /**
  * Android-Room/JPA compatibility layer:
@@ -44,6 +47,13 @@ public class RepositoryAdapterBase<T, R extends CrudRepository<T, Integer>> {
     public void delete(T roomApp) {
         jpa.delete(roomApp);
     }
+
+    public Repo findById(Integer repoId) {
+        Optional<T> result = jpa.findById(repoId);
+        if (result.isPresent()) result.get();
+        return null;
+    }
+
 
     public List<T> findAll() {
         return (List<T>) jpa.findAll();

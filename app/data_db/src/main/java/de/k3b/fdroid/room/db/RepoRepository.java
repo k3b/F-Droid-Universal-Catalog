@@ -18,15 +18,17 @@
  */
 package de.k3b.fdroid.room.db;
 
+import java.util.List;
+
 import de.k3b.fdroid.room.model.Repo;
 
 /**
  * Android independant interfaces to use the Database
  */
 public interface RepoRepository {
-    void insertAll(Repo... repos);
+    void insert(Repo repo);
 
-    void updateAll(Repo... repos);
+    void update(Repo repo);
 
     void delete(Repo repo);
 
@@ -34,5 +36,5 @@ public interface RepoRepository {
 
     Repo findByAddress(String address);
 
-    Repo[] findAll();
+    List<Repo> findAll();
 }

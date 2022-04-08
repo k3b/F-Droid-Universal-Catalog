@@ -39,10 +39,10 @@ public class RepoUpdateService {
         if (roomRepo == null) {
             roomRepo = new Repo();
             RepoCommon.copyCommon(roomRepo, v1Repo);
-            repoRepository.insertAll(roomRepo);
+            repoRepository.insert(roomRepo);
         } else {
             RepoCommon.copyCommon(roomRepo, v1Repo);
-            repoRepository.updateAll(roomRepo);
+            repoRepository.update(roomRepo);
         }
         return roomRepo;
     }
