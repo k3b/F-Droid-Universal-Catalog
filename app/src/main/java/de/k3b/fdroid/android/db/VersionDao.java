@@ -32,18 +32,18 @@ import de.k3b.fdroid.room.model.Version;
 @Dao
 public interface VersionDao extends VersionRepository {
     @Insert
-    void insertAll(Version... versions);
+    void insert(Version version);
 
     @Update
-    void updateAll(Version... roomVersion);
+    void update(Version version);
 
     @Delete
     void delete(Version version);
 
     @Query("SELECT * FROM Version WHERE Version.appId = :appId")
-    List<Version> findVersionsForApp(int appId);
+    List<Version> findByAppId(int appId);
 
     @Query("SELECT Version.* FROM Version inner join App on Version.appId = App.id " +
-            "WHERE Version.versionCode = :versionCode AND App.repoId = :repoId AND App.packageName = :packageName")
+            "WHERE App.repoId = :repoId AND App.packageName = :packageName AND Version.versionCode = :versionCode")
     Version findForPackageNameAndVersionCode(int repoId, String packageName, long versionCode);
 }

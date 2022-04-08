@@ -26,13 +26,13 @@ import de.k3b.fdroid.room.model.Version;
  * Android independant interfaces to use the Database
  */
 public interface VersionRepository {
-    void insertAll(Version... versions);
+    void insert(Version version);
 
-    void updateAll(Version... roomVersion);
+    void update(Version version);
 
     void delete(Version version);
 
-    List<Version> findVersionsForApp(int appId);
+    List<Version> findByAppId(int appId);
 
     Version findForPackageNameAndVersionCode(int repoId, String packageName, long versionCode);
 }

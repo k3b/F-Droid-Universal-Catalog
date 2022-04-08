@@ -46,11 +46,11 @@ public class VersionUpdateService {
                 roomVersion = new Version();
                 roomVersion.appId = app.id;
                 VersionCommon.copyCommon(roomVersion, v1Version);
-                versionRepository.insertAll(roomVersion);
+                versionRepository.insert(roomVersion);
             }
         } else {
             VersionCommon.copyCommon(roomVersion, v1Version);
-            versionRepository.updateAll(roomVersion);
+            versionRepository.update(roomVersion);
         }
 
         return roomVersion;

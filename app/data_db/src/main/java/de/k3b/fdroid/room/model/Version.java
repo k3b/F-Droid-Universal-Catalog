@@ -18,19 +18,28 @@
  */
 package de.k3b.fdroid.room.model;
 
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
 import org.fdroid.model.common.VersionCommon;
 
 /**
  * Android independant: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
+ * Database Entity compatible with Android-Room and non-android-j2se-jpa
  */
-@Entity
+@androidx.room.Entity(indices = {@androidx.room.Index("id"),
+        @androidx.room.Index({"id", "appId"})})
+@javax.persistence.Entity
+@javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 public class Version extends VersionCommon {
-    @PrimaryKey(autoGenerate = true)
+    @javax.persistence.Id
+    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    @androidx.room.PrimaryKey(autoGenerate = true)
     public int id;
 
     public int appId;
+
+    protected void toStringBuilder(StringBuilder sb) {
+        toStringBuilder(sb, "id", this.id);
+        super.toStringBuilder(sb);
+        toStringBuilder(sb, "appId", this.appId);
+    }
 }
