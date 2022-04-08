@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "b4aac81e09e7393a0068d8e0b91c3e8f",
+    "identityHash": "3e20c78c0a883c44f934783c420c2ec5",
     "entities": [
       {
         "tableName": "App",
@@ -386,7 +386,17 @@
           ],
           "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_Repo_id",
+            "unique": false,
+            "columnNames": [
+              "id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Repo_id` ON `${TABLE_NAME}` (`id`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
@@ -484,14 +494,34 @@
           ],
           "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_Version_id",
+            "unique": false,
+            "columnNames": [
+              "id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Version_id` ON `${TABLE_NAME}` (`id`)"
+          },
+          {
+            "name": "index_Version_id_appId",
+            "unique": false,
+            "columnNames": [
+              "id",
+              "appId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Version_id_appId` ON `${TABLE_NAME}` (`id`, `appId`)"
+          }
+        ],
         "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b4aac81e09e7393a0068d8e0b91c3e8f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3e20c78c0a883c44f934783c420c2ec5')"
     ]
   }
 }
