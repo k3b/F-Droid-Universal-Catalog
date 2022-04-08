@@ -39,18 +39,9 @@ import de.k3b.fdroid.room.model.App;
  * j2se-jpa-db implementation that reads from fdroid-v1-jar and updates a jpa database
  */
 
-@EnableJpaRepositories(basePackages = {
-		"de.k3b.fdroid.room.db", "de.k3b.fdroid.room.model",
-		"org.fdroid.jpa.db",
-		"org.fdroid.model.common"})
-@ComponentScan(basePackages = {
-		"de.k3b.fdroid.room.db", "de.k3b.fdroid.room.model",
-		"org.fdroid.jpa.db",
-		"org.fdroid.model.common"})
-@EntityScan({
-		"de.k3b.fdroid.room.db", "de.k3b.fdroid.room.model",
-		"org.fdroid.jpa.db",
-		"org.fdroid.model.common"})
+@EnableJpaRepositories(basePackages = {"de.k3b.fdroid.room", "org.fdroid"})
+@ComponentScan(basePackages = {"de.k3b.fdroid.room", "org.fdroid"})
+@EntityScan({"de.k3b.fdroid.room", "org.fdroid"})
 @SpringBootApplication
 public class DemoApplication {
 	private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);

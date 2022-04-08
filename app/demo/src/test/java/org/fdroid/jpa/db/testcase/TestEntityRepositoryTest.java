@@ -18,7 +18,15 @@
  */
 package org.fdroid.jpa.db.testcase;
 
-/*
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.util.Assert;
+
+import java.util.List;
+
 @DataJpaTest
 public class TestEntityRepositoryTest {
     private static final String MY_NAME = "name peter";
@@ -48,7 +56,6 @@ public class TestEntityRepositoryTest {
         Assert.notNull(jpa, "jpa");
     }
 
-    / *
     @Test
     public void findByName() {
         TestEntity test = jpa.findByName(MY_NAME);
@@ -60,8 +67,4 @@ public class TestEntityRepositoryTest {
         List<TestEntity> test = jpa.findByFamilyName(MY_FAMILY_NAME);
         Assert.notEmpty(test, "found");
     }
-
-     * /
 }
-
- */
