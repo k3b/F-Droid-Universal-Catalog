@@ -17,10 +17,10 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
+package de.k3b.fdroid.domain.common;
 /**
  * Android independant:
  * Common data for v1-Gson-json and android-room-database-Entities.
  * Only primitive types are allowed. No relations, no Objects, no Lists
  * as these are Gson/Android-Room-Database specific.
  */
-package de.k3b.fdroid.domain.common;

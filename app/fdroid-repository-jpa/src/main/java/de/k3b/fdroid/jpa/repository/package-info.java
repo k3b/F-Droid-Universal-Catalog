@@ -17,14 +17,11 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
+package de.k3b.fdroid.jpa.repository;
+
 /**
  * Spring-Boot-Jpa (Non-Android) specific Database-Repository implementation:
  * Entity-Pojo-s are transfered from/to database using Spring-Boot-Jpa.
  * XxxxRepositoryJpa implements the Database transfer.
  * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
- */
-package de.k3b.fdroid.jpa.repository;
-
-/**
- * non-android-j2se-jpa implementation of XxxRepository
  */

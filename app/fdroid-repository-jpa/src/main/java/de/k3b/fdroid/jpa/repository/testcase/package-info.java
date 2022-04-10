@@ -18,10 +18,11 @@
  */
 
 /**
- * Android independant interfaces to use the Database
+ * Android independant: Pojo-s with all properties that are persisted in the Database.
+ * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  */
-package de.k3b.fdroid.domain.interfaces;
+package de.k3b.fdroid.jpa.repository.testcase;
 
 /**
- * domain interfaces (Android independant ):
+ * fdroid independent testEntity classes to test repository
  */

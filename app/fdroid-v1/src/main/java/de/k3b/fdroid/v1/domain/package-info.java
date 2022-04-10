@@ -17,7 +17,9 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-/**
- * Data read from FDroid-Catalog-v1-Json format.
- */
 package de.k3b.fdroid.v1.domain;
+
+/**
+ * Android independant Pojo-s with all properties that are read from fdroid-v1 json files..
+ * may contain child-pojos
+ */

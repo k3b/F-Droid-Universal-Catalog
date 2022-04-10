@@ -83,13 +83,17 @@ Database format
 
 -----
 
-Architecture (high level)
+Architecture (high level, Modul)
 
-* Userinterface Android-app (i.e. fdroid, mdroid, gdroid, ...) or web interface (i.e. fdroid.org) or
-  pc app (does not exist yet)
-* Services (platform independant) (i.e. search-engine, import data from Repository)
-* Repositoriy (platform independant java interface with platform specific implementations for
-  android-room and Spring-Boot-JPA
+* app (android)
+    * fdroid-domain
+    * fdroid-v1
+    * fdroid-repository-android
+* demo (spring-boot-cli)
+    * fdroid-domain
+    * fdroid-v1
+    * fdroid-repository-jpa
+    * room-annotations
 
 -----
 

@@ -17,9 +17,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
+package de.k3b.fdroid.v1.service;
+
 /**
  * Services that operate on Json-FDroid-Catalog-v1 format.
  */
-
-package de.k3b.fdroid.v1.service;
-

@@ -24,7 +24,9 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * what all Pojo-s have in Common: Currently only toString() support. Properties are not allowed
+ * what all Pojo-s have in Common:
+ * Nearly a pojo except there is toString() with toStringBuilder support.
+ * pojo Properties are not allowed
  */
 public class PojoCommon {
     public static String asDateString(long longDate) {
