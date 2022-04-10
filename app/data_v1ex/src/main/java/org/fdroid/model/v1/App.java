@@ -19,14 +19,14 @@
 
 package org.fdroid.model.v1;
 
-import org.fdroid.model.common.AppCommon;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import javax.annotation.Generated;
+
+import de.k3b.fdroid.domain.common.AppCommon;
 
 /**
  * Data for an android app (read from FDroid-Catalog-v1-Json format).

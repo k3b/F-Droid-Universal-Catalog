@@ -19,11 +19,11 @@
 
 package org.fdroid.model.v1;
 
-import org.fdroid.model.common.RepoCommon;
-
 import java.util.List;
 
 import javax.annotation.Generated;
+
+import de.k3b.fdroid.domain.common.RepoCommon;
 
 /**
  * Data for a FDroid-Repository (read from FDroid-Catalog-v1-Json format).

@@ -19,7 +19,6 @@
 
 package org.fdroid.service.v1;
 
-import org.fdroid.model.common.PojoCommon;
 import org.fdroid.model.v1.App;
 import org.fdroid.model.v1.Localized;
 import org.fdroid.model.v1.LocalizedStatistics;
@@ -30,6 +29,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Set;
+
+import de.k3b.fdroid.domain.common.PojoCommon;
 
 /**
  * json stream praser demo für FDroid.org index v1 format that logs found data to the console.

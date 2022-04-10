@@ -20,7 +20,7 @@ package de.k3b.fdroid.room.db;
 
 import java.util.List;
 
-import de.k3b.fdroid.room.model.AppCategory;
+import de.k3b.fdroid.domain.AppCategory;
 
 /**
  * Android independant interfaces to use the Database

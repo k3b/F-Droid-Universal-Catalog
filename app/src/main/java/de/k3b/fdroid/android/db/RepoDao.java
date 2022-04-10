@@ -26,8 +26,8 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.room.db.RepoRepository;
-import de.k3b.fdroid.room.model.Repo;
 
 @Dao
 public interface RepoDao extends RepoRepository {

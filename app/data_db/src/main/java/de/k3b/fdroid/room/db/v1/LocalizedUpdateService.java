@@ -19,16 +19,15 @@
 
 package de.k3b.fdroid.room.db.v1;
 
-import org.fdroid.model.common.LocalizedCommon;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.k3b.fdroid.domain.Locale;
+import de.k3b.fdroid.domain.Localized;
+import de.k3b.fdroid.domain.common.LocalizedCommon;
 import de.k3b.fdroid.room.db.LocaleRepository;
 import de.k3b.fdroid.room.db.LocalizedRepository;
-import de.k3b.fdroid.room.model.Locale;
-import de.k3b.fdroid.room.model.Localized;
 
 /**
  * update android-room-database from fdroid-v1-rest-gson data

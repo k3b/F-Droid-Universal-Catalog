@@ -21,10 +21,10 @@ package de.k3b.fdroid.room.db.v1;
 import java.util.List;
 import java.util.Map;
 
+import de.k3b.fdroid.domain.AppCategory;
+import de.k3b.fdroid.domain.Category;
 import de.k3b.fdroid.room.db.AppCategoryRepository;
 import de.k3b.fdroid.room.db.CategoryRepository;
-import de.k3b.fdroid.room.model.AppCategory;
-import de.k3b.fdroid.room.model.Category;
 
 /**
  * update android-room-database from fdroid-v1-rest-gson data

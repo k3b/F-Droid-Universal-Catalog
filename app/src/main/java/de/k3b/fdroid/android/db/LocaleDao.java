@@ -26,8 +26,8 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import de.k3b.fdroid.domain.Locale;
 import de.k3b.fdroid.room.db.LocaleRepository;
-import de.k3b.fdroid.room.model.Locale;
 
 @Dao
 public interface LocaleDao extends LocaleRepository {

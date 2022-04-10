@@ -18,8 +18,6 @@
  */
 package org.fdroid.jpa;
 
-import org.fdroid.jpa.db.testcase.TestEntity;
-import org.fdroid.jpa.db.testcase.TestRepositoryJpa;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -32,16 +30,18 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import java.util.List;
 
+import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.jpa.repository.testcase.TestEntity;
+import de.k3b.fdroid.jpa.repository.testcase.TestRepositoryJpa;
 import de.k3b.fdroid.room.db.AppRepository;
-import de.k3b.fdroid.room.model.App;
 
 /**
  * j2se-jpa-db implementation that reads from fdroid-v1-jar and updates a jpa database
  */
 
-@EnableJpaRepositories(basePackages = {"de.k3b.fdroid.room", "org.fdroid"})
-@ComponentScan(basePackages = {"de.k3b.fdroid.room", "org.fdroid"})
-@EntityScan({"de.k3b.fdroid.room", "org.fdroid"})
+@EnableJpaRepositories(basePackages = {"de.k3b.fdroid", "org.fdroid"})
+@ComponentScan(basePackages = {"de.k3b.fdroid", "org.fdroid"})
+@EntityScan({"de.k3b.fdroid", "org.fdroid"})
 @SpringBootApplication
 public class DemoApplication {
 	private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);

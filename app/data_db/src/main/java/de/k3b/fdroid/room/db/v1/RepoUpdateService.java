@@ -19,10 +19,9 @@
 
 package de.k3b.fdroid.room.db.v1;
 
-import org.fdroid.model.common.RepoCommon;
-
+import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.domain.common.RepoCommon;
 import de.k3b.fdroid.room.db.RepoRepository;
-import de.k3b.fdroid.room.model.Repo;
 
 /**
  * update android-room-database from fdroid-v1-rest-gson data

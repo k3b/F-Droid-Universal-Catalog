@@ -26,8 +26,8 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import de.k3b.fdroid.domain.Localized;
 import de.k3b.fdroid.room.db.LocalizedRepository;
-import de.k3b.fdroid.room.model.Localized;
 
 @Dao
 public interface LocalizedDao extends LocalizedRepository {

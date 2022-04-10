@@ -26,8 +26,8 @@ import androidx.room.Update;
 
 import java.util.List;
 
+import de.k3b.fdroid.domain.AppCategory;
 import de.k3b.fdroid.room.db.AppCategoryRepository;
-import de.k3b.fdroid.room.model.AppCategory;
 
 @Dao
 public interface AppCategoryDao extends AppCategoryRepository {

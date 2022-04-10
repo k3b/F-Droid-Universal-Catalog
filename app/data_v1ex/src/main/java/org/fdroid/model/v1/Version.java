@@ -19,11 +19,11 @@
 
 package org.fdroid.model.v1;
 
-import org.fdroid.model.common.VersionCommon;
-
 import java.util.List;
 
 import javax.annotation.Generated;
+
+import de.k3b.fdroid.domain.common.VersionCommon;
 
 /**
  * Data for the program version of an android app (read from FDroid-Catalog-v1-Json format).
