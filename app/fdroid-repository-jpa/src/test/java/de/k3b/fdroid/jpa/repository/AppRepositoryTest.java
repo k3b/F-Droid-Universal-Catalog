@@ -26,7 +26,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.util.Assert;
 
 import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.room.db.AppRepository;
+import de.k3b.fdroid.domain.interfaces.AppRepository;
 
 @DataJpaTest
 public class AppRepositoryTest {

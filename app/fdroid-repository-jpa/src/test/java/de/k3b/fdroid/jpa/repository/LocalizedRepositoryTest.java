@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 import de.k3b.fdroid.domain.Localized;
-import de.k3b.fdroid.room.db.LocalizedRepository;
+import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 
 @DataJpaTest
 public class LocalizedRepositoryTest {

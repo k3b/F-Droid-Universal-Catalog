@@ -19,8 +19,8 @@
 
 package de.k3b.test;
 
-import org.fdroid.service.v1.FDroidCatalogJsonStreamParserBase;
-import org.fdroid.service.v1.FDroidCatalogJsonStreamParserDemo;
+import de.k3b.fdroid.v1.service.FDroidCatalogJsonStreamParserBase;
+import de.k3b.fdroid.v1.service.FDroidCatalogJsonStreamParserDemo;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -38,13 +38,13 @@ public class Main {
         try {
             FDroidCatalogJsonStreamParserBase repo = new FDroidCatalogJsonStreamParserDemo();
 
-            // InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/data_v1ex/src/main/java/org/fdroid/v1/repository/index-v1.small.json");
-            // InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/data_v1ex/src/main/java/org/fdroid/v1/repository/index-v1.full.json");
+            // InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.small.json");
+            // InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.full.json");
             //index-v1ex.small.json");
 
             // repo.readJsonStream(is);
 
-            InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/data_v1ex/src/main/java/org/fdroid/v1/repository/index-v1.jar");
+            InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.jar");
             repo.readFromJar(is);
             is.close();
             System.exit(0);

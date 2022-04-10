@@ -23,8 +23,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import de.k3b.fdroid.domain.Localized;
+import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.jpa.repository.base.RepositoryAdapterBase;
-import de.k3b.fdroid.room.db.LocalizedRepository;
 
 /**
  * Spring-Boot-Jpa (Non-Android) specific Database-Repository implementation:

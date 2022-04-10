@@ -7,5 +7,5 @@ build
 captures
 .externalNativeBuild
 .cxx
-/app/data_v1ex/src/main/java/org/fdroid/demo/index-v1.full.json
-/app/data_v1ex/src/main/java/org/fdroid/demo/index-v1.jar
+/app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.full.json
+/app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.jar

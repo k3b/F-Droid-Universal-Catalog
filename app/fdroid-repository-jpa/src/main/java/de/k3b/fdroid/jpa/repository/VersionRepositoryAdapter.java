@@ -23,8 +23,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import de.k3b.fdroid.domain.Version;
+import de.k3b.fdroid.domain.interfaces.VersionRepository;
 import de.k3b.fdroid.jpa.repository.base.RepositoryAdapterBase;
-import de.k3b.fdroid.room.db.VersionRepository;
 
 /**
  * Spring-Boot-Jpa (Non-Android) specific Database-Repository implementation:

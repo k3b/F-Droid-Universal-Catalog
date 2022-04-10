@@ -19,9 +19,6 @@ dependencies {
     implementation (project(path: ':app:fdroid-domain')) {transitive=false}
     implementation (project(path: ':app:fdroid-v1')) {transitive=false}
 
-    implementation (project(path: ':app:data_v1ex')) {transitive=false}
-    implementation (project(path: ':app:data_db')) {transitive=false}
-
     implementation 'javax.persistence:javax.persistence-api:2.2'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

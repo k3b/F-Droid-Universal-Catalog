@@ -26,7 +26,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.util.Assert;
 
 import de.k3b.fdroid.domain.Category;
-import de.k3b.fdroid.room.db.CategoryRepository;
+import de.k3b.fdroid.domain.interfaces.CategoryRepository;
 
 @DataJpaTest
 public class CategoryRepositoryTest {

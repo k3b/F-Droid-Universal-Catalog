@@ -17,8 +17,9 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
+package de.k3b.fdroid.domain;
+
 /**
- * Android independant: Pojo-s with all properties that are persisted in the Database.
+ * Android independant Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  */
-package de.k3b.fdroid.domain;

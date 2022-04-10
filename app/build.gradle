@@ -41,12 +41,6 @@ dependencies {
     implementation (project(path: ':app:fdroid-domain')) {transitive=false}
     implementation (project(path: ':app:fdroid-v1')) {transitive=false}
 
-    implementation (project(path: ':app:data_v1ex')) {transitive=false}
-    implementation (project(path: ':app:data_db')) {transitive=false}
-
-    // transitive=false => do not include fake room-annotations
-    implementation (project(path: ':app:data_db')) {transitive=false}
-
     implementation 'com.google.android.material:material:1.5.0'
 
     def room_version = "2.4.2"

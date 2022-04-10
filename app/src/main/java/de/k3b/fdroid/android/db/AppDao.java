@@ -27,7 +27,7 @@ import androidx.room.Update;
 import java.util.List;
 
 import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.room.db.AppRepository;
+import de.k3b.fdroid.domain.interfaces.AppRepository;
 
 @Dao
 public interface AppDao extends AppRepository {

@@ -31,9 +31,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import java.util.List;
 
 import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.jpa.repository.testcase.TestEntity;
 import de.k3b.fdroid.jpa.repository.testcase.TestRepositoryJpa;
-import de.k3b.fdroid.room.db.AppRepository;
 
 /**
  * j2se-jpa-db implementation that reads from fdroid-v1-jar and updates a jpa database

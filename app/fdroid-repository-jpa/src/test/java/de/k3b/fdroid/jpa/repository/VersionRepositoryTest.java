@@ -29,7 +29,7 @@ import java.util.List;
 
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.Version;
-import de.k3b.fdroid.room.db.VersionRepository;
+import de.k3b.fdroid.domain.interfaces.VersionRepository;
 
 @DataJpaTest
 public class VersionRepositoryTest {
