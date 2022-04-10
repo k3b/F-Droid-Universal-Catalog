@@ -21,7 +21,7 @@
  * Android independant: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  */
-package org.fdroid.jpa;
+package de.k3b.fdroid.v1;
 
 /**
  * j2se-jpa-db implementation that reads from fdroid-v1-jar and updates a jpa database

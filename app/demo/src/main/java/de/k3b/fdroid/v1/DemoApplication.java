@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package org.fdroid.jpa;
+package de.k3b.fdroid.v1;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,9 +39,9 @@ import de.k3b.fdroid.jpa.repository.testcase.TestRepositoryJpa;
  * j2se-jpa-db implementation that reads from fdroid-v1-jar and updates a jpa database
  */
 
-@EnableJpaRepositories(basePackages = {"de.k3b.fdroid", "org.fdroid"})
-@ComponentScan(basePackages = {"de.k3b.fdroid", "org.fdroid"})
-@EntityScan({"de.k3b.fdroid", "org.fdroid"})
+@EnableJpaRepositories(basePackages = {"de.k3b.fdroid"})
+@ComponentScan(basePackages = {"de.k3b.fdroid"})
+@EntityScan({"de.k3b.fdroid"})
 @SpringBootApplication
 public class DemoApplication {
 	private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);

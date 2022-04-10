@@ -16,8 +16,8 @@ test {
 dependencies {
     implementation project(path: ':app:room-annotations')
 
-    implementation (project(path: ':app:fdroid-domain')) {transitive=false}
-    implementation (project(path: ':app:fdroid-v1')) {transitive=false}
+    implementation (project(path: ':app:fdroid-domain'))
+    implementation (project(path: ':app:fdroid-v1'))
 
     implementation 'javax.persistence:javax.persistence-api:2.2'
 

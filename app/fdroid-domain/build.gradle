@@ -8,7 +8,7 @@ java {
 }
 
 dependencies {
-    implementation (project(path: ':app:room-annotations')) {transitive=false}
+    implementation (project(path: ':app:room-annotations'))
     implementation 'javax.persistence:javax.persistence-api:2.2'
     testImplementation 'junit:junit:4.13.2'
 }

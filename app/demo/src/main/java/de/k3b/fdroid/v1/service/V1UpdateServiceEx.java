@@ -1,4 +1,4 @@
-package org.fdroid.jpa;
+package de.k3b.fdroid.v1.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,6 @@ import de.k3b.fdroid.domain.interfaces.LocaleRepository;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.domain.interfaces.VersionRepository;
-import de.k3b.fdroid.v1.service.V1UpdateService;
 
 @Service
 public class V1UpdateServiceEx extends V1UpdateService {
