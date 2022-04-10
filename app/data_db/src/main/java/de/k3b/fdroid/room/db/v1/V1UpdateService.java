@@ -39,7 +39,7 @@ import de.k3b.fdroid.room.db.VersionRepository;
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
-public class V1UpdateService {
+public abstract class V1UpdateService {
     JsonStreamParser jsonStreamParser = new JsonStreamParser();
     RepoUpdateService repoUpdateService;
 
@@ -80,6 +80,8 @@ public class V1UpdateService {
         jsonStreamParser.readFromJar(jarInputStream);
     }
 
+    abstract protected String log(String s);
+
     class JsonStreamParser extends FDroidCatalogJsonStreamParserBase {
 
         /**
@@ -89,7 +91,7 @@ public class V1UpdateService {
          */
         @Override
         protected String log(String s) {
-            return null;
+            return V1UpdateService.this.log(s);
         }
 
         /**
