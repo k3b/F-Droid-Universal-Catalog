@@ -165,6 +165,7 @@ Database Differences between Android-Room and j2se-jpa
 
 links
 
+* https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/
 * https://spring.io/guides/gs/accessing-data-jpa/
 * https://docs.spring.io/spring-data/jpa/docs/current/reference/html/
   https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#repositories.collections-and-iterables
