@@ -74,7 +74,13 @@ public abstract class V1UpdateService {
     }
 
     public void readFromJar(InputStream jarInputStream) throws IOException {
+        appUpdateService.init();
         jsonStreamParser.readFromJar(jarInputStream);
+    }
+
+    public void readJsonStream(InputStream jsonInputStream) throws IOException {
+        appUpdateService.init();
+        jsonStreamParser.readJsonStream(jsonInputStream);
     }
 
     abstract protected String log(String s);

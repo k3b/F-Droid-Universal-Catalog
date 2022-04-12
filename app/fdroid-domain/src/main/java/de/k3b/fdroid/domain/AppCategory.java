@@ -34,12 +34,15 @@ public class AppCategory extends PojoCommon {
     @androidx.room.PrimaryKey(autoGenerate = true)
     public int id;
 
-    public final int appId;
-    public final int categoryId;
+    public int appId;
+    public int categoryId;
 
     public AppCategory(int appId, int categoryId) {
         this.appId = appId;
         this.categoryId = categoryId;
+    }
+
+    public AppCategory() {
     }
 
     protected void toStringBuilder(StringBuilder sb) {

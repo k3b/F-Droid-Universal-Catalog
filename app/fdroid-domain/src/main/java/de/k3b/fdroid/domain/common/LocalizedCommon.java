@@ -19,6 +19,8 @@
 
 package de.k3b.fdroid.domain.common;
 
+import javax.persistence.Column;
+
 @javax.persistence.MappedSuperclass
 /**
  * Common data for v1-Gson-json and android-room-database-Entities.
@@ -28,9 +30,11 @@ package de.k3b.fdroid.domain.common;
 public class LocalizedCommon extends PojoCommon {
     private String name;
     private String summary;
+    @Column(length = 8000)
     private String description;
     private String icon;
     private String video;
+    @Column(length = 8000)
     private String whatsNew;
 
     public static void copyCommon(LocalizedCommon dest, LocalizedCommon src) {

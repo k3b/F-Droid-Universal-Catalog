@@ -18,6 +18,7 @@
  */
 package de.k3b.fdroid.v1.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +42,8 @@ public class AppCategoryUpdateService {
     }
 
     public AppCategoryUpdateService init() {
+        id2Category = new HashMap<>();
+        name2Category = new HashMap<>();
         List<Category> categories = categoryRepository.findAll();
 
         for (Category category : categories) {

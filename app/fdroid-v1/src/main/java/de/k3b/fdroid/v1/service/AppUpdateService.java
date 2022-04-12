@@ -37,6 +37,12 @@ public class AppUpdateService {
         this.appRepository = appRepository;
         this.appCategoryUpdateService = appCategoryUpdateService;
         this.localizedUpdateService = localizedUpdateService;
+
+    }
+
+    public void init() {
+        this.appCategoryUpdateService.init();
+        this.localizedUpdateService.init();
     }
 
     public App update(int repoId, de.k3b.fdroid.v1.domain.App v1App) {
@@ -53,7 +59,7 @@ public class AppUpdateService {
         if (appCategoryUpdateService != null)
             appCategoryUpdateService.update(roomApp.id, v1App.getCategories());
         if (localizedUpdateService != null)
-            localizedUpdateService.update(repoId, v1App.getLocalized());
+            localizedUpdateService.update(roomApp.id, v1App.getLocalized());
         return roomApp;
     }
 }

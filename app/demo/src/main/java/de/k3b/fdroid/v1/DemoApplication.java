@@ -28,6 +28,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 import de.k3b.fdroid.domain.App;
@@ -54,9 +56,13 @@ public class DemoApplication {
 	@Bean
 	public CommandLineRunner demo(V1UpdateServiceEx importer, TestRepositoryJpa repository, AppRepository appRepo) {
 		return (args) -> {
-			demoTestEntity(repository);
-			demoAppEntity(appRepo);
-//			importer.readFromJar();
+//			demoTestEntity(repository);
+//			demoAppEntity(appRepo);
+
+			InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.jar");
+
+			importer.readFromJar(is);
+			is.close();
 		};
 	}
 
