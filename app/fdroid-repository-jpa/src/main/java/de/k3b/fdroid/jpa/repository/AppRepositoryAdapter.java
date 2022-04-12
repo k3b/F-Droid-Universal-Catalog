@@ -44,7 +44,7 @@ public class AppRepositoryAdapter extends RepositoryAdapterBase<App, AppReposito
     @Override
     public int findIdByRepoIdAndPackageName(int repoId, String packageName) {
         App app = findByRepoIdAndPackageName(repoId, packageName);
-        if (app != null) return app.id;
+        if (app != null) return app.getId();
         return -1;
     }
 

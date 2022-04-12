@@ -42,9 +42,9 @@ public class CategoryRepositoryTest {
     @BeforeEach
     public void init() {
         Category category = new Category();
-        category.name = MY_CODE;
+        category.setName(MY_CODE);
         repo.insert(category);
-        id = category.id;
+        id = category.getId();
     }
 
     @AfterEach

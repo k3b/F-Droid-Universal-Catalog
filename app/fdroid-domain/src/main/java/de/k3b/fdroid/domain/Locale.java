@@ -32,22 +32,46 @@ public class Locale extends PojoCommon {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @androidx.room.PrimaryKey(autoGenerate = true)
-    public int id;
+    private int id;
 
-    /**
-     * locale-language-code. Usually two-letter-lowercase. i.e. it for italian
-     */
-    public String code;
+    private String code;
 
-    /**
-     * a flag to symbolize the language. i.e. 🇮🇹
-     */
-    public String symbol;
+    private String symbol;
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         super.toStringBuilder(sb);
         toStringBuilder(sb, "code", this.code);
         toStringBuilder(sb, "symbol", this.symbol);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    /**
+     * locale-language-code. Usually two-letter-lowercase. i.e. it for italian
+     */
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    /**
+     * a flag to symbolize the language. i.e. 🇮🇹
+     */
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
     }
 }

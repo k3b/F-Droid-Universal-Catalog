@@ -33,13 +33,29 @@ public class Version extends VersionCommon {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @androidx.room.PrimaryKey(autoGenerate = true)
-    public int id;
+    private int id;
 
-    public int appId;
+    private int appId;
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         super.toStringBuilder(sb);
         toStringBuilder(sb, "appId", this.appId);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getAppId() {
+        return appId;
+    }
+
+    public void setAppId(int appId) {
+        this.appId = appId;
     }
 }

@@ -42,7 +42,7 @@ public class VersionUpdateService {
             App app = appRepository.findByRepoIdAndPackageName(repoId, packageName);
             if (app != null) {
                 roomVersion = new Version();
-                roomVersion.appId = app.id;
+                roomVersion.setAppId(app.getId());
                 VersionCommon.copyCommon(roomVersion, v1Version);
                 versionRepository.insert(roomVersion);
             }

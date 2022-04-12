@@ -46,7 +46,7 @@ public class AppCategoryRepositoryTest {
     public void init() {
         AppCategory appCategory = new AppCategory(APP_ID, APP_ID + 1);
         repo.insert(appCategory);
-        id = appCategory.id;
+        id = appCategory.getId();
     }
 
     @AfterEach

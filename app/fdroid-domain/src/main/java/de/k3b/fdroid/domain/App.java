@@ -36,9 +36,9 @@ public class App extends AppCommon {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @androidx.room.PrimaryKey(autoGenerate = true)
-    public int id;
+    private int id;
 
-    public int repoId = -1;
+    private int repoId = -1;
     // public Repo repo;
 
     // public List<Localized> localisations;
@@ -48,5 +48,21 @@ public class App extends AppCommon {
         toStringBuilder(sb, "id", this.id);
         toStringBuilder(sb, "repoId", this.repoId);
         super.toStringBuilder(sb);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getRepoId() {
+        return repoId;
+    }
+
+    public void setRepoId(int repoId) {
+        this.repoId = repoId;
     }
 }

@@ -56,13 +56,13 @@ public class LocalizedUpdateService {
     }
 
     private void init(Locale locale) {
-        id2Locale.put(locale.id, locale);
-        code2Locale.put(locale.code, locale);
+        id2Locale.put(locale.getId(), locale);
+        code2Locale.put(locale.getCode(), locale);
     }
 
     private String getLocaleCode(int localeId) {
         Locale locale = (localeId == 0) ? null : id2Locale.get(localeId);
-        return (locale == null) ? null : locale.code;
+        return (locale == null) ? null : locale.getCode();
     }
 
     private int getOrCreateLocaleId(String localeCode) {
@@ -71,11 +71,11 @@ public class LocalizedUpdateService {
             if (locale == null) {
                 // create on demand
                 locale = new Locale();
-                locale.code = localeCode;
+                locale.setCode(localeCode);
                 localeRepository.insert(locale);
                 init(locale);
             }
-            return locale.id;
+            return locale.getId();
         }
         return 0;
     }
@@ -90,8 +90,8 @@ public class LocalizedUpdateService {
             Localized roomLocalized = findByLocaleId(roomLocalizedList, localeId);
             if (roomLocalized == null) {
                 roomLocalized = new Localized();
-                roomLocalized.appId = appId;
-                roomLocalized.localeId = localeId;
+                roomLocalized.setAppId(appId);
+                roomLocalized.setLocaleId(localeId);
                 LocalizedCommon.copyCommon(roomLocalized, v1Localized);
                 localizedRepository.insert(roomLocalized);
                 roomLocalizedList.add(roomLocalized);
@@ -106,7 +106,7 @@ public class LocalizedUpdateService {
 
     private Localized findByLocaleId(List<Localized> roomLocalizedList, int localeId) {
         for (Localized l : roomLocalizedList) {
-            if (l.localeId == localeId) return l;
+            if (l.getLocaleId() == localeId) return l;
         }
         return null;
     }
@@ -114,7 +114,7 @@ public class LocalizedUpdateService {
     private void deleteRemoved(List<Localized> roomLocalizedList, Map<String, de.k3b.fdroid.v1.domain.Localized> v1LocalizedMap) {
         for (int i = roomLocalizedList.size() - 1; i >= 0; i--) {
             Localized roomLocalized = roomLocalizedList.get(i);
-            String localeCode = getLocaleCode(roomLocalized.localeId);
+            String localeCode = getLocaleCode(roomLocalized.getLocaleId());
             if (localeCode != null && !v1LocalizedMap.containsKey(localeCode)) {
                 localizedRepository.delete(roomLocalized);
                 roomLocalizedList.remove(i);

@@ -42,9 +42,9 @@ public class LocaleRepositoryTest {
     @BeforeEach
     public void init() {
         Locale locale = new Locale();
-        locale.code = MY_CODE;
+        locale.setCode(MY_CODE);
         repo.insert(locale);
-        id = locale.id;
+        id = locale.getId();
     }
 
     @AfterEach

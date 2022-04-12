@@ -49,7 +49,7 @@ public class AppUpdateService {
         App roomApp = appRepository.findByRepoIdAndPackageName(repoId, v1App.getPackageName());
         if (roomApp == null) {
             roomApp = new App();
-            roomApp.repoId = repoId;
+            roomApp.setRepoId(repoId);
             AppCommon.copyCommon(roomApp, v1App);
             appRepository.insert(roomApp);
         } else {
@@ -57,9 +57,9 @@ public class AppUpdateService {
             appRepository.update(roomApp);
         }
         if (appCategoryUpdateService != null)
-            appCategoryUpdateService.update(roomApp.id, v1App.getCategories());
+            appCategoryUpdateService.update(roomApp.getId(), v1App.getCategories());
         if (localizedUpdateService != null)
-            localizedUpdateService.update(roomApp.id, v1App.getLocalized());
+            localizedUpdateService.update(roomApp.getId(), v1App.getLocalized());
         return roomApp;
     }
 }

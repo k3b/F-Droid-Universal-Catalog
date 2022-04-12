@@ -105,7 +105,7 @@ public abstract class V1UpdateService {
         @Override
         protected void onRepo(Repo v1Repo) {
             de.k3b.fdroid.domain.Repo roomRepo = repoUpdateService.update(v1Repo);
-            currentRepoId = roomRepo.id;
+            currentRepoId = roomRepo.getId();
         }
 
         /**

@@ -32,11 +32,18 @@ public class Repo extends RepoCommon {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @androidx.room.PrimaryKey(autoGenerate = true)
-    public Integer id;
+    private Integer id;
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         super.toStringBuilder(sb);
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

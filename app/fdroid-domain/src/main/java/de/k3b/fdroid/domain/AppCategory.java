@@ -32,10 +32,10 @@ public class AppCategory extends PojoCommon {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @androidx.room.PrimaryKey(autoGenerate = true)
-    public int id;
+    private int id;
 
-    public int appId;
-    public int categoryId;
+    private int appId;
+    private int categoryId;
 
     public AppCategory(int appId, int categoryId) {
         this.appId = appId;
@@ -52,4 +52,27 @@ public class AppCategory extends PojoCommon {
         toStringBuilder(sb, "categoryId", this.categoryId);
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getAppId() {
+        return appId;
+    }
+
+    public void setAppId(int appId) {
+        this.appId = appId;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
 }

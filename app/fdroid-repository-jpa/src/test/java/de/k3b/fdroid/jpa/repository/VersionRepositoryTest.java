@@ -52,17 +52,17 @@ public class VersionRepositoryTest {
     @BeforeEach
     public void init() {
         App app = new App();
-        app.repoId = MY_REPO_ID;
+        app.setRepoId(MY_REPO_ID);
         app.setPackageName(MY_PACKAGE_NAME);
         appJpa.save(app);
-        appId = app.id;
+        appId = app.getId();
 
         Version version = new Version();
-        version.appId = appId;
+        version.setAppId(appId);
         version.setVersionCode(MY_VERSION_CODE);
         version.setApkName(MY_NAME);
         repo.insert(version);
-        id = version.id;
+        id = version.getId();
     }
 
     @AfterEach

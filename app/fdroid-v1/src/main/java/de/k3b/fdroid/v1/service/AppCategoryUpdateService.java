@@ -53,13 +53,13 @@ public class AppCategoryUpdateService {
     }
 
     private void init(Category category) {
-        id2Category.put(category.id, category);
-        name2Category.put(category.name, category);
+        id2Category.put(category.getId(), category);
+        name2Category.put(category.getName(), category);
     }
 
     private String getCategoryName(int categoryId) {
         Category category = (categoryId == 0) ? null : id2Category.get(categoryId);
-        return (category == null) ? null : category.name;
+        return (category == null) ? null : category.getName();
     }
 
     private int getOrCreateCategoryId(String categoryName) {
@@ -68,11 +68,11 @@ public class AppCategoryUpdateService {
             if (category == null) {
                 // create on demand
                 category = new Category();
-                category.name = categoryName;
+                category.setName(categoryName);
                 categoryRepository.insert(category);
                 init(category);
             }
-            return category.id;
+            return category.getId();
         }
         return 0;
     }
@@ -97,7 +97,7 @@ public class AppCategoryUpdateService {
 
     private AppCategory findByCategoryId(List<AppCategory> appCategoryList, int categoryId) {
         for (AppCategory appCategory : appCategoryList) {
-            if (appCategory.categoryId == categoryId) return appCategory;
+            if (appCategory.getCategoryId() == categoryId) return appCategory;
         }
         return null;
     }
@@ -106,7 +106,7 @@ public class AppCategoryUpdateService {
         for (int i = roomAppCategories.size() - 1; i >= 0; i--) {
             AppCategory roomAppCategory = roomAppCategories.get(i);
             if (roomAppCategory != null) {
-                String categoryName = getCategoryName(roomAppCategory.categoryId);
+                String categoryName = getCategoryName(roomAppCategory.getCategoryId());
                 if (categoryName != null && !v1Categories.contains(categoryName)) {
                     appCategoryRepository.delete(roomAppCategory);
                     roomAppCategories.remove(i);

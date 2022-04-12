@@ -71,7 +71,7 @@ public class DemoApplication {
 		for (App app : all) appRepo.delete(app);
 
 		App app = new App();
-		app.repoId = 1;
+		app.setRepoId(1);
 		app.setPackageName("my.package.name");
 		app.setIcon("myIcon.ico");
 		appRepo.insert(app);

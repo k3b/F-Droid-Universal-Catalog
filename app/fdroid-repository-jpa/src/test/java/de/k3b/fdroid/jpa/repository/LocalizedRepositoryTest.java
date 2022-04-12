@@ -48,12 +48,12 @@ public class LocalizedRepositoryTest {
     public void init() {
         jpa.deleteAll();
         Localized localized = new Localized();
-        localized.appId = MY_APP_ID;
-        localized.localeId = MY_LOCALE_ID;
+        localized.setAppId(MY_APP_ID);
+        localized.setLocaleId(MY_LOCALE_ID);
         localized.setSummary(MY_Summary);
         localized.setIcon(MY_ICON);
         repo.insert(localized);
-        id = localized.id;
+        id = localized.getId();
     }
 
     @Test

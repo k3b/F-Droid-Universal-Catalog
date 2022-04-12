@@ -44,11 +44,11 @@ public class AppRepositoryTest {
     @BeforeEach
     public void init() {
         App app = new App();
-        app.repoId = MY_REPO_ID;
+        app.setRepoId(MY_REPO_ID);
         app.setPackageName(MY_PACKAGE_NAME);
         app.setIcon(MY_ICON);
         repo.insert(app);
-        id = app.id;
+        id = app.getId();
     }
 
     @AfterEach
