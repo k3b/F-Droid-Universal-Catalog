@@ -60,6 +60,9 @@ public class DemoApplication {
 	}
 
 	private void demoAppEntity(AppRepository appRepo) {
+		List<App> all = appRepo.findAll();
+		for (App app : all) appRepo.delete(app);
+
 		App app = new App();
 		app.repoId = 1;
 		app.setPackageName("my.package.name");
@@ -82,6 +85,10 @@ public class DemoApplication {
 	}
 
 	private void demoTestEntity(TestRepositoryJpa repository) {
+		Iterable<TestEntity> all = repository.findAll();
+		for (TestEntity t : all) repository.delete(t);
+
+
 		// save a few customers
 		TestEntity testEntity = new TestEntity();
 		testEntity.name = "my.demo.testEntity";
