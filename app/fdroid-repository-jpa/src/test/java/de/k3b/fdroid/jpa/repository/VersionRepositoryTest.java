@@ -81,8 +81,8 @@ public class VersionRepositoryTest {
     }
 
     @Test
-    public void findForPackageNameAndVersionCode() {
-        Version version = repo.findForPackageNameAndVersionCode(MY_REPO_ID, MY_PACKAGE_NAME, MY_VERSION_CODE);
+    public void findByRepoPackageAndVersionCode() {
+        Version version = repo.findByRepoPackageAndVersionCode(MY_REPO_ID, MY_PACKAGE_NAME, MY_VERSION_CODE);
         Assert.notNull(version, "found");
     }
 

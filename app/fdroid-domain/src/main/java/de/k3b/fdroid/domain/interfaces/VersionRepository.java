@@ -34,5 +34,5 @@ public interface VersionRepository {
 
     List<Version> findByAppId(int appId);
 
-    Version findForPackageNameAndVersionCode(int repoId, String packageName, long versionCode);
+    Version findByRepoPackageAndVersionCode(int repoId, String packageName, long versionCode);
 }

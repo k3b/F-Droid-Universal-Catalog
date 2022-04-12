@@ -37,7 +37,7 @@ public class VersionUpdateService {
     }
 
     public Version update(int repoId, String packageName, de.k3b.fdroid.v1.domain.Version v1Version) {
-        Version roomVersion = versionRepository.findForPackageNameAndVersionCode(repoId, packageName, v1Version.getVersionCode());
+        Version roomVersion = versionRepository.findByRepoPackageAndVersionCode(repoId, packageName, v1Version.getVersionCode());
         if (roomVersion == null) {
             App app = appRepository.findByRepoIdAndPackageName(repoId, packageName);
             if (app != null) {
