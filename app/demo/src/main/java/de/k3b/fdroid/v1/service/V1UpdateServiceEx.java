@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 import de.k3b.fdroid.domain.interfaces.AppCategoryRepository;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.CategoryRepository;
@@ -13,6 +15,7 @@ import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.domain.interfaces.VersionRepository;
 
 @Service
+@Transactional
 public class V1UpdateServiceEx extends V1UpdateService {
     private static final Logger log = LoggerFactory.getLogger(V1UpdateServiceEx.class);
 
@@ -25,6 +28,4 @@ public class V1UpdateServiceEx extends V1UpdateService {
         log.info(s);
         return s;
     }
-
-
 }

@@ -23,9 +23,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.Locale;
 import de.k3b.fdroid.domain.Localized;
 import de.k3b.fdroid.domain.common.LocalizedCommon;
+import de.k3b.fdroid.domain.common.PojoCommon;
 import de.k3b.fdroid.domain.interfaces.LocaleRepository;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 /**
@@ -80,12 +82,18 @@ public class LocalizedUpdateService {
         return 0;
     }
 
-    public List<Localized> update(int appId, Map<String, de.k3b.fdroid.v1.domain.Localized> v1LocalizedMap) {
+    public List<Localized> update(int appId, App roomApp, Map<String, de.k3b.fdroid.v1.domain.Localized> v1LocalizedMap) {
         List<Localized> roomLocalizedList = localizedRepository.findByAppId(appId);
+
+        StringBuilder name = new StringBuilder();
+        StringBuilder summary = new StringBuilder();
+        StringBuilder description = new StringBuilder();
+        StringBuilder whatsNew = new StringBuilder();
 
         deleteRemoved(roomLocalizedList, v1LocalizedMap);
         for (Map.Entry<String, de.k3b.fdroid.v1.domain.Localized> v1Entry : v1LocalizedMap.entrySet()) {
-            int localeId = getOrCreateLocaleId(v1Entry.getKey());
+            String language = v1Entry.getKey();
+            int localeId = getOrCreateLocaleId(language);
             de.k3b.fdroid.v1.domain.Localized v1Localized = v1Entry.getValue();
             Localized roomLocalized = findByLocaleId(roomLocalizedList, localeId);
             if (roomLocalized == null) {
@@ -99,9 +107,36 @@ public class LocalizedUpdateService {
                 LocalizedCommon.copyCommon(roomLocalized, v1Localized);
                 localizedRepository.update(roomLocalized);
             }
+
+            if (roomApp != null) {
+                add("name", PojoCommon.MAX_LEN_AGGREGATED, roomApp, name, language, v1Localized.getName(), " | ");
+                add("summary", PojoCommon.MAX_LEN_AGGREGATED, roomApp, summary, language, v1Localized.getSummary(), "\n");
+                add("description", PojoCommon.MAX_LEN_AGGREGATED_DESCRIPTION, roomApp, description, language, v1Localized.getDescription(), "\n\n------------\n\n");
+                add("whatsNew", PojoCommon.MAX_LEN_AGGREGATED, roomApp, whatsNew, language, v1Localized.getWhatsNew(), "\n\n------------\n\n");
+            }
+        }
+        if (roomApp != null) {
+            roomApp.setName(name.toString());
+            roomApp.setSummary(summary.toString());
+            roomApp.setDescription(description.toString());
+            roomApp.setWhatsNew(whatsNew.toString());
         }
         return roomLocalizedList;
 
+    }
+
+    private void add(String fieldName, int maxLen, App roomApp, StringBuilder dest, String language, String src, String seperator) {
+        if (src != null && src.length() > 0 && !dest.toString().contains(src)) {
+            if (dest.length() > 0) {
+                dest.append(seperator);
+            }
+            dest.append(language).append(": ").append(src);
+            if (dest.length() > maxLen) {
+                throw new IllegalArgumentException(fieldName + " > " + maxLen +
+                        " in " + roomApp.getPackageName() +
+                        ": ('" + dest + "')\n\t" + roomApp);
+            }
+        }
     }
 
     private Localized findByLocaleId(List<Localized> roomLocalizedList, int localeId) {

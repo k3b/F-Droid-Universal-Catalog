@@ -58,8 +58,10 @@ public class AppUpdateService {
         }
         if (appCategoryUpdateService != null)
             appCategoryUpdateService.update(roomApp.getId(), v1App.getCategories());
-        if (localizedUpdateService != null)
-            localizedUpdateService.update(roomApp.getId(), v1App.getLocalized());
+        if (localizedUpdateService != null) {
+            localizedUpdateService.update(roomApp.getId(), roomApp, v1App.getLocalized());
+            appRepository.update(roomApp);
+        }
         return roomApp;
     }
 }

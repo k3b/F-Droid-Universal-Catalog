@@ -29,6 +29,15 @@ import java.util.Locale;
  * pojo Properties are not allowed
  */
 public class PojoCommon {
+    /**
+     * non standard string len for aggregated fields and for app description
+     */
+    public static final int MAX_LEN_AGGREGATED = 8000;
+    /**
+     * non standard string len for aggregated_description
+     */
+    public static final int MAX_LEN_AGGREGATED_DESCRIPTION = 60000;
+
     public static String asDateString(long longDate) {
         if (longDate == 0) return "";
 

@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.domain;
 
+import javax.persistence.Column;
+
 import de.k3b.fdroid.domain.common.AppCommon;
 
 /**
@@ -33,6 +35,7 @@ import de.k3b.fdroid.domain.common.AppCommon;
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 public class App extends AppCommon {
+
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @androidx.room.PrimaryKey(autoGenerate = true)
@@ -43,6 +46,22 @@ public class App extends AppCommon {
 
     // public List<Localized> localisations;
     // public List<Version> versions;
+
+    @Column(length = MAX_LEN_AGGREGATED)
+    /** all different locale name values concatenated for faster search */
+    private String name;
+
+    @Column(length = MAX_LEN_AGGREGATED)
+    /** all different locale summary values concatenated for faster search */
+    private String summary;
+
+    @Column(length = MAX_LEN_AGGREGATED_DESCRIPTION)
+    /** all different locale name description concatenated for faster search */
+    private String description;
+
+    @Column(length = MAX_LEN_AGGREGATED)
+    /** all different locale whatsNew values concatenated for faster search */
+    private String whatsNew;
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
@@ -64,5 +83,37 @@ public class App extends AppCommon {
 
     public void setRepoId(int repoId) {
         this.repoId = repoId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getWhatsNew() {
+        return whatsNew;
+    }
+
+    public void setWhatsNew(String whatsNew) {
+        this.whatsNew = whatsNew;
     }
 }

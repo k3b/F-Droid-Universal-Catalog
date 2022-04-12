@@ -30,11 +30,11 @@ import javax.persistence.Column;
 public class LocalizedCommon extends PojoCommon {
     private String name;
     private String summary;
-    @Column(length = 8000)
+    @Column(length = MAX_LEN_AGGREGATED)
     private String description;
     private String icon;
     private String video;
-    @Column(length = 8000)
+    @Column(length = MAX_LEN_AGGREGATED)
     private String whatsNew;
 
     public static void copyCommon(LocalizedCommon dest, LocalizedCommon src) {
