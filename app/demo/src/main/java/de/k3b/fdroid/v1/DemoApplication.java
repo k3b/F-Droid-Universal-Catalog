@@ -34,6 +34,7 @@ import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.jpa.repository.testcase.TestEntity;
 import de.k3b.fdroid.jpa.repository.testcase.TestRepositoryJpa;
+import de.k3b.fdroid.v1.service.V1UpdateServiceEx;
 
 /**
  * j2se-jpa-db implementation that reads from fdroid-v1-jar and updates a jpa database
@@ -51,11 +52,11 @@ public class DemoApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(TestRepositoryJpa repository, AppRepository appRepo) {
+	public CommandLineRunner demo(V1UpdateServiceEx importer, TestRepositoryJpa repository, AppRepository appRepo) {
 		return (args) -> {
 			demoTestEntity(repository);
-
 			demoAppEntity(appRepo);
+//			importer.readFromJar();
 		};
 	}
 
@@ -82,6 +83,10 @@ public class DemoApplication {
 		// not working
 		int id = appRepo.findIdByRepoIdAndPackageName(1, "my.package.name");
 		log.info("search result " + id);
+
+		all = appRepo.findAll();
+		for (App a : all) appRepo.delete(a);
+
 	}
 
 	private void demoTestEntity(TestRepositoryJpa repository) {
@@ -108,6 +113,9 @@ public class DemoApplication {
 		log.info("search result " + testEntity2.get(0).toString());
 		TestEntity testEntity3 = repository.findByName("my.demo.testEntity");
 		log.info("search result " + testEntity3.toString());
+
+		all = repository.findAll();
+		for (TestEntity t : all) repository.delete(t);
 
 	}
 
