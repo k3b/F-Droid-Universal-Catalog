@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ede3b351af210f4843f159c5edd022f3",
+    "identityHash": "d3a6e0933269399623a7cc0d8476a612",
     "entities": [
       {
         "tableName": "App",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `repoId` INTEGER NOT NULL, `name` TEXT, `summary` TEXT, `description` TEXT, `whatsNew` TEXT, `packageName` TEXT, `changelog` TEXT, `suggestedVersionName` TEXT, `suggestedVersionCode` TEXT, `issueTracker` TEXT, `license` TEXT, `sourceCode` TEXT, `webSite` TEXT, `added` INTEGER NOT NULL, `icon` TEXT, `lastUpdated` INTEGER NOT NULL, FOREIGN KEY(`repoId`) REFERENCES `Repo`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `repoId` INTEGER NOT NULL, `searchName` TEXT, `searchSummary` TEXT, `searchDescription` TEXT, `searchWhatsNew` TEXT, `searchVersion` TEXT, `searchSdk` TEXT, `searchSigner` TEXT, `searchCategory` TEXT, `packageName` TEXT, `changelog` TEXT, `suggestedVersionName` TEXT, `suggestedVersionCode` TEXT, `issueTracker` TEXT, `license` TEXT, `sourceCode` TEXT, `webSite` TEXT, `added` INTEGER NOT NULL, `icon` TEXT, `lastUpdated` INTEGER NOT NULL, FOREIGN KEY(`repoId`) REFERENCES `Repo`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -21,26 +21,50 @@
             "notNull": true
           },
           {
-            "fieldPath": "name",
-            "columnName": "name",
+            "fieldPath": "searchName",
+            "columnName": "searchName",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "summary",
-            "columnName": "summary",
+            "fieldPath": "searchSummary",
+            "columnName": "searchSummary",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "description",
-            "columnName": "description",
+            "fieldPath": "searchDescription",
+            "columnName": "searchDescription",
             "affinity": "TEXT",
             "notNull": false
           },
           {
-            "fieldPath": "whatsNew",
-            "columnName": "whatsNew",
+            "fieldPath": "searchWhatsNew",
+            "columnName": "searchWhatsNew",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "searchVersion",
+            "columnName": "searchVersion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "searchSdk",
+            "columnName": "searchSdk",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "searchSigner",
+            "columnName": "searchSigner",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "searchCategory",
+            "columnName": "searchCategory",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -425,7 +449,7 @@
       },
       {
         "tableName": "Version",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `added` INTEGER NOT NULL, `apkName` TEXT, `hash` TEXT, `hashType` TEXT, `minSdkVersion` INTEGER NOT NULL, `sig` TEXT, `signer` TEXT, `size` INTEGER NOT NULL, `srcname` TEXT, `targetSdkVersion` INTEGER NOT NULL, `versionCode` INTEGER NOT NULL, `versionName` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `added` INTEGER NOT NULL, `apkName` TEXT, `minSdkVersion` INTEGER NOT NULL, `targetSdkVersion` INTEGER NOT NULL, `maxSdkVersion` INTEGER NOT NULL, `versionCode` INTEGER NOT NULL, `versionName` TEXT, `hash` TEXT, `hashType` TEXT, `sig` TEXT, `signer` TEXT, `size` INTEGER NOT NULL, `srcname` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -452,6 +476,36 @@
             "notNull": false
           },
           {
+            "fieldPath": "minSdkVersion",
+            "columnName": "minSdkVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "targetSdkVersion",
+            "columnName": "targetSdkVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "maxSdkVersion",
+            "columnName": "maxSdkVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "versionCode",
+            "columnName": "versionCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "versionName",
+            "columnName": "versionName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
             "fieldPath": "hash",
             "columnName": "hash",
             "affinity": "TEXT",
@@ -462,12 +516,6 @@
             "columnName": "hashType",
             "affinity": "TEXT",
             "notNull": false
-          },
-          {
-            "fieldPath": "minSdkVersion",
-            "columnName": "minSdkVersion",
-            "affinity": "INTEGER",
-            "notNull": true
           },
           {
             "fieldPath": "sig",
@@ -490,24 +538,6 @@
           {
             "fieldPath": "srcname",
             "columnName": "srcname",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "targetSdkVersion",
-            "columnName": "targetSdkVersion",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "versionCode",
-            "columnName": "versionCode",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "versionName",
-            "columnName": "versionName",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -545,7 +575,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ede3b351af210f4843f159c5edd022f3')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd3a6e0933269399623a7cc0d8476a612')"
     ]
   }
 }

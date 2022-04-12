@@ -19,11 +19,16 @@
 
 package de.k3b.fdroid.v1.service;
 
+import java.text.DecimalFormat;
+
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.Version;
 import de.k3b.fdroid.domain.common.VersionCommon;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.interfaces.ProgressListener;
 import de.k3b.fdroid.domain.interfaces.VersionRepository;
+import de.k3b.fdroid.util.StringUtil;
+
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
@@ -31,26 +36,116 @@ public class VersionUpdateService {
     private final AppRepository appRepository;
     private final VersionRepository versionRepository;
 
-    public VersionUpdateService(AppRepository appRepository, VersionRepository versionRepository) {
+    private final DecimalFormat numFormatter = new DecimalFormat("00");
+    ProgressListener progressListener = null;
+    private App lastApp = null;
+    private String lastPackageName = null;
+    private Version minVersion = null;
+    private Version maxVersion = null;
+    private StringBuilder signer = new StringBuilder();
+
+    public VersionUpdateService(AppRepository appRepository, VersionRepository versionRepository,
+                                ProgressListener progressListener) {
         this.appRepository = appRepository;
         this.versionRepository = versionRepository;
+        this.progressListener = progressListener;
     }
 
     public Version update(int repoId, String packageName, de.k3b.fdroid.v1.domain.Version v1Version) {
-        Version roomVersion = versionRepository.findByRepoPackageAndVersionCode(repoId, packageName, v1Version.getVersionCode());
-        if (roomVersion == null) {
-            App app = appRepository.findByRepoIdAndPackageName(repoId, packageName);
-            if (app != null) {
+        if (lastPackageName != null && (packageName == null || packageName.compareTo(lastPackageName) != 0)) {
+            saveVersionAggregate(repoId, packageName);
+        }
+        lastPackageName = packageName;
+
+        Version roomVersion = null;
+        if (v1Version != null) {
+            roomVersion = versionRepository.findByRepoPackageAndVersionCode(repoId, packageName, v1Version.getVersionCode());
+            if (roomVersion == null) {
+                App app = appRepository.findByRepoIdAndPackageName(repoId, packageName);
+
+                if (app == null) {
+                    app = new App();
+                    app.setPackageName(packageName);
+                    app.setRepoId(repoId);
+                    appRepository.insert(app);
+                }
+                lastApp = app;
+
                 roomVersion = new Version();
                 roomVersion.setAppId(app.getId());
                 VersionCommon.copyCommon(roomVersion, v1Version);
                 versionRepository.insert(roomVersion);
+            } else {
+                VersionCommon.copyCommon(roomVersion, v1Version);
+                versionRepository.update(roomVersion);
             }
-        } else {
-            VersionCommon.copyCommon(roomVersion, v1Version);
-            versionRepository.update(roomVersion);
+
+            String s = roomVersion.getSigner();
+            if (!StringUtil.isEmpty(s) && !signer.toString().contains(s)) {
+                signer.append(s).append(" ");
+            }
+            if (minVersion == null || minVersion.getVersionCode() > roomVersion.getVersionCode()) {
+                minVersion = roomVersion;
+            }
+            if (maxVersion == null || maxVersion.getVersionCode() < roomVersion.getVersionCode()) {
+                maxVersion = roomVersion;
+            }
+        }
+        return roomVersion;
+    }
+
+    private void saveVersionAggregate(int repoId, String packageName) {
+        if (progressListener != null) {
+            progressListener.onProgress(".", packageName);
+        }
+        if (lastApp == null) {
+            lastApp = appRepository.findByRepoIdAndPackageName(repoId, packageName);
         }
 
-        return roomVersion;
+        if (minVersion != null && lastApp != null) {
+            StringBuilder sdk = new StringBuilder();
+            add(sdk, minVersion.getMinSdkVersion(), minVersion.getTargetSdkVersion(), minVersion.getMaxSdkVersion());
+
+            StringBuilder code = new StringBuilder();
+            add(code, minVersion.getVersionName(), minVersion.getVersionCode());
+
+            if (minVersion.getVersionCode() != maxVersion.getVersionCode()) {
+                add(sdk.append(" - "), maxVersion.getMinSdkVersion(), maxVersion.getTargetSdkVersion(), maxVersion.getMaxSdkVersion());
+                add(code.append(" - "), maxVersion.getVersionName(), maxVersion.getVersionCode());
+            }
+
+            lastApp.setSearchVersion(code.toString());
+            lastApp.setSearchSdk(sdk.toString());
+            lastApp.setSearchSigner(signer.toString());
+            appRepository.update(lastApp);
+        }
+
+        this.lastPackageName = null;
+        this.lastApp = null;
+
+        minVersion = null;
+        maxVersion = null;
+        signer = new StringBuilder();
+
+    }
+
+    private void add(StringBuilder code, String versionName, long versionCode) {
+        if (!StringUtil.isEmpty(versionName)) {
+            code.append(versionName);
+        }
+        if (!StringUtil.isEmpty(versionCode)) {
+            code.append("(").append(versionCode).append(")");
+        }
+    }
+
+    private void add(StringBuilder version, long minSdkVersion, long targetSdkVersion, long maxSdkVersion) {
+        version.append("[");
+        if (!StringUtil.isEmpty(minSdkVersion)) version.append(numFormatter.format(minSdkVersion));
+        version.append(",");
+        if (!StringUtil.isEmpty(targetSdkVersion))
+            version.append(numFormatter.format(targetSdkVersion));
+        version.append(",");
+        if (!StringUtil.isEmpty(maxSdkVersion)) version.append(numFormatter.format(maxSdkVersion));
+        version.append("]");
     }
 }

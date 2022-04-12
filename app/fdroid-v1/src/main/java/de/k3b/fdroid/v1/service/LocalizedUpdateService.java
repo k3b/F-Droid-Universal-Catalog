@@ -116,10 +116,10 @@ public class LocalizedUpdateService {
             }
         }
         if (roomApp != null) {
-            roomApp.setName(name.toString());
-            roomApp.setSummary(summary.toString());
-            roomApp.setDescription(description.toString());
-            roomApp.setWhatsNew(whatsNew.toString());
+            roomApp.setSearchName(name.toString());
+            roomApp.setSearchSummary(summary.toString());
+            roomApp.setSearchDescription(description.toString());
+            roomApp.setSearchWhatsNew(whatsNew.toString());
         }
         return roomLocalizedList;
 

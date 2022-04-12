@@ -121,6 +121,7 @@ public abstract class FDroidCatalogJsonStreamParserBase {
             reader.endArray();
             token = reader.peek();
         }
+        onVersion(null, null);
     }
 
     private void readAppsArray(Gson gson, JsonReader reader) throws IOException {
@@ -136,6 +137,7 @@ public abstract class FDroidCatalogJsonStreamParserBase {
             }
         }
         reader.endArray();
+        onApp(null);
     }
 
     private String debug(JsonReader reader) throws IOException {

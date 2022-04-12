@@ -22,6 +22,8 @@ package de.k3b.fdroid.v1.service;
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.common.AppCommon;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.interfaces.ProgressListener;
+import de.k3b.fdroid.util.StringUtil;
 
 /**
  * update android-room-database from fdroid-v1-rest-gson data
@@ -30,14 +32,17 @@ public class AppUpdateService {
     private final AppRepository appRepository;
     private final AppCategoryUpdateService appCategoryUpdateService;
     private final LocalizedUpdateService localizedUpdateService;
+    private final ProgressListener progressListener;
 
     public AppUpdateService(AppRepository appRepository,
                             AppCategoryUpdateService appCategoryUpdateService,
-                            LocalizedUpdateService localizedUpdateService) {
+                            LocalizedUpdateService localizedUpdateService,
+                            ProgressListener progressListener) {
         this.appRepository = appRepository;
         this.appCategoryUpdateService = appCategoryUpdateService;
         this.localizedUpdateService = localizedUpdateService;
 
+        this.progressListener = progressListener;
     }
 
     public void init() {
@@ -51,10 +56,18 @@ public class AppUpdateService {
             roomApp = new App();
             roomApp.setRepoId(repoId);
             AppCommon.copyCommon(roomApp, v1App);
+            roomApp.setSearchCategory(StringUtil.toString(v1App.getCategories(), ","));
             appRepository.insert(roomApp);
+            if (progressListener != null) {
+                progressListener.onProgress("+", roomApp.getPackageName());
+            }
         } else {
             AppCommon.copyCommon(roomApp, v1App);
+            roomApp.setSearchCategory(StringUtil.toString(v1App.getCategories(), ","));
             appRepository.update(roomApp);
+            if (progressListener != null) {
+                progressListener.onProgress(".", roomApp.getPackageName());
+            }
         }
         if (appCategoryUpdateService != null)
             appCategoryUpdateService.update(roomApp.getId(), v1App.getCategories());

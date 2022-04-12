@@ -27,6 +27,7 @@ import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.CategoryRepository;
 import de.k3b.fdroid.domain.interfaces.LocaleRepository;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
+import de.k3b.fdroid.domain.interfaces.ProgressListener;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.domain.interfaces.VersionRepository;
 import de.k3b.fdroid.v1.domain.App;
@@ -61,16 +62,35 @@ public abstract class V1UpdateService {
     }
      */
 
-    public V1UpdateService(RepoRepository repoRepository, AppRepository appRepository, CategoryRepository categoryRepository, AppCategoryRepository appCategoryRepository, VersionRepository versionRepository, LocalizedRepository localizedRepository, LocaleRepository localeRepository) {
+    public V1UpdateService(RepoRepository repoRepository, AppRepository appRepository,
+                           CategoryRepository categoryRepository,
+                           AppCategoryRepository appCategoryRepository,
+                           VersionRepository versionRepository,
+                           LocalizedRepository localizedRepository,
+                           LocaleRepository localeRepository) {
+        this(repoRepository, appRepository,
+                categoryRepository,
+                appCategoryRepository,
+                versionRepository,
+                localizedRepository,
+                localeRepository, null);
+    }
+
+    public V1UpdateService(RepoRepository repoRepository, AppRepository appRepository,
+                           CategoryRepository categoryRepository,
+                           AppCategoryRepository appCategoryRepository,
+                           VersionRepository versionRepository,
+                           LocalizedRepository localizedRepository,
+                           LocaleRepository localeRepository, ProgressListener progressListener) {
         repoUpdateService = new RepoUpdateService(repoRepository);
 
         AppCategoryUpdateService appCategoryUpdateService = new AppCategoryUpdateService(
                 categoryRepository, appCategoryRepository);
         LocalizedUpdateService localizedUpdateService = new LocalizedUpdateService(
                 localizedRepository, localeRepository);
-        appUpdateService = new AppUpdateService(appRepository, appCategoryUpdateService, localizedUpdateService);
+        appUpdateService = new AppUpdateService(appRepository, appCategoryUpdateService, localizedUpdateService, progressListener);
 
-        versionUpdateService = new VersionUpdateService(appRepository, versionRepository);
+        versionUpdateService = new VersionUpdateService(appRepository, versionRepository, progressListener);
     }
 
     public void readFromJar(InputStream jarInputStream) throws IOException {
@@ -115,9 +135,10 @@ public abstract class V1UpdateService {
          */
         @Override
         protected void onApp(App v1App) {
-            fixLocaleService.fix(v1App);
-            appUpdateService.update(currentRepoId, v1App);
-
+            if (v1App != null) {
+                fixLocaleService.fix(v1App);
+                appUpdateService.update(currentRepoId, v1App);
+            }
         }
 
         /**

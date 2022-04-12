@@ -184,3 +184,40 @@ a.PACKAGE_NAME like '%.k3b.%' GROUP by a.PACKAGE_NAME
 
 select * from app where PACKAGE_NAME like '%gallery%' or NAME like '%gallery%' or SUMMARY like '
 %gallery%' or DESCRIPTION like '%gallery%'
+
+
+-----
+
+TODO
+
+logging adding xxx/updating xxx app += category app += minsdk/maxsdk
+
+maxsdk in version:
+
+                "maxSdkVersion": 26,
+                "minSdkVersion": 16,
+                "packageName": "ca.cmetcalfe.xposed.disablebatterywarnings",
+                "sig": "d3e82726f3e2e2e6a45ba39d90ea3fdf",
+                "signer": "7ea7c46924b9b27179c3a76dda12472464c8f976a681e99c8e83dcbf64e6ddad",
+                "size": 33818,
+                "srcname": "ca.cmetcalfe.xposed.disablebatterywarnings_3_src.tar.gz",
+                "targetSdkVersion": 26,
+                "versionCode": 3,
+                "versionName": "1.2"
+
+create view app_search as
+(select id, PACKAGE_NAME, PACKAGE_NAME search, 1000 score from app) union
+(select id, PACKAGE_NAME, NAME search, 1000 score from app) union
+(select id, PACKAGE_NAME, SUMMARY search, 100 score from app) union
+(select id, PACKAGE_NAME, DESCRIPTION search, 1 score from app)
+;
+
+select id, PACKAGE_NAME, sum(score) score from APP_SEARCH where search like '%k3b%' group by id,
+PACKAGE_NAME ORDER by sum(score) desc, PACKAGE_NAME
+
+select a.PACKAGE_NAME, count(*) cnt, v.SIGNER from VERSION v inner join App a on v.APP_ID = a.id --
+where a.PACKAGE_NAME like '%k3b%' GROUP by a.PACKAGE_NAME, v.SIGNER ORDER by count(*) desc,
+PACKAGE_NAME
+
+select PACKAGE_NAME, SDK, VERSION from app WHERE PACKAGE_NAME like '%k3b%' order by sdk,
+PACKAGE_NAME 

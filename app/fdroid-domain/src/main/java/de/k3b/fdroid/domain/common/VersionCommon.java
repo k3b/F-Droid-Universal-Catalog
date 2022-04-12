@@ -28,28 +28,31 @@ package de.k3b.fdroid.domain.common;
 public class VersionCommon extends PojoCommon {
     private long added;
     private String apkName;
+    private long minSdkVersion;
+    private long targetSdkVersion;
+    private long maxSdkVersion;
+    private long versionCode;
+    private String versionName;
+
     private String hash;
     private String hashType;
-    private long minSdkVersion;
     private String sig;
     private String signer;
     private long size;
     private String srcname;
-    private long targetSdkVersion;
-    private long versionCode;
-    private String versionName;
 
     public static void copyCommon(VersionCommon dest, VersionCommon src) {
-        dest.setAdded(src.getAdded());
         dest.setApkName(src.getApkName());
+        dest.setMinSdkVersion(src.getMinSdkVersion());
+        dest.setTargetSdkVersion(src.getTargetSdkVersion());
+        dest.setMaxSdkVersion(src.getMaxSdkVersion());
+        dest.setAdded(src.getAdded());
         dest.setHash(src.getHash());
         dest.setHashType(src.getHashType());
-        dest.setMinSdkVersion(src.getMinSdkVersion());
         dest.setSig(src.getSig());
         dest.setSigner(src.getSigner());
         dest.setSize(src.getSize());
         dest.setSrcname(src.getSrcname());
-        dest.setTargetSdkVersion(src.getTargetSdkVersion());
         dest.setVersionCode(src.getVersionCode());
         dest.setVersionName(src.getVersionName());
     }
@@ -92,6 +95,14 @@ public class VersionCommon extends PojoCommon {
 
     public void setMinSdkVersion(long minSdkVersion) {
         this.minSdkVersion = minSdkVersion;
+    }
+
+    public long getMaxSdkVersion() {
+        return maxSdkVersion;
+    }
+
+    public void setMaxSdkVersion(long maxSdkVersion) {
+        this.maxSdkVersion = maxSdkVersion;
     }
 
     public String getSig() {
@@ -153,15 +164,16 @@ public class VersionCommon extends PojoCommon {
     protected void toStringBuilder(StringBuilder sb) {
         super.toStringBuilder(sb);
         toStringBuilder(sb, "apkName", this.apkName);
+        toStringBuilder(sb, "minSdkVersion", this.minSdkVersion);
+        toStringBuilder(sb, "targetSdkVersion", this.targetSdkVersion);
+        toStringBuilder(sb, "maxSdkVersion", this.minSdkVersion);
         toDateStringBuilder(sb, "added", this.added);
         toStringBuilder(sb, "hash", this.hash);
         toStringBuilder(sb, "hashType", this.hashType);
-        toStringBuilder(sb, "minSdkVersion", this.minSdkVersion);
         toStringBuilder(sb, "sig", this.sig);
         toStringBuilder(sb, "signer", this.signer);
         toStringBuilder(sb, "size", this.size);
         toStringBuilder(sb, "srcname", this.srcname);
-        toStringBuilder(sb, "targetSdkVersion", this.targetSdkVersion);
         toStringBuilder(sb, "versionCode", this.versionCode);
         toStringBuilder(sb, "versionName", this.versionName);
     }
