@@ -25,7 +25,7 @@ public class V1UpdateServiceEx extends V1UpdateService {
 
     @Override
     protected String log(String s) {
-        log.info(s);
+        System.out.println(s);
         return s;
     }
 }

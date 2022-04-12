@@ -36,7 +36,7 @@ public class PojoCommon {
     /**
      * non standard string len for aggregated_description
      */
-    public static final int MAX_LEN_AGGREGATED_DESCRIPTION = 60000;
+    public static final int MAX_LEN_AGGREGATED_DESCRIPTION = 256000;
 
     public static String asDateString(long longDate) {
         if (longDate == 0) return "";

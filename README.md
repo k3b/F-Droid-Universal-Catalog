@@ -173,8 +173,14 @@ links
 -----
 
 
--- hsqldb select a.PACKAGE_NAME, GROUP_CONCAT(l.NAME ORDER BY c.CODE SEPARATOR ' | ') as NAME,
-GROUP_CONCAT(l.SUMMARY ORDER BY c.CODE SEPARATOR ' | ') as SUMMARY, GROUP_CONCAT(l.WHATS_NEW ORDER
-BY c.CODE SEPARATOR ' | ') as WHATS_NEW, GROUP_CONCAT(c.CODE ORDER BY c.CODE SEPARATOR ' | ') as
-language from app a inner join LOCALIZED l on l.APP_ID = a.id inner join LOCALE c on l.LOCALE_ID =
-c.id where a.PACKAGE_NAME like '%.k3b.%' GROUP by a.PACKAGE_NAME
+-- hsqldb
+
+select a.PACKAGE_NAME, GROUP_CONCAT(l.NAME ORDER BY c.CODE SEPARATOR ' | ') as NAME, GROUP_CONCAT(
+l.SUMMARY ORDER BY c.CODE SEPARATOR ' | ') as SUMMARY, GROUP_CONCAT(l.WHATS_NEW ORDER BY c.CODE
+SEPARATOR ' | ') as WHATS_NEW, GROUP_CONCAT(c.CODE ORDER BY c.CODE SEPARATOR ' | ') as language from
+app a inner join LOCALIZED l on l.APP_ID = a.id inner join LOCALE c on l.LOCALE_ID = c.id where
+a.PACKAGE_NAME like '%.k3b.%' GROUP by a.PACKAGE_NAME
+---------------
+
+select * from app where PACKAGE_NAME like '%gallery%' or NAME like '%gallery%' or SUMMARY like '
+%gallery%' or DESCRIPTION like '%gallery%'
