@@ -2,6 +2,15 @@
 plugins {
     id 'com.android.application' version '7.1.1' apply false
     id 'com.android.library' version '7.1.1' apply false
+    // id 'maven-publish' apply false // required for jitpack
+}
+
+// required for jitpack
+ext {
+    PUBLISH_GROUP_ID = 'com.github.k3b'
+    PUBLISH_VERSION = "L1.0.0"
+    SOURCES = 'github.com/k3b/f-droid-api'
+    LICENSE_TYP = 'GPL v3+'
 }
 
 task clean(type: Delete) {

@@ -1,12 +1,29 @@
 plugins {
     id 'com.android.library'
+    id 'maven-publish' // required for jitpack
+}
+
+// required for jitpack publish aar
+afterEvaluate {
+    publishing {
+        publications {
+            // Creates a Maven publication called "release".
+            release(MavenPublication) {
+                from components.release
+                groupId = rootProject.ext.PUBLISH_GROUP_ID
+                version = rootProject.ext.PUBLISH_VERSION
+                // artifactId = 'android-example'
+            }
+        }
+    }
 }
 
 android {
     compileSdk 31
 
     defaultConfig {
-        minSdk 16
+        minSdk 14 // TODO iw api 14 also working?
+//        minSdk 16
         targetSdk 31
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

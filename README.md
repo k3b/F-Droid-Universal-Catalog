@@ -200,6 +200,11 @@ create view app_search as
 select id, PACKAGE_NAME, sum(score) score from APP_SEARCH where search like '%k3b%' group by id,
 PACKAGE_NAME ORDER by sum(score) desc, PACKAGE_NAME
 
+select * from app where id in (
+select id from APP_SEARCH where search like '%g%droid%' group by id, PACKAGE_NAME ORDER by sum(
+score) desc, PACKAGE_NAME
+)
+
 select a.PACKAGE_NAME, count(*) cnt, v.SIGNER from VERSION v inner join App a on v.APP_ID = a.id
 where a.PACKAGE_NAME like '%k3b%' GROUP by a.PACKAGE_NAME, v.SIGNER ORDER by count(*) desc,
 PACKAGE_NAME
@@ -207,3 +212,25 @@ PACKAGE_NAME
 select PACKAGE_NAME, SEARCH_SDK, SEARCH_VERSION from app WHERE PACKAGE_NAME like '%k3b%' order by
 SEARCH_SDK, PACKAGE_NAME
 
+----
+
+fdroid apps
+
+droidi-fy       https://github.com/NeoApplications/Neo-Store/
+gdroid          https://gitlab.com/gdroid/gdroidclient/
+f-droid         https://gitlab.com/fdroid/fdroidclient
+fdroidclassic   https://git.bubu1.eu/Bubu/fdroidclassic
+
+--------------
+
+
+todo howto preload create view
+
+lib
+
+demo:
+fatjar: ./gradlew clean :app:demo:bootJar
+
+    cmdline optionen
+    database path or server uri
+    v1 json download pfad oder dir oder https uri

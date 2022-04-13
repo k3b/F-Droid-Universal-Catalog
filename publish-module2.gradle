@@ -5,69 +5,21 @@
 
 // variables inherited from root-build.gradle
 
-task javadocs(type: Javadoc) {
-    if (project.plugins.findPlugin("com.android.library")) {
-        source = android.sourceSets.main.java.srcDirs
-        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-        android.libraryVariants.all { variant ->
-            if (variant.name == 'release') {
-                owner.classpath += variant.javaCompileProvider.get().classpath
-            }
-        }
-    } else {
-        source = sourceSets.main.java.srcDirs
-    }
-    exclude '**/R.html', '**/R.*.html', '**/index.html'
-}
-
-task javadocsJar(type: Jar, dependsOn: javadocs) {
-    archiveClassifier.set('javadoc')
-    from javadocs.destinationDir
-}
-
-task sourcesJar(type: Jar) {
-    archiveClassifier.set('sources')
-    if (project.plugins.findPlugin("com.android.library")) {
-        from android.sourceSets.main.java.srcDirs
-    } else {
-        from sourceSets.main.java.srcDirs
-    }
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocsJar
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = rootProject.ext.PUBLISH_GROUP_ID
-            // artifactId = 'library'
-            version = rootProject.ext.PUBLISH_VERSION
-            // from components.java
-        }
-    }
-}
-
 afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
                 groupId rootProject.ext.PUBLISH_GROUP_ID
-                artifactId ext.PUBLISH_ARTIFACT_ID
+                // artifactId ext.PUBLISH_ARTIFACT_ID
                 version rootProject.ext.PUBLISH_VERSION
                 if (project.plugins.findPlugin("com.android.library")) {
                     from components.release
                 } else {
                     from components.java
                 }
-
-                artifact sourcesJar
-
                 pom {
-                    name = ext.PUBLISH_ARTIFACT_ID
-                    description = ext.PUBLISH_MODUL_DESCRIPTION
+                    // name = ext.PUBLISH_ARTIFACT_ID
+                    // description = ext.PUBLISH_MODUL_DESCRIPTION
                     url = "https://" + rootProject.ext.SOURCES
                     licenses {
                         license {

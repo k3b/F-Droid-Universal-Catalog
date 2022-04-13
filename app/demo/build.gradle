@@ -4,6 +4,18 @@ plugins {
 	id 'org.springframework.boot' version '2.6.6'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'maven-publish' // required for jitpack
+}
+
+// required for jitpack
+publishing {
+	publications {
+		maven(MavenPublication) {
+			groupId = rootProject.ext.PUBLISH_GROUP_ID
+			version = rootProject.ext.PUBLISH_VERSION
+			from components.java
+		}
+	}
 }
 
 java {
