@@ -20,6 +20,7 @@ package de.k3b.fdroid.jpa.repository;
 
 import org.springframework.stereotype.Service;
 
+import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.jpa.repository.base.RepositoryAdapterBase;
 
@@ -30,19 +31,19 @@ import de.k3b.fdroid.jpa.repository.base.RepositoryAdapterBase;
  * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
  */
 @Service
-public class AppRepositoryAdapter<APP extends de.k3b.fdroid.domain.App> extends RepositoryAdapterBase<APP, AppRepositoryJpa<APP>> implements AppRepository<APP> {
+public class AppRepositoryAdapter extends RepositoryAdapterBase<App, AppRepositoryJpa> implements AppRepository {
     public AppRepositoryAdapter(AppRepositoryJpa jpa) {
         super(jpa);
     }
 
     @Override
-    public APP findByRepoIdAndPackageName(int repoId, String packageName) {
+    public App findByRepoIdAndPackageName(int repoId, String packageName) {
         return jpa.findByRepoIdAndPackageName(repoId, packageName);
     }
 
     @Override
     public int findIdByRepoIdAndPackageName(int repoId, String packageName) {
-        APP app = findByRepoIdAndPackageName(repoId, packageName);
+        App app = findByRepoIdAndPackageName(repoId, packageName);
         if (app != null) return app.getId();
         return -1;
     }

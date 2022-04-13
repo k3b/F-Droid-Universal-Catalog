@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "266dbf170fc05f02f90239eaf4c99005",
+    "identityHash": "6e2c9d69dec940692b336b0749a1047d",
     "entities": [
       {
         "tableName": "App",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `repoId` INTEGER NOT NULL, `packageName` TEXT, `changelog` TEXT, `suggestedVersionName` TEXT, `suggestedVersionCode` TEXT, `issueTracker` TEXT, `license` TEXT, `sourceCode` TEXT, `webSite` TEXT, `added` INTEGER NOT NULL, `icon` TEXT, `lastUpdated` INTEGER NOT NULL, FOREIGN KEY(`repoId`) REFERENCES `Repo`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `repoId` INTEGER NOT NULL, `searchName` TEXT, `searchSummary` TEXT, `searchDescription` TEXT, `searchWhatsNew` TEXT, `searchVersion` TEXT, `searchSdk` TEXT, `searchSigner` TEXT, `searchCategory` TEXT, `packageName` TEXT, `changelog` TEXT, `suggestedVersionName` TEXT, `suggestedVersionCode` TEXT, `issueTracker` TEXT, `license` TEXT, `sourceCode` TEXT, `webSite` TEXT, `added` INTEGER NOT NULL, `icon` TEXT, `lastUpdated` INTEGER NOT NULL, FOREIGN KEY(`repoId`) REFERENCES `Repo`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -19,6 +19,54 @@
             "columnName": "repoId",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "searchName",
+            "columnName": "searchName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "searchSummary",
+            "columnName": "searchSummary",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "searchDescription",
+            "columnName": "searchDescription",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "searchWhatsNew",
+            "columnName": "searchWhatsNew",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "searchVersion",
+            "columnName": "searchVersion",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "searchSdk",
+            "columnName": "searchSdk",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "searchSigner",
+            "columnName": "searchSigner",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "searchCategory",
+            "columnName": "searchCategory",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "packageName",
@@ -527,7 +575,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '266dbf170fc05f02f90239eaf4c99005')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6e2c9d69dec940692b336b0749a1047d')"
     ]
   }
 }

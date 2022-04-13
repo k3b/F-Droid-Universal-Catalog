@@ -21,6 +21,8 @@ package de.k3b.fdroid.jpa.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import de.k3b.fdroid.domain.App;
+
 /**
  * Spring-Boot-Jpa (Non-Android) specific Database-Repository implementation:
  * Entity-Pojo-s are transfered from/to database using Spring-Boot-Jpa.
@@ -28,7 +30,7 @@ import org.springframework.stereotype.Repository;
  * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
  */
 @Repository
-public interface AppRepositoryJpa<APP extends de.k3b.fdroid.domain.App> extends CrudRepository<APP, Integer> {
-    APP findByRepoIdAndPackageName(int repoId, String packageName);
+public interface AppRepositoryJpa extends CrudRepository<App, Integer> {
+    App findByRepoIdAndPackageName(int repoId, String packageName);
 }
 

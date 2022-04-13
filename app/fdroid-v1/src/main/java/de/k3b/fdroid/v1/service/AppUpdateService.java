@@ -19,7 +19,6 @@
 
 package de.k3b.fdroid.v1.service;
 
-import de.k3b.fdroid.domain.AppForSearch;
 import de.k3b.fdroid.domain.common.AppCommon;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.ProgressListener;
@@ -29,14 +28,12 @@ import de.k3b.fdroid.util.StringUtil;
  * update android-room-database from fdroid-v1-rest-gson data
  */
 public class AppUpdateService {
-    private final AppRepository<AppForSearch> appRepository;
+    private final AppRepository appRepository;
     private final AppCategoryUpdateService appCategoryUpdateService;
     private final LocalizedUpdateService localizedUpdateService;
     private final ProgressListener progressListener;
 
-    private final Class<?> appClass = AppForSearch.class;
-
-    public AppUpdateService(AppRepository<AppForSearch> appRepository,
+    public AppUpdateService(AppRepository appRepository,
                             AppCategoryUpdateService appCategoryUpdateService,
                             LocalizedUpdateService localizedUpdateService,
                             ProgressListener progressListener) {
@@ -52,10 +49,10 @@ public class AppUpdateService {
         this.localizedUpdateService.init();
     }
 
-    public AppForSearch update(int repoId, de.k3b.fdroid.v1.domain.App v1App) {
-        AppForSearch roomApp = appRepository.findByRepoIdAndPackageName(repoId, v1App.getPackageName());
+    public de.k3b.fdroid.domain.App update(int repoId, de.k3b.fdroid.v1.domain.App v1App) {
+        de.k3b.fdroid.domain.App roomApp = appRepository.findByRepoIdAndPackageName(repoId, v1App.getPackageName());
         if (roomApp == null) {
-            roomApp = new AppForSearch();
+            roomApp = new de.k3b.fdroid.domain.App();
             roomApp.setRepoId(repoId);
             AppCommon.copyCommon(roomApp, v1App);
             roomApp.setSearchCategory(StringUtil.toString(v1App.getCategories(), ","));

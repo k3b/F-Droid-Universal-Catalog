@@ -31,7 +31,7 @@ import de.k3b.fdroid.domain.interfaces.AppRepository;
 
 // NOTE: AppDao cannot be Generic, AppDao<App> is not possible :-(
 @Dao
-public interface AppDao extends AppRepository<App> {
+public interface AppDao extends AppRepository {
     @Insert
     void insert(App apps);
 

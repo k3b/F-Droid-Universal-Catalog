@@ -37,7 +37,7 @@ public class AppRepositoryTest {
     @Autowired
     private AppRepositoryJpa jpa;
     @Autowired
-    private AppRepository<App> repo;
+    private AppRepository repo;
 
     private int id = 0;
 

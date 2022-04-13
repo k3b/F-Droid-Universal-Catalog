@@ -22,7 +22,6 @@ package de.k3b.fdroid.v1.service;
 import java.io.IOException;
 import java.io.InputStream;
 
-import de.k3b.fdroid.domain.AppForSearch;
 import de.k3b.fdroid.domain.interfaces.AppCategoryRepository;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.CategoryRepository;
@@ -63,7 +62,7 @@ public abstract class V1UpdateService {
     }
      */
 
-    public V1UpdateService(RepoRepository repoRepository, AppRepository<AppForSearch> appRepository,
+    public V1UpdateService(RepoRepository repoRepository, AppRepository appRepository,
                            CategoryRepository categoryRepository,
                            AppCategoryRepository appCategoryRepository,
                            VersionRepository versionRepository,
@@ -77,7 +76,7 @@ public abstract class V1UpdateService {
                 localeRepository, null);
     }
 
-    public V1UpdateService(RepoRepository repoRepository, AppRepository<AppForSearch> appRepository,
+    public V1UpdateService(RepoRepository repoRepository, AppRepository appRepository,
                            CategoryRepository categoryRepository,
                            AppCategoryRepository appCategoryRepository,
                            VersionRepository versionRepository,

@@ -21,7 +21,6 @@ package de.k3b.fdroid.v1.service;
 
 import java.text.DecimalFormat;
 
-import de.k3b.fdroid.domain.AppForSearch;
 import de.k3b.fdroid.domain.Version;
 import de.k3b.fdroid.domain.common.VersionCommon;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
@@ -33,18 +32,18 @@ import de.k3b.fdroid.util.StringUtil;
  * update android-room-database from fdroid-v1-rest-gson data
  */
 public class VersionUpdateService {
-    private final AppRepository<AppForSearch> appRepository;
+    private final AppRepository appRepository;
     private final VersionRepository versionRepository;
 
     private final DecimalFormat numFormatter = new DecimalFormat("00");
     ProgressListener progressListener = null;
-    private AppForSearch lastApp = null;
+    private de.k3b.fdroid.domain.App lastApp = null;
     private String lastPackageName = null;
     private Version minVersion = null;
     private Version maxVersion = null;
     private StringBuilder signer = new StringBuilder();
 
-    public VersionUpdateService(AppRepository<AppForSearch> appRepository, VersionRepository versionRepository,
+    public VersionUpdateService(AppRepository appRepository, VersionRepository versionRepository,
                                 ProgressListener progressListener) {
         this.appRepository = appRepository;
         this.versionRepository = versionRepository;
@@ -61,10 +60,10 @@ public class VersionUpdateService {
         if (v1Version != null) {
             roomVersion = versionRepository.findByRepoPackageAndVersionCode(repoId, packageName, v1Version.getVersionCode());
             if (roomVersion == null) {
-                AppForSearch app = appRepository.findByRepoIdAndPackageName(repoId, packageName);
+                de.k3b.fdroid.domain.App app = appRepository.findByRepoIdAndPackageName(repoId, packageName);
 
                 if (app == null) {
-                    app = new AppForSearch();
+                    app = new de.k3b.fdroid.domain.App();
                     app.setPackageName(packageName);
                     app.setRepoId(repoId);
                     appRepository.insert(app);
