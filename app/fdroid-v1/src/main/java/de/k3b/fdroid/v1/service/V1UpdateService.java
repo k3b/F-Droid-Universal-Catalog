@@ -37,7 +37,7 @@ import de.k3b.fdroid.v1.domain.Version;
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
-public abstract class V1UpdateService {
+public abstract class V1UpdateService<APP extends de.k3b.fdroid.domain.App> {
     JsonStreamParser jsonStreamParser = new JsonStreamParser();
     RepoUpdateService repoUpdateService;
 
@@ -62,7 +62,7 @@ public abstract class V1UpdateService {
     }
      */
 
-    public V1UpdateService(RepoRepository repoRepository, AppRepository appRepository,
+    public V1UpdateService(RepoRepository repoRepository, AppRepository<APP> appRepository,
                            CategoryRepository categoryRepository,
                            AppCategoryRepository appCategoryRepository,
                            VersionRepository versionRepository,
@@ -76,7 +76,7 @@ public abstract class V1UpdateService {
                 localeRepository, null);
     }
 
-    public V1UpdateService(RepoRepository repoRepository, AppRepository appRepository,
+    public V1UpdateService(RepoRepository repoRepository, AppRepository<APP> appRepository,
                            CategoryRepository categoryRepository,
                            AppCategoryRepository appCategoryRepository,
                            VersionRepository versionRepository,

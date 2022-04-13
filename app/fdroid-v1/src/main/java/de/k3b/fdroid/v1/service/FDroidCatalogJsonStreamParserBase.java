@@ -52,6 +52,7 @@ public abstract class FDroidCatalogJsonStreamParserBase {
      * @throws IOException if there are errors jsonInputStream the JSON inputstream
      */
     public void readJsonStream(InputStream jsonInputStream) throws IOException {
+        // StandardCharsets.UTF_8=Charset.forName("UTF-8") not supported by api-14
         try (JsonReader reader = new JsonReader(new InputStreamReader(jsonInputStream, StandardCharsets.UTF_8))) {
 
             Gson gson = new Gson();

@@ -56,38 +56,42 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
 
     @Override
     protected void onApp(App app) {
-        numberOfApps++;
-        Map<String, Localized> oldLocales = app.getLocalized();
-        fixLocaleService.fix(app);
-        StringBuilder nameWithLocales = new StringBuilder();
-        String lastUpdated = PojoCommon.asDateString(app.getLastUpdated());
-        if (lastUpdated != null) {
-            nameWithLocales.append(lastUpdated).append(" ");
-        }
-
-        nameWithLocales.append(app.getPackageName());
-
-        Map<String, Localized> locales = app.getLocalized();
-        if (locales != null && !locales.isEmpty()) {
-            Set<String> localeNames = locales.keySet();
-            for (String locale : localeNames) {
-                nameWithLocales.append(" ").append(locale);
-                statistics.addStatistics(locale, locales.get(locale));
+        if (app != null) {
+            numberOfApps++;
+            Map<String, Localized> oldLocales = app.getLocalized();
+            fixLocaleService.fix(app);
+            StringBuilder nameWithLocales = new StringBuilder();
+            String lastUpdated = PojoCommon.asDateString(app.getLastUpdated());
+            if (lastUpdated != null) {
+                nameWithLocales.append(lastUpdated).append(" ");
             }
-            if (!locales.containsKey("en")) {
-                appWithNoEnLocale.append(app.getPackageName()).append("\n\t").append(app).append("\n");
+
+            nameWithLocales.append(app.getPackageName());
+
+            Map<String, Localized> locales = app.getLocalized();
+            if (locales != null && !locales.isEmpty()) {
+                Set<String> localeNames = locales.keySet();
+                for (String locale : localeNames) {
+                    nameWithLocales.append(" ").append(locale);
+                    statistics.addStatistics(locale, locales.get(locale));
+                }
+                if (!locales.containsKey("en")) {
+                    appWithNoEnLocale.append(app.getPackageName()).append("\n\t").append(app).append("\n");
+                }
+            } else {
+                appWithNoLocale.append(app.getPackageName()).append("\n\t").append(app).append("\n");
             }
-        } else {
-            appWithNoLocale.append(app.getPackageName()).append("\n\t").append(app).append("\n");
+            log("onApp(" + nameWithLocales + ")");
         }
-        log("onApp(" + nameWithLocales + ")");
     }
 
     @Override
     protected void onVersion(String name, Version version) {
-        log("onVersion(" + name +
-                "," + version.getVersionName() + "," + PojoCommon.asDateString(version.getAdded()) +
-                ")");
+        if (version != null) {
+            log("onVersion(" + name +
+                    "," + version.getVersionName() + "," + PojoCommon.asDateString(version.getAdded()) +
+                    ")");
+        }
     }
 
     public void readJsonStream(InputStream jsonInputStream) throws IOException {

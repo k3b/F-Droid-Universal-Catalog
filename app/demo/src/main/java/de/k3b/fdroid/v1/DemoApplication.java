@@ -54,7 +54,7 @@ public class DemoApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(V1UpdateServiceEx importer, TestRepositoryJpa repository, AppRepository appRepo) {
+	public CommandLineRunner demo(V1UpdateServiceEx importer, TestRepositoryJpa repository, AppRepository<App> appRepo) {
 		return (args) -> {
 //			demoTestEntity(repository);
 //			demoAppEntity(appRepo);
@@ -66,7 +66,7 @@ public class DemoApplication {
 		};
 	}
 
-	private void demoAppEntity(AppRepository appRepo) {
+	private void demoAppEntity(AppRepository<App> appRepo) {
 		List<App> all = appRepo.findAll();
 		for (App app : all) appRepo.delete(app);
 

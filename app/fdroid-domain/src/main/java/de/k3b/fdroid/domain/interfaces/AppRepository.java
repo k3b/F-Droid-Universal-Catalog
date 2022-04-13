@@ -25,16 +25,16 @@ import de.k3b.fdroid.domain.App;
 /**
  * Android independant interfaces to use the Database
  */
-public interface AppRepository {
-    void insert(App apps);
+public interface AppRepository<APP extends App> {
+    void insert(APP apps);
 
-    void update(App roomApp);
+    void update(APP roomApp);
 
-    void delete(App app);
+    void delete(APP app);
 
     App findByRepoIdAndPackageName(int repoId, String packageName);
 
     int findIdByRepoIdAndPackageName(int repoId, String packageName);
 
-    List<App> findAll();
+    List<APP> findAll();
 }
