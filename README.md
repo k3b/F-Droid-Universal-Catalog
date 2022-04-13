@@ -172,52 +172,6 @@ links
 
 -----
 
-
--- hsqldb
-
-select a.PACKAGE_NAME, GROUP_CONCAT(l.NAME ORDER BY c.CODE SEPARATOR ' | ') as NAME, GROUP_CONCAT(
-l.SUMMARY ORDER BY c.CODE SEPARATOR ' | ') as SUMMARY, GROUP_CONCAT(l.WHATS_NEW ORDER BY c.CODE
-SEPARATOR ' | ') as WHATS_NEW, GROUP_CONCAT(c.CODE ORDER BY c.CODE SEPARATOR ' | ') as language from
-app a inner join LOCALIZED l on l.APP_ID = a.id inner join LOCALE c on l.LOCALE_ID = c.id where
-a.PACKAGE_NAME like '%.k3b.%' GROUP by a.PACKAGE_NAME
----------------
-
-select * from app where PACKAGE_NAME like '%gallery%' or NAME like '%gallery%' or SUMMARY like '
-%gallery%' or DESCRIPTION like '%gallery%'
-
-
------
-
-create view app_search as
-(select id, PACKAGE_NAME, PACKAGE_NAME search, 1000 score from app) union
-(select id, PACKAGE_NAME, SEARCH_NAME search, 1000 score from app) union
-(select id, PACKAGE_NAME, SEARCH_SUMMARY search, 100 score from app) union
-(select id, PACKAGE_NAME, SEARCH_Whats_New search, 10 score from app) union
-(select id, PACKAGE_NAME, SEARCH_Category search, 50 score from app) union
-(select id, PACKAGE_NAME, SEARCH_DESCRIPTION search, 1 score from app)
-;
-
-select id, PACKAGE_NAME, sum(score) score from APP_SEARCH where search like '%k3b%' group by id,
-PACKAGE_NAME ORDER by sum(score) desc, PACKAGE_NAME
-
-select * from app where id in (
-select id from APP_SEARCH where search like '%g%droid%' group by id, PACKAGE_NAME ORDER by sum(
-score) desc, PACKAGE_NAME
-)
-
-select a.PACKAGE_NAME, count(*) cnt, v.SIGNER from VERSION v inner join App a on v.APP_ID = a.id
-where a.PACKAGE_NAME like '%k3b%' GROUP by a.PACKAGE_NAME, v.SIGNER ORDER by count(*) desc,
-PACKAGE_NAME
-
-select PACKAGE_NAME, SEARCH_SDK, SEARCH_VERSION from app WHERE PACKAGE_NAME like '%k3b%' order by
-SEARCH_SDK, PACKAGE_NAME
-
-DROP view app_search; DROP TABLE test_entity ; DROP TABLE App_Version ; DROP TABLE localized ; DROP
-TABLE locale ; DROP TABLE app_category ; DROP TABLE category ; DROP TABLE app ; DROP TABLE repo;
-DROP TABLE "flyway_schema_history";
-
-----
-
 fdroid apps
 
 droidi-fy       https://github.com/NeoApplications/Neo-Store/
