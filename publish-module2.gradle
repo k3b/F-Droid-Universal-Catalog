@@ -5,6 +5,40 @@
 
 // variables inherited from root-build.gradle
 
+task javadocs(type: Javadoc) {
+    if (project.plugins.findPlugin("com.android.library")) {
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+        android.libraryVariants.all { variant ->
+            if (variant.name == 'release') {
+                owner.classpath += variant.javaCompileProvider.get().classpath
+            }
+        }
+    } else {
+        source = sourceSets.main.java.srcDirs
+    }
+    exclude '**/R.html', '**/R.*.html', '**/index.html'
+}
+
+task javadocsJar(type: Jar, dependsOn: javadocs) {
+    archiveClassifier.set('javadoc')
+    from javadocs.destinationDir
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    if (project.plugins.findPlugin("com.android.library")) {
+        from android.sourceSets.main.java.srcDirs
+    } else {
+        from sourceSets.main.java.srcDirs
+    }
+}
+
+artifacts {
+    archives sourcesJar
+//  archives javadocsJar
+}
+
 afterEvaluate {
     publishing {
         publications {
@@ -19,7 +53,7 @@ afterEvaluate {
                 }
                 pom {
                     // name = ext.PUBLISH_ARTIFACT_ID
-                    // description = ext.PUBLISH_MODUL_DESCRIPTION
+                    description = project.ext.PUBLISH_MODUL_DESCRIPTION
                     url = "https://" + rootProject.ext.SOURCES
                     licenses {
                         license {
@@ -39,6 +73,10 @@ afterEvaluate {
                         developerConnection = 'scm:git:ssh://' + rootProject.ext.SOURCES + '.git'
                         url = 'https://' + rootProject.ext.SOURCES + '/tree/main'
                     }
+
+                    artifact sourcesJar
+//                  artifact javadocsJar
+
                 }
             }
         }
