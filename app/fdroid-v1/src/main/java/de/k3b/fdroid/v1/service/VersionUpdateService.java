@@ -19,6 +19,7 @@
 
 package de.k3b.fdroid.v1.service;
 
+import java.lang.reflect.Constructor;
 import java.text.DecimalFormat;
 
 import de.k3b.fdroid.domain.App;
@@ -32,23 +33,42 @@ import de.k3b.fdroid.util.StringUtil;
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
-public class VersionUpdateService {
-    private final AppRepository appRepository;
+public class VersionUpdateService<APP extends App> {
+    private final AppRepository<APP> appRepository;
     private final VersionRepository versionRepository;
 
     private final DecimalFormat numFormatter = new DecimalFormat("00");
     ProgressListener progressListener = null;
-    private App lastApp = null;
+    private APP lastApp = null;
     private String lastPackageName = null;
     private Version minVersion = null;
     private Version maxVersion = null;
     private StringBuilder signer = new StringBuilder();
 
-    public VersionUpdateService(AppRepository appRepository, VersionRepository versionRepository,
+    private Class<?> appClass = App.class;
+
+    public VersionUpdateService(AppRepository<APP> appRepository, VersionRepository versionRepository,
                                 ProgressListener progressListener) {
         this.appRepository = appRepository;
         this.versionRepository = versionRepository;
         this.progressListener = progressListener;
+    }
+
+    /**
+     * must be used if APP != App
+     */
+    public VersionUpdateService setAppClass(Class<APP> appClass) {
+        this.appClass = appClass;
+        return this;
+    }
+
+    protected APP createApp() {
+        try {
+            Constructor<?> constructor = appClass.getConstructor();
+            return (APP) constructor.newInstance();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Cannot create App with default constructor", e);
+        }
     }
 
     public Version update(int repoId, String packageName, de.k3b.fdroid.v1.domain.Version v1Version) {
@@ -61,10 +81,10 @@ public class VersionUpdateService {
         if (v1Version != null) {
             roomVersion = versionRepository.findByRepoPackageAndVersionCode(repoId, packageName, v1Version.getVersionCode());
             if (roomVersion == null) {
-                App app = appRepository.findByRepoIdAndPackageName(repoId, packageName);
+                APP app = appRepository.findByRepoIdAndPackageName(repoId, packageName);
 
                 if (app == null) {
-                    app = new App();
+                    app = createApp();
                     app.setPackageName(packageName);
                     app.setRepoId(repoId);
                     appRepository.insert(app);

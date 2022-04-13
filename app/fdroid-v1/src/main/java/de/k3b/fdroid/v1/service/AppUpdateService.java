@@ -19,6 +19,8 @@
 
 package de.k3b.fdroid.v1.service;
 
+import java.lang.reflect.Constructor;
+
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.common.AppCommon;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
@@ -28,13 +30,15 @@ import de.k3b.fdroid.util.StringUtil;
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
-public class AppUpdateService {
-    private final AppRepository appRepository;
+public class AppUpdateService<APP extends App> {
+    private final AppRepository<APP> appRepository;
     private final AppCategoryUpdateService appCategoryUpdateService;
     private final LocalizedUpdateService localizedUpdateService;
     private final ProgressListener progressListener;
 
-    public AppUpdateService(AppRepository appRepository,
+    private Class<?> appClass = App.class;
+
+    public AppUpdateService(AppRepository<APP> appRepository,
                             AppCategoryUpdateService appCategoryUpdateService,
                             LocalizedUpdateService localizedUpdateService,
                             ProgressListener progressListener) {
@@ -50,10 +54,27 @@ public class AppUpdateService {
         this.localizedUpdateService.init();
     }
 
-    public App update(int repoId, de.k3b.fdroid.v1.domain.App v1App) {
-        App roomApp = appRepository.findByRepoIdAndPackageName(repoId, v1App.getPackageName());
+    /**
+     * must be used if APP != App
+     */
+    public AppUpdateService<APP> setAppClass(Class<APP> appClass) {
+        this.appClass = appClass;
+        return this;
+    }
+
+    protected APP createApp() {
+        try {
+            Constructor<?> constructor = appClass.getConstructor();
+            return (APP) constructor.newInstance();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Cannot create App with default constructor", e);
+        }
+    }
+
+    public APP update(int repoId, de.k3b.fdroid.v1.domain.App v1App) {
+        APP roomApp = appRepository.findByRepoIdAndPackageName(repoId, v1App.getPackageName());
         if (roomApp == null) {
-            roomApp = new App();
+            roomApp = createApp();
             roomApp.setRepoId(repoId);
             AppCommon.copyCommon(roomApp, v1App);
             roomApp.setSearchCategory(StringUtil.toString(v1App.getCategories(), ","));

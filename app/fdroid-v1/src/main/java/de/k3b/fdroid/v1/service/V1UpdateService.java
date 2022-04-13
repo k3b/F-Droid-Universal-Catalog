@@ -93,6 +93,14 @@ public abstract class V1UpdateService<APP extends de.k3b.fdroid.domain.App> {
         versionUpdateService = new VersionUpdateService(appRepository, versionRepository, progressListener);
     }
 
+    /**
+     * must be used if APP != App
+     */
+    public void setAppClass(Class<APP> appClass) {
+        appUpdateService.setAppClass(appClass);
+        versionUpdateService.setAppClass(appClass);
+    }
+
     public void readFromJar(InputStream jarInputStream) throws IOException {
         appUpdateService.init();
         jsonStreamParser.readFromJar(jarInputStream);

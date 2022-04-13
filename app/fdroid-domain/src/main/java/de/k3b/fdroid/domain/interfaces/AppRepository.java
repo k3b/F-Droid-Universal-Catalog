@@ -32,7 +32,7 @@ public interface AppRepository<APP extends App> {
 
     void delete(APP app);
 
-    App findByRepoIdAndPackageName(int repoId, String packageName);
+    APP findByRepoIdAndPackageName(int repoId, String packageName);
 
     int findIdByRepoIdAndPackageName(int repoId, String packageName);
 
