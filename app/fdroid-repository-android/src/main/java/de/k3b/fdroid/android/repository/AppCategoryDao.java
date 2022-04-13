@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.db;
+package de.k3b.fdroid.android.repository;
 
 import androidx.room.Dao;
 import androidx.room.Delete;

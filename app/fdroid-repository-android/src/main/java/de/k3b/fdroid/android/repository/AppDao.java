@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.db;
+package de.k3b.fdroid.android.repository;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -26,23 +26,27 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.Localized;
-import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
+import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.domain.interfaces.AppRepository;
 
+// NOTE: AppDao cannot be Generic, AppDao<App> is not possible :-(
 @Dao
-public interface LocalizedDao extends LocalizedRepository {
+public interface AppDao extends AppRepository {
     @Insert
-    void insert(Localized localized);
+    void insert(App apps);
 
     @Update
-    void update(Localized localized);
+    void update(App roomApp);
 
     @Delete
-    void delete(Localized localized);
+    void delete(App app);
 
-    @Query("SELECT * FROM Localized WHERE Localized.appId = :appId ")
-    List<Localized> findByAppId(int appId);
+    @Query("SELECT * FROM App WHERE App.repoId = :repoId AND App.packageName = :packageName")
+    App findByRepoIdAndPackageName(int repoId, String packageName);
 
-    @Query("SELECT * FROM Localized WHERE Localized.appId = :appId and Localized.localeId in (:localeIds) ")
-    List<Localized> findByAppIdAndLocaleIds(int appId, List<Integer> localeIds);
+    @Query("SELECT App.id FROM App WHERE App.repoId = :repoId AND App.packageName = :packageName")
+    int findIdByRepoIdAndPackageName(int repoId, String packageName);
+
+    @Query("SELECT * FROM App")
+    List<App> findAll();
 }

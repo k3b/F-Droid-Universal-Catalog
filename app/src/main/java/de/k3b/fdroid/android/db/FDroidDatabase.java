@@ -24,6 +24,13 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import de.k3b.fdroid.android.repository.AppCategoryDao;
+import de.k3b.fdroid.android.repository.AppDao;
+import de.k3b.fdroid.android.repository.CategoryDao;
+import de.k3b.fdroid.android.repository.LocaleDao;
+import de.k3b.fdroid.android.repository.LocalizedDao;
+import de.k3b.fdroid.android.repository.RepoDao;
+import de.k3b.fdroid.android.repository.VersionDao;
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.AppCategory;
 import de.k3b.fdroid.domain.Category;

@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.db;
+package de.k3b.fdroid.android.repository;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -26,27 +26,23 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.Category;
+import de.k3b.fdroid.domain.interfaces.CategoryRepository;
 
-// NOTE: AppDao cannot be Generic, AppDao<App> is not possible :-(
 @Dao
-public interface AppDao extends AppRepository {
+public interface CategoryDao extends CategoryRepository {
     @Insert
-    void insert(App apps);
+    void insert(Category category);
 
     @Update
-    void update(App roomApp);
+    void update(Category category);
 
     @Delete
-    void delete(App app);
+    void delete(Category category);
 
-    @Query("SELECT * FROM App WHERE App.repoId = :repoId AND App.packageName = :packageName")
-    App findByRepoIdAndPackageName(int repoId, String packageName);
+    @Query("SELECT * FROM Category")
+    List<Category> findAll();
 
-    @Query("SELECT App.id FROM App WHERE App.repoId = :repoId AND App.packageName = :packageName")
-    int findIdByRepoIdAndPackageName(int repoId, String packageName);
-
-    @Query("SELECT * FROM App")
-    List<App> findAll();
+    @Query("SELECT * FROM Category where Category.name = :name")
+    Category findByName(String name);
 }

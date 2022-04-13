@@ -16,11 +16,36 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
+package de.k3b.fdroid.android.repository;
 
-/**
- * annotations copied from android so the annotations are available for java, too  Android-Room specific XxxxDao implementations for android independant XxxxRepository.
- */
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
 
-/** Android-Room specific XxxxDao implementations for android independant XxxxRepository. */
+import java.util.List;
 
-package de.k3b.fdroid.android.db;
+import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.domain.interfaces.RepoRepository;
+
+@Dao
+public interface RepoDao extends RepoRepository {
+    @Insert
+    void insert(Repo repo);
+
+    @Update
+    void update(Repo repo);
+
+    @Delete
+    void delete(Repo repo);
+
+    @Query("SELECT * FROM Repo WHERE Repo.id = :repoId")
+    Repo findById(Integer repoId);
+
+    @Query("SELECT * FROM Repo WHERE Repo.address = :address")
+    Repo findByAddress(String address);
+
+    @Query("SELECT * FROM Repo")
+    List<Repo> findAll();
+}

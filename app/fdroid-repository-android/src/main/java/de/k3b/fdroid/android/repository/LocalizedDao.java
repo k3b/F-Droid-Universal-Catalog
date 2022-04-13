@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.db;
+package de.k3b.fdroid.android.repository;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -26,26 +26,23 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.domain.interfaces.RepoRepository;
+import de.k3b.fdroid.domain.Localized;
+import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 
 @Dao
-public interface RepoDao extends RepoRepository {
+public interface LocalizedDao extends LocalizedRepository {
     @Insert
-    void insert(Repo repo);
+    void insert(Localized localized);
 
     @Update
-    void update(Repo repo);
+    void update(Localized localized);
 
     @Delete
-    void delete(Repo repo);
+    void delete(Localized localized);
 
-    @Query("SELECT * FROM Repo WHERE Repo.id = :repoId")
-    Repo findById(Integer repoId);
+    @Query("SELECT * FROM Localized WHERE Localized.appId = :appId ")
+    List<Localized> findByAppId(int appId);
 
-    @Query("SELECT * FROM Repo WHERE Repo.address = :address")
-    Repo findByAddress(String address);
-
-    @Query("SELECT * FROM Repo")
-    List<Repo> findAll();
+    @Query("SELECT * FROM Localized WHERE Localized.appId = :appId and Localized.localeId in (:localeIds) ")
+    List<Localized> findByAppIdAndLocaleIds(int appId, List<Integer> localeIds);
 }

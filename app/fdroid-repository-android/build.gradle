@@ -41,6 +41,11 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    def room_version = rootProject.ext.ROOM_VERSION
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
 }
 // required for jitpack
 apply from: "${rootProject.projectDir}/publish-module2.gradle"

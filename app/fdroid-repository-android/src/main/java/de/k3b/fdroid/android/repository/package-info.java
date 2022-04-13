@@ -16,31 +16,6 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.db;
 
-import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.Query;
-import androidx.room.Update;
-
-import java.util.List;
-
-import de.k3b.fdroid.domain.Locale;
-import de.k3b.fdroid.domain.interfaces.LocaleRepository;
-
-@Dao
-public interface LocaleDao extends LocaleRepository {
-    @Insert
-    void insert(Locale locale);
-
-    @Update
-    void update(Locale locale);
-
-    @Delete
-    void delete(Locale locale);
-
-    @Query("SELECT * FROM Locale")
-    List<Locale> findAll();
-
-}
+/** Android-Room specific XxxxDao implementations for android independant XxxxRepository. */
+package de.k3b.fdroid.android.repository;

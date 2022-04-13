@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.db;
+package de.k3b.fdroid.android.repository;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -26,24 +26,21 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.Version;
-import de.k3b.fdroid.domain.interfaces.VersionRepository;
+import de.k3b.fdroid.domain.Locale;
+import de.k3b.fdroid.domain.interfaces.LocaleRepository;
 
 @Dao
-public interface VersionDao extends VersionRepository {
+public interface LocaleDao extends LocaleRepository {
     @Insert
-    void insert(Version version);
+    void insert(Locale locale);
 
     @Update
-    void update(Version version);
+    void update(Locale locale);
 
     @Delete
-    void delete(Version version);
+    void delete(Locale locale);
 
-    @Query("SELECT * FROM App_Version WHERE App_Version.appId = :appId")
-    List<Version> findByAppId(int appId);
+    @Query("SELECT * FROM Locale")
+    List<Locale> findAll();
 
-    @Query("SELECT App_Version.* FROM App_Version inner join App on App_Version.appId = App.id " +
-            "WHERE App.repoId = :repoId AND App.packageName = :packageName AND App_Version.versionCode = :versionCode")
-    Version findByRepoPackageAndVersionCode(int repoId, String packageName, long versionCode);
 }
