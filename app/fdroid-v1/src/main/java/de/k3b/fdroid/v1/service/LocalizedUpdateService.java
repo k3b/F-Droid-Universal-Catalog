@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.domain.AppForSearch;
 import de.k3b.fdroid.domain.Locale;
 import de.k3b.fdroid.domain.Localized;
 import de.k3b.fdroid.domain.common.LocalizedCommon;
@@ -82,7 +83,7 @@ public class LocalizedUpdateService {
         return 0;
     }
 
-    public List<Localized> update(int appId, App roomApp, Map<String, de.k3b.fdroid.v1.domain.Localized> v1LocalizedMap) {
+    public List<Localized> update(int appId, AppForSearch roomApp, Map<String, de.k3b.fdroid.v1.domain.Localized> v1LocalizedMap) {
         List<Localized> roomLocalizedList = localizedRepository.findByAppId(appId);
 
         StringBuilder name = new StringBuilder();
