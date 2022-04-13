@@ -40,10 +40,10 @@ public interface VersionDao extends VersionRepository {
     @Delete
     void delete(Version version);
 
-    @Query("SELECT * FROM Version WHERE Version.appId = :appId")
+    @Query("SELECT * FROM App_Version WHERE App_Version.appId = :appId")
     List<Version> findByAppId(int appId);
 
-    @Query("SELECT Version.* FROM Version inner join App on Version.appId = App.id " +
-            "WHERE App.repoId = :repoId AND App.packageName = :packageName AND Version.versionCode = :versionCode")
+    @Query("SELECT App_Version.* FROM App_Version inner join App on App_Version.appId = App.id " +
+            "WHERE App.repoId = :repoId AND App.packageName = :packageName AND App_Version.versionCode = :versionCode")
     Version findByRepoPackageAndVersionCode(int repoId, String packageName, long versionCode);
 }

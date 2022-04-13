@@ -31,9 +31,9 @@ import de.k3b.fdroid.domain.common.AppCommon;
         indices = {@androidx.room.Index("id"), @androidx.room.Index({"repoId", "packageName"})}
 )
 @javax.persistence.Entity
+@javax.persistence.Table(name = "App")
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 public class App extends AppCommon {
-
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @androidx.room.PrimaryKey(autoGenerate = true)

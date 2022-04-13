@@ -12,6 +12,7 @@ import javax.persistence.Column;
 )
 
 @javax.persistence.Entity
+@javax.persistence.Table(name = "App")
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 public class AppForSearch extends App {
     @Column(length = MAX_LEN_AGGREGATED)

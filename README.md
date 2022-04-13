@@ -212,6 +212,10 @@ PACKAGE_NAME
 select PACKAGE_NAME, SEARCH_SDK, SEARCH_VERSION from app WHERE PACKAGE_NAME like '%k3b%' order by
 SEARCH_SDK, PACKAGE_NAME
 
+DROP view app_search; DROP TABLE test_entity ; DROP TABLE App_Version ; DROP TABLE localized ; DROP
+TABLE locale ; DROP TABLE app_category ; DROP TABLE category ; DROP TABLE app ; DROP TABLE repo;
+DROP TABLE "flyway_schema_history";
+
 ----
 
 fdroid apps
