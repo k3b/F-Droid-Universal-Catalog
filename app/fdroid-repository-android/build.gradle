@@ -3,19 +3,9 @@ plugins {
     id 'maven-publish' // required for jitpack
 }
 
-// required for jitpack publish aar
-afterEvaluate {
-    publishing {
-        publications {
-            // Creates a Maven publication called "release".
-            release(MavenPublication) {
-                from components.release
-                groupId = rootProject.ext.PUBLISH_GROUP_ID
-                version = rootProject.ext.PUBLISH_VERSION
-                // artifactId = 'android-example'
-            }
-        }
-    }
+// required for jitpack
+ext {
+    PUBLISH_MODUL_DESCRIPTION = 'Android-room Repository implementation'
 }
 
 android {
@@ -52,3 +42,5 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
+// required for jitpack
+apply from: "${rootProject.projectDir}/publish-module2.gradle"

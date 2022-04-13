@@ -4,14 +4,8 @@ plugins {
 }
 
 // required for jitpack
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = rootProject.ext.PUBLISH_GROUP_ID
-            version = rootProject.ext.PUBLISH_VERSION
-            from components.java
-        }
-    }
+ext {
+    PUBLISH_MODUL_DESCRIPTION = 'Make android-room annotations available for non android-jars '
 }
 
 java {
@@ -21,3 +15,6 @@ java {
 
 dependencies {
 }
+
+// required for jitpack
+apply from: "${rootProject.projectDir}/publish-module2.gradle"

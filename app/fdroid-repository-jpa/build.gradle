@@ -5,6 +5,7 @@ plugins {
     id 'maven-publish' // required for jitpack
 }
 
+// required for jitpack
 ext {
     PUBLISH_MODUL_DESCRIPTION = 'JPA Repository implementation'
 }
