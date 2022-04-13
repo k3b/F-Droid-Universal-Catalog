@@ -19,9 +19,7 @@
 
 package de.k3b.fdroid.v1.service;
 
-import java.lang.reflect.Constructor;
-
-import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.domain.AppForSearch;
 import de.k3b.fdroid.domain.common.AppCommon;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.ProgressListener;
@@ -30,15 +28,15 @@ import de.k3b.fdroid.util.StringUtil;
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
-public class AppUpdateService<APP extends App> {
-    private final AppRepository<APP> appRepository;
+public class AppUpdateService {
+    private final AppRepository<AppForSearch> appRepository;
     private final AppCategoryUpdateService appCategoryUpdateService;
     private final LocalizedUpdateService localizedUpdateService;
     private final ProgressListener progressListener;
 
-    private Class<?> appClass = App.class;
+    private final Class<?> appClass = AppForSearch.class;
 
-    public AppUpdateService(AppRepository<APP> appRepository,
+    public AppUpdateService(AppRepository<AppForSearch> appRepository,
                             AppCategoryUpdateService appCategoryUpdateService,
                             LocalizedUpdateService localizedUpdateService,
                             ProgressListener progressListener) {
@@ -54,27 +52,10 @@ public class AppUpdateService<APP extends App> {
         this.localizedUpdateService.init();
     }
 
-    /**
-     * must be used if APP != App
-     */
-    public AppUpdateService<APP> setAppClass(Class<APP> appClass) {
-        this.appClass = appClass;
-        return this;
-    }
-
-    protected APP createApp() {
-        try {
-            Constructor<?> constructor = appClass.getConstructor();
-            return (APP) constructor.newInstance();
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Cannot create App with default constructor", e);
-        }
-    }
-
-    public APP update(int repoId, de.k3b.fdroid.v1.domain.App v1App) {
-        APP roomApp = appRepository.findByRepoIdAndPackageName(repoId, v1App.getPackageName());
+    public AppForSearch update(int repoId, de.k3b.fdroid.v1.domain.App v1App) {
+        AppForSearch roomApp = appRepository.findByRepoIdAndPackageName(repoId, v1App.getPackageName());
         if (roomApp == null) {
-            roomApp = createApp();
+            roomApp = new AppForSearch();
             roomApp.setRepoId(repoId);
             AppCommon.copyCommon(roomApp, v1App);
             roomApp.setSearchCategory(StringUtil.toString(v1App.getCategories(), ","));

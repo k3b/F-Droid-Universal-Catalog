@@ -19,10 +19,9 @@
 
 package de.k3b.fdroid.v1.service;
 
-import java.lang.reflect.Constructor;
 import java.text.DecimalFormat;
 
-import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.domain.AppForSearch;
 import de.k3b.fdroid.domain.Version;
 import de.k3b.fdroid.domain.common.VersionCommon;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
@@ -33,42 +32,23 @@ import de.k3b.fdroid.util.StringUtil;
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
-public class VersionUpdateService<APP extends App> {
-    private final AppRepository<APP> appRepository;
+public class VersionUpdateService {
+    private final AppRepository<AppForSearch> appRepository;
     private final VersionRepository versionRepository;
 
     private final DecimalFormat numFormatter = new DecimalFormat("00");
     ProgressListener progressListener = null;
-    private APP lastApp = null;
+    private AppForSearch lastApp = null;
     private String lastPackageName = null;
     private Version minVersion = null;
     private Version maxVersion = null;
     private StringBuilder signer = new StringBuilder();
 
-    private Class<?> appClass = App.class;
-
-    public VersionUpdateService(AppRepository<APP> appRepository, VersionRepository versionRepository,
+    public VersionUpdateService(AppRepository<AppForSearch> appRepository, VersionRepository versionRepository,
                                 ProgressListener progressListener) {
         this.appRepository = appRepository;
         this.versionRepository = versionRepository;
         this.progressListener = progressListener;
-    }
-
-    /**
-     * must be used if APP != App
-     */
-    public VersionUpdateService setAppClass(Class<APP> appClass) {
-        this.appClass = appClass;
-        return this;
-    }
-
-    protected APP createApp() {
-        try {
-            Constructor<?> constructor = appClass.getConstructor();
-            return (APP) constructor.newInstance();
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Cannot create App with default constructor", e);
-        }
     }
 
     public Version update(int repoId, String packageName, de.k3b.fdroid.v1.domain.Version v1Version) {
@@ -81,10 +61,10 @@ public class VersionUpdateService<APP extends App> {
         if (v1Version != null) {
             roomVersion = versionRepository.findByRepoPackageAndVersionCode(repoId, packageName, v1Version.getVersionCode());
             if (roomVersion == null) {
-                APP app = appRepository.findByRepoIdAndPackageName(repoId, packageName);
+                AppForSearch app = appRepository.findByRepoIdAndPackageName(repoId, packageName);
 
                 if (app == null) {
-                    app = createApp();
+                    app = new AppForSearch();
                     app.setPackageName(packageName);
                     app.setRepoId(repoId);
                     appRepository.insert(app);

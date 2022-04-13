@@ -182,12 +182,14 @@ public abstract class FDroidCatalogJsonStreamParserBase {
     /** Stream event, when something has to be logged */
     protected abstract String log(String s);
 
-    /** Stream event, when a {@link org.fdroid.v1.model.Repo} was read */
+    /**
+     * Stream event, when a {@link de.k3b.fdroid.v1.domain.Repo} was read
+     */
     protected abstract void onRepo(Repo repo);
 
-    /** Stream event, when a {@link org.fdroid.v1.model.App} was read */
+    /** Stream event, when a {@link de.k3b.fdroid.v1.domain.App} was read */
     protected abstract void onApp(App app);
 
-    /** Stream event, when a {@link org.fdroid.v1.model.Version} was read */
+    /** Stream event, when a {@link de.k3b.fdroid.v1.domain.Version} was read */
     protected abstract void onVersion(String name, Version version);
 }

@@ -32,7 +32,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
 
-import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.domain.AppForSearch;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.jpa.repository.testcase.TestEntity;
 import de.k3b.fdroid.jpa.repository.testcase.TestRepositoryJpa;
@@ -54,7 +54,7 @@ public class DemoApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(V1UpdateServiceEx importer, TestRepositoryJpa repository, AppRepository<App> appRepo) {
+	public CommandLineRunner demo(V1UpdateServiceEx importer, TestRepositoryJpa repository, AppRepository<AppForSearch> appRepo) {
 		return (args) -> {
 //			demoTestEntity(repository);
 //			demoAppEntity(appRepo);
@@ -66,24 +66,24 @@ public class DemoApplication {
 		};
 	}
 
-	private void demoAppEntity(AppRepository<App> appRepo) {
-		List<App> all = appRepo.findAll();
-		for (App app : all) appRepo.delete(app);
+	private void demoAppEntity(AppRepository<AppForSearch> appRepo) {
+		List<AppForSearch> all = appRepo.findAll();
+		for (AppForSearch app : all) appRepo.delete(app);
 
-		App app = new App();
+		AppForSearch app = new AppForSearch();
 		app.setRepoId(1);
 		app.setPackageName("my.package.name");
 		app.setIcon("myIcon.ico");
 		appRepo.insert(app);
 		log.info("Customers found with findAll():");
 		log.info("-------------------------------");
-		for (App app2 : appRepo.findAll()) {
+		for (AppForSearch app2 : appRepo.findAll()) {
 			log.info(app2.toString());
 		}
 		log.info("");
 
 
-		App app3 = appRepo.findByRepoIdAndPackageName(1, "my.package.name");
+		AppForSearch app3 = appRepo.findByRepoIdAndPackageName(1, "my.package.name");
 		log.info("search result " + app3.toString());
 
 		// not working
@@ -91,7 +91,7 @@ public class DemoApplication {
 		log.info("search result " + id);
 
 		all = appRepo.findAll();
-		for (App a : all) appRepo.delete(a);
+		for (AppForSearch a : all) appRepo.delete(a);
 
 	}
 

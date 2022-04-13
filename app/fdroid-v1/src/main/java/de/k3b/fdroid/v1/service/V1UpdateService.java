@@ -22,6 +22,7 @@ package de.k3b.fdroid.v1.service;
 import java.io.IOException;
 import java.io.InputStream;
 
+import de.k3b.fdroid.domain.AppForSearch;
 import de.k3b.fdroid.domain.interfaces.AppCategoryRepository;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.CategoryRepository;
@@ -37,7 +38,7 @@ import de.k3b.fdroid.v1.domain.Version;
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
-public abstract class V1UpdateService<APP extends de.k3b.fdroid.domain.App> {
+public abstract class V1UpdateService {
     JsonStreamParser jsonStreamParser = new JsonStreamParser();
     RepoUpdateService repoUpdateService;
 
@@ -62,7 +63,7 @@ public abstract class V1UpdateService<APP extends de.k3b.fdroid.domain.App> {
     }
      */
 
-    public V1UpdateService(RepoRepository repoRepository, AppRepository<APP> appRepository,
+    public V1UpdateService(RepoRepository repoRepository, AppRepository<AppForSearch> appRepository,
                            CategoryRepository categoryRepository,
                            AppCategoryRepository appCategoryRepository,
                            VersionRepository versionRepository,
@@ -76,7 +77,7 @@ public abstract class V1UpdateService<APP extends de.k3b.fdroid.domain.App> {
                 localeRepository, null);
     }
 
-    public V1UpdateService(RepoRepository repoRepository, AppRepository<APP> appRepository,
+    public V1UpdateService(RepoRepository repoRepository, AppRepository<AppForSearch> appRepository,
                            CategoryRepository categoryRepository,
                            AppCategoryRepository appCategoryRepository,
                            VersionRepository versionRepository,
@@ -91,14 +92,6 @@ public abstract class V1UpdateService<APP extends de.k3b.fdroid.domain.App> {
         appUpdateService = new AppUpdateService(appRepository, appCategoryUpdateService, localizedUpdateService, progressListener);
 
         versionUpdateService = new VersionUpdateService(appRepository, versionRepository, progressListener);
-    }
-
-    /**
-     * must be used if APP != App
-     */
-    public void setAppClass(Class<APP> appClass) {
-        appUpdateService.setAppClass(appClass);
-        versionUpdateService.setAppClass(appClass);
     }
 
     public void readFromJar(InputStream jarInputStream) throws IOException {
