@@ -19,67 +19,32 @@
 
 package de.k3b.fdroid.v1.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.domain.Locale;
 import de.k3b.fdroid.domain.Localized;
 import de.k3b.fdroid.domain.common.LocalizedCommon;
 import de.k3b.fdroid.domain.common.PojoCommon;
-import de.k3b.fdroid.domain.interfaces.LocaleRepository;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
+import de.k3b.fdroid.service.LanguageService;
+
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
 public class LocalizedUpdateService {
     private final LocalizedRepository localizedRepository;
-    private final LocaleRepository localeRepository;
+    private final LanguageService languageService;
 
-    Map<Integer, Locale> id2Locale = null;
-    Map<String, Locale> code2Locale = null;
-
-    public LocalizedUpdateService(LocalizedRepository localizedRepository, LocaleRepository localeRepository) {
+    public LocalizedUpdateService(LocalizedRepository localizedRepository,
+                                  LanguageService languageService) {
         this.localizedRepository = localizedRepository;
-        this.localeRepository = localeRepository;
+        this.languageService = languageService;
     }
 
     public LocalizedUpdateService init() {
-        List<Locale> locales = localeRepository.findAll();
-        id2Locale = new HashMap<>();
-        code2Locale = new HashMap<>();
-
-        for (Locale locale : locales) {
-            init(locale);
-        }
-
+        languageService.init();
         return this;
-    }
-
-    private void init(Locale locale) {
-        id2Locale.put(locale.getId(), locale);
-        code2Locale.put(locale.getCode(), locale);
-    }
-
-    private String getLocaleCode(int localeId) {
-        Locale locale = (localeId == 0) ? null : id2Locale.get(localeId);
-        return (locale == null) ? null : locale.getCode();
-    }
-
-    private int getOrCreateLocaleId(String localeCode) {
-        if (localeCode != null) {
-            Locale locale = code2Locale.get(localeCode);
-            if (locale == null) {
-                // create on demand
-                locale = new Locale();
-                locale.setCode(localeCode);
-                localeRepository.insert(locale);
-                init(locale);
-            }
-            return locale.getId();
-        }
-        return 0;
     }
 
     public List<Localized> update(int appId, de.k3b.fdroid.domain.App roomApp, Map<String, de.k3b.fdroid.v1.domain.Localized> v1LocalizedMap) {
@@ -93,9 +58,9 @@ public class LocalizedUpdateService {
         deleteRemoved(roomLocalizedList, v1LocalizedMap);
         for (Map.Entry<String, de.k3b.fdroid.v1.domain.Localized> v1Entry : v1LocalizedMap.entrySet()) {
             String language = v1Entry.getKey();
-            int localeId = getOrCreateLocaleId(language);
+            int localeId = languageService.getOrCreateLocaleId(language);
             de.k3b.fdroid.v1.domain.Localized v1Localized = v1Entry.getValue();
-            Localized roomLocalized = findByLocaleId(roomLocalizedList, localeId);
+            Localized roomLocalized = languageService.findByLocaleId(roomLocalizedList, localeId);
             if (roomLocalized == null) {
                 roomLocalized = new Localized();
                 roomLocalized.setAppId(appId);
@@ -139,17 +104,10 @@ public class LocalizedUpdateService {
         }
     }
 
-    private Localized findByLocaleId(List<Localized> roomLocalizedList, int localeId) {
-        for (Localized l : roomLocalizedList) {
-            if (l.getLocaleId() == localeId) return l;
-        }
-        return null;
-    }
-
     private void deleteRemoved(List<Localized> roomLocalizedList, Map<String, de.k3b.fdroid.v1.domain.Localized> v1LocalizedMap) {
         for (int i = roomLocalizedList.size() - 1; i >= 0; i--) {
             Localized roomLocalized = roomLocalizedList.get(i);
-            String localeCode = getLocaleCode(roomLocalized.getLocaleId());
+            String localeCode = languageService.getLocaleCode(roomLocalized.getLocaleId());
             if (localeCode != null && !v1LocalizedMap.containsKey(localeCode)) {
                 localizedRepository.delete(roomLocalized);
                 roomLocalizedList.remove(i);

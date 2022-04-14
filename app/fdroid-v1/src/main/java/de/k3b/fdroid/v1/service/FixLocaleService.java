@@ -25,9 +25,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import de.k3b.fdroid.service.LanguageService;
 import de.k3b.fdroid.v1.domain.App;
 import de.k3b.fdroid.v1.domain.Localized;
-import de.k3b.fdroid.v1.service.util.CanicalLocale;
 
 public class FixLocaleService {
     public PropertyMerger merger = new PropertyMerger();
@@ -36,20 +36,20 @@ public class FixLocaleService {
         Map<String, Localized> localesOld = (app == null) ? null : app.getLocalized();
         if (localesOld != null) {
             String[] keys = localesOld.keySet().toArray(new String[0]);
-            Integer[] changes = CanicalLocale.getCanonicalLocaleChangeIndex(keys);
+            Integer[] changes = LanguageService.getCanonicalLocaleChangeIndex(keys);
             Arrays.sort(keys, 0, keys.length, String.CASE_INSENSITIVE_ORDER);
 
             Map<String, Localized> localesNew = new TreeMap<>();
 
             List<Localized> sameLocale = new ArrayList<>();
             for (int i = 1; i < changes.length; i++) {
-                String canonical = CanicalLocale.getCanonicalLocale(keys[changes[i - 1]]);
+                String canonical = LanguageService.getCanonicalLocale(keys[changes[i - 1]]);
                 sameLocale.clear();
                 for (int j = changes[i - 1]; j < changes[i]; j++) {
                     sameLocale.add(localesOld.get(keys[j]));
                 }
 
-                if (CanicalLocale.isValidCanonical(canonical)) {
+                if (LanguageService.isValidCanonical(canonical)) {
                     localesNew.put(canonical, merger.merge(sameLocale));
                 }
             }

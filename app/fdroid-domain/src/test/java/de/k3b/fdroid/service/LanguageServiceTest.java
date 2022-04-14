@@ -17,14 +17,15 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-package de.k3b.fdroid.v1.service.util;
+package de.k3b.fdroid.service;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-public class CanicalLocaleTest {
+public class LanguageServiceTest {
 
     @Test
     public void getCanonicalLocale() {
@@ -49,16 +50,32 @@ public class CanicalLocaleTest {
     }
 
     private void testCanonical(String expected, String fdroidLocale) {
-        assertEquals("CanicalLocale.getCanonicalLocale(" + fdroidLocale + ")", expected, CanicalLocale.getCanonicalLocale(fdroidLocale));
+        assertEquals("LanguageService.getCanonicalLocale(" + fdroidLocale + ")", expected, LanguageService.getCanonicalLocale(fdroidLocale));
     }
 
     @Test
     public void getCanonicalLocaleChangeIndex() {
         String[] keys = new String[]{
-                "de", "zh-TW", "de-DE", "ar-SA","de-rDE","en-us"};
-        Integer[] index = CanicalLocale.getCanonicalLocaleChangeIndex(keys);
+                "de", "zh-TW", "de-DE", "ar-SA", "de-rDE", "en-us"};
+        Integer[] index = LanguageService.getCanonicalLocaleChangeIndex(keys);
         assertArrayEquals("sorted keys", new String[]{
                 "ar-SA", "de", "de-DE", "de-rDE", "en-us", "zh-TW"}, keys);
         assertArrayEquals("index", new Integer[]{0, 1, 4, 5, 6}, index);
+    }
+
+    @Test
+    public void getLanguageTranslation() {
+        String[] translation = LanguageService.getLanguageTranslation("de");
+        /** "de|German|Deutsch|symbol" + */
+        assertEquals("de size", 4, translation.length);
+        assertEquals("de native", "Deutsch", translation[2]);
+
+        translation = LanguageService.getLanguageTranslation("zh-CN");
+        /** "zh-CN|Simplified Chinese|简体中文||" */
+        assertEquals("zh-CN size", 3, translation.length);
+        assertEquals("zh-CN english", "Simplified Chinese", translation[1]);
+
+        translation = LanguageService.getLanguageTranslation("nds");
+        assertNull("nds not found", translation);
     }
 }

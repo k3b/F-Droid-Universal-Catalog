@@ -30,6 +30,7 @@ import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.domain.interfaces.ProgressListener;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.domain.interfaces.VersionRepository;
+import de.k3b.fdroid.service.LanguageService;
 import de.k3b.fdroid.v1.domain.App;
 import de.k3b.fdroid.v1.domain.Repo;
 import de.k3b.fdroid.v1.domain.Version;
@@ -38,6 +39,7 @@ import de.k3b.fdroid.v1.domain.Version;
  * update android-room-database from fdroid-v1-rest-gson data
  */
 public abstract class V1UpdateService {
+    private final LanguageService languageService;
     JsonStreamParser jsonStreamParser = new JsonStreamParser();
     RepoUpdateService repoUpdateService;
 
@@ -67,13 +69,15 @@ public abstract class V1UpdateService {
                            AppCategoryRepository appCategoryRepository,
                            VersionRepository versionRepository,
                            LocalizedRepository localizedRepository,
-                           LocaleRepository localeRepository) {
+                           LocaleRepository localeRepository,
+                           LanguageService languageService) {
         this(repoRepository, appRepository,
                 categoryRepository,
                 appCategoryRepository,
                 versionRepository,
                 localizedRepository,
-                localeRepository, null);
+                localeRepository,
+                languageService, null);
     }
 
     public V1UpdateService(RepoRepository repoRepository, AppRepository appRepository,
@@ -81,13 +85,15 @@ public abstract class V1UpdateService {
                            AppCategoryRepository appCategoryRepository,
                            VersionRepository versionRepository,
                            LocalizedRepository localizedRepository,
-                           LocaleRepository localeRepository, ProgressListener progressListener) {
+                           LocaleRepository localeRepository, LanguageService languageService,
+                           ProgressListener progressListener) {
+        this.languageService = languageService;
         repoUpdateService = new RepoUpdateService(repoRepository);
 
         AppCategoryUpdateService appCategoryUpdateService = new AppCategoryUpdateService(
                 categoryRepository, appCategoryRepository);
         LocalizedUpdateService localizedUpdateService = new LocalizedUpdateService(
-                localizedRepository, localeRepository);
+                localizedRepository, languageService);
         appUpdateService = new AppUpdateService(appRepository, appCategoryUpdateService, localizedUpdateService, progressListener);
 
         versionUpdateService = new VersionUpdateService(appRepository, versionRepository, progressListener);

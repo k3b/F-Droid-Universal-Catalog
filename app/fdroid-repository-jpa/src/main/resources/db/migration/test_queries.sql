@@ -43,4 +43,20 @@ select
     SEARCH_VERSION
 from app
 where PACKAGE_NAME like '%k3b%'
-order by SEARCH_SDK, PACKAGE_NAME
+order by SEARCH_SDK, PACKAGE_NAME;
+
+----
+--- number of existing translations
+select l.code, l.NAME_ENGLISH, count(*)
+from LOCALIZED lo
+inner join Locale l on lo.LOCALE_ID = l.id
+group by l.code, l.NAME_ENGLISH
+order by count(*) desc
+;
+
+-----
+-- number of apps orderd by minSdk
+select count(*) cnt, substr(SEARCH_SDK,2,2) minSdk
+from app
+group by substr(SEARCH_SDK,2,2)
+order by substr(SEARCH_SDK,2,2);

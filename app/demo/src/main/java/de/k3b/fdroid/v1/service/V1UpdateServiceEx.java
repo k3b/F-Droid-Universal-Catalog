@@ -32,15 +32,21 @@ import de.k3b.fdroid.domain.interfaces.LocaleRepository;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.domain.interfaces.VersionRepository;
+import de.k3b.fdroid.service.LanguageService;
 
 @Service
 @Transactional
 public class V1UpdateServiceEx extends V1UpdateService {
     private static final Logger log = LoggerFactory.getLogger(V1UpdateServiceEx.class);
 
-    public V1UpdateServiceEx(RepoRepository repoRepository, AppRepository appRepository, CategoryRepository categoryRepository, AppCategoryRepository appCategoryRepository, VersionRepository versionRepository, LocalizedRepository localizedRepository, LocaleRepository localeRepository) {
+    public V1UpdateServiceEx(RepoRepository repoRepository, AppRepository appRepository,
+                             CategoryRepository categoryRepository, AppCategoryRepository appCategoryRepository,
+                             VersionRepository versionRepository,
+                             LocalizedRepository localizedRepository,
+                             LocaleRepository localeRepository,
+                             LanguageService languageService) {
         super(repoRepository, appRepository, categoryRepository, appCategoryRepository,
-                versionRepository, localizedRepository, localeRepository, new DemoProgreeUpdateListener());
+                versionRepository, localizedRepository, localeRepository, languageService, new DemoProgreeUpdateListener());
     }
 
     @Override

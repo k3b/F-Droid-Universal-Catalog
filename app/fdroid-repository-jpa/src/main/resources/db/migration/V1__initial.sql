@@ -60,6 +60,9 @@ create TABLE locale (
   id INT NOT NULL,
   code VARCHAR(255),
   symbol VARCHAR(255),
+  name_english VARCHAR(255),
+  name_native VARCHAR(255),
+  language_priority INT,
   CONSTRAINT pk_locale PRIMARY KEY (id),
   CONSTRAINT ak_locale UNIQUE (code)
 );

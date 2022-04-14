@@ -34,15 +34,22 @@ public class Locale extends PojoCommon {
     @androidx.room.PrimaryKey(autoGenerate = true)
     private int id;
 
-    private String code;
+    private String code; // ie de
 
-    private String symbol;
+    private String symbol; // ie 🇩🇪
+
+    private String nameNative; // ie Deutsch
+    private String nameEnglish; // ie German
+    private int languagePriority; // translation order highest first
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         super.toStringBuilder(sb);
         toStringBuilder(sb, "code", this.code);
         toStringBuilder(sb, "symbol", this.symbol);
+        toStringBuilder(sb, "nameNative", this.nameNative);
+        toStringBuilder(sb, "nameEnglish", this.nameEnglish);
+        toStringBuilder(sb, "languagePriority", this.getLanguagePriority());
     }
 
     public int getId() {
@@ -73,5 +80,29 @@ public class Locale extends PojoCommon {
 
     public void setSymbol(String symbol) {
         this.symbol = symbol;
+    }
+
+    public String getNameNative() {
+        return nameNative;
+    }
+
+    public void setNameNative(String nameNative) {
+        this.nameNative = nameNative;
+    }
+
+    public String getNameEnglish() {
+        return nameEnglish;
+    }
+
+    public void setNameEnglish(String nameEnglish) {
+        this.nameEnglish = nameEnglish;
+    }
+
+    public int getLanguagePriority() {
+        return languagePriority;
+    }
+
+    public void setLanguagePriority(int languagePriority) {
+        this.languagePriority = languagePriority;
     }
 }
