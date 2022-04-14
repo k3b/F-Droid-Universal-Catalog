@@ -27,11 +27,11 @@ import javax.transaction.Transactional;
 
 import de.k3b.fdroid.domain.interfaces.AppCategoryRepository;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
-import de.k3b.fdroid.domain.interfaces.CategoryRepository;
 import de.k3b.fdroid.domain.interfaces.LocaleRepository;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.domain.interfaces.VersionRepository;
+import de.k3b.fdroid.service.CategoryService;
 import de.k3b.fdroid.service.LanguageService;
 
 @Service
@@ -40,12 +40,12 @@ public class V1UpdateServiceEx extends V1UpdateService {
     private static final Logger log = LoggerFactory.getLogger(V1UpdateServiceEx.class);
 
     public V1UpdateServiceEx(RepoRepository repoRepository, AppRepository appRepository,
-                             CategoryRepository categoryRepository, AppCategoryRepository appCategoryRepository,
+                             CategoryService categoryService, AppCategoryRepository appCategoryRepository,
                              VersionRepository versionRepository,
                              LocalizedRepository localizedRepository,
                              LocaleRepository localeRepository,
                              LanguageService languageService) {
-        super(repoRepository, appRepository, categoryRepository, appCategoryRepository,
+        super(repoRepository, appRepository, categoryService, appCategoryRepository,
                 versionRepository, localizedRepository, localeRepository, languageService, new DemoProgreeUpdateListener());
     }
 

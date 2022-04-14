@@ -18,63 +18,27 @@
  */
 package de.k3b.fdroid.v1.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import de.k3b.fdroid.domain.AppCategory;
-import de.k3b.fdroid.domain.Category;
 import de.k3b.fdroid.domain.interfaces.AppCategoryRepository;
-import de.k3b.fdroid.domain.interfaces.CategoryRepository;
+import de.k3b.fdroid.service.CategoryService;
+
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
 public class AppCategoryUpdateService {
-    private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
     private final AppCategoryRepository appCategoryRepository;
 
-    Map<Integer, Category> id2Category = null;
-    Map<String, Category> name2Category = null;
-
-    public AppCategoryUpdateService(CategoryRepository categoryRepository, AppCategoryRepository appCategoryRepository) {
-        this.categoryRepository = categoryRepository;
+    public AppCategoryUpdateService(CategoryService categoryService, AppCategoryRepository appCategoryRepository) {
+        this.categoryService = categoryService;
         this.appCategoryRepository = appCategoryRepository;
     }
 
     public AppCategoryUpdateService init() {
-        id2Category = new HashMap<>();
-        name2Category = new HashMap<>();
-        List<Category> categories = categoryRepository.findAll();
-
-        for (Category category : categories) {
-            init(category);
-        }
+        categoryService.init();
         return this;
-    }
-
-    private void init(Category category) {
-        id2Category.put(category.getId(), category);
-        name2Category.put(category.getName(), category);
-    }
-
-    private String getCategoryName(int categoryId) {
-        Category category = (categoryId == 0) ? null : id2Category.get(categoryId);
-        return (category == null) ? null : category.getName();
-    }
-
-    private int getOrCreateCategoryId(String categoryName) {
-        if (categoryName != null) {
-            Category category = name2Category.get(categoryName);
-            if (category == null) {
-                // create on demand
-                category = new Category();
-                category.setName(categoryName);
-                categoryRepository.insert(category);
-                init(category);
-            }
-            return category.getId();
-        }
-        return 0;
     }
 
     public void update(int appId, List<String> v1Categories) {
@@ -82,7 +46,7 @@ public class AppCategoryUpdateService {
 
         deleteRemoved(roomAppCategories, v1Categories);
         for (String v1Category : v1Categories) {
-            int categoryId = getOrCreateCategoryId(v1Category);
+            int categoryId = categoryService.getOrCreateCategoryId(v1Category);
 
             AppCategory roomAppCategory = findByCategoryId(roomAppCategories, categoryId);
             if (roomAppCategory == null) {
@@ -106,7 +70,7 @@ public class AppCategoryUpdateService {
         for (int i = roomAppCategories.size() - 1; i >= 0; i--) {
             AppCategory roomAppCategory = roomAppCategories.get(i);
             if (roomAppCategory != null) {
-                String categoryName = getCategoryName(roomAppCategory.getCategoryId());
+                String categoryName = categoryService.getCategoryName(roomAppCategory.getCategoryId());
                 if (categoryName != null && !v1Categories.contains(categoryName)) {
                     appCategoryRepository.delete(roomAppCategory);
                     roomAppCategories.remove(i);

@@ -24,12 +24,12 @@ import java.io.InputStream;
 
 import de.k3b.fdroid.domain.interfaces.AppCategoryRepository;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
-import de.k3b.fdroid.domain.interfaces.CategoryRepository;
 import de.k3b.fdroid.domain.interfaces.LocaleRepository;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.domain.interfaces.ProgressListener;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.domain.interfaces.VersionRepository;
+import de.k3b.fdroid.service.CategoryService;
 import de.k3b.fdroid.service.LanguageService;
 import de.k3b.fdroid.v1.domain.App;
 import de.k3b.fdroid.v1.domain.Repo;
@@ -65,14 +65,14 @@ public abstract class V1UpdateService {
      */
 
     public V1UpdateService(RepoRepository repoRepository, AppRepository appRepository,
-                           CategoryRepository categoryRepository,
+                           CategoryService categoryService,
                            AppCategoryRepository appCategoryRepository,
                            VersionRepository versionRepository,
                            LocalizedRepository localizedRepository,
                            LocaleRepository localeRepository,
                            LanguageService languageService) {
         this(repoRepository, appRepository,
-                categoryRepository,
+                categoryService,
                 appCategoryRepository,
                 versionRepository,
                 localizedRepository,
@@ -81,7 +81,7 @@ public abstract class V1UpdateService {
     }
 
     public V1UpdateService(RepoRepository repoRepository, AppRepository appRepository,
-                           CategoryRepository categoryRepository,
+                           CategoryService categoryService,
                            AppCategoryRepository appCategoryRepository,
                            VersionRepository versionRepository,
                            LocalizedRepository localizedRepository,
@@ -91,7 +91,7 @@ public abstract class V1UpdateService {
         repoUpdateService = new RepoUpdateService(repoRepository);
 
         AppCategoryUpdateService appCategoryUpdateService = new AppCategoryUpdateService(
-                categoryRepository, appCategoryRepository);
+                categoryService, appCategoryRepository);
         LocalizedUpdateService localizedUpdateService = new LocalizedUpdateService(
                 localizedRepository, languageService);
         appUpdateService = new AppUpdateService(appRepository, appCategoryUpdateService, localizedUpdateService, progressListener);
