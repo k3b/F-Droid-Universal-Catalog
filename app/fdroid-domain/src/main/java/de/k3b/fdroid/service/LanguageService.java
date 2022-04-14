@@ -43,9 +43,16 @@ import de.k3b.fdroid.util.StringUtil;
  */
 
 public class LanguageService {
+    /**
+     * if languagePriority has this value, then locale-s are hidden
+     */
+    public static final int LANGUAGE_PRIORITY_HIDDEN = -1;
+
     private static final Map<String, String> LANGUAGE_DEFINITIONS = defineLanguages();
 
     private final LocaleRepository localeRepository;
+
+    private final int languagePriorityNewItem = 0;
 
     Map<Integer, de.k3b.fdroid.domain.Locale> id2Locale = null;
     Map<String, de.k3b.fdroid.domain.Locale> code2Locale = null;
@@ -224,14 +231,13 @@ public class LanguageService {
         return line.split("\\|");
     }
 
-    public void init() {
-        List<de.k3b.fdroid.domain.Locale> locales = localeRepository.findAll();
-        id2Locale = new HashMap<>();
-        code2Locale = new HashMap<>();
+    public static boolean isHidden(de.k3b.fdroid.domain.Locale locale) {
+        int languagePriority = (locale == null) ? LANGUAGE_PRIORITY_HIDDEN : locale.getLanguagePriority();
+        return isHidden(languagePriority);
+    }
 
-        for (de.k3b.fdroid.domain.Locale locale : locales) {
-            init(locale);
-        }
+    public static boolean isHidden(int languagePriority) {
+        return languagePriority == LANGUAGE_PRIORITY_HIDDEN;
     }
 
     private void init(de.k3b.fdroid.domain.Locale locale) {
@@ -239,18 +245,59 @@ public class LanguageService {
         code2Locale.put(locale.getCode(), locale);
     }
 
-    public String getLocaleCode(int localeId) {
-        de.k3b.fdroid.domain.Locale locale = (localeId == 0) ? null : id2Locale.get(localeId);
+    public static Localized findByLocaleId(List<Localized> roomLocalizedList, int localeId) {
+        for (Localized l : roomLocalizedList) {
+            if (l.getLocaleId() == localeId) return l;
+        }
+        return null;
+    }
+
+    public LanguageService init() {
+        return init(localeRepository.findAll());
+    }
+
+    protected LanguageService init(List<de.k3b.fdroid.domain.Locale> locales) {
+        id2Locale = new HashMap<>();
+        code2Locale = new HashMap<>();
+
+        for (de.k3b.fdroid.domain.Locale locale : locales) {
+            init(locale);
+        }
+        return this;
+    }
+
+    public String getLocaleCodeById(int localeId) {
+        de.k3b.fdroid.domain.Locale locale = getLocaleById(localeId);
         return (locale == null) ? null : locale.getCode();
     }
 
-    public int getOrCreateLocaleId(String localeCode) {
+    public de.k3b.fdroid.domain.Locale getLocaleById(int localeId) {
+        de.k3b.fdroid.domain.Locale locale = (localeId == 0) ? null : id2Locale.get(localeId);
+        return locale;
+    }
+
+    /**
+     * @return LANGUAGE_PRIORITY_HIDDEN(- 1) if language is hidden
+     */
+    public int getOrCreateLocaleIdByCode(String localeCode) {
+        de.k3b.fdroid.domain.Locale found = getOrCreateLocaleByCode(localeCode);
+        if (found != null) {
+            return found.getId();
+        }
+        return LANGUAGE_PRIORITY_HIDDEN;
+    }
+
+    /**
+     * @return null if this locale is hidden (LanguagePriority < 0)
+     */
+    public de.k3b.fdroid.domain.Locale getOrCreateLocaleByCode(String localeCode) {
         if (localeCode != null) {
             de.k3b.fdroid.domain.Locale locale = code2Locale.get(localeCode);
             if (locale == null) {
                 // create on demand
                 locale = new de.k3b.fdroid.domain.Locale();
                 locale.setCode(localeCode);
+                locale.setLanguagePriority(languagePriorityNewItem);
 
                 setTranslations(localeCode, locale);
                 localeRepository.insert(locale);
@@ -260,14 +307,9 @@ public class LanguageService {
                     localeRepository.update(locale);
                 }
             }
-            return locale.getId();
-        }
-        return 0;
-    }
-
-    public Localized findByLocaleId(List<Localized> roomLocalizedList, int localeId) {
-        for (Localized l : roomLocalizedList) {
-            if (l.getLocaleId() == localeId) return l;
+            if (locale != null && !isHidden(locale)) {
+                return locale;
+            }
         }
         return null;
     }

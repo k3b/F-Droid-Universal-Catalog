@@ -60,3 +60,13 @@ select count(*) cnt, substr(SEARCH_SDK,2,2) minSdk
 from app
 group by substr(SEARCH_SDK,2,2)
 order by substr(SEARCH_SDK,2,2);
+
+-----
+
+-- hide all localized that are not de en es nl fr
+update LOCALE set LANGUAGE_PRIORITY = 9 where code = 'de';
+update LOCALE set LANGUAGE_PRIORITY = 8 where code = 'en';
+update LOCALE set LANGUAGE_PRIORITY = 7 where code = 'es';
+update LOCALE set LANGUAGE_PRIORITY = 6 where code = 'nl';
+update LOCALE set LANGUAGE_PRIORITY = 5 where code = 'fr';
+update LOCALE set LANGUAGE_PRIORITY = -1 where LANGUAGE_PRIORITY = 0;
