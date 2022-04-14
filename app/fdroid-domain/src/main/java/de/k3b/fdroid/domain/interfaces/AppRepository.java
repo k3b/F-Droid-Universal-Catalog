@@ -37,4 +37,6 @@ public interface AppRepository {
     int findIdByRepoIdAndPackageName(int repoId, String packageName);
 
     List<App> findAll();
+
+    List<App> findByIds(List<Integer> ids);
 }

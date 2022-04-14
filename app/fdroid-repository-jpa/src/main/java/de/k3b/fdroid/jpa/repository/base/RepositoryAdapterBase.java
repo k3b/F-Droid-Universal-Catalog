@@ -58,4 +58,8 @@ public class RepositoryAdapterBase<T, R extends CrudRepository<T, Integer>> {
     public List<T> findAll() {
         return (List<T>) jpa.findAll();
     }
+
+    public List<T> findByIds(List<Integer> ids) {
+        return (List<T>) jpa.findAllById(ids);
+    }
 }

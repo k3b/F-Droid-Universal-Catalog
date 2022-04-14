@@ -49,4 +49,7 @@ public interface AppDao extends AppRepository {
 
     @Query("SELECT * FROM App")
     List<App> findAll();
+
+    @Query("SELECT * FROM App WHERE App.id in (:ids)")
+    List<App> findByIds(List<Integer> ids);
 }

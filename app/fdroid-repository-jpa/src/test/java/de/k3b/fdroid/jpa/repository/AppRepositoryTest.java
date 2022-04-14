@@ -25,6 +25,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.util.Assert;
 
+import java.util.Arrays;
+import java.util.List;
+
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 
@@ -67,5 +70,12 @@ public class AppRepositoryTest {
     public void findByRepoIdAndPackageName() {
         App app = repo.findByRepoIdAndPackageName(MY_REPO_ID, MY_PACKAGE_NAME);
         Assert.notNull(app, "found");
+    }
+
+    @Test
+    public void findByIds() {
+        List<App> apps = repo.findByIds(Arrays.asList(id));
+        Assert.notNull(apps, "found");
+        Assert.isTrue(apps.size() == 1, "found 1");
     }
 }
