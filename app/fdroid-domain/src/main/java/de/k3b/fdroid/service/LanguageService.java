@@ -31,6 +31,8 @@ import de.k3b.fdroid.domain.interfaces.LocaleRepository;
 import de.k3b.fdroid.util.StringUtil;
 
 /**
+ * Service to cache/find/insert Language info.
+ * <p>
  * Localisation language info from org.fdroid.v1 is deliverd in a non standard way
  * resulting in different representations of the same language.
  * <p>
@@ -96,10 +98,11 @@ public class LanguageService {
                 // ie "en-US" => "en"
                 return normalizedLowerCase.substring(0, 2);
             }
-        }
 
-        // indonesian: differenece between java-language and iso-language
-        if (normalized.startsWith("in")) return "id";
+            // indonesian: differenece between java-language and iso-language
+            if (normalized.startsWith("in")) return "id";
+
+        }
 
         return normalized;
     }
