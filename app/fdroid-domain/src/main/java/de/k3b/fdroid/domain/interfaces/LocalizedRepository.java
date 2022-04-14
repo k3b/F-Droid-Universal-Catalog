@@ -35,4 +35,6 @@ public interface LocalizedRepository {
     List<Localized> findByAppId(int appId);
 
     List<Localized> findByAppIdAndLocaleIds(int appId, List<Integer> localeIds);
+
+    List<Localized> findNonHiddenByAppIds(List<Integer> appIds);
 }

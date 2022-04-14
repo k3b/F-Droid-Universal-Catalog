@@ -38,4 +38,10 @@ public interface LocalizedRepositoryJpa extends CrudRepository<Localized, Intege
 
     @Query(value = "select l from Localized l where l.appId = ?1 and l.localeId in (?2)")
     List<Localized> findForAppIdAndLocales(int appId, List<Integer> localeIds);
+
+    @Query(value = "select al from Localized al " +
+            "inner join Locale l on al.localeId = l.id " +
+            "where al.appId in (?1) and l.languagePriority <> -1 " +
+            "order by al.appId, l.languagePriority desc")
+    List<Localized> findNonHiddenByAppIds(List<Integer> appIds);
 }

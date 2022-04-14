@@ -62,6 +62,16 @@ group by substr(SEARCH_SDK,2,2)
 order by substr(SEARCH_SDK,2,2);
 
 -----
+-- apps description in one language
+select a.PACKAGE_NAME, la.code, lo.NAME, lo.SUMMARY, lo.DESCRIPTION
+from LOCALIZED lo
+inner join LOCALE la on lo.LOCALE_ID = la.id
+inner join App a on lo.APP_ID = a.id
+where la.code = 'de' and lo.DESCRIPTION is not null
+;
+
+
+-----
 
 -- hide all localized that are not de en es nl fr
 update LOCALE set LANGUAGE_PRIORITY = 9 where code = 'de';

@@ -33,7 +33,9 @@ import de.k3b.fdroid.jpa.repository.base.RepositoryAdapterBase;
  * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
  */
 @Service
-public class LocalizedRepositoryAdapter extends RepositoryAdapterBase<Localized, LocalizedRepositoryJpa> implements LocalizedRepository {
+public class LocalizedRepositoryAdapter
+        extends RepositoryAdapterBase<Localized, LocalizedRepositoryJpa>
+        implements LocalizedRepository {
     public LocalizedRepositoryAdapter(LocalizedRepositoryJpa jpa) {
         super(jpa);
     }
@@ -46,5 +48,10 @@ public class LocalizedRepositoryAdapter extends RepositoryAdapterBase<Localized,
     @Override
     public List<Localized> findByAppIdAndLocaleIds(int appId, List<Integer> localeIds) {
         return jpa.findForAppIdAndLocales(appId, localeIds);
+    }
+
+    @Override
+    public List<Localized> findNonHiddenByAppIds(List<Integer> appIds) {
+        return jpa.findNonHiddenByAppIds(appIds);
     }
 }

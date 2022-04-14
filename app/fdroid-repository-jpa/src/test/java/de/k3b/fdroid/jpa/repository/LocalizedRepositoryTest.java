@@ -28,8 +28,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import de.k3b.fdroid.domain.Locale;
 import de.k3b.fdroid.domain.Localized;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
+import de.k3b.fdroid.service.LanguageService;
 
 @DataJpaTest
 public class LocalizedRepositoryTest {
@@ -42,6 +44,9 @@ public class LocalizedRepositoryTest {
     private LocalizedRepositoryJpa jpa;
     @Autowired
     private LocalizedRepository repo;
+    @Autowired
+    private LocaleRepositoryJpa localeJpa;
+
     private int id;
 
     @BeforeEach
@@ -60,6 +65,7 @@ public class LocalizedRepositoryTest {
     public void injectedComponentsAreNotNull() {
         Assert.notNull(jpa, "jpa");
         Assert.notNull(repo, "repo");
+        Assert.notNull(localeJpa, "localeJpa");
     }
 
     @Test
@@ -84,5 +90,40 @@ public class LocalizedRepositoryTest {
     public void findByAppIdAndLocaleIds_notfound() {
         List<Localized> localized = repo.findByAppIdAndLocaleIds(MY_APP_ID, Arrays.asList(MY_LOCALE_ID - 1000));
         Assert.isTrue(localized.size() == 0, "found 0");
+    }
+
+    @Test
+    public void findNonHiddenByAppIds() {
+        Locale l1 = new Locale();
+        Localized al1 = new Localized();
+        Locale l2 = new Locale();
+        Localized al2 = new Localized();
+
+        try {
+            l1.setCode("@+");
+            l1.setLanguagePriority(5);
+            localeJpa.save(l1);
+            al1.setAppId(MY_APP_ID);
+            al1.setLocaleId(l1.getId());
+            al1.setName("@+");
+            repo.insert(al1);
+
+            l2.setCode("@-");
+            l2.setLanguagePriority(LanguageService.LANGUAGE_PRIORITY_HIDDEN);
+            localeJpa.save(l2);
+            al2.setAppId(MY_APP_ID + 1);
+            al2.setLocaleId(l2.getId());
+            al2.setName("@-");
+            repo.insert(al2);
+
+            List<Localized> localized = repo.findNonHiddenByAppIds(Arrays.asList(MY_APP_ID, MY_APP_ID + 1));
+            Assert.isTrue(localized.size() == 1, "found 1");
+            Assert.isTrue(localized.get(0).getName().equals("@+"), "#1 ok");
+        } finally {
+            repo.delete(al2);
+            localeJpa.delete(l2);
+            repo.delete(al1);
+            localeJpa.delete(l1);
+        }
     }
 }
