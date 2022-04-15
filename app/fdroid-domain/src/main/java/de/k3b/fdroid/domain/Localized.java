@@ -19,6 +19,7 @@
 package de.k3b.fdroid.domain;
 
 import de.k3b.fdroid.domain.common.LocalizedCommon;
+import de.k3b.fdroid.domain.interfaces.AppDetail;
 
 /**
  * Android independant: Pojo-s with all properties that are persisted in the Database.
@@ -29,7 +30,7 @@ import de.k3b.fdroid.domain.common.LocalizedCommon;
         @androidx.room.Index({"appId", "localeId"})})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
-public class Localized extends LocalizedCommon {
+public class Localized extends LocalizedCommon implements AppDetail {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @androidx.room.PrimaryKey(autoGenerate = true)
@@ -38,6 +39,14 @@ public class Localized extends LocalizedCommon {
     private int appId;
 
     private int localeId;
+
+    public Localized() {
+    }
+
+    public Localized(int appId, int localeId) {
+        setAppId(appId);
+        setLocaleId(localeId);
+    }
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);

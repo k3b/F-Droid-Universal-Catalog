@@ -18,7 +18,6 @@
  */
 package de.k3b.fdroid.jpa.repository.testcase;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,8 @@ import org.springframework.util.Assert;
 
 import java.util.List;
 
+import de.k3b.fdroid.jpa.repository.JpaTestHelper;
+
 @DataJpaTest
 public class TestEntityRepositoryTest {
     private static final String MY_NAME = "name peter";
@@ -34,21 +35,15 @@ public class TestEntityRepositoryTest {
     @Autowired
     private TestRepositoryJpa jpa;
 
-    private int id = 0;
+    @Autowired
+    JpaTestHelper jpaTestHelper;
 
     @BeforeEach
     public void init() {
         TestEntity testEntity = new TestEntity();
         testEntity.name = MY_NAME;
         testEntity.familyName = MY_FAMILY_NAME;
-        jpa.save(testEntity);
-        id = testEntity.id;
-    }
-
-    @AfterEach
-    public void finish() {
-        jpa.deleteById(id);
-        id = 0;
+        jpaTestHelper.save(testEntity);
     }
 
     @Test
@@ -66,5 +61,10 @@ public class TestEntityRepositoryTest {
     public void findByFamilyName() {
         List<TestEntity> test = jpa.findByFamilyName(MY_FAMILY_NAME);
         Assert.notEmpty(test, "found");
+    }
+
+    @Test
+    public void findByAVeryComplicatedQuery() {
+        List<Integer> result = jpa.findByAVeryComplicatedQuery("ame");
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TestRepositoryJpa extends CrudRepository<TestEntity, Integer> {
+public interface TestRepositoryJpa extends CrudRepository<TestEntity, Integer>, CustomerRepositoryCustomAbc {
 
     List<TestEntity> findByFamilyName(String familyName);
 

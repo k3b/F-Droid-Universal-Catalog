@@ -25,7 +25,7 @@ import de.k3b.fdroid.domain.Version;
 /**
  * Android independant interfaces to use the Database
  */
-public interface VersionRepository {
+public interface VersionRepository extends AppDetailRepository<Version> {
     void insert(Version version);
 
     void update(Version version);

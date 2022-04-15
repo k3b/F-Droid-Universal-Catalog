@@ -18,25 +18,10 @@
  */
 package de.k3b.fdroid.domain.interfaces;
 
-import java.util.List;
-
-import de.k3b.fdroid.domain.App;
-
 /**
- * Android independant interfaces to use the Database
+ * A Detail one-to-many-detail that belongs to {@link de.k3b.fdroid.domain.App}
  */
-public interface AppRepository extends AppRepositoryFindIdsByExpression {
-    void insert(App apps);
+public interface AppDetail extends ItemWithId {
 
-    void update(App roomApp);
-
-    void delete(App app);
-
-    App findByRepoIdAndPackageName(int repoId, String packageName);
-
-    int findIdByRepoIdAndPackageName(int repoId, String packageName);
-
-    List<App> findAll();
-
-    List<App> findByIds(List<Integer> ids);
+    int getAppId();
 }

@@ -20,11 +20,13 @@ package de.k3b.fdroid.jpa.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import de.k3b.fdroid.domain.Localized;
+import de.k3b.fdroid.domain.Version;
 
 /**
  * Spring-Boot-Jpa (Non-Android) specific Database-Repository implementation:
@@ -34,6 +36,7 @@ import de.k3b.fdroid.domain.Localized;
  */
 @Repository
 public interface LocalizedRepositoryJpa extends CrudRepository<Localized, Integer> {
+    // @Query(value = "select l from Localized l where l.appId = ?1")
     List<Localized> findByAppId(int appId);
 
     @Query(value = "select l from Localized l where l.appId = ?1 and l.localeId in (?2)")
@@ -44,4 +47,11 @@ public interface LocalizedRepositoryJpa extends CrudRepository<Localized, Intege
             "where al.appId in (?1) and l.languagePriority <> -1 " +
             "order by al.appId, l.languagePriority desc")
     List<Localized> findNonHiddenByAppIds(List<Integer> appIds);
+
+    @Query("SELECT v FROM App_Version v inner join App as a on v.appId = a.id " +
+            "WHERE a.repoId = :repoId AND a.packageName = :packageName AND v.versionCode = :versionCode")
+    Version findByRepoPackageAndVersionCode(
+            @Param("repoId") int repoId,
+            @Param("packageName") String packageName,
+            @Param("versionCode") long versionCode);
 }

@@ -20,6 +20,7 @@ package de.k3b.fdroid.domain;
 
 
 import de.k3b.fdroid.domain.common.PojoCommon;
+import de.k3b.fdroid.domain.interfaces.ItemWithId;
 // import de.k3b.fdroid.domain.common.PojoCommon;
 
 /**
@@ -30,7 +31,7 @@ import de.k3b.fdroid.domain.common.PojoCommon;
 @androidx.room.Entity(indices = {@androidx.room.Index("id")})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
-public class Category extends PojoCommon {
+public class Category extends PojoCommon implements ItemWithId {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @androidx.room.PrimaryKey(autoGenerate = true)

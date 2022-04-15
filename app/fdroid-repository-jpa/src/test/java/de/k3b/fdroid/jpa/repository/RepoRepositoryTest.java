@@ -46,8 +46,8 @@ public class RepoRepositoryTest {
         Repo r = new Repo();
         r.setIcon(MY_ICON);
         r.setAddress(MY_ADDRESS);
+        // r.setId(4711);
         repo.insert(r);
-        id = r.getId();
     }
 
     @AfterEach

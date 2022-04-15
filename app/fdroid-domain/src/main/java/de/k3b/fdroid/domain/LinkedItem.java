@@ -16,27 +16,35 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.domain.interfaces;
+package de.k3b.fdroid.domain;
 
-import java.util.List;
+import de.k3b.fdroid.domain.interfaces.AppDetail;
+import de.k3b.fdroid.domain.interfaces.ItemWithId;
 
-import de.k3b.fdroid.domain.App;
+public class LinkedItem<LINK extends AppDetail, ITEM extends ItemWithId> implements AppDetail {
+    private final LINK link;
+    private final ITEM item;
 
-/**
- * Android independant interfaces to use the Database
- */
-public interface AppRepository extends AppRepositoryFindIdsByExpression {
-    void insert(App apps);
+    public LinkedItem(LINK link, ITEM item) {
+        this.link = link;
+        this.item = item;
+    }
 
-    void update(App roomApp);
+    public LINK getLink() {
+        return link;
+    }
 
-    void delete(App app);
+    public ITEM getItem() {
+        return item;
+    }
 
-    App findByRepoIdAndPackageName(int repoId, String packageName);
+    @Override
+    public int getAppId() {
+        return link.getAppId();
+    }
 
-    int findIdByRepoIdAndPackageName(int repoId, String packageName);
-
-    List<App> findAll();
-
-    List<App> findByIds(List<Integer> ids);
+    @Override
+    public int getId() {
+        return link.getId();
+    }
 }

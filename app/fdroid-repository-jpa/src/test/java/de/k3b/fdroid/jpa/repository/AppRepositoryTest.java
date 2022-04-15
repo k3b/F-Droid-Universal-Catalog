@@ -78,4 +78,12 @@ public class AppRepositoryTest {
         Assert.notNull(apps, "found");
         Assert.isTrue(apps.size() == 1, "found 1");
     }
+
+
+    @Test
+    public void findByIdse() {
+        List<Integer> apps = repo.findIdsByExpression("acka");
+        Assert.notNull(apps, "found");
+        Assert.isTrue(apps.size() == 1, "found 1");
+    }
 }

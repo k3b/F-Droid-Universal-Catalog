@@ -46,4 +46,9 @@ public interface VersionDao extends VersionRepository {
     @Query("SELECT App_Version.* FROM App_Version inner join App on App_Version.appId = App.id " +
             "WHERE App.repoId = :repoId AND App.packageName = :packageName AND App_Version.versionCode = :versionCode")
     Version findByRepoPackageAndVersionCode(int repoId, String packageName, long versionCode);
+
+    @Query(value = "select al.* from App_Version al " +
+            "where al.appId in (:appIds) " +
+            "order by al.versionCode desc")
+    List<Version> findByAppIds(List<Integer> appIds);
 }

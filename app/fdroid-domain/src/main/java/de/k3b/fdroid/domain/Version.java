@@ -19,6 +19,7 @@
 package de.k3b.fdroid.domain;
 
 import de.k3b.fdroid.domain.common.VersionCommon;
+import de.k3b.fdroid.domain.interfaces.AppDetail;
 
 /**
  * Android independant: Pojo-s with all properties that are persisted in the Database.
@@ -29,7 +30,7 @@ import de.k3b.fdroid.domain.common.VersionCommon;
         @androidx.room.Index({"id", "appId"})})
 @javax.persistence.Entity(name = "App_Version")
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
-public class Version extends VersionCommon {
+public class Version extends VersionCommon implements AppDetail {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @androidx.room.PrimaryKey(autoGenerate = true)

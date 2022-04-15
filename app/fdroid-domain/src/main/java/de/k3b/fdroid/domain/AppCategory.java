@@ -19,6 +19,7 @@
 package de.k3b.fdroid.domain;
 
 import de.k3b.fdroid.domain.common.PojoCommon;
+import de.k3b.fdroid.domain.interfaces.AppDetail;
 
 /**
  * Android independant: Pojo-s with all properties that are persisted in the Database.
@@ -28,7 +29,7 @@ import de.k3b.fdroid.domain.common.PojoCommon;
         indices = {@androidx.room.Index({"appId", "categoryId"})})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
-public class AppCategory extends PojoCommon {
+public class AppCategory extends PojoCommon implements AppDetail {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @androidx.room.PrimaryKey(autoGenerate = true)
@@ -52,6 +53,7 @@ public class AppCategory extends PojoCommon {
         toStringBuilder(sb, "categoryId", this.categoryId);
     }
 
+    @Override
     public int getId() {
         return id;
     }
@@ -60,6 +62,7 @@ public class AppCategory extends PojoCommon {
         this.id = id;
     }
 
+    @Override
     public int getAppId() {
         return appId;
     }

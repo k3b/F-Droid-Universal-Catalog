@@ -19,6 +19,7 @@
 package de.k3b.fdroid.domain;
 
 import de.k3b.fdroid.domain.common.PojoCommon;
+import de.k3b.fdroid.domain.interfaces.ItemWithId;
 
 /**
  * Android independant: Pojo-s with all properties that are persisted in the Database.
@@ -28,7 +29,7 @@ import de.k3b.fdroid.domain.common.PojoCommon;
 @androidx.room.Entity
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
-public class Locale extends PojoCommon {
+public class Locale extends PojoCommon implements ItemWithId {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @androidx.room.PrimaryKey(autoGenerate = true)

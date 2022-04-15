@@ -52,4 +52,8 @@ public interface AppDao extends AppRepository {
 
     @Query("SELECT * FROM App WHERE App.id in (:ids)")
     List<App> findByIds(List<Integer> ids);
+
+    //!!! TODO
+    @Query("SELECT id FROM App WHERE App.id in (:searchText)")
+    List<Integer> findIdsByExpression(String searchText);
 }

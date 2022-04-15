@@ -20,23 +20,6 @@ package de.k3b.fdroid.domain.interfaces;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.App;
-
-/**
- * Android independant interfaces to use the Database
- */
-public interface AppRepository extends AppRepositoryFindIdsByExpression {
-    void insert(App apps);
-
-    void update(App roomApp);
-
-    void delete(App app);
-
-    App findByRepoIdAndPackageName(int repoId, String packageName);
-
-    int findIdByRepoIdAndPackageName(int repoId, String packageName);
-
-    List<App> findAll();
-
-    List<App> findByIds(List<Integer> ids);
+public interface AppRepositoryFindIdsByExpression {
+    List<Integer> findIdsByExpression(String searchText);
 }

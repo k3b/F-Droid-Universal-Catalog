@@ -16,27 +16,20 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.domain.interfaces;
+package de.k3b.fdroid.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.domain.interfaces.AppDetail;
+import de.k3b.fdroid.domain.interfaces.AppDetailRepository;
 
 /**
- * Android independant interfaces to use the Database
+ * Fake implementation of {@link AppDetailRepository} that does not load.
  */
-public interface AppRepository extends AppRepositoryFindIdsByExpression {
-    void insert(App apps);
-
-    void update(App roomApp);
-
-    void delete(App app);
-
-    App findByRepoIdAndPackageName(int repoId, String packageName);
-
-    int findIdByRepoIdAndPackageName(int repoId, String packageName);
-
-    List<App> findAll();
-
-    List<App> findByIds(List<Integer> ids);
+public class DoNotLoadAppDetailRepositoryImpl<T extends AppDetail> implements AppDetailRepository<T> {
+    @Override
+    public List<T> findByAppIds(List<Integer> appIds) {
+        return new ArrayList<T>();
+    }
 }

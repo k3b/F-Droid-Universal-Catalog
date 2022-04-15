@@ -47,4 +47,9 @@ public class VersionRepositoryAdapter extends RepositoryAdapterBase<Version, Ver
     public Version findByRepoPackageAndVersionCode(int repoId, String packageName, long versionCode) {
         return jpa.findByRepoPackageAndVersionCode(repoId, packageName, versionCode);
     }
+
+    @Override
+    public List<Version> findByAppIds(List<Integer> appIds) {
+        return jpa.findByAppIds(appIds);
+    }
 }

@@ -16,27 +16,24 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.domain.interfaces;
+package de.k3b.fdroid.service.adapter;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.domain.Localized;
+import de.k3b.fdroid.domain.interfaces.AppDetailRepository;
+import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 
-/**
- * Android independant interfaces to use the Database
- */
-public interface AppRepository extends AppRepositoryFindIdsByExpression {
-    void insert(App apps);
 
-    void update(App roomApp);
+public class LocalizedRepositoryAdapterImpl implements AppDetailRepository<Localized> {
+    private final LocalizedRepository localizedRepository;
 
-    void delete(App app);
+    public LocalizedRepositoryAdapterImpl(LocalizedRepository localizedRepository) {
+        this.localizedRepository = localizedRepository;
+    }
 
-    App findByRepoIdAndPackageName(int repoId, String packageName);
-
-    int findIdByRepoIdAndPackageName(int repoId, String packageName);
-
-    List<App> findAll();
-
-    List<App> findByIds(List<Integer> ids);
+    @Override
+    public List<Localized> findByAppIds(List<Integer> appIds) {
+        return localizedRepository.findNonHiddenByAppIds(appIds);
+    }
 }

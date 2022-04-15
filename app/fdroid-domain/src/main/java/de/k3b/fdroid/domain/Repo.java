@@ -19,6 +19,7 @@
 package de.k3b.fdroid.domain;
 
 import de.k3b.fdroid.domain.common.RepoCommon;
+import de.k3b.fdroid.domain.interfaces.ItemWithId;
 
 /**
  * Android independant: Pojo-s with all properties that are persisted in the Database.
@@ -28,22 +29,22 @@ import de.k3b.fdroid.domain.common.RepoCommon;
 @androidx.room.Entity(indices = {@androidx.room.Index("id")})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
-public class Repo extends RepoCommon {
+public class Repo extends RepoCommon implements ItemWithId {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @androidx.room.PrimaryKey(autoGenerate = true)
-    private Integer id;
+    private int id;
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         super.toStringBuilder(sb);
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 }

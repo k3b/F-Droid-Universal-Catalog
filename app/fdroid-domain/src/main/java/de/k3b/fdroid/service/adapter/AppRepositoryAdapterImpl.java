@@ -16,27 +16,24 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.domain.interfaces;
+package de.k3b.fdroid.service.adapter;
 
 import java.util.List;
 
 import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.domain.interfaces.AppDetailRepository;
+import de.k3b.fdroid.domain.interfaces.AppRepository;
 
-/**
- * Android independant interfaces to use the Database
- */
-public interface AppRepository extends AppRepositoryFindIdsByExpression {
-    void insert(App apps);
 
-    void update(App roomApp);
+public class AppRepositoryAdapterImpl implements AppDetailRepository<App> {
+    private final AppRepository appRepository;
 
-    void delete(App app);
+    public AppRepositoryAdapterImpl(AppRepository appRepository) {
+        this.appRepository = appRepository;
+    }
 
-    App findByRepoIdAndPackageName(int repoId, String packageName);
-
-    int findIdByRepoIdAndPackageName(int repoId, String packageName);
-
-    List<App> findAll();
-
-    List<App> findByIds(List<Integer> ids);
+    @Override
+    public List<App> findByAppIds(List<Integer> appIds) {
+        return appRepository.findByIds(appIds);
+    }
 }

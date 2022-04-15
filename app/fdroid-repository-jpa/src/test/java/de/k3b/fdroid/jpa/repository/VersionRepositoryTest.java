@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.util.Assert;
 
+import java.util.Arrays;
 import java.util.List;
 
 import de.k3b.fdroid.domain.App;
@@ -89,6 +90,12 @@ public class VersionRepositoryTest {
     @Test
     public void findByAppID() {
         List<Version> version = repo.findByAppId(appId);
+        Assert.isTrue(version.size() == 1, "found 1");
+    }
+
+    @Test
+    public void findByAppIds() {
+        List<Version> version = repo.findByAppIds(Arrays.asList(appId));
         Assert.isTrue(version.size() == 1, "found 1");
     }
 }
