@@ -3,12 +3,10 @@ package de.k3b.fdroid.jpa.repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.EntityManager;
 
 import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.domain.Category;
 import de.k3b.fdroid.domain.Locale;
 import de.k3b.fdroid.domain.Repo;
 
@@ -17,10 +15,6 @@ public class JpaTestHelper {
     @Autowired
     EntityManager entityManager;
 
-    List<Object> created = new ArrayList<>();
-
-    private Repo repo;
-
     public void createItems() {
         Repo repo = createRepo();
         createApp(repo);
@@ -28,8 +22,7 @@ public class JpaTestHelper {
     }
 
     public App createApp() {
-        if (repo == null) repo = createRepo();
-        return createApp(repo);
+        return createApp(createRepo());
     }
 
     public App createApp(Repo repo) {
@@ -40,7 +33,6 @@ public class JpaTestHelper {
     }
 
     public <T> T save(T entity) {
-        created.add(entity);
         entityManager.persist(entity);
         return entity;
     }
@@ -59,11 +51,9 @@ public class JpaTestHelper {
         return save(locale);
     }
 
-    public void rollback() {
-        int len = created.size();
-        for (int i = len - 1; i >= 0; i--) {
-            entityManager.remove(created.get(i));
-            created.remove(i);
-        }
+    public Category createCategory() {
+        Category category = save(new Category());
+        category.setName("name" + category.getId());
+        return save(category);
     }
 }

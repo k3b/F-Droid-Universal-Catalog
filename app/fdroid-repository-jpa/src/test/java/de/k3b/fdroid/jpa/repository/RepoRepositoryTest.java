@@ -18,7 +18,6 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,34 +31,25 @@ import de.k3b.fdroid.domain.interfaces.RepoRepository;
 public class RepoRepositoryTest {
     private static final String MY_ADDRESS = "my.package.name";
     private static final String MY_ICON = "myIcon.ico";
-    private static final int MY_REPO_ID = 47110815;
 
     @Autowired
-    private RepoRepositoryJpa jpa;
+    JpaTestHelper jpaTestHelper;
+
     @Autowired
     private RepoRepository repo;
-
-    private int id = 0;
 
     @BeforeEach
     public void init() {
         Repo r = new Repo();
         r.setIcon(MY_ICON);
         r.setAddress(MY_ADDRESS);
-        // r.setId(4711);
         repo.insert(r);
-    }
-
-    @AfterEach
-    public void finish() {
-        jpa.deleteById(id);
-        id = 0;
     }
 
     @Test
     public void injectedComponentsAreNotNull() {
-        Assert.notNull(jpa, "jpa");
         Assert.notNull(repo, "repo");
+        Assert.notNull(jpaTestHelper, "jpaTestHelper");
     }
 
     @Test

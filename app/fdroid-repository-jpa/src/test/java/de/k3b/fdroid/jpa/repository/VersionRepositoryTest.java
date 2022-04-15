@@ -18,7 +18,6 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.Version;
 import de.k3b.fdroid.domain.interfaces.VersionRepository;
 
@@ -36,59 +36,47 @@ import de.k3b.fdroid.domain.interfaces.VersionRepository;
 public class VersionRepositoryTest {
     private static final String MY_NAME = "my.name";
     private static final String MY_PACKAGE_NAME = "my.package.name";
-    private static final int MY_REPO_ID = 47110819;
-    private static final long MY_VERSION_CODE = 2075;
-
-    private int appId;
-
+    private final long MY_VERSION_CODE = 2075;
     @Autowired
-    private VersionRepositoryJpa jpa;
+    JpaTestHelper jpaTestHelper;
+    private int appId;
+    private int repoId;
+
     @Autowired
     private VersionRepository repo;
-    @Autowired
-    private AppRepositoryJpa appJpa;
-
-    private int id = 0;
 
     @BeforeEach
     public void init() {
-        App app = new App();
-        app.setRepoId(MY_REPO_ID);
+        Repo repo = jpaTestHelper.createRepo();
+        repoId = repo.getId();
+        appId = jpaTestHelper.createApp(repo).getId();
+
+        App app = new App(repoId);
         app.setPackageName(MY_PACKAGE_NAME);
-        appJpa.save(app);
+        jpaTestHelper.save(app);
         appId = app.getId();
 
         Version version = new Version();
         version.setAppId(appId);
         version.setVersionCode(MY_VERSION_CODE);
         version.setApkName(MY_NAME);
-        repo.insert(version);
-        id = version.getId();
-    }
-
-    @AfterEach
-    public void finish() {
-        jpa.deleteById(id);
-        id = 0;
-        appJpa.deleteById(appId);
-        appId = 0;
+        this.repo.insert(version);
     }
 
     @Test
     public void injectedComponentsAreNotNull() {
-        Assert.notNull(jpa, "jpa");
         Assert.notNull(repo, "repo");
-        Assert.notNull(appJpa, "appJpa");
+        Assert.notNull(jpaTestHelper, "jpaTestHelper");
     }
 
     @Test
     public void findByRepoPackageAndVersionCode() {
-        Version version = repo.findByRepoPackageAndVersionCode(MY_REPO_ID, MY_PACKAGE_NAME, MY_VERSION_CODE);
+        Version version = repo.findByRepoPackageAndVersionCode(repoId, MY_PACKAGE_NAME, MY_VERSION_CODE);
         Assert.notNull(version, "found");
     }
 
     @Test
-    public void findByAppID() {
+    public void findByAppId() {
         List<Version> version = repo.findByAppId(appId);
         Assert.isTrue(version.size() == 1, "found 1");
     }

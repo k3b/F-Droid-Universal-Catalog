@@ -18,7 +18,6 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,54 +34,47 @@ import de.k3b.fdroid.domain.interfaces.AppRepository;
 public class AppRepositoryTest {
     private static final String MY_PACKAGE_NAME = "my.package.name";
     private static final String MY_ICON = "myIcon.ico";
-    private static final int MY_REPO_ID = 47110815;
-
     @Autowired
-    private AppRepositoryJpa jpa;
+    JpaTestHelper jpaTestHelper;
+    private int repoId;
+    private int appId;
+
     @Autowired
     private AppRepository repo;
 
-    private int id = 0;
-
     @BeforeEach
     public void init() {
-        App app = new App();
-        app.setRepoId(MY_REPO_ID);
+        repoId = jpaTestHelper.createRepo().getId();
+        App app = new App(repoId);
         app.setPackageName(MY_PACKAGE_NAME);
         app.setIcon(MY_ICON);
         repo.insert(app);
-        id = app.getId();
-    }
-
-    @AfterEach
-    public void finish() {
-        jpa.deleteById(id);
-        id = 0;
+        appId = app.getId();
     }
 
     @Test
     public void injectedComponentsAreNotNull() {
-        Assert.notNull(jpa, "jpa");
         Assert.notNull(repo, "repo");
+        Assert.notNull(jpaTestHelper, "jpaTestHelper");
     }
 
     @Test
     public void findByRepoIdAndPackageName() {
-        App app = repo.findByRepoIdAndPackageName(MY_REPO_ID, MY_PACKAGE_NAME);
+        App app = repo.findByRepoIdAndPackageName(repoId, MY_PACKAGE_NAME);
         Assert.notNull(app, "found");
     }
 
     @Test
     public void findByIds() {
-        List<App> apps = repo.findByIds(Arrays.asList(id));
+        List<App> apps = repo.findByIds(Arrays.asList(appId));
         Assert.notNull(apps, "found");
         Assert.isTrue(apps.size() == 1, "found 1");
     }
 
 
     @Test
-    public void findByIdse() {
-        List<Integer> apps = repo.findIdsByExpression("acka");
+    public void findIdsByExpression() {
+        List<Integer> apps = repo.findIdsByExpression("acka my");
         Assert.notNull(apps, "found");
         Assert.isTrue(apps.size() == 1, "found 1");
     }

@@ -18,7 +18,6 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,38 +32,34 @@ import de.k3b.fdroid.domain.interfaces.AppCategoryRepository;
 
 @DataJpaTest
 public class AppCategoryRepositoryTest {
-    private static final int APP_ID = 47110815;
-
     @Autowired
-    private AppCategoryRepositoryJpa jpa;
+    JpaTestHelper jpaTestHelper;
+
     @Autowired
     private AppCategoryRepository repo;
 
-    private int id = 0;
+    private int appId;
+    private int categoryId;
 
     @BeforeEach
     public void init() {
-        AppCategory appCategory = new AppCategory(APP_ID, APP_ID + 1);
-        repo.insert(appCategory);
-        id = appCategory.getId();
-    }
+        appId = jpaTestHelper.createApp().getId();
+        categoryId = jpaTestHelper.createCategory().getId();
 
-    @AfterEach
-    public void finish() {
-        jpa.deleteById(id);
-        id = 0;
+        AppCategory appCategory = new AppCategory(appId, categoryId);
+        repo.insert(appCategory);
     }
 
     @Test
     public void injectedComponentsAreNotNull() {
-        Assert.notNull(jpa, "jpa");
+        Assert.notNull(jpaTestHelper, "jpaTestHelper");
         Assert.notNull(repo, "repo");
     }
 
 
     @Test
     public void findByAppId() {
-        List<AppCategory> list = repo.findByAppId(APP_ID);
+        List<AppCategory> list = repo.findByAppId(appId);
         Assert.isTrue(list.size() == 1, "1 found");
     }
 }

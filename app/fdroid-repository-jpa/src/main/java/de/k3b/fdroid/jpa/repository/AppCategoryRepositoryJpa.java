@@ -33,7 +33,6 @@ import de.k3b.fdroid.domain.AppCategory;
  */
 @Repository
 public interface AppCategoryRepositoryJpa extends CrudRepository<AppCategory, Integer> {
-    // @Query("SELECT * FROM AppCategory WHERE AppCategory.appId = :appId")
     List<AppCategory> findByAppId(int appId);
 }
 

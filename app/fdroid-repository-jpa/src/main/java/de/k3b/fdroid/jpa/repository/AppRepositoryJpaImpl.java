@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import de.k3b.fdroid.domain.interfaces.AppRepositoryFindIdsByExpression;
 
@@ -32,21 +33,32 @@ public class AppRepositoryJpaImpl implements AppRepositoryFindIdsByExpression {
 
     @Override
     public List<Integer> findIdsByExpression(String searchText) {
-        String sql = "select id from (select\n" +
+        StringBuilder sql = new StringBuilder().append("select id from (select\n" +
                 "    id,\n" +
                 "    PACKAGE_NAME,\n" +
                 "    sum(score) score\n" +
                 "from APP_SEARCH\n" +
-                "where search like :search\n" +
-                "group by id, PACKAGE_NAME\n" +
+                "where ");
+        String[] expressions = searchText.split(" ");
+        int index = 1;
+        for (String expresson : expressions) {
+            if (index > 1) sql.append(" OR ");
+            sql.append("search like :search").append(index);
+            index++;
+        }
+        sql.append("\n group by id, PACKAGE_NAME\n" +
                 "order by sum(score) desc, PACKAGE_NAME\n" +
-                ")";
+                ")");
 
 
-        Object result = entityManager
-                .createNativeQuery(sql)
-                .setParameter("search", "%" + searchText + "%")
-                .getResultList();
-        return (List<Integer>) result;
+        Query nativeQuery = entityManager
+                .createNativeQuery(sql.toString());
+        index = 1;
+        for (String expresson : expressions) {
+            nativeQuery.setParameter("search" + index, "%" + expresson + "%");
+            index++;
+        }
+
+        return (List<Integer>) nativeQuery.getResultList();
     }
 }

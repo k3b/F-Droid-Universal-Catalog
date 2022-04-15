@@ -18,7 +18,6 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +36,8 @@ import de.k3b.fdroid.service.LanguageService;
 public class LocalizedRepositoryTest {
     private static final String MY_Summary = "my.package.name";
     private static final String MY_ICON = "myIcon.ico";
-    private static int MY_APP_ID = 47110815;
-    private static int MY_LOCALE_ID = 47110816;
-    private static int MY_LOCALIZED_ID = 47110817;
+    private int appId;
+    private int localeId;
 
     @Autowired
     JpaTestHelper jpaTestHelper;
@@ -49,69 +47,57 @@ public class LocalizedRepositoryTest {
 
     @BeforeEach
     public void init() {
-        MY_APP_ID = jpaTestHelper.createApp().getId();
+        appId = jpaTestHelper.createApp().getId();
 
-        MY_LOCALE_ID = jpaTestHelper.createLocale("@@").getId();
+        Locale locale = jpaTestHelper.createLocale("@+");
+        locale.setLanguagePriority(5);
+        localeId = jpaTestHelper.save(locale).getId();
 
-        Localized localized = new Localized(MY_APP_ID, MY_LOCALE_ID);
+        Localized localized = new Localized(appId, localeId);
         localized.setSummary(MY_Summary);
+        localized.setName("@+");
         localized.setIcon(MY_ICON);
-        jpaTestHelper.save(localized);
-        MY_LOCALIZED_ID = localized.getId();
-    }
-
-    @AfterEach
-    public void finit() {
-        jpaTestHelper.rollback();
+        repo.insert(localized);
     }
 
     @Test
     public void injectedComponentsAreNotNull() {
         Assert.notNull(repo, "repo");
+        Assert.notNull(jpaTestHelper, "jpaTestHelper");
     }
 
     @Test
     public void findByAppId() {
-        List<Localized> localized = repo.findByAppId(MY_APP_ID);
+        List<Localized> localized = repo.findByAppId(appId);
         Assert.isTrue(localized.size() == 1, "found 1");
     }
 
     @Test
     public void findByAppIdAndLocaleIds_found() {
-        List<Localized> localized = repo.findByAppIdAndLocaleIds(MY_APP_ID, Arrays.asList(MY_LOCALE_ID));
+        List<Localized> localized = repo.findByAppIdAndLocaleIds(appId, Arrays.asList(localeId));
         Assert.isTrue(localized.size() == 1, "found 1");
     }
 
     @Test
     public void findByAppIdAndLocaleIds_notfound() {
-        List<Localized> localized = repo.findByAppIdAndLocaleIds(MY_APP_ID, Arrays.asList(MY_LOCALE_ID - 1000));
+        List<Localized> localized = repo.findByAppIdAndLocaleIds(appId, Arrays.asList(localeId - 1000));
         Assert.isTrue(localized.size() == 0, "found 0");
     }
 
     @Test
     public void findNonHiddenByAppIds() {
-        Locale l1 = new Locale();
-        Localized al1 = new Localized();
-        Locale l2 = new Locale();
-        Localized al2 = new Localized();
+        int a2 = jpaTestHelper.createApp().getId();
 
-        l1.setCode("@+");
-        l1.setLanguagePriority(5);
-        jpaTestHelper.save(l1);
-        al1.setAppId(MY_APP_ID);
-        al1.setLocaleId(l1.getId());
-        al1.setName("@+");
-        jpaTestHelper.save(al1);
 
-        l2.setCode("@-");
+        Locale l2 = jpaTestHelper.createLocale("@-");
         l2.setLanguagePriority(LanguageService.LANGUAGE_PRIORITY_HIDDEN);
         jpaTestHelper.save(l2);
-        al2.setAppId(MY_APP_ID + 1);
-        al2.setLocaleId(l2.getId());
+
+        Localized al2 = new Localized(a2, l2.getId());
         al2.setName("@-");
         jpaTestHelper.save(al2);
 
-        List<Localized> localized = repo.findNonHiddenByAppIds(Arrays.asList(MY_APP_ID, MY_APP_ID + 1));
+        List<Localized> localized = repo.findNonHiddenByAppIds(Arrays.asList(appId, a2));
         Assert.isTrue(localized.size() == 1, "found 1");
         Assert.isTrue(localized.get(0).getName().equals("@+"), "#1 ok");
     }
