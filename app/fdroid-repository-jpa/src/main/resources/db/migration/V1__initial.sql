@@ -80,7 +80,7 @@ create TABLE localized (
   CONSTRAINT pk_localized PRIMARY KEY (id),
   CONSTRAINT ak_localized UNIQUE (app_id,locale_id),
   CONSTRAINT fk_localized_app FOREIGN KEY (app_id) REFERENCES app(id)  ON delete CASCADE,
-  CONSTRAINT fk_localized_cat FOREIGN KEY (locale_id) REFERENCES locale(id)  ON delete CASCADE
+  CONSTRAINT fk_localized_locale FOREIGN KEY (locale_id) REFERENCES locale(id)  ON delete CASCADE
 );
 
 create TABLE App_Version (

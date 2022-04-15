@@ -23,8 +23,6 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 import java.util.Optional;
 
-import de.k3b.fdroid.domain.Repo;
-
 /**
  * Android-Room/JPA compatibility layer:
  * implement room aliase.
@@ -48,9 +46,9 @@ public class RepositoryAdapterBase<T, R extends CrudRepository<T, Integer>> {
         jpa.delete(roomApp);
     }
 
-    public Repo findById(Integer repoId) {
+    public T findById(Integer repoId) {
         Optional<T> result = jpa.findById(repoId);
-        if (result.isPresent()) result.get();
+        if (result.isPresent()) return result.get();
         return null;
     }
 
