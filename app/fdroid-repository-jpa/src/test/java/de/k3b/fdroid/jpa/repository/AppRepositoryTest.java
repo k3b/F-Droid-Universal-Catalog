@@ -74,7 +74,7 @@ public class AppRepositoryTest {
 
     @Test
     public void findIdsByExpression() {
-        List<Integer> apps = repo.findIdsByExpression("acka my");
+        List<Integer> apps = repo.findIdsByExpressionSortByScore("acka my");
         Assert.notNull(apps, "found");
         Assert.isTrue(apps.size() == 1, "found 1");
     }

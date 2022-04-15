@@ -32,7 +32,7 @@ public class AppRepositoryJpaImpl implements AppRepositoryFindIdsByExpression {
     private EntityManager entityManager;
 
     @Override
-    public List<Integer> findIdsByExpression(String searchText) {
+    public List<Integer> findIdsByExpressionSortByScore(String searchText) {
         StringBuilder sql = new StringBuilder().append("select id from (select\n" +
                 "    id,\n" +
                 "    PACKAGE_NAME,\n" +
@@ -49,7 +49,6 @@ public class AppRepositoryJpaImpl implements AppRepositoryFindIdsByExpression {
         sql.append("\n group by id, PACKAGE_NAME\n" +
                 "order by sum(score) desc, PACKAGE_NAME\n" +
                 ")");
-
 
         Query nativeQuery = entityManager
                 .createNativeQuery(sql.toString());

@@ -21,5 +21,5 @@ package de.k3b.fdroid.domain.interfaces;
 import java.util.List;
 
 public interface AppRepositoryFindIdsByExpression {
-    List<Integer> findIdsByExpression(String searchText);
+    List<Integer> findIdsByExpressionSortByScore(String searchText);
 }

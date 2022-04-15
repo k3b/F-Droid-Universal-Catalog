@@ -22,16 +22,17 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.RawQuery;
 import androidx.room.Update;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 import java.util.List;
 
 import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.domain.interfaces.AppRepository;
 
 // NOTE: AppDao cannot be Generic, AppDao<App> is not possible :-(
 @Dao
-public interface AppDao extends AppRepository {
+public interface AppDao { // extends AppRepository {
     @Insert
     void insert(App apps);
 
@@ -54,6 +55,8 @@ public interface AppDao extends AppRepository {
     List<App> findByIds(List<Integer> ids);
 
     //!!! TODO
-    @Query("SELECT id FROM App WHERE App.id in (:searchText)")
-    List<Integer> findIdsByExpression(String searchText);
+    // @Query("SELECT id FROM App WHERE App.id in (:searchText)")
+    // see https://microeducate.tech/how-to-dynamically-query-the-room-database-at-runtime/
+    @RawQuery
+    List<Integer> findIdsByExpressionSortByScore(SupportSQLiteQuery query);
 }

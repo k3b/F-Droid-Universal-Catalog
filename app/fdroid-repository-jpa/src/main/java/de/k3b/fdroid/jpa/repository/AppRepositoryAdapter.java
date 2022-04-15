@@ -51,7 +51,7 @@ public class AppRepositoryAdapter extends RepositoryAdapterBase<App, AppReposito
     }
 
     @Override
-    public List<Integer> findIdsByExpression(String searchText) {
-        return jpa.findIdsByExpression(searchText);
+    public List<Integer> findIdsByExpressionSortByScore(String searchText) {
+        return jpa.findIdsByExpressionSortByScore(searchText);
     }
 }
