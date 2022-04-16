@@ -40,8 +40,8 @@ public class Version extends VersionCommon implements AppDetail {
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
-        super.toStringBuilder(sb);
         toStringBuilder(sb, "appId", this.appId);
+        super.toStringBuilder(sb);
     }
 
     public int getId() {

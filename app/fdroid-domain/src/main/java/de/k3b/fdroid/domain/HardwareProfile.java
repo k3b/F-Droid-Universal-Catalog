@@ -18,32 +18,36 @@
  */
 package de.k3b.fdroid.domain;
 
-
 import de.k3b.fdroid.domain.common.PojoCommon;
 import de.k3b.fdroid.domain.interfaces.ItemWithId;
-// import de.k3b.fdroid.domain.common.PojoCommon;
 
 /**
+ * android device compatibility caracteristics used for filtering against App-{@link Version}
+ * To answer the questioon: is there an app-version that is compatible witch my device.
+ * <p>
+ * Example: I have several android devices or {@link HardwareProfile}s:
+ * * name="my android-10", SdkVersion=29(=Android-10), nativecode=[armeabi-v7a, armeabi].
+ * * name="my android-7.0", SdkVersion=24(=Android-7.0), nativecode=[arme64-v8a, armeabi-v7a, armeabi].
+ * * name="my android-4.2 Tablet", SdkVersion=17 (=Android-4.2), nativecode=[armeabi-v7a].
+ * <p>
+ * (Hardware data can be taken from App-Manager(397=2.6.5.1) https://f-droid.org/packages/io.github.muntashirakon.AppManager/)
+ * <p>
  * Android independant: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  * Database Entity compatible with Android-Room and non-android-j2se-jpa
  */
-@androidx.room.Entity(indices = {@androidx.room.Index("id")})
+@androidx.room.Entity
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
-public class Category extends PojoCommon implements ItemWithId {
+public class HardwareProfile extends PojoCommon implements ItemWithId {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @androidx.room.PrimaryKey(autoGenerate = true)
     private int id;
 
     private String name;
-
-    protected void toStringBuilder(StringBuilder sb) {
-        toStringBuilder(sb, "id", this.id);
-        toStringBuilder(sb, "name", this.name);
-        super.toStringBuilder(sb);
-    }
+    private long SdkVersion;
+    private String nativecode;
 
     public int getId() {
         return id;
@@ -59,5 +63,29 @@ public class Category extends PojoCommon implements ItemWithId {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public long getSdkVersion() {
+        return SdkVersion;
+    }
+
+    public void setSdkVersion(long sdkVersion) {
+        SdkVersion = sdkVersion;
+    }
+
+    public String getNativecode() {
+        return nativecode;
+    }
+
+    public void setNativecode(String nativecode) {
+        this.nativecode = nativecode;
+    }
+
+    protected void toStringBuilder(StringBuilder sb) {
+        toStringBuilder(sb, "id", this.id);
+        toStringBuilder(sb, "name", this.name);
+        super.toStringBuilder(sb);
+        toStringBuilder(sb, "SdkVersion", this.SdkVersion);
+        toStringBuilder(sb, "nativecode", this.nativecode);
     }
 }

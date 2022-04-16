@@ -45,8 +45,8 @@ public class Locale extends PojoCommon implements ItemWithId {
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
-        super.toStringBuilder(sb);
         toStringBuilder(sb, "code", this.code);
+        super.toStringBuilder(sb);
         toStringBuilder(sb, "symbol", this.symbol);
         toStringBuilder(sb, "nameNative", this.nameNative);
         toStringBuilder(sb, "nameEnglish", this.nameEnglish);

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c8995f2d7f65b0a076f023b100a6d460",
+    "identityHash": "6cd55a56ace0fbdeb0344e596b5f63ec",
     "entities": [
       {
         "tableName": "App",
@@ -467,7 +467,7 @@
       },
       {
         "tableName": "App_Version",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `added` INTEGER NOT NULL, `apkName` TEXT, `minSdkVersion` INTEGER NOT NULL, `targetSdkVersion` INTEGER NOT NULL, `maxSdkVersion` INTEGER NOT NULL, `versionCode` INTEGER NOT NULL, `versionName` TEXT, `hash` TEXT, `hashType` TEXT, `sig` TEXT, `signer` TEXT, `size` INTEGER NOT NULL, `srcname` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `minSdkVersion` INTEGER NOT NULL, `targetSdkVersion` INTEGER NOT NULL, `maxSdkVersion` INTEGER NOT NULL, `hash` TEXT, `hashType` TEXT, `sig` TEXT, `signer` TEXT, `srcname` TEXT, `apkName` TEXT, `versionCode` INTEGER NOT NULL, `versionName` TEXT, `added` INTEGER NOT NULL, `size` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -480,18 +480,6 @@
             "columnName": "appId",
             "affinity": "INTEGER",
             "notNull": true
-          },
-          {
-            "fieldPath": "added",
-            "columnName": "added",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "apkName",
-            "columnName": "apkName",
-            "affinity": "TEXT",
-            "notNull": false
           },
           {
             "fieldPath": "minSdkVersion",
@@ -510,18 +498,6 @@
             "columnName": "maxSdkVersion",
             "affinity": "INTEGER",
             "notNull": true
-          },
-          {
-            "fieldPath": "versionCode",
-            "columnName": "versionCode",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "versionName",
-            "columnName": "versionName",
-            "affinity": "TEXT",
-            "notNull": false
           },
           {
             "fieldPath": "hash",
@@ -548,16 +524,40 @@
             "notNull": false
           },
           {
-            "fieldPath": "size",
-            "columnName": "size",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
             "fieldPath": "srcname",
             "columnName": "srcname",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "apkName",
+            "columnName": "apkName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "versionCode",
+            "columnName": "versionCode",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "versionName",
+            "columnName": "versionName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "added",
+            "columnName": "added",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "size",
+            "columnName": "size",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -588,12 +588,153 @@
           }
         ],
         "foreignKeys": []
+      },
+      {
+        "tableName": "AppHardware",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `hardwareProfileId` INTEGER NOT NULL, `apkName` TEXT, `versionCode` INTEGER, `versionName` TEXT, `added` INTEGER, `size` INTEGER, `min_apkName` TEXT, `min_versionCode` INTEGER, `min_versionName` TEXT, `min_added` INTEGER, `min_size` INTEGER)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "appId",
+            "columnName": "appId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hardwareProfileId",
+            "columnName": "hardwareProfileId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "max.apkName",
+            "columnName": "apkName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "max.versionCode",
+            "columnName": "versionCode",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "max.versionName",
+            "columnName": "versionName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "max.added",
+            "columnName": "added",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "max.size",
+            "columnName": "size",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "min.apkName",
+            "columnName": "min_apkName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "min.versionCode",
+            "columnName": "min_versionCode",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "min.versionName",
+            "columnName": "min_versionName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "min.added",
+            "columnName": "min_added",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "min.size",
+            "columnName": "min_size",
+            "affinity": "INTEGER",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_AppHardware_appId_hardwareProfileId",
+            "unique": false,
+            "columnNames": [
+              "appId",
+              "hardwareProfileId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_AppHardware_appId_hardwareProfileId` ON `${TABLE_NAME}` (`appId`, `hardwareProfileId`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "HardwareProfile",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `SdkVersion` INTEGER NOT NULL, `nativecode` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "SdkVersion",
+            "columnName": "SdkVersion",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nativecode",
+            "columnName": "nativecode",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c8995f2d7f65b0a076f023b100a6d460')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6cd55a56ace0fbdeb0344e596b5f63ec')"
     ]
   }
 }

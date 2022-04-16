@@ -48,9 +48,9 @@ public class AppCategory extends PojoCommon implements AppDetail {
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
-        super.toStringBuilder(sb);
         toStringBuilder(sb, "appId", this.appId);
         toStringBuilder(sb, "categoryId", this.categoryId);
+        super.toStringBuilder(sb);
     }
 
     @Override

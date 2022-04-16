@@ -60,6 +60,7 @@ public class VersionRepositoryTest {
         version.setAppId(appId);
         version.setVersionCode(MY_VERSION_CODE);
         version.setApkName(MY_NAME);
+        version.setSrcname("my source name");
         this.repo.insert(version);
     }
 

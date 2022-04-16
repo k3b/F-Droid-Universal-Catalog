@@ -50,9 +50,9 @@ public class Localized extends LocalizedCommon implements AppDetail {
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
-        super.toStringBuilder(sb);
         toStringBuilder(sb, "appId", this.appId);
         toStringBuilder(sb, "localeId", this.localeId);
+        super.toStringBuilder(sb);
     }
 
     public int getId() {

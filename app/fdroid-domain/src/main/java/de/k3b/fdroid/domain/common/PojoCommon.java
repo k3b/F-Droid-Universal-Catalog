@@ -46,12 +46,18 @@ public class PojoCommon {
         return format.format(date);
     }
 
-    public void toStringBuilder(StringBuilder sb, String name, Object value) {
+    protected void toStringBuilder(StringBuilder sb, String name, Object value) {
         if (value != null)
             sb.append(name).append('=').append(value).append(',');
     }
 
-    public void toStringBuilder(StringBuilder sb, String name, long value) {
+    protected void toStringBuilder(StringBuilder sb, String name, PojoCommon value) {
+        if (value != null) {
+            sb.append(name).append("=").append(value).append(",");
+        }
+    }
+
+    protected void toStringBuilder(StringBuilder sb, String name, long value) {
         if (value != 0 && value != -1)
             sb.append(name).append('=').append(value).append(',');
     }

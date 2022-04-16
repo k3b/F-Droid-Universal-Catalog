@@ -26,32 +26,46 @@ import androidx.room.RoomDatabase;
 
 import de.k3b.fdroid.android.repository.AppCategoryDao;
 import de.k3b.fdroid.android.repository.AppDao;
+import de.k3b.fdroid.android.repository.AppHardwareDao;
 import de.k3b.fdroid.android.repository.CategoryDao;
+import de.k3b.fdroid.android.repository.HardwareProfileDao;
 import de.k3b.fdroid.android.repository.LocaleDao;
 import de.k3b.fdroid.android.repository.LocalizedDao;
 import de.k3b.fdroid.android.repository.RepoDao;
 import de.k3b.fdroid.android.repository.VersionDao;
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.AppCategory;
+import de.k3b.fdroid.domain.AppHardware;
 import de.k3b.fdroid.domain.Category;
+import de.k3b.fdroid.domain.HardwareProfile;
 import de.k3b.fdroid.domain.Locale;
 import de.k3b.fdroid.domain.Localized;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.Version;
 
 @Database(version = 1, entities = {App.class, AppCategory.class, Category.class, Locale.class,
-        Localized.class, Repo.class, Version.class})
-public abstract class FDroidDatabase  extends RoomDatabase {
+        Localized.class, Repo.class, Version.class, AppHardware.class, HardwareProfile.class})
+public abstract class FDroidDatabase extends RoomDatabase {
     public abstract AppDao AppDao();
 
     public abstract AppCategoryDao appCategoryDao();
+
     public abstract CategoryDao categoryDao();
+
     public abstract LocaleDao localeDao();
+
     public abstract LocalizedDao localizedDao();
+
     public abstract RepoDao repoDao();
+
     public abstract VersionDao versionDao();
 
+    public abstract AppHardwareDao appHardwareDao();
+
+    public abstract HardwareProfileDao hardwareProfileDao();
+
     private static FDroidDatabase INSTANCE = null;
+
     public static FDroidDatabase getINSTANCE(Context context) {
         if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),

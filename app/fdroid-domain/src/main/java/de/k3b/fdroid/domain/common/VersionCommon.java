@@ -25,52 +25,29 @@ package de.k3b.fdroid.domain.common;
  * Only primitive types are allowed. No relations, no Objects, no Lists
  * as these are Gson/Android-Room-Database specific.
  */
-public class VersionCommon extends PojoCommon {
-    private long added;
-    private String apkName;
+public class VersionCommon extends ProfileCommon {
+
     private long minSdkVersion;
     private long targetSdkVersion;
     private long maxSdkVersion;
-    private long versionCode;
-    private String versionName;
 
     private String hash;
     private String hashType;
     private String sig;
     private String signer;
-    private long size;
     private String srcname;
 
     public static void copyCommon(VersionCommon dest, VersionCommon src) {
-        dest.setApkName(src.getApkName());
+        ProfileCommon.copyCommon(dest, src);
+        dest.setSrcname(src.getSrcname());
+
         dest.setMinSdkVersion(src.getMinSdkVersion());
         dest.setTargetSdkVersion(src.getTargetSdkVersion());
         dest.setMaxSdkVersion(src.getMaxSdkVersion());
-        dest.setAdded(src.getAdded());
         dest.setHash(src.getHash());
         dest.setHashType(src.getHashType());
         dest.setSig(src.getSig());
         dest.setSigner(src.getSigner());
-        dest.setSize(src.getSize());
-        dest.setSrcname(src.getSrcname());
-        dest.setVersionCode(src.getVersionCode());
-        dest.setVersionName(src.getVersionName());
-    }
-
-    public long getAdded() {
-        return added;
-    }
-
-    public void setAdded(long added) {
-        this.added = added;
-    }
-
-    public String getApkName() {
-        return apkName;
-    }
-
-    public void setApkName(String apkName) {
-        this.apkName = apkName;
     }
 
     public String getHash() {
@@ -121,14 +98,6 @@ public class VersionCommon extends PojoCommon {
         this.signer = signer;
     }
 
-    public long getSize() {
-        return size;
-    }
-
-    public void setSize(long size) {
-        this.size = size;
-    }
-
     public String getSrcname() {
         return srcname;
     }
@@ -145,36 +114,15 @@ public class VersionCommon extends PojoCommon {
         this.targetSdkVersion = targetSdkVersion;
     }
 
-    public long getVersionCode() {
-        return versionCode;
-    }
-
-    public void setVersionCode(long versionCode) {
-        this.versionCode = versionCode;
-    }
-
-    public String getVersionName() {
-        return versionName;
-    }
-
-    public void setVersionName(String versionName) {
-        this.versionName = versionName;
-    }
-
     protected void toStringBuilder(StringBuilder sb) {
         super.toStringBuilder(sb);
-        toStringBuilder(sb, "apkName", this.apkName);
         toStringBuilder(sb, "minSdkVersion", this.minSdkVersion);
         toStringBuilder(sb, "targetSdkVersion", this.targetSdkVersion);
         toStringBuilder(sb, "maxSdkVersion", this.minSdkVersion);
-        toDateStringBuilder(sb, "added", this.added);
         toStringBuilder(sb, "hash", this.hash);
         toStringBuilder(sb, "hashType", this.hashType);
         toStringBuilder(sb, "sig", this.sig);
         toStringBuilder(sb, "signer", this.signer);
-        toStringBuilder(sb, "size", this.size);
         toStringBuilder(sb, "srcname", this.srcname);
-        toStringBuilder(sb, "versionCode", this.versionCode);
-        toStringBuilder(sb, "versionName", this.versionName);
     }
 }
