@@ -21,8 +21,6 @@ package de.k3b.fdroid.util;
 
 import static org.junit.Assert.assertEquals;
 
-import androidx.annotation.NonNull;
-
 import org.junit.Test;
 
 import java.math.BigInteger;
@@ -32,10 +30,21 @@ public class TestDataGeneratorTest {
     public void fill() {
         // 4 generates boolean true. all fields should be filled to value belongig to "4"
         TestClass t = TestDataGenerator.fill(new TestClass(), 4);
-        assertEquals("b=true, bb=true, by=4, byby=4, i=4, ii=4, l=4, ll=4, bi=4, c=E, cc=E, s=s#4, o=null", t.toString());
+        assertEquals("b=true, bb=true, by=4, byby=4, i=4, ii=4, l=4, ll=4, bi=4, c=E, cc=E, s=s#4, o=null, inherited=4, ", t.toString());
     }
 
-    class TestClass {
+    class TestBaseClass {
+        private int inherited;
+
+        @Override
+        public String toString() {
+            StringBuilder result = new StringBuilder();
+            result.append("inherited=").append(inherited).append(", ");
+            return result.toString();
+        }
+    }
+
+    class TestClass extends TestBaseClass {
         private int i;
         private long l;
         private char c;
@@ -52,7 +61,6 @@ public class TestDataGeneratorTest {
 
         private TestDataGeneratorTest o;
 
-        @NonNull
         @Override
         public String toString() {
             StringBuilder result = new StringBuilder();
@@ -68,7 +76,8 @@ public class TestDataGeneratorTest {
             result.append("c=").append(c).append(", ");
             result.append("cc=").append(cc).append(", ");
             result.append("s=").append(s).append(", ");
-            result.append("o=").append(o);
+            result.append("o=").append(o).append(", ");
+            result.append(super.toString());
             return result.toString();
         }
     }

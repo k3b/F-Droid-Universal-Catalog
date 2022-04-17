@@ -34,16 +34,20 @@ public class TestDataGenerator {
 
     // char,Character,
     public static <T> T fill(T instance, int baseValue) {
-        for (Field field : instance.getClass().getDeclaredFields()) {
-            field.setAccessible(true);
-            Object value = getRandomValueForField(instance, field, baseValue);
-            if (value != null) {
-                try {
-                    field.set(instance, value);
-                } catch (IllegalAccessException ignore) {
-                    // cannot set value so ignore it
+        Class<?> aClass = instance.getClass();
+        while (aClass != null) {
+            for (Field field : aClass.getDeclaredFields()) {
+                field.setAccessible(true);
+                Object value = getRandomValueForField(instance, field, baseValue);
+                if (value != null) {
+                    try {
+                        field.set(instance, value);
+                    } catch (IllegalAccessException ignore) {
+                        // cannot set value so ignore it
+                    }
                 }
             }
+            aClass = aClass.getSuperclass();
         }
         return instance;
     }
