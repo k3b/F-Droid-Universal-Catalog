@@ -22,6 +22,13 @@ package de.k3b.fdroid.util;
 import java.util.List;
 
 public class StringUtil {
+    public static final String[] EMPTY_ARRAY = new String[0];
+    public static final String CSV_FIELD_DELIMITER = ",";
+
+    public static <T> boolean isEmpty(T[] s) {
+        return s == null || s.length == 0;
+    }
+
     public static boolean isEmpty(String s) {
         return s == null || s.length() == 0;
     }
@@ -30,7 +37,14 @@ public class StringUtil {
         return s == 0;
     }
 
-    public static <T> String toString(List<T> list, String delimiter) {
+    public static boolean contains(String search, String[] itemArray) {
+        for (String item : itemArray) {
+            if (search.equalsIgnoreCase(item)) return true;
+        }
+        return false;
+    }
+
+    public static <T> String toCsvStringOrNull(List<T> list, String delimiter) {
         StringBuilder result = new StringBuilder();
         if (list != null) {
             for (T s : list) {
@@ -43,4 +57,17 @@ public class StringUtil {
 
         return result.length() == 0 ? null : result.toString();
     }
+
+    public static <T> String toCsvStringOrNull(List<T> list) {
+        return toCsvStringOrNull(list, CSV_FIELD_DELIMITER);
+    }
+
+    public static String[] toStringArray(String csvString) {
+        if (StringUtil.isEmpty(csvString)) {
+            return StringUtil.EMPTY_ARRAY;
+        } else {
+            return csvString.split(CSV_FIELD_DELIMITER);
+        }
+    }
+
 }

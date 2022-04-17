@@ -27,9 +27,9 @@ package de.k3b.fdroid.domain.common;
  */
 public class VersionCommon extends ProfileCommon {
 
-    private long minSdkVersion;
-    private long targetSdkVersion;
-    private long maxSdkVersion;
+    private int minSdkVersion;
+    private int targetSdkVersion;
+    private int maxSdkVersion;
 
     private String hash;
     private String hashType;
@@ -66,20 +66,26 @@ public class VersionCommon extends ProfileCommon {
         this.hashType = hashType;
     }
 
-    public long getMinSdkVersion() {
+    public int getMinSdkVersion() {
         return minSdkVersion;
     }
 
-    public void setMinSdkVersion(long minSdkVersion) {
+    public void setMinSdkVersion(int minSdkVersion) {
         this.minSdkVersion = minSdkVersion;
     }
 
-    public long getMaxSdkVersion() {
+    public int getMaxSdkVersion() {
         return maxSdkVersion;
     }
 
-    public void setMaxSdkVersion(long maxSdkVersion) {
+    public void setMaxSdkVersion(int maxSdkVersion) {
         this.maxSdkVersion = maxSdkVersion;
+    }
+
+    public void setSdk(int minSdkVersion, int targetSdkVersion, int maxSdkVersion) {
+        setMinSdkVersion(minSdkVersion);
+        setTargetSdkVersion(targetSdkVersion);
+        setMaxSdkVersion(maxSdkVersion);
     }
 
     public String getSig() {
@@ -106,11 +112,11 @@ public class VersionCommon extends ProfileCommon {
         this.srcname = srcname;
     }
 
-    public long getTargetSdkVersion() {
+    public int getTargetSdkVersion() {
         return targetSdkVersion;
     }
 
-    public void setTargetSdkVersion(long targetSdkVersion) {
+    public void setTargetSdkVersion(int targetSdkVersion) {
         this.targetSdkVersion = targetSdkVersion;
     }
 

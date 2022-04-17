@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "6cd55a56ace0fbdeb0344e596b5f63ec",
+    "identityHash": "d74b77385b3086b2fce9a62bea7c59ec",
     "entities": [
       {
         "tableName": "App",
@@ -467,7 +467,7 @@
       },
       {
         "tableName": "App_Version",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `minSdkVersion` INTEGER NOT NULL, `targetSdkVersion` INTEGER NOT NULL, `maxSdkVersion` INTEGER NOT NULL, `hash` TEXT, `hashType` TEXT, `sig` TEXT, `signer` TEXT, `srcname` TEXT, `apkName` TEXT, `versionCode` INTEGER NOT NULL, `versionName` TEXT, `added` INTEGER NOT NULL, `size` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `nativecode` TEXT, `minSdkVersion` INTEGER NOT NULL, `targetSdkVersion` INTEGER NOT NULL, `maxSdkVersion` INTEGER NOT NULL, `hash` TEXT, `hashType` TEXT, `sig` TEXT, `signer` TEXT, `srcname` TEXT, `apkName` TEXT, `versionCode` INTEGER NOT NULL, `versionName` TEXT, `added` INTEGER NOT NULL, `size` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -480,6 +480,12 @@
             "columnName": "appId",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "nativecode",
+            "columnName": "nativecode",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "minSdkVersion",
@@ -694,7 +700,7 @@
       },
       {
         "tableName": "HardwareProfile",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `SdkVersion` INTEGER NOT NULL, `nativecode` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `SdkVersion` INTEGER NOT NULL, `nativecode` TEXT, `deleteIfNotCompatible` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -719,6 +725,12 @@
             "columnName": "nativecode",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "deleteIfNotCompatible",
+            "columnName": "deleteIfNotCompatible",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -734,7 +746,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6cd55a56ace0fbdeb0344e596b5f63ec')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd74b77385b3086b2fce9a62bea7c59ec')"
     ]
   }
 }

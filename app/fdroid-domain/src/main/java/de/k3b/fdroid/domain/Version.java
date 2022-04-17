@@ -20,6 +20,7 @@ package de.k3b.fdroid.domain;
 
 import de.k3b.fdroid.domain.common.VersionCommon;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
+import de.k3b.fdroid.util.StringUtil;
 
 /**
  * Android independant: Pojo-s with all properties that are persisted in the Database.
@@ -38,10 +39,20 @@ public class Version extends VersionCommon implements AppDetail {
 
     private int appId;
 
+    private String nativecode;
+
+    /**
+     * calculated and cached from {@link #nativecode}. Not persisted in Database
+     */
+    @androidx.room.Ignore
+    @javax.persistence.Transient
+    private String[] nativecodeArray;
+
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         toStringBuilder(sb, "appId", this.appId);
         super.toStringBuilder(sb);
+        toStringBuilder(sb, "nativecode", this.nativecode);
     }
 
     public int getId() {
@@ -58,5 +69,21 @@ public class Version extends VersionCommon implements AppDetail {
 
     public void setAppId(int appId) {
         this.appId = appId;
+    }
+
+    public String getNativecode() {
+        return nativecode;
+    }
+
+    public void setNativecode(String nativecode) {
+        this.nativecode = nativecode;
+        nativecodeArray = null;
+    }
+
+    public String[] getNativecodeArray() {
+        if (nativecodeArray == null) {
+            nativecodeArray = StringUtil.toStringArray(nativecode);
+        }
+        return nativecodeArray;
     }
 }

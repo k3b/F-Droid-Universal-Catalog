@@ -73,6 +73,9 @@ public class VersionUpdateService {
                 roomVersion = new Version();
                 roomVersion.setAppId(app.getId());
                 VersionCommon.copyCommon(roomVersion, v1Version);
+
+                roomVersion.setNativecode(StringUtil.toCsvStringOrNull(v1Version.getNativecode()));
+
                 versionRepository.insert(roomVersion);
             } else {
                 VersionCommon.copyCommon(roomVersion, v1Version);

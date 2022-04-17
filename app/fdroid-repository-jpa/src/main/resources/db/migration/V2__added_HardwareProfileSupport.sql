@@ -1,3 +1,5 @@
+ALTER TABLE App_Version add nativecode VARCHAR(255);
+
 CREATE TABLE hardware_profile (
   id INT NOT NULL,
   name VARCHAR(255),
@@ -11,6 +13,7 @@ CREATE TABLE app_hardware (
   id INT NOT NULL,
   app_id INT,
   hardware_profile_id INT,
+  deleteIfNotCompatible INT,
 
   -- ProfileCommon max (with no prefix)
   added INT,

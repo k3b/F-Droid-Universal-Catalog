@@ -20,6 +20,7 @@ package de.k3b.fdroid.domain;
 
 import de.k3b.fdroid.domain.common.PojoCommon;
 import de.k3b.fdroid.domain.interfaces.ItemWithId;
+import de.k3b.fdroid.util.StringUtil;
 
 /**
  * android device compatibility caracteristics used for filtering against App-{@link Version}
@@ -46,8 +47,23 @@ public class HardwareProfile extends PojoCommon implements ItemWithId {
     private int id;
 
     private String name;
-    private long SdkVersion;
+    private int SdkVersion;
     private String nativecode;
+    /**
+     * calculated and cached from {@link #nativecode}. Not persisted in Database
+     */
+    @androidx.room.Ignore
+    @javax.persistence.Transient
+    private String[] nativecodeArray;
+
+    private boolean deleteIfNotCompatible = false;
+
+    public HardwareProfile() {
+    }
+
+    public HardwareProfile(String name) {
+        this.setName(name);
+    }
 
     public int getId() {
         return id;
@@ -65,11 +81,11 @@ public class HardwareProfile extends PojoCommon implements ItemWithId {
         this.name = name;
     }
 
-    public long getSdkVersion() {
+    public int getSdkVersion() {
         return SdkVersion;
     }
 
-    public void setSdkVersion(long sdkVersion) {
+    public void setSdkVersion(int sdkVersion) {
         SdkVersion = sdkVersion;
     }
 
@@ -79,12 +95,29 @@ public class HardwareProfile extends PojoCommon implements ItemWithId {
 
     public void setNativecode(String nativecode) {
         this.nativecode = nativecode;
+        nativecodeArray = null;
+    }
+
+    public String[] getNativecodeArray() {
+        if (nativecodeArray == null) {
+            nativecodeArray = StringUtil.toStringArray(nativecode);
+        }
+        return nativecodeArray;
+    }
+
+    public boolean isDeleteIfNotCompatible() {
+        return deleteIfNotCompatible;
+    }
+
+    public void setDeleteIfNotCompatible(boolean deleteIfNotCompatible) {
+        this.deleteIfNotCompatible = deleteIfNotCompatible;
     }
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         toStringBuilder(sb, "name", this.name);
         super.toStringBuilder(sb);
+        toStringBuilder(sb, "deleteIfNotCompatible", this.deleteIfNotCompatible);
         toStringBuilder(sb, "SdkVersion", this.SdkVersion);
         toStringBuilder(sb, "nativecode", this.nativecode);
     }

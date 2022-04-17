@@ -55,14 +55,14 @@ public class AppUpdateService {
             roomApp = new de.k3b.fdroid.domain.App();
             roomApp.setRepoId(repoId);
             AppCommon.copyCommon(roomApp, v1App);
-            roomApp.setSearchCategory(StringUtil.toString(v1App.getCategories(), ","));
+            roomApp.setSearchCategory(StringUtil.toCsvStringOrNull(v1App.getCategories()));
             appRepository.insert(roomApp);
             if (progressListener != null) {
                 progressListener.onProgress("+", roomApp.getPackageName());
             }
         } else {
             AppCommon.copyCommon(roomApp, v1App);
-            roomApp.setSearchCategory(StringUtil.toString(v1App.getCategories(), ","));
+            roomApp.setSearchCategory(StringUtil.toCsvStringOrNull(v1App.getCategories()));
             appRepository.update(roomApp);
             if (progressListener != null) {
                 progressListener.onProgress(".", roomApp.getPackageName());

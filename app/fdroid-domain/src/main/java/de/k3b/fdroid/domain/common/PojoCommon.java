@@ -62,6 +62,11 @@ public class PojoCommon {
             sb.append(name).append('=').append(value).append(',');
     }
 
+    protected void toStringBuilder(StringBuilder sb, String name, boolean value) {
+        if (value)
+            sb.append(name).append('=').append(value).append(',');
+    }
+
     public void toDateStringBuilder(StringBuilder sb, String name, long value) {
         if (value != 0)
             sb.append(name).append('=').append(asDateString(value)).append(',');
