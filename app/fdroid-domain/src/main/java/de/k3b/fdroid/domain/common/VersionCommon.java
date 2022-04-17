@@ -41,13 +41,12 @@ public class VersionCommon extends ProfileCommon {
         ProfileCommon.copyCommon(dest, src);
         dest.setSrcname(src.getSrcname());
 
-        dest.setMinSdkVersion(src.getMinSdkVersion());
-        dest.setTargetSdkVersion(src.getTargetSdkVersion());
-        dest.setMaxSdkVersion(src.getMaxSdkVersion());
         dest.setHash(src.getHash());
         dest.setHashType(src.getHashType());
         dest.setSig(src.getSig());
         dest.setSigner(src.getSigner());
+
+        dest.setSdk(src.getMinSdkVersion(), src.getTargetSdkVersion(), src.getMaxSdkVersion());
     }
 
     public String getHash() {

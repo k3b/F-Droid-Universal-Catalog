@@ -23,23 +23,27 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import de.k3b.fdroid.domain.AppHardware;
 import de.k3b.fdroid.domain.HardwareProfile;
 import de.k3b.fdroid.domain.Version;
 import de.k3b.fdroid.util.StringUtil;
+import de.k3b.fdroid.util.TestDataGenerator;
 
 public class HardwareProfileServiceTest {
 
     @Test
-    public void isCompatible_happyDay() {
-        HardwareProfile profile = new HardwareProfile("test profile");
-        profile.setSdkVersion(14);
-        profile.setNativecode("8080,z80");
+    public void isCompatible() {
+        HardwareProfile profile = new HardwareProfile("test profile", 14, "8080,z80");
 
-        Version version = new Version();
-        version.setSdk(10, 15, 16);
-        version.setNativecode("6502,z80");
-
-        assertEquals(true, HardwareProfileService.isCompatible(profile, version));
+        assertEquals("all ok", true, HardwareProfileService.isCompatible(profile,
+                new Version(10, 15, 16, "6502,z80")));
+        assertEquals("wrong nativecode", false, HardwareProfileService.isCompatible(profile,
+                new Version(10, 15, 16, "6502,8ß85")));
+        assertEquals("wrong sdk", false, HardwareProfileService.isCompatible(profile,
+                new Version(15, 15, 16, "6502,8ß85")));
     }
 
     @Test
@@ -59,6 +63,50 @@ public class HardwareProfileServiceTest {
                 StringUtil.toStringArray("8080,z80"), StringUtil.toStringArray("6502,z80")));
         assertEquals("z80 mis-match", false, HardwareProfileService.isCompatibleNativecode(
                 StringUtil.toStringArray("8080,z80"), StringUtil.toStringArray("6502,8085")));
+    }
+
+    @Test
+    public void calculateAppHardware_found() {
+        String nativecode = "8080,z80";
+        HardwareProfile profile = new HardwareProfile("test profile", 14, nativecode);
+
+        List<Version> versions = new ArrayList<>();
+        addVersions(versions, 4, 5, nativecode, 4); // sdk-min not matching
+        addVersions(versions, 6, 7, "6502", 14); //  nativecode not matching
+        addVersions(versions, 8, 9, nativecode, 14); //  all matching
+        addVersions(versions, 10, 11, null, 14); //  matching (no nativecode)
+        addVersions(versions, 12, 13, nativecode, 30); // sdk-max not matching
+
+        AppHardware result = new AppHardware();
+        HardwareProfileService.calculateAppHardware(result, profile, versions);
+        assertEquals("min", 8, result.getMin().getVersionCode());
+        assertEquals("max", 11, result.getMax().getVersionCode());
+    }
+
+    @Test
+    public void calculateAppHardware_notFound() {
+        String nativecode = "8080,z80";
+        HardwareProfile profile = new HardwareProfile("test profile", 14, nativecode);
+
+        List<Version> versions = new ArrayList<>();
+        addVersions(versions, 4, 5, nativecode, 4); // sdk-min not matching
+        addVersions(versions, 6, 7, "6502", 14); //  nativecode not matching
+        addVersions(versions, 12, 13, nativecode, 30); // sdk-max not matching
+
+        AppHardware result = new AppHardware();
+        HardwareProfileService.calculateAppHardware(result, profile, versions);
+        assertEquals("min", 0, result.getMin().getVersionCode());
+        assertEquals("max", 0, result.getMax().getVersionCode());
+    }
+
+    private List<Version> addVersions(List<Version> result, int min, int max, String nativecode, int sdk) {
+        for (int i = min; i <= max; i++) {
+            Version version = TestDataGenerator.fill(new Version(), i);
+            version.setSdk(sdk, sdk, sdk);
+            version.setNativecode(nativecode);
+            result.add(version);
+        }
+        return result;
     }
 
 }

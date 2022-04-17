@@ -48,6 +48,14 @@ public class Version extends VersionCommon implements AppDetail {
     @javax.persistence.Transient
     private String[] nativecodeArray;
 
+    public Version() {
+    }
+
+    public Version(int minSdkVersion, int targetSdkVersion, int maxSdkVersion, String nativecode) {
+        setSdk(minSdkVersion, targetSdkVersion, maxSdkVersion);
+        setNativecode(nativecode);
+    }
+
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         toStringBuilder(sb, "appId", this.appId);

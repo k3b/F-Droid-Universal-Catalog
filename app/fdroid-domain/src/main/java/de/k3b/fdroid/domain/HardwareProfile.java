@@ -65,6 +65,13 @@ public class HardwareProfile extends PojoCommon implements ItemWithId {
         this.setName(name);
     }
 
+    public HardwareProfile(String name, int sdkVersion, String nativecode) {
+        this(name);
+        this.setSdkVersion(sdkVersion);
+        this.setNativecode(nativecode);
+
+    }
+
     public int getId() {
         return id;
     }

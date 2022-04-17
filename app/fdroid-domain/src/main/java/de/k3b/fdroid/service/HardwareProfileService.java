@@ -22,8 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.k3b.fdroid.domain.AppHardware;
 import de.k3b.fdroid.domain.HardwareProfile;
 import de.k3b.fdroid.domain.Version;
+import de.k3b.fdroid.domain.common.ProfileCommon;
 import de.k3b.fdroid.domain.interfaces.HardwareProfileRepository;
 import de.k3b.fdroid.util.StringUtil;
 
@@ -44,26 +46,26 @@ public class HardwareProfileService {
         this.hardwareProfileRepository = hardwareProfileRepository;
     }
 
-    protected static boolean isCompatibleSdk(int currentSdk, int profileMin, int profileMax) {
-        if (profileMin == 0) profileMin = Integer.MIN_VALUE;
-        if (profileMax == 0) profileMax = Integer.MAX_VALUE;
-        return (currentSdk >= profileMin && currentSdk <= profileMax);
-    }
-
-    protected static boolean isCompatibleNativecode(String[] currentNativecodes, String[] profileNativecodes) {
-        if (StringUtil.isEmpty(currentNativecodes) || StringUtil.isEmpty(profileNativecodes))
-            return true;
-
-        for (String current : currentNativecodes) {
-            if (StringUtil.contains(current, profileNativecodes)) return true;
+    public static boolean calculateAppHardware(AppHardware result, HardwareProfile profile, List<Version> versions) {
+        Version min = null;
+        Version max = null;
+        for (Version version : versions) {
+            if (isCompatible(profile, version)) {
+                if (min == null || min.getVersionCode() > version.getVersionCode()) {
+                    min = version;
+                }
+                if (max == null || max.getVersionCode() < version.getVersionCode()) {
+                    max = version;
+                }
+            }
         }
 
+        if (min != null) {
+            ProfileCommon.copyCommon(result.getMin(), min);
+            ProfileCommon.copyCommon(result.getMax(), max);
+            return true;
+        }
         return false;
-    }
-
-    public static boolean isCompatible(HardwareProfile profile, Version version) {
-        return isCompatibleSdk(profile.getSdkVersion(), version.getMinSdkVersion(), version.getMaxSdkVersion())
-                && isCompatibleNativecode(profile.getNativecodeArray(), version.getNativecodeArray());
     }
 
     public HardwareProfileService init() {
@@ -108,5 +110,27 @@ public class HardwareProfileService {
 
     public void setHardwareProfiles(List<HardwareProfile> hardwareProfiles) {
         this.hardwareProfiles = hardwareProfiles;
+    }
+
+    protected static boolean isCompatibleSdk(int currentSdk, int profileMin, int profileMax) {
+        if (profileMin == 0) profileMin = Integer.MIN_VALUE;
+        if (profileMax == 0) profileMax = Integer.MAX_VALUE;
+        return (currentSdk >= profileMin && currentSdk <= profileMax);
+    }
+
+    protected static boolean isCompatibleNativecode(String[] currentNativecodes, String[] profileNativecodes) {
+        if (StringUtil.isEmpty(currentNativecodes) || StringUtil.isEmpty(profileNativecodes))
+            return true;
+
+        for (String current : currentNativecodes) {
+            if (StringUtil.contains(current, profileNativecodes)) return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isCompatible(HardwareProfile profile, Version version) {
+        return isCompatibleSdk(profile.getSdkVersion(), version.getMinSdkVersion(), version.getMaxSdkVersion())
+                && isCompatibleNativecode(profile.getNativecodeArray(), version.getNativecodeArray());
     }
 }

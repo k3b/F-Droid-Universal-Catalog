@@ -35,10 +35,14 @@ public class ProfileCommon extends PojoCommon {
 
     public static void copyCommon(ProfileCommon dest, ProfileCommon src) {
         dest.setApkName(src.getApkName());
-        dest.setAdded(src.getAdded());
         dest.setSize(src.getSize());
-        dest.setVersionCode(src.getVersionCode());
-        dest.setVersionName(src.getVersionName());
+        dest.setVersion(src.getVersionCode(), src.getVersionName(), src.getAdded());
+    }
+
+    public void setVersion(long versionCode, String versionName, long added) {
+        setVersionCode(versionCode);
+        setVersionName(versionName);
+        setAdded(added);
     }
 
     public long getAdded() {
