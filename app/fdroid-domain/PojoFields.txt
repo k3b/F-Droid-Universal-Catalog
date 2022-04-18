@@ -1,0 +1,83 @@
+toString() - Properties of Entities
+de.k3b.fdroid.domain.App
+	added
+	changelog
+	icon
+	id
+	issueTracker
+	lastUpdated
+	license
+	packageName
+	repoId
+	sourceCode
+	suggestedVersionCode
+	suggestedVersionName
+	webSite
+de.k3b.fdroid.domain.AppCategory
+	appId
+	categoryId
+	id
+de.k3b.fdroid.domain.AppHardware
+	appId
+	hardwareProfileId
+	id
+	max
+	min
+de.k3b.fdroid.domain.Category
+	id
+	name
+de.k3b.fdroid.domain.HardwareProfile
+	SdkVersion
+	deleteIfNotCompatible
+	id
+	name
+	nativecode
+de.k3b.fdroid.domain.Locale
+	code
+	id
+	languagePriority
+	nameEnglish
+	nameNative
+	symbol
+de.k3b.fdroid.domain.Localized
+	appId
+	description
+	icon
+	id
+	localeId
+	name
+	summary
+	video
+	whatsNew
+de.k3b.fdroid.domain.common.ProfileCommon
+	added
+	apkName
+	size
+	versionCode
+	versionName
+de.k3b.fdroid.domain.Repo
+	address
+	description
+	icon
+	id
+	maxage
+	name
+	timestamp
+	version
+de.k3b.fdroid.domain.Version
+	added
+	apkName
+	appId
+	hash
+	hashType
+	id
+	maxSdkVersion
+	minSdkVersion
+	nativecode
+	sig
+	signer
+	size
+	srcname
+	targetSdkVersion
+	versionCode
+	versionName

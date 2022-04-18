@@ -19,9 +19,16 @@
 
 package de.k3b.fdroid.domain.common;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+
+import de.k3b.fdroid.util.TestDataGenerator;
 
 /**
  * what all Pojo-s have in Common:
@@ -44,6 +51,32 @@ public class PojoCommon {
         Date date = new Date(longDate);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         return format.format(date);
+    }
+
+    public static void createPojoFieldsFile(Class<PojoCommon>[] classes) throws FileNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
+        PrintStream out = new PrintStream(new File("PojoFields.txt"));
+        out.println("toString() - Properties of Entities");
+
+        try {
+            for (Class<?> c : classes) {
+                Object o = c.getConstructor().newInstance();
+                TestDataGenerator.fill(o, 4);
+                String[] fields = o.toString().split("[,\\[\\]{}]");
+                fields[0] = "-";
+                Arrays.sort(fields);
+
+                out.println(o.getClass().getName());
+                for (String f : fields) {
+                    String[] f2 = f.split("=");
+                    if (f2.length == 2) {
+                        out.println("\t" + f2[0]);
+                    }
+                }
+            }
+        } finally {
+            out.flush();
+            out.close();
+        }
     }
 
     protected void toStringBuilder(StringBuilder sb, String name, Object value) {

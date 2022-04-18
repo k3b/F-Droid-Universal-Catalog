@@ -182,7 +182,7 @@ fdroidclassic   https://git.bubu1.eu/Bubu/fdroidclassic
 --------------
 
 
-todo howto preload create view
+todo integrate HardwareProfileService.calculateAppHardware into v1 import ?? calculateMaxSdk
 
 lib
 
