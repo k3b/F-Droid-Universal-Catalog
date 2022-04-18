@@ -21,6 +21,7 @@ package de.k3b.fdroid.domain.common;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
@@ -54,7 +55,18 @@ public class PojoCommon {
     }
 
     public static void createPojoFieldsFile(Class<PojoCommon>[] classes) throws FileNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
-        PrintStream out = new PrintStream(new File("PojoFields.txt"));
+        File srcDir = null;
+        try {
+            srcDir = new File(".").getCanonicalFile();
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        while (!new File(srcDir, "src").exists()) {
+            srcDir = srcDir.getParentFile();
+        }
+        srcDir = new File(srcDir, "test/resources");
+        srcDir.mkdirs();
+        PrintStream out = new PrintStream(new File(srcDir, "PojoFields.txt"));
         out.println("toString() - Properties of Entities");
 
         try {
