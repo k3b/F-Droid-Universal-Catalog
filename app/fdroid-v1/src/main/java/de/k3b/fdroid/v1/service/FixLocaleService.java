@@ -19,54 +19,22 @@
 
 package de.k3b.fdroid.v1.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
-import de.k3b.fdroid.service.LanguageService;
 import de.k3b.fdroid.v1.domain.App;
 import de.k3b.fdroid.v1.domain.Localized;
 
-public class FixLocaleService {
-    public PropertyMerger merger = new PropertyMerger();
-
+public class FixLocaleService extends de.k3b.fdroid.service.FixLocaleService {
     public App fix(App app) {
         Map<String, Localized> localesOld = (app == null) ? null : app.getLocalized();
         if (localesOld != null) {
-            String[] keys = localesOld.keySet().toArray(new String[0]);
-            Integer[] changes = LanguageService.getCanonicalLocaleChangeIndex(keys);
-            Arrays.sort(keys, 0, keys.length, String.CASE_INSENSITIVE_ORDER);
+            Map<String, Localized> localesNew = fix(localesOld);
 
-            Map<String, Localized> localesNew = new TreeMap<>();
-
-            List<Localized> sameLocale = new ArrayList<>();
-            for (int i = 1; i < changes.length; i++) {
-                String canonical = LanguageService.getCanonicalLocale(keys[changes[i - 1]]);
-                sameLocale.clear();
-                for (int j = changes[i - 1]; j < changes[i]; j++) {
-                    sameLocale.add(localesOld.get(keys[j]));
-                }
-
-                if (LanguageService.isValidCanonical(canonical)) {
-                    localesNew.put(canonical, merger.merge(sameLocale));
-                }
-            }
-
-            addEnLocaleIfneccessary(localesNew, app.getSummary(), app.getDescription());
+            addEnLocaleIfneccessary(localesNew, app.getSummary(), app.getDescription(), Localized.class);
             app.setLocalized(localesNew);
         }
 
         return app;
     }
 
-    private void addEnLocaleIfneccessary(Map<String, Localized> localesNew, String summary, String description) {
-        if (!localesNew.containsKey("en") && (summary != null || description != null)) {
-            Localized enLocale = new Localized();
-            enLocale.setSummary(summary);
-            enLocale.setDescription(description);
-            localesNew.put("en", enLocale);
-        }
-    }
 }

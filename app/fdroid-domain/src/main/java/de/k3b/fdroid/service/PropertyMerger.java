@@ -17,7 +17,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-package de.k3b.fdroid.v1.service;
+package de.k3b.fdroid.service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;

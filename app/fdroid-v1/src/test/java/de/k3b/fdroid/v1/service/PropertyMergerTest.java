@@ -23,37 +23,47 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
 
-import de.k3b.fdroid.v1.domain.Localized;
+import de.k3b.fdroid.domain.common.LocalizedCommon;
+import de.k3b.fdroid.service.PropertyMerger;
 
 public class PropertyMergerTest {
     private final PropertyMerger sut = new PropertyMerger();
 
     @Test
     public void merge() {
-        Localized result = new Localized();
+        MyLocalized result = new MyLocalized();
         result.setName("name not overwritten");// (1)
         // summery null (2)
         result.setDescription("must overwrite");// (3)
-        result.setPhoneScreenshots(Arrays.asList("replaced")); // (4)
+        result.phoneScreenshots = Arrays.asList("replaced"); // (4)
 
         // (1) shorter than existing
-        Localized ni = new Localized();ni.setName("ignore");
+        MyLocalized ni = new MyLocalized();
+        ni.setName("ignore");
 
         // (2) overwrite null or empty
-        Localized s = new Localized();s.setSummary("Summary overwrite null");
+        MyLocalized s = new MyLocalized();
+        s.setSummary("Summary overwrite null");
 
         // (3) new value is longer than old
-        Localized d = new Localized();d.setDescription("Description longer than existing");
+        MyLocalized d = new MyLocalized();
+        d.setDescription("Description longer than existing");
 
         // (4) longer list replaces existing shorter list
-        Localized r = new Localized();r.setPhoneScreenshots(Arrays.asList("phoneShots1","phoneShots2"));
+        MyLocalized r = new MyLocalized();
+        r.phoneScreenshots = (Arrays.asList("phoneShots1", "phoneShots2"));
 
         result = sut.merge(Arrays.asList(result, ni, d, s, r));
 
         Assert.assertEquals("name not overwritten", result.getName());
         Assert.assertEquals("Summary overwrite null", result.getSummary());
         Assert.assertEquals("Description longer than existing", result.getDescription());
-        Assert.assertEquals("PhoneScreenshots().size()", 2, result.getPhoneScreenshots().size());
+        Assert.assertEquals("PhoneScreenshots().size()", 2, result.phoneScreenshots.size());
+    }
+
+    private static class MyLocalized extends LocalizedCommon {
+        public List<String> phoneScreenshots = null;
     }
 }
