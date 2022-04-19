@@ -60,12 +60,14 @@ public class AppHardware extends PojoCommon implements AppDetail {
     private int appId;
     private int hardwareProfileId;
 
+    // needed by android-room and jpa
+    public AppHardware() {
+    }
+
+    @androidx.room.Ignore
     public AppHardware(int appId, int hardwareProfileId) {
         this.appId = appId;
         this.hardwareProfileId = hardwareProfileId;
-    }
-
-    public AppHardware() {
     }
 
     public int getId() {

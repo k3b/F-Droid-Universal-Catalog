@@ -58,13 +58,16 @@ public class HardwareProfile extends PojoCommon implements ItemWithId {
 
     private boolean deleteIfNotCompatible = false;
 
+    // needed by android-room and jpa
     public HardwareProfile() {
     }
 
+    @androidx.room.Ignore
     public HardwareProfile(String name) {
         this.setName(name);
     }
 
+    @androidx.room.Ignore
     public HardwareProfile(String name, int sdkVersion, String nativecode) {
         this(name);
         this.setSdkVersion(sdkVersion);

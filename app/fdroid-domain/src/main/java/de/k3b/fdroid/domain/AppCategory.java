@@ -38,12 +38,14 @@ public class AppCategory extends PojoCommon implements AppDetail {
     private int appId;
     private int categoryId;
 
+    // needed by android-room and jpa
+    public AppCategory() {
+    }
+
+    @androidx.room.Ignore
     public AppCategory(int appId, int categoryId) {
         this.appId = appId;
         this.categoryId = categoryId;
-    }
-
-    public AppCategory() {
     }
 
     protected void toStringBuilder(StringBuilder sb) {

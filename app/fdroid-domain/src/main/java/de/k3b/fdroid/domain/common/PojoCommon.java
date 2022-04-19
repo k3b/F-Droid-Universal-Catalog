@@ -54,7 +54,7 @@ public class PojoCommon {
         return format.format(date);
     }
 
-    public static void createPojoFieldsFile(Class<PojoCommon>[] classes) throws FileNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
+    public static void createPojoFieldsFile(Class<?>[] classes) throws FileNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
         File srcDir = null;
         try {
             srcDir = new File(".").getCanonicalFile();

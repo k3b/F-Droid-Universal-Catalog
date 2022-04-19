@@ -69,11 +69,13 @@ public class App extends AppCommon implements AppDetail {
     private String searchSigner;
     private String searchCategory;
 
-    public App(int repoId) {
-        setRepoId(repoId);
+    // needed by android-room and jpa
+    public App() {
     }
 
-    public App() {
+    @androidx.room.Ignore
+    public App(int repoId) {
+        setRepoId(repoId);
     }
 
 

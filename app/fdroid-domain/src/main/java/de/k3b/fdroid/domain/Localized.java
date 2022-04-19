@@ -40,9 +40,11 @@ public class Localized extends LocalizedCommon implements AppDetail {
 
     private int localeId;
 
+    // needed by android-room and jpa
     public Localized() {
     }
 
+    @androidx.room.Ignore
     public Localized(int appId, int localeId) {
         setAppId(appId);
         setLocaleId(localeId);

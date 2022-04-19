@@ -73,7 +73,7 @@ public class AppRepositoryAdapter implements AppRepository {
     public List<Integer> findIdsByExpressionSortByScore(String searchText) {
         // https://microeducate.tech/how-to-dynamically-query-the-room-database-at-runtime/
         String queryString = "...";
-        List<Object> args = new ArrayList();
+        List<Object> args = new ArrayList<>();
         SupportSQLiteQuery query = new SimpleSQLiteQuery(queryString, args.toArray());
         return appDao.findIdsByExpressionSortByScore(query);
     }

@@ -48,9 +48,11 @@ public class Version extends VersionCommon implements AppDetail {
     @javax.persistence.Transient
     private String[] nativecodeArray;
 
+    // needed by android-room and jpa
     public Version() {
     }
 
+    @androidx.room.Ignore
     public Version(int minSdkVersion, int targetSdkVersion, int maxSdkVersion, String nativecode) {
         setSdk(minSdkVersion, targetSdkVersion, maxSdkVersion);
         setNativecode(nativecode);

@@ -31,7 +31,7 @@ import de.k3b.fdroid.domain.common.ProfileCommon;
 public class PojoFieldsTest {
     @Test
     public void entityReport() throws Exception {
-        Class<PojoCommon>[] classes = new Class[]{App.class, AppCategory.class, AppHardware.class,
+        Class<?>[] classes = new Class<?>[]{App.class, AppCategory.class, AppHardware.class,
                 Category.class, HardwareProfile.class, Locale.class, Localized.class, ProfileCommon.class, Repo.class,
                 Version.class};
         PojoCommon.createPojoFieldsFile(classes);
