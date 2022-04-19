@@ -71,7 +71,41 @@ where la.code = 'de' and lo.DESCRIPTION is not null
 ;
 
 
------
+-----------------------------------
+
+-- apps with maxsdk
+select APP_ID, APK_NAME, VERSION_CODE, VERSION_NAME, MIN_SDK_VERSION, MAX_SDK_VERSION, TARGET_SDK_VERSION, NATIVECODE from APP_VERSION where MAX_SDK_VERSION <> 0
+
+select
+    av.APP_ID, a.PACKAGE_NAME, av.VERSION_CODE, av.VERSION_NAME, av.MIN_SDK_VERSION,
+    av.MAX_SDK_VERSION, av.TARGET_SDK_VERSION, av.NATIVECODE
+from APP_VERSION av
+inner join APP a on av.APP_ID = a.id
+where av.APP_ID in (
+    select j.APP_ID
+        from APP_VERSION j
+        where j.MAX_SDK_VERSION<> 0
+        group by j.APP_ID
+        having count(*) > 2)
+order by a.PACKAGE_NAME, av.VERSION_CODE desc;
+
+    select APP_ID, count(*) as cnt
+    from APP_VERSION
+    where MAX_SDK_VERSION<> 0
+    group by APP_ID
+    having count(*) > 2
+    order by cnt desc;
+
+--
+select
+    av.APP_ID, a.PACKAGE_NAME, av.VERSION_CODE, av.VERSION_NAME, av.MIN_SDK_VERSION,
+    av.MAX_SDK_VERSION, av.TARGET_SDK_VERSION, av.NATIVECODE
+from APP_VERSION av
+inner join APP a on av.APP_ID = a.id
+where av.APP_ID in (12769,46084,468,31082,53984)
+order by a.PACKAGE_NAME, av.VERSION_CODE desc;
+
+-----------------------------------
 
 -- hide all localized that are not de en es nl fr
 update LOCALE set LANGUAGE_PRIORITY = 9 where code = 'de';

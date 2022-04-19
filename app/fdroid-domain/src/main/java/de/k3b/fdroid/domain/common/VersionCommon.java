@@ -19,6 +19,8 @@
 
 package de.k3b.fdroid.domain.common;
 
+import java.util.Comparator;
+
 @javax.persistence.MappedSuperclass
 /**
  * Common data for v1-Gson-json and android-room-database-Entities.
@@ -119,11 +121,18 @@ public class VersionCommon extends ProfileCommon {
         this.targetSdkVersion = targetSdkVersion;
     }
 
+    public static <T extends VersionCommon> Comparator<T> compareByVersionCodeDescending() {
+        // requires api 24. not compatible with api 14
+        // equivalent to java.util.Comparator.comparing(T::versionCode)
+
+        return (v1, v2) -> v2.getVersionCode() - v1.getVersionCode();
+    }
+
     protected void toStringBuilder(StringBuilder sb) {
         super.toStringBuilder(sb);
         toStringBuilder(sb, "minSdkVersion", this.minSdkVersion);
         toStringBuilder(sb, "targetSdkVersion", this.targetSdkVersion);
-        toStringBuilder(sb, "maxSdkVersion", this.minSdkVersion);
+        toStringBuilder(sb, "maxSdkVersion", this.maxSdkVersion);
         toStringBuilder(sb, "hash", this.hash);
         toStringBuilder(sb, "hashType", this.hashType);
         toStringBuilder(sb, "sig", this.sig);

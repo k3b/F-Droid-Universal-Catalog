@@ -118,7 +118,7 @@ public class HardwareProfileService {
         return (currentSdk >= profileMin && currentSdk <= profileMax);
     }
 
-    protected static boolean isCompatibleNativecode(String[] currentNativecodes, String[] profileNativecodes) {
+    public static boolean isCompatibleNativecode(String[] currentNativecodes, String[] profileNativecodes) {
         if (StringUtil.isEmpty(currentNativecodes) || StringUtil.isEmpty(profileNativecodes))
             return true;
 
