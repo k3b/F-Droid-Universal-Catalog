@@ -35,6 +35,10 @@ dependencies {
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
 
+springBoot {
+    mainClass = 'de.k3b.fdroid.jpa.repository.ThereIsNoMainClass'
+}
+
 // required for jitpack
 apply from: "${rootProject.projectDir}/publish-module2.gradle"
 

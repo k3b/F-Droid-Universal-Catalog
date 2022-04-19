@@ -28,10 +28,10 @@ package de.k3b.fdroid.domain.common;
 @javax.persistence.MappedSuperclass
 public class ProfileCommon extends PojoCommon {
     private String apkName;
-    private long versionCode;
+    private int versionCode;
     private String versionName;
     private long added;
-    private long size;
+    private int size;
 
     public static void copyCommon(ProfileCommon dest, ProfileCommon src) {
         dest.setApkName(src.getApkName());
@@ -39,7 +39,7 @@ public class ProfileCommon extends PojoCommon {
         dest.setVersion(src.getVersionCode(), src.getVersionName(), src.getAdded());
     }
 
-    public void setVersion(long versionCode, String versionName, long added) {
+    public void setVersion(int versionCode, String versionName, long added) {
         setVersionCode(versionCode);
         setVersionName(versionName);
         setAdded(added);
@@ -61,19 +61,19 @@ public class ProfileCommon extends PojoCommon {
         this.apkName = apkName;
     }
 
-    public long getSize() {
+    public int getSize() {
         return size;
     }
 
-    public void setSize(long size) {
+    public void setSize(int size) {
         this.size = size;
     }
 
-    public long getVersionCode() {
+    public int getVersionCode() {
         return versionCode;
     }
 
-    public void setVersionCode(long versionCode) {
+    public void setVersionCode(int versionCode) {
         this.versionCode = versionCode;
     }
 

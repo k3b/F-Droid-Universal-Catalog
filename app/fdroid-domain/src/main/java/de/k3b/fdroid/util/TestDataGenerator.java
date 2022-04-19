@@ -29,7 +29,6 @@ import java.math.BigInteger;
  */
 public class TestDataGenerator {
 
-    private static final String NUMBER2_TYPES = ",Boolean,Byte,Integer,Long,BigInteger,";
     private static final String NUMBER_TYPES = ",bool,byte,int,long,";
 
     // char,Character,

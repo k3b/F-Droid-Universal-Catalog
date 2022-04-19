@@ -42,7 +42,7 @@ public interface VersionRepositoryJpa extends CrudRepository<Version, Integer> {
     Version findByRepoPackageAndVersionCode(
             @Param("repoId") int repoId,
             @Param("packageName") String packageName,
-            @Param("versionCode") long versionCode);
+            @Param("versionCode") int versionCode);
 
     @Query(value = "select al from App_Version al " +
             "where al.appId in (?1) " +

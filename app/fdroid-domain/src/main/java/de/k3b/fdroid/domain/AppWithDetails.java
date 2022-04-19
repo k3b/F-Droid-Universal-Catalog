@@ -27,6 +27,7 @@ import de.k3b.fdroid.domain.interfaces.AppDetail;
 /**
  * DDD Aggregate-Root for {@link App}
  */
+@SuppressWarnings({"unchecked", "unsafe"})
 public class AppWithDetails extends PojoCommon implements AppDetail {
     private final App app;
     private final List<Localized> localizedList = new ArrayList<>();

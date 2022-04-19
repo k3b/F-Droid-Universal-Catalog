@@ -47,8 +47,8 @@ public class AppHardwareRepositoryTest {
         hardwareProfileId = jpaTestHelper.createHardwareProfile().getId();
 
         AppHardware appHardware = new AppHardware(appId, hardwareProfileId);
-        appHardware.getMin().setVersionCode(1l);
-        appHardware.getMax().setVersionCode(99l);
+        appHardware.getMin().setVersionCode(1);
+        appHardware.getMax().setVersionCode(99);
         repo.insert(appHardware);
     }
 

@@ -28,7 +28,7 @@ package de.k3b.fdroid.domain.common;
 public class RepoCommon extends PojoCommon {
     private String name;
     private long timestamp;
-    private long version;
+    private int version;
     private long maxage;
     private String icon;
     private String address;
@@ -60,11 +60,11 @@ public class RepoCommon extends PojoCommon {
         this.timestamp = timestamp;
     }
 
-    public long getVersion() {
+    public int getVersion() {
         return version;
     }
 
-    public void setVersion(long version) {
+    public void setVersion(int version) {
         this.version = version;
     }
 

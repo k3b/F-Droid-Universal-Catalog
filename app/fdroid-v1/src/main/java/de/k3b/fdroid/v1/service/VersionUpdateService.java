@@ -131,7 +131,7 @@ public class VersionUpdateService {
 
     }
 
-    private void add(StringBuilder code, String versionName, long versionCode) {
+    private void add(StringBuilder code, String versionName, int versionCode) {
         if (!StringUtil.isEmpty(versionName)) {
             code.append(versionName);
         }
@@ -140,7 +140,7 @@ public class VersionUpdateService {
         }
     }
 
-    private void add(StringBuilder version, long minSdkVersion, long targetSdkVersion, long maxSdkVersion) {
+    private void add(StringBuilder version, int minSdkVersion, int targetSdkVersion, int maxSdkVersion) {
         version.append("[");
         if (!StringUtil.isEmpty(minSdkVersion)) version.append(numFormatter.format(minSdkVersion));
         version.append(",");

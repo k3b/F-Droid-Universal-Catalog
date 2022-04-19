@@ -34,5 +34,5 @@ public interface VersionRepository extends AppDetailRepository<Version> {
 
     List<Version> findByAppId(int appId);
 
-    Version findByRepoPackageAndVersionCode(int repoId, String packageName, long versionCode);
+    Version findByRepoPackageAndVersionCode(int repoId, String packageName, int versionCode);
 }

@@ -36,7 +36,7 @@ import de.k3b.fdroid.domain.interfaces.VersionRepository;
 public class VersionRepositoryTest {
     private static final String MY_NAME = "my.name";
     private static final String MY_PACKAGE_NAME = "my.package.name";
-    private final long MY_VERSION_CODE = 2075;
+    private final int MY_VERSION_CODE = 2075;
     @Autowired
     JpaTestHelper jpaTestHelper;
     private int appId;
