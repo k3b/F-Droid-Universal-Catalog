@@ -27,6 +27,13 @@ import java.math.BigInteger;
 
 public class TestDataGeneratorTest {
     @Test
+    public void fill_fieldPositonDependent() {
+        // 4 generates boolean true. all fields should be filled to value belongig to "4"
+        TestClass t = TestDataGenerator.fill(new TestClass(), 4, true);
+        assertEquals("b=true, bb=true, by=4, byby=4, i=401, ii=408, l=402, ll=409, bi=407, c=E, cc=E, s=s#4-5, o=null, inherited=413, ", t.toString());
+    }
+
+    @Test
     public void fill() {
         // 4 generates boolean true. all fields should be filled to value belongig to "4"
         TestClass t = TestDataGenerator.fill(new TestClass(), 4);

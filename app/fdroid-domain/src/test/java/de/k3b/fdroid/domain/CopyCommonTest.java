@@ -37,7 +37,7 @@ public class CopyCommonTest {
 
     @Test
     public void appCommon() {
-        AppCommon src = TestDataGenerator.fill(new AppCommon(), 4);
+        AppCommon src = TestDataGenerator.fill(new AppCommon(), 4, true);
         AppCommon dest = new AppCommon();
         AppCommon.copyCommon(dest, src);
 
@@ -46,7 +46,7 @@ public class CopyCommonTest {
 
     @Test
     public void localizedCommon() {
-        LocalizedCommon src = TestDataGenerator.fill(new LocalizedCommon(), 4);
+        LocalizedCommon src = TestDataGenerator.fill(new LocalizedCommon(), 4, true);
         LocalizedCommon dest = new LocalizedCommon();
         LocalizedCommon.copyCommon(dest, src);
 
@@ -55,7 +55,7 @@ public class CopyCommonTest {
 
     @Test
     public void profileCommon() {
-        ProfileCommon src = TestDataGenerator.fill(new ProfileCommon(), 4);
+        ProfileCommon src = TestDataGenerator.fill(new ProfileCommon(), 4, true);
         ProfileCommon dest = new ProfileCommon();
         ProfileCommon.copyCommon(dest, src);
 
@@ -64,7 +64,7 @@ public class CopyCommonTest {
 
     @Test
     public void repoCommon() {
-        RepoCommon src = TestDataGenerator.fill(new RepoCommon(), 4);
+        RepoCommon src = TestDataGenerator.fill(new RepoCommon(), 4, true);
         RepoCommon dest = new RepoCommon();
         RepoCommon.copyCommon(dest, src);
 
@@ -73,7 +73,7 @@ public class CopyCommonTest {
 
     @Test
     public void versionCommon() {
-        VersionCommon src = TestDataGenerator.fill(new VersionCommon(), 4);
+        VersionCommon src = TestDataGenerator.fill(new VersionCommon(), 4, true);
         VersionCommon dest = new VersionCommon();
         VersionCommon.copyCommon(dest, src);
 

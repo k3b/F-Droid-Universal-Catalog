@@ -72,7 +72,7 @@ public class PojoCommon {
         try {
             for (Class<?> c : classes) {
                 Object o = c.getConstructor().newInstance();
-                TestDataGenerator.fill(o, 4);
+                TestDataGenerator.fill(o, 4, true);
                 String[] fields = o.toString().split("[,\\[\\]{}]");
                 fields[0] = "-";
                 Arrays.sort(fields);
@@ -81,7 +81,15 @@ public class PojoCommon {
                 for (String f : fields) {
                     String[] f2 = f.split("=");
                     if (f2.length == 2) {
-                        out.println("\t" + f2[0]);
+                        StringBuilder fieldValue = new StringBuilder().append("\t").append(f2[0]);
+                        String stringPrefix = "#4-";
+                        int stringOffset = -1;
+                        if (f2[1].startsWith("4")) {
+                            fieldValue.append("(" + f2[1].substring(1) + ")");
+                        } else if ((stringOffset = f2[1].indexOf(stringPrefix)) >= 0) {
+                            fieldValue.append("(" + f2[1].substring(stringOffset + stringPrefix.length()) + ")");
+                        }
+                        out.println(fieldValue);
                     }
                 }
             }

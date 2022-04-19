@@ -31,16 +31,27 @@ public class TestDataGenerator {
 
     private static final String NUMBER_TYPES = ",bool,byte,int,long,";
 
-    // char,Character,
     public static <T> T fill(T instance, int baseValue) {
+        return fill(instance, baseValue, false);
+    }
+
+    // ?? char,Character,
+
+    /**
+     * @param fieldPositonDependentValue if true numbers and strings get position dependant values to make shure that there are no duplicate values
+     */
+    public static <T> T fill(T instance, int baseValue, boolean fieldPositonDependentValue) {
+
         Class<?> aClass = instance.getClass();
+        int fieldNumber = 1;
         while (aClass != null) {
             for (Field field : aClass.getDeclaredFields()) {
                 field.setAccessible(true);
-                Object value = getRandomValueForField(instance, field, baseValue);
+                Object value = getValueForField(instance, field, baseValue, (fieldPositonDependentValue) ? fieldNumber : 0);
                 if (value != null) {
                     try {
                         field.set(instance, value);
+                        fieldNumber++;
                     } catch (IllegalAccessException ignore) {
                         // cannot set value so ignore it
                     }
@@ -51,7 +62,7 @@ public class TestDataGenerator {
         return instance;
     }
 
-    private static Object getRandomValueForField(Object instance, Field field, int baseValue) {
+    private static Object getValueForField(Object instance, Field field, int baseValue, int fieldNumber) {
         Class<?> type = field.getType();
 
         // Note that we must handle the different types here! This is just an
@@ -62,21 +73,31 @@ public class TestDataGenerator {
         } else if (type.equals(Byte.class)) {
             return Byte.valueOf((byte) baseValue);
         } else if (type.equals(Integer.class)) {
-            return Integer.valueOf(baseValue);
+            return Integer.valueOf(getIntValueForField(baseValue, fieldNumber));
         } else if (type.equals(Long.class)) {
-            return Long.valueOf(baseValue);
+            return Long.valueOf(getIntValueForField(baseValue, fieldNumber));
         } else if (type.equals(BigInteger.class)) {
-            return BigInteger.valueOf(baseValue);
+            return BigInteger.valueOf(getIntValueForField(baseValue, fieldNumber));
 
         } else if (type.equals(Character.TYPE) || type.equals(Character.class)) {
             return Character.valueOf((char) ('A' + baseValue));
         } else if (type.isAssignableFrom(Number.class) || NUMBER_TYPES.contains("," + type.getSimpleName() + ",")) {
-            return (byte) baseValue;
+            if (type.getSimpleName().startsWith("b")) {
+                return (byte) baseValue; // byte or boolean
+            } else {
+                return (int) getIntValueForField(baseValue, fieldNumber);
+            }
         } else if (type.equals(Boolean.TYPE) || type.equals(Boolean.class)) {
             return (baseValue % 2 == 0);
         } else if (type.equals(String.class)) {
-            return field.getName() + "#" + baseValue;
+            if (fieldNumber == 0) return field.getName() + "#" + baseValue;
+            return field.getName() + "#" + baseValue + "-" + fieldNumber;
         }
         return null;
+    }
+
+    private static int getIntValueForField(int baseValue, int fieldNumber) {
+        if (fieldNumber == 0) return baseValue;
+        return baseValue * 100 + fieldNumber;
     }
 }

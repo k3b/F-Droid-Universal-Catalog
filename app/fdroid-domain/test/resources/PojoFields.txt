@@ -1,83 +1,83 @@
 toString() - Properties of Entities
 de.k3b.fdroid.domain.App
 	added
-	changelog
-	icon
-	id
-	issueTracker
+	changelog(12)
+	icon(20)
+	id(01)
+	issueTracker(15)
 	lastUpdated
-	license
-	packageName
-	repoId
-	sourceCode
-	suggestedVersionCode
-	suggestedVersionName
-	webSite
+	license(16)
+	packageName(11)
+	repoId(02)
+	sourceCode(17)
+	suggestedVersionCode(14)
+	suggestedVersionName(13)
+	webSite(18)
 de.k3b.fdroid.domain.AppCategory
-	appId
-	categoryId
-	id
+	appId(02)
+	categoryId(03)
+	id(01)
 de.k3b.fdroid.domain.AppHardware
-	appId
-	hardwareProfileId
-	id
+	appId(02)
+	hardwareProfileId(03)
+	id(01)
 	max
 	min
 de.k3b.fdroid.domain.Category
-	id
-	name
+	id(01)
+	name(2)
 de.k3b.fdroid.domain.HardwareProfile
-	SdkVersion
+	SdkVersion(03)
 	deleteIfNotCompatible
-	id
-	name
-	nativecode
+	id(01)
+	name(2)
+	nativecode(4)
 de.k3b.fdroid.domain.Locale
-	code
-	id
-	languagePriority
-	nameEnglish
-	nameNative
-	symbol
+	code(2)
+	id(01)
+	languagePriority(06)
+	nameEnglish(5)
+	nameNative(4)
+	symbol(3)
 de.k3b.fdroid.domain.Localized
-	appId
-	description
-	icon
-	id
-	localeId
-	name
-	summary
-	video
-	whatsNew
+	appId(02)
+	description(6)
+	icon(7)
+	id(01)
+	localeId(03)
+	name(4)
+	summary(5)
+	video(8)
+	whatsNew(9)
 de.k3b.fdroid.domain.common.ProfileCommon
 	added
-	apkName
-	size
-	versionCode
-	versionName
+	apkName(1)
+	size(05)
+	versionCode(02)
+	versionName(3)
 de.k3b.fdroid.domain.Repo
-	address
-	description
-	icon
-	id
-	maxage
-	name
+	address(7)
+	description(8)
+	icon(6)
+	id(01)
+	maxage(05)
+	name(2)
 	timestamp
-	version
+	version(04)
 de.k3b.fdroid.domain.Version
 	added
-	apkName
-	appId
-	hash
-	hashType
-	id
-	maxSdkVersion
-	minSdkVersion
-	nativecode
-	sig
-	signer
-	size
-	srcname
-	targetSdkVersion
-	versionCode
-	versionName
+	apkName(12)
+	appId(02)
+	hash(7)
+	hashType(8)
+	id(01)
+	maxSdkVersion(06)
+	minSdkVersion(04)
+	nativecode(3)
+	sig(9)
+	signer(10)
+	size(16)
+	srcname(11)
+	targetSdkVersion(05)
+	versionCode(13)
+	versionName(14)
