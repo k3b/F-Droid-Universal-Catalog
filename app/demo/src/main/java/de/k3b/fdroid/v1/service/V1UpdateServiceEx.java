@@ -26,7 +26,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 import de.k3b.fdroid.domain.interfaces.AppCategoryRepository;
+import de.k3b.fdroid.domain.interfaces.AppHardwareRepository;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.interfaces.HardwareProfileRepository;
 import de.k3b.fdroid.domain.interfaces.LocaleRepository;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
@@ -44,9 +46,11 @@ public class V1UpdateServiceEx extends V1UpdateService {
                              VersionRepository versionRepository,
                              LocalizedRepository localizedRepository,
                              LocaleRepository localeRepository,
+                             HardwareProfileRepository hardwareProfileRepository,
+                             AppHardwareRepository appHardwareRepository,
                              LanguageService languageService) {
         super(repoRepository, appRepository, categoryService, appCategoryRepository,
-                versionRepository, localizedRepository, localeRepository, languageService, new DemoProgreeUpdateListener());
+                versionRepository, localizedRepository, localeRepository, hardwareProfileRepository, appHardwareRepository, languageService, new DemoProgreeUpdateListener());
     }
 
     @Override

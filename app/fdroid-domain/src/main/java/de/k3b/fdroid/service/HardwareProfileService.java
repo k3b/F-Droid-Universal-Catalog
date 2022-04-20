@@ -18,15 +18,22 @@
  */
 package de.k3b.fdroid.service;
 
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.AppHardware;
 import de.k3b.fdroid.domain.HardwareProfile;
 import de.k3b.fdroid.domain.Version;
 import de.k3b.fdroid.domain.common.ProfileCommon;
+import de.k3b.fdroid.domain.interfaces.AppHardwareRepository;
+import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.HardwareProfileRepository;
+import de.k3b.fdroid.domain.interfaces.ProgressListener;
 import de.k3b.fdroid.util.StringUtil;
 
 /**
@@ -34,22 +41,35 @@ import de.k3b.fdroid.util.StringUtil;
  */
 
 public class HardwareProfileService {
-    private static final String REGEX_PATTERN_SPLIT_NATIVECODE = "[, \\[\\]].+";
+    private final AppRepository appRepository;
     private final HardwareProfileRepository hardwareProfileRepository;
+    private final AppHardwareRepository appHardwareRepository;
+    private final ProgressListener progressListener;
 
-    Map<Integer, HardwareProfile> id2HardwareProfile = null;
-    Map<String, HardwareProfile> name2HardwareProfile = null;
     private List<HardwareProfile> hardwareProfiles;
+    private boolean hpForDelete = false;
 
-
-    public HardwareProfileService(HardwareProfileRepository hardwareProfileRepository) {
+    /**
+     * @param appRepository    if not null: may delete app if it is not compatible with any profile
+     * @param progressListener if not null: show message if not compatible app is deleted
+     */
+    public HardwareProfileService(@Nullable AppRepository appRepository,
+                                  HardwareProfileRepository hardwareProfileRepository,
+                                  AppHardwareRepository appHardwareRepository,
+                                  @Nullable ProgressListener progressListener) {
+        this.appRepository = appRepository;
         this.hardwareProfileRepository = hardwareProfileRepository;
+        this.appHardwareRepository = appHardwareRepository;
+        this.progressListener = progressListener;
     }
 
-    public static boolean calculateAppHardware(AppHardware result, HardwareProfile profile, List<Version> versions) {
+    /**
+     * @return true if app belonging to result is compatible with versionList
+     */
+    public static boolean calculateAppHardware(AppHardware result, HardwareProfile profile, List<Version> versionList) {
         Version min = null;
         Version max = null;
-        for (Version version : versions) {
+        for (Version version : versionList) {
             if (isCompatible(profile, version)) {
                 if (min == null || min.getVersionCode() > version.getVersionCode()) {
                     min = version;
@@ -72,44 +92,19 @@ public class HardwareProfileService {
         return init(hardwareProfileRepository.findAll());
     }
 
-    public HardwareProfileService init(List<HardwareProfile> hardwareProfiles) {
-        this.hardwareProfiles = hardwareProfiles;
-        id2HardwareProfile = new HashMap<>();
-        name2HardwareProfile = new HashMap<>();
+    /**
+     * Note: a armeabi processer can execute armabi code but not vice versa .
+     * See https://stackoverflow.com/questions/8060174/what-are-the-purposes-of-the-arm-abi-and-eabi
+     */
+    public static boolean isCompatibleNativecode(String[] appVersionNativecodes, String[] profileNativecodes) {
+        if (StringUtil.isEmpty(appVersionNativecodes) || StringUtil.isEmpty(profileNativecodes))
+            return true;
 
-        for (HardwareProfile hardwareProfile : hardwareProfiles) {
-            init(hardwareProfile);
+        for (String current : appVersionNativecodes) {
+            if (StringUtil.contains(current, profileNativecodes)) return true;
         }
-        return this;
-    }
 
-    private void init(HardwareProfile hardwareProfile) {
-        id2HardwareProfile.put(hardwareProfile.getId(), hardwareProfile);
-        name2HardwareProfile.put(hardwareProfile.getName(), hardwareProfile);
-    }
-
-    public String getHardwareProfileName(int hardwareProfileId) {
-        HardwareProfile hardwareProfile = (hardwareProfileId == 0) ? null : id2HardwareProfile.get(hardwareProfileId);
-        return (hardwareProfile == null) ? null : hardwareProfile.getName();
-    }
-
-    public int getOrCreateHardwareProfileId(String hardwareProfileName) {
-        if (hardwareProfileName != null) {
-            HardwareProfile hardwareProfile = name2HardwareProfile.get(hardwareProfileName);
-            if (hardwareProfile == null) {
-                // create on demand
-                hardwareProfile = new HardwareProfile();
-                hardwareProfile.setName(hardwareProfileName);
-                hardwareProfileRepository.insert(hardwareProfile);
-                init(hardwareProfile);
-            }
-            return hardwareProfile.getId();
-        }
-        return 0;
-    }
-
-    public void setHardwareProfiles(List<HardwareProfile> hardwareProfiles) {
-        this.hardwareProfiles = hardwareProfiles;
+        return false;
     }
 
     protected static boolean isCompatibleSdk(int currentSdk, int profileMin, int profileMax) {
@@ -118,19 +113,92 @@ public class HardwareProfileService {
         return (currentSdk >= profileMin && currentSdk <= profileMax);
     }
 
-    public static boolean isCompatibleNativecode(String[] currentNativecodes, String[] profileNativecodes) {
-        if (StringUtil.isEmpty(currentNativecodes) || StringUtil.isEmpty(profileNativecodes))
-            return true;
-
-        for (String current : currentNativecodes) {
-            if (StringUtil.contains(current, profileNativecodes)) return true;
+    public HardwareProfileService init(List<HardwareProfile> hardwareProfiles) {
+        this.hardwareProfiles = hardwareProfiles;
+        if (appRepository != null) {
+            HardwareProfile hpForDelete = null;
+            for (HardwareProfile hp : this.hardwareProfiles) {
+                if (hp.isDeleteIfNotCompatible()) {
+                    hpForDelete = hp;
+                }
+            }
+            this.hpForDelete = (hpForDelete != null);
         }
-
-        return false;
+        return this;
     }
 
     public static boolean isCompatible(HardwareProfile profile, Version version) {
         return isCompatibleSdk(profile.getSdkVersion(), version.getMinSdkVersion(), version.getMaxSdkVersion())
                 && isCompatibleNativecode(profile.getNativecodeArray(), version.getNativecodeArray());
+    }
+
+    public void updateAppProfiles(App app, List<Version> versionList) {
+        if ((this.hardwareProfiles != null) && (!hardwareProfiles.isEmpty()) && !versionList.isEmpty()) {
+            List<AppHardware> appHardwareListCompatible = this.appHardwareRepository.findByAppId(app.getId());
+            List<AppHardware> appHardwareListNotCompatible = new ArrayList<>();
+
+            updateAppProfiles(app.getId(), versionList, appHardwareListCompatible, appHardwareListNotCompatible);
+
+            save(app, appHardwareListCompatible, appHardwareListNotCompatible, versionList.get(0).getNativecode());
+        }
+    }
+
+    private void updateAppProfiles(int appId, List<Version> versionList,
+                                   List<AppHardware> appHardwareListCompatible,
+                                   List<AppHardware> appHardwareListNotCompatible) {
+        Map<Integer, AppHardware> id2AppHardware = new HashMap<>();
+
+        for (AppHardware appHardware : appHardwareListCompatible) {
+            id2AppHardware.put(appHardware.getHardwareProfileId(), appHardware);
+        }
+
+        for (HardwareProfile hp : this.hardwareProfiles) {
+            AppHardware appHardware = id2AppHardware.get(hp.getId());
+            if (appHardware == null) {
+                appHardware = new AppHardware(appId, hp.getId());
+            } else {
+                appHardwareListCompatible.remove(appHardware);
+            }
+
+            if (calculateAppHardware(appHardware, hp, versionList)) {
+                appHardwareListCompatible.add(appHardware);
+            } else {
+                appHardwareListNotCompatible.add(appHardware);
+            }
+        }
+    }
+
+    private void save(App app, List<AppHardware> appHardwareListCompatible, List<AppHardware> appHardwareListNotCompatible, String nativecode) {
+        for (AppHardware appHardware : appHardwareListCompatible) {
+            if (appHardware.getId() == 0) {
+                appHardwareRepository.insert(appHardware);
+            } else {
+                appHardwareRepository.update(appHardware);
+            }
+        }
+        for (AppHardware appHardware : appHardwareListNotCompatible) {
+            if (appHardware.getId() != 0) {
+                appHardwareRepository.delete(appHardware);
+            }
+        }
+        deleteAppIfNotCompatible(app, appHardwareListCompatible, nativecode);
+    }
+
+    private void deleteAppIfNotCompatible(App app, List<AppHardware> appHardwareListCompatible, String nativecode) {
+        if (hpForDelete && appHardwareListCompatible.isEmpty()) {
+            StringBuilder message = new StringBuilder()
+                    .append("Deleting app '").append(app.getPackageName()).append("':").append(app.getSearchName())
+                    .append(" (sdk:").append(app.getSearchSdk());
+            if (nativecode != null) {
+                message.append(", nativecode: '").append(nativecode);
+            }
+            message.append("'), because it is not compatible with any HardwareProfile");
+            log(message.toString());
+            appRepository.delete(app);
+        }
+    }
+
+    private void log(String message) {
+        if (progressListener != null) progressListener.log(message);
     }
 }

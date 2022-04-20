@@ -66,6 +66,14 @@ public class HardwareProfileServiceTest {
     }
 
     @Test
+    public void isCompatibleNativecode_armeCpu_compatible_armAppVersion() {
+        HardwareProfile profile = new HardwareProfile();
+        profile.setNativecode("armeabi-v7a");
+        assertEquals("armeabi-v7a device is compatible with armabi-v7a app", true, HardwareProfileService.isCompatibleNativecode(
+                StringUtil.toStringArray("armabi-v7a"), profile.getNativecodeArray()));
+    }
+
+    @Test
     public void calculateAppHardware_found() {
         String nativecode = "8080,z80";
         HardwareProfile profile = new HardwareProfile("test profile", 14, nativecode);

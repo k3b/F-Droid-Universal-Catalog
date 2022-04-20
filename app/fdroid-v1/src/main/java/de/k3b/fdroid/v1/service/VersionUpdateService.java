@@ -30,6 +30,7 @@ import de.k3b.fdroid.domain.common.VersionCommon;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.ProgressListener;
 import de.k3b.fdroid.domain.interfaces.VersionRepository;
+import de.k3b.fdroid.service.HardwareProfileService;
 import de.k3b.fdroid.service.VersionService;
 import de.k3b.fdroid.util.StringUtil;
 
@@ -43,22 +44,32 @@ public class VersionUpdateService {
     private final VersionService versionService = new VersionService();
 
     PackageCollector packageCollector = new PackageCollector();
+    private final HardwareProfileService hardwareProfileService;
     ProgressListener progressListener = null;
 
-    // update(repoId, packageName,v1Version) -> update(repoId, packageName,List<v1Version>)
-    public void update(int repoId, String packageName, de.k3b.fdroid.v1.domain.Version v1Version) {
-        packageCollector.update(repoId, packageName, v1Version);
-    }
-
-    public VersionUpdateService(AppRepository appRepository, VersionRepository versionRepository,
+    public VersionUpdateService(AppRepository appRepository,
+                                VersionRepository versionRepository,
+                                HardwareProfileService hardwareProfileService,
                                 ProgressListener progressListener) {
         this.appRepository = appRepository;
         this.versionRepository = versionRepository;
+        this.hardwareProfileService = hardwareProfileService;
         this.progressListener = progressListener;
     }
 
+    public void init() {
+        if (this.hardwareProfileService != null) {
+            this.hardwareProfileService.init();
+        }
+    }
+
+    // update(repoId, packageName,v1Version) -> update(repoId, packageName,List<v1Version>)
+    public void updateCollectVersions(int repoId, String packageName, de.k3b.fdroid.v1.domain.Version v1Version) {
+        packageCollector.update(repoId, packageName, v1Version);
+    }
+
     // update(repoId, packageName,List<v1Version>) -> update(app,List<v1Version>)
-    private void update(int repoId, String packageName, List<de.k3b.fdroid.v1.domain.Version> v1VersionList) {
+    private void updateGetCorrespondingApp(int repoId, String packageName, List<de.k3b.fdroid.v1.domain.Version> v1VersionList) {
         App app = getOrCreateApp(repoId, packageName);
 
         update(app, v1VersionList);
@@ -71,16 +82,22 @@ public class VersionUpdateService {
         }
 
         List<Version> roomVersionList = versionRepository.findByAppId(app.getId());
-        update(app.getId(), roomVersionList, v1VersionList);
+        updateMapV1ToDbContentent(app.getId(), roomVersionList, v1VersionList);
 
         versionService.fixMaxSdk(roomVersionList);
         versionService.updateAppAggregates(app, roomVersionList);
 
         saveAll(roomVersionList);
         appRepository.update(app);
+
+        if (this.hardwareProfileService != null) {
+            this.hardwareProfileService.updateAppProfiles(app, roomVersionList);
+        }
+
+
     }
 
-    private void update(int appId, List<Version> roomVersionList, List<de.k3b.fdroid.v1.domain.Version> v1VersionList) {
+    private void updateMapV1ToDbContentent(int appId, List<Version> roomVersionList, List<de.k3b.fdroid.v1.domain.Version> v1VersionList) {
         Map<Integer, Version> roomCode2Version = new HashMap<>();
         for (Version roomVersion : roomVersionList) {
             roomCode2Version.put(roomVersion.getVersionCode(), roomVersion);
@@ -127,7 +144,7 @@ public class VersionUpdateService {
         public void update(int repoId, String packageName, de.k3b.fdroid.v1.domain.Version v1Version) {
             if (v1VersionList.size() > 0 && (packageName == null || packageName.compareTo(lastPackageName) != 0)) {
                 // packagename null or changed : Process collected versons
-                VersionUpdateService.this.update(repoId, lastPackageName, v1VersionList);
+                VersionUpdateService.this.updateGetCorrespondingApp(repoId, lastPackageName, v1VersionList);
 
                 v1VersionList = new ArrayList<>();
             }

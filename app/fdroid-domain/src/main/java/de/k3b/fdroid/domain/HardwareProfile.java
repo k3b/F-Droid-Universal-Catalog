@@ -110,6 +110,13 @@ public class HardwareProfile extends PojoCommon implements ItemWithId {
 
     public String[] getNativecodeArray() {
         if (nativecodeArray == null) {
+            String nativecode = this.getNativecode();
+            if (!StringUtil.isEmpty(nativecode) && nativecode.contains("arme")) {
+                // Note: a armeabi processer can execute armabi code but not vice versa .
+                // eabi stands for Extended Application Binary Interface.
+                // See https://stackoverflow.com/questions/8060174/what-are-the-purposes-of-the-arm-abi-and-eabi
+                nativecode += "," + nativecode.replace("arme", "arm");
+            }
             nativecodeArray = StringUtil.toStringArray(nativecode);
         }
         return nativecodeArray;

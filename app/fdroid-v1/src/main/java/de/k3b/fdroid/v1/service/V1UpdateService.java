@@ -23,13 +23,16 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import de.k3b.fdroid.domain.interfaces.AppCategoryRepository;
+import de.k3b.fdroid.domain.interfaces.AppHardwareRepository;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.interfaces.HardwareProfileRepository;
 import de.k3b.fdroid.domain.interfaces.LocaleRepository;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.domain.interfaces.ProgressListener;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.domain.interfaces.VersionRepository;
 import de.k3b.fdroid.service.CategoryService;
+import de.k3b.fdroid.service.HardwareProfileService;
 import de.k3b.fdroid.service.LanguageService;
 import de.k3b.fdroid.v1.domain.App;
 import de.k3b.fdroid.v1.domain.Repo;
@@ -70,6 +73,8 @@ public abstract class V1UpdateService {
                            VersionRepository versionRepository,
                            LocalizedRepository localizedRepository,
                            LocaleRepository localeRepository,
+                           HardwareProfileRepository hardwareProfileRepository,
+                           AppHardwareRepository appHardwareRepository,
                            LanguageService languageService) {
         this(repoRepository, appRepository,
                 categoryService,
@@ -77,7 +82,7 @@ public abstract class V1UpdateService {
                 versionRepository,
                 localizedRepository,
                 localeRepository,
-                languageService, null);
+                hardwareProfileRepository, appHardwareRepository, languageService, null);
     }
 
     public V1UpdateService(RepoRepository repoRepository, AppRepository appRepository,
@@ -85,7 +90,10 @@ public abstract class V1UpdateService {
                            AppCategoryRepository appCategoryRepository,
                            VersionRepository versionRepository,
                            LocalizedRepository localizedRepository,
-                           LocaleRepository localeRepository, LanguageService languageService,
+                           LocaleRepository localeRepository,
+                           HardwareProfileRepository hardwareProfileRepository,
+                           AppHardwareRepository appHardwareRepository,
+                           LanguageService languageService,
                            ProgressListener progressListener) {
         this.languageService = languageService;
         repoUpdateService = new RepoUpdateService(repoRepository);
@@ -96,17 +104,23 @@ public abstract class V1UpdateService {
                 localizedRepository, languageService);
         appUpdateService = new AppUpdateService(appRepository, appCategoryUpdateService, localizedUpdateService, progressListener);
 
-        versionUpdateService = new VersionUpdateService(appRepository, versionRepository, progressListener);
+        HardwareProfileService hardwareProfileService = new HardwareProfileService(appRepository, hardwareProfileRepository, appHardwareRepository, progressListener);
+        versionUpdateService = new VersionUpdateService(appRepository, versionRepository, hardwareProfileService, progressListener);
     }
 
     public void readFromJar(InputStream jarInputStream) throws IOException {
-        appUpdateService.init();
+        init();
         jsonStreamParser.readFromJar(jarInputStream);
     }
 
     public void readJsonStream(InputStream jsonInputStream) throws IOException {
-        appUpdateService.init();
+        init();
         jsonStreamParser.readJsonStream(jsonInputStream);
+    }
+
+    public void init() {
+        appUpdateService.init();
+        versionUpdateService.init();
     }
 
     abstract protected String log(String s);
@@ -155,7 +169,7 @@ public abstract class V1UpdateService {
          */
         @Override
         protected void onVersion(String packageName, Version v1Version) {
-            versionUpdateService.update(currentRepoId, packageName, v1Version);
+            versionUpdateService.updateCollectVersions(currentRepoId, packageName, v1Version);
         }
     }
 }

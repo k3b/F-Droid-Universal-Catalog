@@ -14,14 +14,14 @@ CREATE TABLE AppHardware (
   hardwareProfileId INT,
 
   -- ProfileCommon max (with no prefix)
-  added INT,
+  added BIGINT,
   apkName VARCHAR(255),
   versionCode INT,
   versionName VARCHAR(255),
   size INT,
   
   -- ProfileCommon min (with prefix 'min_')
-  minAdded INT,
+  minAdded BIGINT,
   minApkName VARCHAR(255),
   minVersionCode INT,
   minVersionName VARCHAR(255),

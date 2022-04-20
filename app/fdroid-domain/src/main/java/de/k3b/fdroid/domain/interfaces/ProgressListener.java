@@ -21,4 +21,6 @@ package de.k3b.fdroid.domain.interfaces;
 
 public interface ProgressListener {
     void onProgress(String prograssChar, String packageName);
+
+    void log(String message);
 }

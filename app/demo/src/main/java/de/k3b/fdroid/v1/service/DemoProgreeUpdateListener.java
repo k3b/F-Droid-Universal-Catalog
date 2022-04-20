@@ -30,4 +30,10 @@ public class DemoProgreeUpdateListener implements ProgressListener {
         counter++;
         if (counter % INTERVALL == 0) System.out.print(prograssChar);
     }
+
+    @Override
+    public void log(String message) {
+        System.out.println();
+        System.out.println(message);
+    }
 }
