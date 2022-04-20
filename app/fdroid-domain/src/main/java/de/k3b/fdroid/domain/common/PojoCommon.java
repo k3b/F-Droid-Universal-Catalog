@@ -99,6 +99,16 @@ public class PojoCommon {
         }
     }
 
+    protected void toStringBuilder(StringBuilder sb, String name, Object value, int maxLen) {
+        if (value != null) {
+            String strValue = value.toString();
+            if (maxLen > 8 && strValue.length() > maxLen) {
+                strValue = strValue.substring(0, maxLen / 2) + "..." + strValue.substring((maxLen / 2) + 3);
+            }
+            toStringBuilder(sb, name, strValue);
+        }
+    }
+
     protected void toStringBuilder(StringBuilder sb, String name, Object value) {
         if (value != null)
             sb.append(name).append('=').append(value).append(',');

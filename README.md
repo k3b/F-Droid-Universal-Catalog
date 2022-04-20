@@ -180,9 +180,8 @@ f-droid         https://gitlab.com/fdroid/fdroidclient
 fdroidclassic   https://git.bubu1.eu/Bubu/fdroidclassic
 
 --------------
-
-
-todo integrate HardwareProfileService.calculateAppHardware into v1 import ?? calculateMaxSdk
+todo
+> integrate HardwareProfileService.calculateAppHardware into v1 import v   integrate calculateMaxSdk
 
 lib
 

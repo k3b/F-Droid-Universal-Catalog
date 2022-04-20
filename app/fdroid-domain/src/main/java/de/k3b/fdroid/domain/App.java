@@ -78,6 +78,11 @@ public class App extends AppCommon implements AppDetail {
         setRepoId(repoId);
     }
 
+    @androidx.room.Ignore
+    public App(int repoId, String packageName) {
+        this(repoId);
+        setPackageName(packageName);
+    }
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);

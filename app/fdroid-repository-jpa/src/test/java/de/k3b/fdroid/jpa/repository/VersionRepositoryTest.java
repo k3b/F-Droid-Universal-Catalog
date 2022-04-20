@@ -51,8 +51,7 @@ public class VersionRepositoryTest {
         repoId = repo.getId();
         appId = jpaTestHelper.createApp(repo).getId();
 
-        App app = new App(repoId);
-        app.setPackageName(MY_PACKAGE_NAME);
+        App app = new App(repoId, MY_PACKAGE_NAME);
         jpaTestHelper.save(app);
         appId = app.getId();
 
@@ -61,6 +60,7 @@ public class VersionRepositoryTest {
         version.setVersionCode(MY_VERSION_CODE);
         version.setApkName(MY_NAME);
         version.setSrcname("my source name");
+        version.setNativecode("helloWorldCpu");
         this.repo.insert(version);
     }
 

@@ -135,8 +135,8 @@ public class VersionCommon extends ProfileCommon {
         toStringBuilder(sb, "maxSdkVersion", this.maxSdkVersion);
         toStringBuilder(sb, "hash", this.hash);
         toStringBuilder(sb, "hashType", this.hashType);
-        toStringBuilder(sb, "sig", this.sig);
-        toStringBuilder(sb, "signer", this.signer);
         toStringBuilder(sb, "srcname", this.srcname);
+        toStringBuilder(sb, "sig", this.sig, 20);
+        toStringBuilder(sb, "signer", this.signer, 20);
     }
 }

@@ -28,7 +28,7 @@ import de.k3b.fdroid.domain.Version;
 public class VersionServiceTest {
     private static final int SDK15 = 15;
     private static final int SDK16 = 16;
-    private final VersionService versionService = new VersionService(null);
+    private final VersionService versionService = new VersionService();
 
     @Test
     public void fixMaxSdk_withNativecode() {
