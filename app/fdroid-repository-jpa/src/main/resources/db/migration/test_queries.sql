@@ -7,7 +7,7 @@ select
     GROUP_CONCAT(c.CODE ORDER BY c.CODE SEPARATOR ' | ') as language
 from app a
 inner join LOCALIZED l on l.APP_ID = a.id
-inner join LOCALE c on l.LOCALE_ID = c.id
+inner join Locale c on l.LOCALE_ID = c.id
 where a.PACKAGE_NAME like '%.k3b.%'
 GROUP by a.PACKAGE_NAME;
 
@@ -65,7 +65,7 @@ order by substr(SEARCH_SDK,2,2);
 -- apps description in one language
 select a.PACKAGE_NAME, la.code, lo.NAME, lo.SUMMARY, lo.DESCRIPTION
 from LOCALIZED lo
-inner join LOCALE la on lo.LOCALE_ID = la.id
+inner join Locale la on lo.LOCALE_ID = la.id
 inner join App a on lo.APP_ID = a.id
 where la.code = 'de' and lo.DESCRIPTION is not null
 ;
@@ -108,9 +108,13 @@ order by a.PACKAGE_NAME, av.VERSION_CODE desc;
 -----------------------------------
 
 -- hide all localized that are not de en es nl fr
-update LOCALE set LANGUAGE_PRIORITY = 9 where code = 'de';
-update LOCALE set LANGUAGE_PRIORITY = 8 where code = 'en';
-update LOCALE set LANGUAGE_PRIORITY = 7 where code = 'es';
-update LOCALE set LANGUAGE_PRIORITY = 6 where code = 'nl';
-update LOCALE set LANGUAGE_PRIORITY = 5 where code = 'fr';
-update LOCALE set LANGUAGE_PRIORITY = -1 where LANGUAGE_PRIORITY = 0;
+update Locale set languagePriority = 9 where code = 'de';
+update Locale set languagePriority = 8 where code = 'en';
+update Locale set languagePriority = 7 where code = 'es';
+update Locale set languagePriority = 6 where code = 'nl';
+update Locale set languagePriority = 5 where code = 'fr';
+update Locale set languagePriority = -1 where languagePriority = 0;
+
+INSERT INTO HardwareProfile(id,name,sdkVersion,nativecode) VALUES(3,'android-10', 29, 'armeabi-v7a,armeabi');
+INSERT INTO HardwareProfile(id,name,sdkVersion,nativecode) VALUES(2,'android-7.0', 24, 'arme64-v8a,armeabi-v7a,armeabi');
+INSERT INTO HardwareProfile(id,name,sdkVersion,nativecode) VALUES(1, 'android-4.2', 17, 'armeabi-v7a');

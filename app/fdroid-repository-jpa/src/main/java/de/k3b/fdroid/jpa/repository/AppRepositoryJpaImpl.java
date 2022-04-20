@@ -35,9 +35,9 @@ public class AppRepositoryJpaImpl implements AppRepositoryFindIdsByExpression {
     public List<Integer> findIdsByExpressionSortByScore(String searchText) {
         StringBuilder sql = new StringBuilder().append("select id from (select\n" +
                 "    id,\n" +
-                "    PACKAGE_NAME,\n" +
+                "    packageName,\n" +
                 "    sum(score) score\n" +
-                "from APP_SEARCH\n" +
+                "from AppSearch\n" +
                 "where ");
         String[] expressions = searchText.split(" ");
         int index = 1;
@@ -46,8 +46,8 @@ public class AppRepositoryJpaImpl implements AppRepositoryFindIdsByExpression {
             sql.append("search like :search").append(index);
             index++;
         }
-        sql.append("\n group by id, PACKAGE_NAME\n" +
-                "order by sum(score) desc, PACKAGE_NAME\n" +
+        sql.append("\n group by id, packageName\n" +
+                "order by sum(score) desc, packageName\n" +
                 ")");
 
         Query nativeQuery = entityManager

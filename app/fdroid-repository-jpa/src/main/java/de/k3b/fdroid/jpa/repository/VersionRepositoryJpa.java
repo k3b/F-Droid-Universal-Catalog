@@ -37,14 +37,14 @@ import de.k3b.fdroid.domain.Version;
 public interface VersionRepositoryJpa extends CrudRepository<Version, Integer> {
     List<Version> findByAppId(int appId);
 
-    @Query("SELECT v FROM App_Version v inner join App as a on v.appId = a.id " +
+    @Query("SELECT v FROM AppVersion v inner join App as a on v.appId = a.id " +
             "WHERE a.repoId = :repoId AND a.packageName = :packageName AND v.versionCode = :versionCode")
     Version findByRepoPackageAndVersionCode(
             @Param("repoId") int repoId,
             @Param("packageName") String packageName,
             @Param("versionCode") int versionCode);
 
-    @Query(value = "select al from App_Version al " +
+    @Query(value = "select al from AppVersion al " +
             "where al.appId in (?1) " +
             "order by al.versionCode desc")
     List<Version> findByAppIds(List<Integer> appIds);

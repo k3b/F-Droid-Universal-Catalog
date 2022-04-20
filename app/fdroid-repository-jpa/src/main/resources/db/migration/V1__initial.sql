@@ -1,9 +1,9 @@
 -- V1__initial.sql creates hsqldb for fdroid
-create TABLE repo (
+create TABLE Repo (
   id INT NOT NULL,
   name VARCHAR(255),
-  "TIMESTAMP" BIGINT,
-  version BIGINT,
+  timestamp BIGINT,
+  version INT,
   maxage BIGINT,
   icon VARCHAR(255),
   address VARCHAR(255),
@@ -12,110 +12,111 @@ create TABLE repo (
   CONSTRAINT ak_repo UNIQUE (name)
 );
 
-create TABLE app (
+create TABLE App (
   id INT NOT NULL,
-  repo_id INT,
-  package_name VARCHAR(255),
+  repoId INT,
+  packageName VARCHAR(255),
   changelog VARCHAR(255),
-  suggested_version_name VARCHAR(255),
-  suggested_version_code VARCHAR(255),
-  issue_tracker VARCHAR(255),
+  suggestedVersionName VARCHAR(255),
+  suggestedVersionCode VARCHAR(255),
+  issueTracker VARCHAR(255),
   license VARCHAR(255),
-  source_code VARCHAR(255),
-  web_site VARCHAR(255),
+  sourceCode VARCHAR(255),
+  webSite VARCHAR(255),
   added BIGINT,
   icon VARCHAR(255),
-  last_updated BIGINT,
-  search_name VARCHAR(8000),
-  search_summary VARCHAR(8000),
-  search_description VARCHAR(256000),
-  search_whats_new VARCHAR(8000),
-  search_version VARCHAR(255),
-  search_sdk VARCHAR(255),
-  search_signer VARCHAR(255),
-  search_category VARCHAR(255),
+  lastUpdated BIGINT,
+  searchName VARCHAR(8000),
+  searchSummary VARCHAR(8000),
+  searchDescription VARCHAR(256000),
+  searchWhatsNew VARCHAR(8000),
+  searchVersion VARCHAR(255),
+  searchSdk VARCHAR(255),
+  searchSigner VARCHAR(255),
+  searchCategory VARCHAR(255),
   CONSTRAINT pk_app PRIMARY KEY (id),
-  CONSTRAINT ak_app UNIQUE (repo_id,package_name),
-  CONSTRAINT fk_app_repo FOREIGN KEY (repo_id) REFERENCES repo(id)  ON delete CASCADE
+  CONSTRAINT ak_app UNIQUE (repoId,packageName),
+  CONSTRAINT fk_app_repo FOREIGN KEY (repoId) REFERENCES Repo(id)  ON delete CASCADE
 );
 
-create TABLE category (
+create TABLE Category (
   id INT NOT NULL,
   name VARCHAR(255),
   CONSTRAINT pk_category PRIMARY KEY (id),
   CONSTRAINT ak_category UNIQUE (name)
 );
 
-create TABLE app_category (
+create TABLE AppCategory (
   id INT NOT NULL,
-  app_id INT,
-  category_id INT,
+  appId INT,
+  categoryId INT,
   CONSTRAINT pk_appCat PRIMARY KEY (id),
-  CONSTRAINT ak_appCat UNIQUE (app_id,category_id),
-  CONSTRAINT fk_appCat_app FOREIGN KEY (app_id) REFERENCES app(id)  ON delete CASCADE,
-  CONSTRAINT fk_appCat_cat FOREIGN KEY (category_id) REFERENCES category(id)  ON delete CASCADE
+  CONSTRAINT ak_appCat UNIQUE (appId,categoryId),
+  CONSTRAINT fk_appCat_app FOREIGN KEY (appId) REFERENCES App(id)  ON delete CASCADE,
+  CONSTRAINT fk_appCat_cat FOREIGN KEY (categoryId) REFERENCES Category(id)  ON delete CASCADE
 );
 
-create TABLE locale (
+create TABLE Locale (
   id INT NOT NULL,
   code VARCHAR(255),
   symbol VARCHAR(255),
-  name_english VARCHAR(255),
-  name_native VARCHAR(255),
-  language_priority INT,
+  nameEnglish VARCHAR(255),
+  nameNative VARCHAR(255),
+  languagePriority INT default 0,
   CONSTRAINT pk_locale PRIMARY KEY (id),
   CONSTRAINT ak_locale UNIQUE (code)
 );
 
-create TABLE localized (
+create TABLE Localized (
   id INT NOT NULL,
-  app_id INT,
-  locale_id INT,
+  appId INT,
+  localeId INT,
   name VARCHAR(255),
   summary VARCHAR(255),
   description VARCHAR(8000),
   icon VARCHAR(255),
   video VARCHAR(255),
-  whats_new VARCHAR(8000),
+  whatsNew VARCHAR(8000),
   CONSTRAINT pk_localized PRIMARY KEY (id),
-  CONSTRAINT ak_localized UNIQUE (app_id,locale_id),
-  CONSTRAINT fk_localized_app FOREIGN KEY (app_id) REFERENCES app(id)  ON delete CASCADE,
-  CONSTRAINT fk_localized_locale FOREIGN KEY (locale_id) REFERENCES locale(id)  ON delete CASCADE
+  CONSTRAINT ak_localized UNIQUE (appId,localeId),
+  CONSTRAINT fk_localized_app FOREIGN KEY (appId) REFERENCES App(id)  ON delete CASCADE,
+  CONSTRAINT fk_localized_locale FOREIGN KEY (localeId) REFERENCES Locale(id)  ON delete CASCADE
 );
 
-create TABLE App_Version (
+create TABLE AppVersion (
   id INT NOT NULL,
-  app_id INT,
+  appId INT,
   added BIGINT,
-  apk_name VARCHAR(255),
-  min_sdk_version BIGINT,
-  target_sdk_version BIGINT,
-  max_sdk_version BIGINT,
-  version_code BIGINT,
-  version_name VARCHAR(255),
+  apkName VARCHAR(255),
+  minSdkVersion INT,
+  targetSdkVersion INT,
+  maxSdkVersion INT,
+  versionCode INT,
+  versionName VARCHAR(255),
   hash VARCHAR(255),
-  hash_type VARCHAR(255),
+  hashType VARCHAR(255),
   sig VARCHAR(255),
   signer VARCHAR(255),
-  size BIGINT,
+  size INT,
+  nativecode VARCHAR(255),
   srcname VARCHAR(255),
   CONSTRAINT pk_version PRIMARY KEY (id),
-  CONSTRAINT ak_version UNIQUE (app_id,version_code),
-  CONSTRAINT fk_version_app FOREIGN KEY (app_id) REFERENCES app(id) ON delete CASCADE,
+  CONSTRAINT ak_version UNIQUE (appId,versionCode),
+  CONSTRAINT fk_version_app FOREIGN KEY (appId) REFERENCES App(id) ON delete CASCADE,
 );
 
-create TABLE test_entity (
+create TABLE TestEntity (
   id INT NOT NULL,
-  family_name VARCHAR(255),
+  familyName VARCHAR(255),
   name VARCHAR(255),
   CONSTRAINT pk_testentity PRIMARY KEY (id)
 );
 
-create view app_search as
-(select id, PACKAGE_NAME, PACKAGE_NAME search, 1000 score from app) union
-(select id, PACKAGE_NAME, SEARCH_NAME search, 1000 score from app) union
-(select id, PACKAGE_NAME, SEARCH_SUMMARY search, 100 score from app) union
-(select id, PACKAGE_NAME, SEARCH_Whats_New search, 10 score from app) union
-(select id, PACKAGE_NAME, SEARCH_Category search, 50 score from app) union
-(select id, PACKAGE_NAME, SEARCH_DESCRIPTION search, 1 score from app)
+create view AppSearch as
+(select id, packageName, packageName search, 1000 score from App) union
+(select id, packageName, searchName search, 1000 score from App) union
+(select id, packageName, searchSummary search, 100 score from App) union
+(select id, packageName, searchWhatsNew search, 10 score from App) union
+(select id, packageName, searchCategory search, 50 score from App) union
+(select id, packageName, searchDescription search, 1 score from App)
 ;

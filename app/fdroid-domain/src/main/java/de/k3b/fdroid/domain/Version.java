@@ -27,9 +27,9 @@ import de.k3b.fdroid.util.StringUtil;
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  * Database Entity compatible with Android-Room and non-android-j2se-jpa
  */
-@androidx.room.Entity(tableName = "App_Version", indices = {@androidx.room.Index("id"),
+@androidx.room.Entity(tableName = "AppVersion", indices = {@androidx.room.Index("id"),
         @androidx.room.Index({"id", "appId"})})
-@javax.persistence.Entity(name = "App_Version")
+@javax.persistence.Entity(name = "AppVersion")
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 public class Version extends VersionCommon implements AppDetail {
     @javax.persistence.Id

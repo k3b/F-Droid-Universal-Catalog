@@ -48,7 +48,7 @@ public interface LocalizedRepositoryJpa extends CrudRepository<Localized, Intege
             "order by al.appId, l.languagePriority desc")
     List<Localized> findNonHiddenByAppIds(List<Integer> appIds);
 
-    @Query("SELECT v FROM App_Version v inner join App as a on v.appId = a.id " +
+    @Query("SELECT v FROM AppVersion v inner join App as a on v.appId = a.id " +
             "WHERE a.repoId = :repoId AND a.packageName = :packageName AND v.versionCode = :versionCode")
     Version findByRepoPackageAndVersionCode(
             @Param("repoId") int repoId,

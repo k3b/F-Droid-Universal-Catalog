@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "d74b77385b3086b2fce9a62bea7c59ec",
+    "identityHash": "4a0c41fd888434baadba9ad4207fbd16",
     "entities": [
       {
         "tableName": "App",
@@ -466,7 +466,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "App_Version",
+        "tableName": "AppVersion",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `nativecode` TEXT, `minSdkVersion` INTEGER NOT NULL, `targetSdkVersion` INTEGER NOT NULL, `maxSdkVersion` INTEGER NOT NULL, `hash` TEXT, `hashType` TEXT, `sig` TEXT, `signer` TEXT, `srcname` TEXT, `apkName` TEXT, `versionCode` INTEGER NOT NULL, `versionName` TEXT, `added` INTEGER NOT NULL, `size` INTEGER NOT NULL)",
         "fields": [
           {
@@ -574,23 +574,23 @@
         },
         "indices": [
           {
-            "name": "index_App_Version_id",
+            "name": "index_AppVersion_id",
             "unique": false,
             "columnNames": [
               "id"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_App_Version_id` ON `${TABLE_NAME}` (`id`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_AppVersion_id` ON `${TABLE_NAME}` (`id`)"
           },
           {
-            "name": "index_App_Version_id_appId",
+            "name": "index_AppVersion_id_appId",
             "unique": false,
             "columnNames": [
               "id",
               "appId"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_App_Version_id_appId` ON `${TABLE_NAME}` (`id`, `appId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_AppVersion_id_appId` ON `${TABLE_NAME}` (`id`, `appId`)"
           }
         ],
         "foreignKeys": []
@@ -746,7 +746,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'd74b77385b3086b2fce9a62bea7c59ec')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4a0c41fd888434baadba9ad4207fbd16')"
     ]
   }
 }

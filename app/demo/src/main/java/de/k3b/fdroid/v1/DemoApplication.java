@@ -58,9 +58,15 @@ public class DemoApplication {
 //			demoTestEntity(repository);
 //			demoAppEntity(appRepo);
 
-			InputStream is = new FileInputStream("/home/EVE/StudioProjects/FDroid/app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.jar");
-
-			importer.readFromJar(is);
+			String inputPath;
+			inputPath = "/home/EVE/StudioProjects/FDroid/app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.jar";
+//			inputPath = "/home/EVE/StudioProjects/FDroid/app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.small.json";
+			InputStream is = new FileInputStream(inputPath);
+			if (inputPath.toLowerCase().endsWith(".jar")) {
+				importer.readFromJar(is);
+			} else {
+				importer.readJsonStream(is);
+			}
 			is.close();
 		};
 	}
