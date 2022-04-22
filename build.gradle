@@ -8,6 +8,8 @@ plugins {
 // required for jitpack
 ext {
     ROOM_VERSION = "2.4.2"
+    SLF4J_VERSION = "1.7.36"
+
     PUBLISH_GROUP_ID = 'com.github.k3b'
     PUBLISH_VERSION = "L1.0.0"
     SOURCES = 'github.com/k3b/f-droid-api'

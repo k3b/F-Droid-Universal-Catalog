@@ -88,6 +88,16 @@ public class App extends AppCommon implements AppDetail {
         toStringBuilder(sb, "id", this.id);
         toStringBuilder(sb, "repoId", this.repoId);
         super.toStringBuilder(sb);
+        toStringBuilder(sb, "searchVersion", this.searchVersion);
+        toStringBuilder(sb, "searchSdk", this.searchSdk);
+        toStringBuilder(sb, "searchCategory", this.searchCategory);
+
+        toStringBuilder(sb, "searchName", this.searchName, 20);
+        toStringBuilder(sb, "searchSummary", this.searchSummary, 20);
+        toStringBuilder(sb, "searchDescription", this.searchDescription, 20);
+        toStringBuilder(sb, "searchWhatsNew", this.searchWhatsNew, 20);
+
+        toStringBuilder(sb, "searchSigner", this.searchSigner, 14);
     }
 
     public int getId() {

@@ -19,6 +19,9 @@ dependencies {
     implementation 'org.jetbrains:annotations:13.0' // for android independant Nullable license Apache 2.0
     implementation 'com.google.code.gson:gson:2.9.0'
 
+    def SLF4J_VERSION = rootProject.ext.SLF4J_VERSION
+    implementation "org.slf4j:slf4j-api:$SLF4J_VERSION"
+
     testImplementation 'junit:junit:4.13.2'
 }
 // required for jitpack

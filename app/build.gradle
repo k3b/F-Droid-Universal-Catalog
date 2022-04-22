@@ -50,8 +50,11 @@ dependencies {
     implementation 'com.google.android.material:material:1.5.0'
     implementation project(path: ':app:fdroid-repository-android')
 
-    def room_version = rootProject.ext.ROOM_VERSION
+    def SLF4J_VERSION = rootProject.ext.SLF4J_VERSION
+    implementation "org.slf4j:slf4j-api:$SLF4J_VERSION"
+    implementation "org.slf4j:slf4j-android:$SLF4J_VERSION"
 
+    def room_version = rootProject.ext.ROOM_VERSION
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 

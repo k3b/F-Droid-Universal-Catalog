@@ -20,11 +20,19 @@ package de.k3b.fdroid.domain;
 
 import de.k3b.fdroid.domain.common.RepoCommon;
 import de.k3b.fdroid.domain.interfaces.ItemWithId;
+import de.k3b.fdroid.util.StringUtil;
 
 /**
  * Android independant: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
- * Database Entity compatible with Android-Room and non-android-j2se-jpa
+ * Database Entity compatible with Android-Room and non-android-j2se-jpa.
+ * <p>
+ * Some repo-s
+ * <p>
+ * https://guardianproject.info/fdroid/repo/index-v1.jar
+ * https://apt.izzysoft.de/fdroid/repo/index-v1.jar
+ * https://f-droid.org/repo/index-v1.jar
+ * https://f-droid.org/archive/index-v1.jar
  */
 @androidx.room.Entity(indices = {@androidx.room.Index("id")})
 @javax.persistence.Entity
@@ -35,9 +43,30 @@ public class Repo extends RepoCommon implements ItemWithId {
     @androidx.room.PrimaryKey(autoGenerate = true)
     private int id;
 
+    private String mirrors = null;
+    /**
+     * calculated and cached from {@link #mirrors}. Not persisted in Database
+     */
+    @androidx.room.Ignore
+    @javax.persistence.Transient
+    private String[] mirrorsArray;
+
+    private String jarSigningCertificate;
+
+    private String jarSigningCertificateFingerprint;
+
+    private String lastUsedDownloadMirror;
+
+    private long lastUsedDownloadDateTimeUtc;
+
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         super.toStringBuilder(sb);
+        toStringBuilder(sb, "mirrors", this.mirrors);
+        toDateStringBuilder(sb, "lastUsedDownloadDateTimeUtc", this.lastUsedDownloadDateTimeUtc);
+        toStringBuilder(sb, "lastUsedDownloadMirror", this.lastUsedDownloadMirror);
+        toStringBuilder(sb, "jarSigningCertificate", this.jarSigningCertificate, 14);
+        toStringBuilder(sb, "jarSigningCertificateFingerprint", this.jarSigningCertificateFingerprint, 14);
     }
 
     public int getId() {
@@ -46,5 +75,72 @@ public class Repo extends RepoCommon implements ItemWithId {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getMirrors() {
+        return mirrors;
+    }
+
+    public void setMirrors(String mirrors) {
+        this.mirrors = mirrors;
+    }
+
+    public String[] getMirrorsArray() {
+        if (mirrorsArray == null) {
+            mirrorsArray = StringUtil.toStringArray(getAddress() + "," + mirrors);
+        }
+        return mirrorsArray;
+    }
+
+    /**
+     * values of current "index-v1.jar"
+     */
+    public String getJarSigningCertificate() {
+        return jarSigningCertificate;
+    }
+
+    public void setJarSigningCertificate(String jarSigningCertificate) {
+        this.jarSigningCertificate = jarSigningCertificate;
+    }
+
+    /**
+     * values of current "index-v1.jar"
+     */
+    public String getJarSigningCertificateFingerprint() {
+        return jarSigningCertificateFingerprint;
+    }
+
+    public void setJarSigningCertificateFingerprint(String jarSigningCertificateFingerprint) {
+        this.jarSigningCertificateFingerprint = jarSigningCertificateFingerprint;
+    }
+
+    public String getLastUsedDownloadMirror() {
+        if (lastUsedDownloadMirror != null) {
+            return lastUsedDownloadMirror;
+        }
+        return getAddress();
+    }
+
+    public void setLastUsedDownloadMirror(String lastUsedDownloadMirror) {
+        this.lastUsedDownloadMirror = lastUsedDownloadMirror;
+    }
+
+    public String getV1Url() {
+        String server = getLastUsedDownloadMirror();
+        StringBuilder url = new StringBuilder().append(server);
+        if (!server.endsWith("/")) url.append("/");
+        url.append(V1_JAR_NAME);
+        return url.toString();
+    }
+
+    public long getLastUsedDownloadDateTimeUtc() {
+        if (lastUsedDownloadDateTimeUtc != 0) {
+            return lastUsedDownloadDateTimeUtc;
+        }
+        return getTimestamp();
+    }
+
+    public void setLastUsedDownloadDateTimeUtc(long lastUsedDownloadDateTimeUtc) {
+        this.lastUsedDownloadDateTimeUtc = lastUsedDownloadDateTimeUtc;
     }
 }

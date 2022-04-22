@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4a0c41fd888434baadba9ad4207fbd16",
+    "identityHash": "a5a06769043c390febc7e20a75f44bd1",
     "entities": [
       {
         "tableName": "App",
@@ -395,11 +395,41 @@
       },
       {
         "tableName": "Repo",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `timestamp` INTEGER NOT NULL, `version` INTEGER NOT NULL, `maxage` INTEGER NOT NULL, `icon` TEXT, `address` TEXT, `description` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `mirrors` TEXT, `jarSigningCertificate` TEXT, `jarSigningCertificateFingerprint` TEXT, `lastUsedDownloadMirror` TEXT, `lastUsedDownloadDateTimeUtc` INTEGER NOT NULL, `name` TEXT, `timestamp` INTEGER NOT NULL, `version` INTEGER NOT NULL, `maxage` INTEGER NOT NULL, `icon` TEXT, `address` TEXT, `description` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mirrors",
+            "columnName": "mirrors",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "jarSigningCertificate",
+            "columnName": "jarSigningCertificate",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "jarSigningCertificateFingerprint",
+            "columnName": "jarSigningCertificateFingerprint",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lastUsedDownloadMirror",
+            "columnName": "lastUsedDownloadMirror",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lastUsedDownloadDateTimeUtc",
+            "columnName": "lastUsedDownloadDateTimeUtc",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -746,7 +776,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4a0c41fd888434baadba9ad4207fbd16')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a5a06769043c390febc7e20a75f44bd1')"
     ]
   }
 }

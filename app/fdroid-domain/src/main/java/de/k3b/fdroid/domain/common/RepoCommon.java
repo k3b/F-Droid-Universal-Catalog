@@ -26,6 +26,9 @@ package de.k3b.fdroid.domain.common;
  * as these are Gson/Android-Room-Database specific.
  */
 public class RepoCommon extends PojoCommon {
+    public static final String V1_JAR_NAME = "index-v1.jar";
+    public static final String V1_JSON_NAME = "index-v1.json";
+
     private String name;
     private long timestamp;
     private int version;
@@ -107,6 +110,6 @@ public class RepoCommon extends PojoCommon {
         toStringBuilder(sb, "maxage", this.maxage);
         toStringBuilder(sb, "icon", this.icon);
         toStringBuilder(sb, "address", this.address);
-        toStringBuilder(sb, "description", this.description);
+        toStringBuilder(sb, "description", this.description, 40);
     }
 }

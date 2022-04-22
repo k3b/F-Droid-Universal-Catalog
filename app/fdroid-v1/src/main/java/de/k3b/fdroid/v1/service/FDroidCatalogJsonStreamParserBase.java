@@ -27,9 +27,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.zip.ZipEntry;
 
+import de.k3b.fdroid.domain.common.RepoCommon;
+import de.k3b.fdroid.util.NoCloseInputStream;
 import de.k3b.fdroid.v1.domain.App;
 import de.k3b.fdroid.v1.domain.Repo;
 import de.k3b.fdroid.v1.domain.Version;
@@ -41,9 +44,6 @@ import de.k3b.fdroid.v1.domain.Version;
  * {@link #onRepo(Repo)}, {@link #onApp(App)}, {@link #onVersion(String, Version)}
  */
 public abstract class FDroidCatalogJsonStreamParserBase {
-
-    public static final String SIGNED_FILE_NAME = "index-v1.jar";
-    public static final String DATA_FILE_NAME = "index-v1.json";
 
     /**
      * parse the FDroid-Catalog-v1-Json into a stream of calls to consuming
@@ -71,14 +71,20 @@ public abstract class FDroidCatalogJsonStreamParserBase {
         try (JarInputStream zipInputStream = new JarInputStream(jarInputStream)) {
             ZipEntry entry;
             while (null != (entry = zipInputStream.getNextEntry())) {
-                if (DATA_FILE_NAME.equalsIgnoreCase(entry.getName())) {
-                    readJsonStream(zipInputStream);
-
-                    // stream was closed by caller
-                    return ;
+                if (RepoCommon.V1_JSON_NAME.equalsIgnoreCase(entry.getName())) {
+                    readJsonStream(new NoCloseInputStream(zipInputStream));
+                    afterJsonJarRead((JarEntry) entry);
                 }
             }
         }
+    }
+
+    /**
+     * called after json reading of jar was completed. can be used to verify signature.
+     *
+     * @param zipInputStream
+     */
+    protected void afterJsonJarRead(JarEntry zipInputStream) {
     }
 
     private void readNameValue(Gson gson, JsonReader reader) throws IOException {

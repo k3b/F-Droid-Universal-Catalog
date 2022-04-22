@@ -102,8 +102,11 @@ public class PojoCommon {
     protected void toStringBuilder(StringBuilder sb, String name, Object value, int maxLen) {
         if (value != null) {
             String strValue = value.toString();
-            if (maxLen > 8 && strValue.length() > maxLen) {
-                strValue = strValue.substring(0, maxLen / 2) + "..." + strValue.substring((maxLen / 2) + 3);
+            int length = strValue.length();
+            if (maxLen > 8 && length > maxLen) {
+                int middle = maxLen / 2;
+                strValue = strValue.replace("\n", " ").replace("\t", " ");
+                strValue = strValue.substring(0, middle) + "..." + strValue.substring(length - middle + 3, length);
             }
             toStringBuilder(sb, name, strValue);
         }
