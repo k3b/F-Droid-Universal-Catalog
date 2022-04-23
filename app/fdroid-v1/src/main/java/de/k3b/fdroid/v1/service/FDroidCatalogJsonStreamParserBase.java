@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.zip.ZipEntry;
@@ -53,7 +52,7 @@ public abstract class FDroidCatalogJsonStreamParserBase {
      */
     public void readJsonStream(InputStream jsonInputStream) throws IOException {
         // StandardCharsets.UTF_8=Charset.forName("UTF-8") not supported by api-14
-        Charset utf8 = StandardCharsets.UTF_8; // StandardCharsets.UTF_8;
+        Charset utf8 = Charset.forName("UTF-8"); // StandardCharsets.UTF_8;
         try (JsonReader reader = new JsonReader(new InputStreamReader(jsonInputStream, utf8))) {
 
             Gson gson = new Gson();
