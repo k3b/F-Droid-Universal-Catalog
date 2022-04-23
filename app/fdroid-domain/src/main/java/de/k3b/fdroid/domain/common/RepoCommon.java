@@ -55,6 +55,20 @@ public class RepoCommon extends PojoCommon {
         this.name = name;
     }
 
+    public static String getV1JarFileName(String name) {
+        String fileName = name
+                .replace(' ', '_')
+                .replace('/', '_')
+                .replace('\\', '_')
+                .replace(':', '_')
+                .replace("__", "_");
+        return fileName + "-" + V1_JAR_NAME;
+    }
+
+    public String getV1JarFileName() {
+        return getV1JarFileName(this.getName());
+    }
+
     public long getTimestamp() {
         return timestamp;
     }

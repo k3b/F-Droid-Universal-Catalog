@@ -40,10 +40,35 @@ public class V1JarDemoCli {
         // path = "/home/EVE/StudioProjects/FDroid/app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.full.json";
         // index-v1ex.small.json");
 
-        testParserWithConsoleOutput(path);
+        // testParserWithConsoleOutput(path);
 
         // testV1RepoVerifyJarParser(path);
-        // testDownbload();
+        testDownbload();
+    }
+
+    private static void testDownbload() {
+        HttpV1JarDownloadService parser = new HttpV1JarDownloadService("~/.fdroid/downloads");
+
+        // repo.setLastUsedDownloadDateTimeUtc(DateUtils.parseDate("Thu, 21 Apr 2022 17:36:30 GMT").getTime());
+
+        String[] urls = new String[]{
+                "https://apt.izzysoft.de/fdroid/repo/index-v1.jar",
+                "https://f-droid.org/archive/index-v1.jar",
+                "https://guardianproject.info/fdroid/repo/index-v1.jar",
+                "https://f-droid.org/repo/index-v1.jar",
+                "https://fdroid.cgeo.org/nightly/index-v1.jar",
+        };
+
+        for (String url : urls) {
+            Repo repo = new Repo();
+            try {
+                parser.download(url, repo.getLastUsedDownloadDateTimeUtc(), repo);
+
+            } catch (Exception ex) {
+                System.out.println(repo + ":" + ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
     }
 
     private static void testV1RepoVerifyJarParser(String path) {
@@ -55,23 +80,6 @@ public class V1JarDemoCli {
             InputStream is = new FileInputStream(path);
             parser.readFromJar(is);
             is.close();
-            System.exit(0);
-
-        } catch (Exception ex) {
-            System.out.println(repo + ":" + ex.getMessage());
-            ex.printStackTrace();
-        }
-    }
-
-    private static void testDownbload() {
-        Repo repo = new Repo();
-
-        // repo.setLastUsedDownloadDateTimeUtc(DateUtils.parseDate("Thu, 21 Apr 2022 17:36:30 GMT").getTime());
-
-        String url = "https://apt.izzysoft.de/fdroid/repo/index-v1.jar";
-        try {
-            HttpV1JarDownloadService parser = new HttpV1JarDownloadService(null, "~/.fdroid/downloads");
-            parser.setRepoInDatabase(repo).download(url, repo.getLastUsedDownloadDateTimeUtc());
             System.exit(0);
 
         } catch (Exception ex) {

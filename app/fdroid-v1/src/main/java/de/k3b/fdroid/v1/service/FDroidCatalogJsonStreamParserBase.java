@@ -32,7 +32,6 @@ import java.util.jar.JarInputStream;
 import java.util.zip.ZipEntry;
 
 import de.k3b.fdroid.domain.common.RepoCommon;
-import de.k3b.fdroid.util.NoCloseInputStream;
 import de.k3b.fdroid.v1.domain.App;
 import de.k3b.fdroid.v1.domain.Repo;
 import de.k3b.fdroid.v1.domain.Version;
@@ -72,8 +71,9 @@ public abstract class FDroidCatalogJsonStreamParserBase {
             ZipEntry entry;
             while (null != (entry = zipInputStream.getNextEntry())) {
                 if (RepoCommon.V1_JSON_NAME.equalsIgnoreCase(entry.getName())) {
-                    readJsonStream(new NoCloseInputStream(zipInputStream));
+                    readJsonStream(zipInputStream);
                     afterJsonJarRead((JarEntry) entry);
+                    return;
                 }
             }
         }

@@ -29,7 +29,6 @@ import org.apache.http.client.utils.DateUtils;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedInputStream;
@@ -42,19 +41,18 @@ import java.util.Date;
 
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.common.RepoCommon;
-import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.util.CopyInputStream;
 
 /* download v1-jar while simultaniously checking/updating signature */
 @Service
 public class HttpV1JarDownloadService {
-    @Nullable
-    private final RepoRepository repoRepository;
+    @NonNull
     private final String downloadPath;
+    @NonNull
     private Repo repoInDatabase;
 
-    public HttpV1JarDownloadService(@Nullable RepoRepository repoRepository, @Value("de.k3b.fdroid.downloads:~/.fdroid/downloads") String downloadPath) {
-        this.repoRepository = repoRepository;
+    public HttpV1JarDownloadService(@Value("de.k3b.fdroid.downloads:~/.fdroid/downloads") @NonNull String downloadPath) {
+        if (downloadPath == null) throw new NullPointerException();
 
         this.downloadPath = downloadPath.replace("~", System.getProperty("user.home"));
     }
@@ -65,7 +63,7 @@ public class HttpV1JarDownloadService {
         return value;
     }
 
-    public static String getName(Repo repo) {
+    private static String getName(Repo repo) {
         String name = (repo != null) ? repo.getName() : null;
         if (name == null) {
             name = "download";
@@ -73,12 +71,14 @@ public class HttpV1JarDownloadService {
         return name;
     }
 
-    public void download(Repo repo) throws IOException {
-        setRepoInDatabase(repo);
-        download(repo.getV1Url(), repo.getLastUsedDownloadDateTimeUtc());
+    public File download(@NonNull Repo repo) throws IOException {
+        return download(repo.getV1Url(), repo.getLastUsedDownloadDateTimeUtc(), repo);
     }
 
-    public void download(String downloadUrl, long lastModified) throws IOException {
+    public File download(String downloadUrl, long lastModified, @NonNull Repo repo) throws IOException {
+        if (repo == null) throw new NullPointerException();
+
+        this.repoInDatabase = repo;
         String name = getName(repoInDatabase);
         HttpClient client = HttpClients.custom().build();
         RequestBuilder request = RequestBuilder.get().setUri(downloadUrl);
@@ -105,19 +105,15 @@ public class HttpV1JarDownloadService {
             if (jarfileFinal.exists()) jarfileFinal.delete();
             log("Renaming to " + jarfileFinal.getAbsolutePath());
             jarfileDownload.renameTo(jarfileFinal);
+            return jarfileFinal;
         }
+        return null;
     }
 
-    protected void log(String message) {
-        System.out.println(message);
-    }
-
-    public void download(InputStream inputStream, OutputStream downloadFileOut) throws IOException {
+    private void download(InputStream inputStream, OutputStream downloadFileOut) throws IOException {
         V1RepoVerifyJarParser repoParser = new V1RepoVerifyJarParser(repoInDatabase);
         try (InputStream in = open(inputStream, downloadFileOut)) {
             repoParser.readFromJar(in);
-
-            // JarInputStream jarInputStream = new JarInputStream(in, true);
         }
     }
 
@@ -126,23 +122,21 @@ public class HttpV1JarDownloadService {
         if (!downloadDir.exists()) {
             downloadDir.mkdirs();
         }
-        File jarfile = new File(downloadDir, name.replace(' ', '_') + "-" + RepoCommon.V1_JAR_NAME);
+
+        File jarfile = new File(downloadDir, RepoCommon.getV1JarFileName(name));
         return jarfile;
     }
 
     private InputStream open(InputStream inputStream, OutputStream downloadFileOut) throws IOException {
-        InputStream in = new BufferedInputStream(inputStream);
         if (downloadFileOut != null) {
-            in = new CopyInputStream(in, downloadFileOut);
+            inputStream = new CopyInputStream(inputStream, downloadFileOut);
         }
+        InputStream in = new BufferedInputStream(inputStream);
         return in;
     }
 
-    private void t() {
+    protected void log(String message) {
+        System.out.println(message);
     }
 
-    public HttpV1JarDownloadService setRepoInDatabase(@NonNull Repo repoInDatabase) {
-        this.repoInDatabase = repoInDatabase;
-        return this;
-    }
 }

@@ -19,7 +19,6 @@
 
 package de.k3b.fdroid.util;
 
-import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -30,57 +29,35 @@ import java.io.OutputStream;
  * <p>
  * Example: Simultanious parsing a zip from https and saving it as a file.
  */
-public class CopyInputStream extends FilterInputStream {
+public class CopyInputStream extends InputStream {
     // MAX_SKIP_BUFFER_SIZE is used to determine the maximum buffer size to
     // use when skipping.
     private static final int MAX_SKIP_BUFFER_SIZE = 2048;
 
+    private final InputStream in;
     private final OutputStream out;
 
     public CopyInputStream(InputStream in, OutputStream out) {
-        super(in);
+        if (in == null || out == null) throw new NullPointerException();
+        this.in = in;
         this.out = out;
     }
 
+    /* In original InputStream every byte goes through read() */
     public int read() throws IOException {
-        int c = super.read();
+        int c = in.read();
         if (c != -1) out.write(c);
         return c;
     }
 
-    public int read(byte[] b, int offset, int len) throws IOException {
-        int result = super.read(b, offset, len);
-        if (result != -1) out.write(b, offset, len);
-        return result;
-    }
-
-    /**
-     * inspired by {@link InputStream#skip(long)}
-     */
-    public long skip(long n) throws IOException {
-        long remaining = n;
-        int nr;
-
-        if (n <= 0) {
-            return 0;
-        }
-
-        int size = (int) Math.min(MAX_SKIP_BUFFER_SIZE, remaining);
-        byte[] skipBuffer = new byte[size];
-        while (remaining > 0) {
-            nr = read(skipBuffer, 0, (int) Math.min(size, remaining));
-            if (nr < 0) {
-                break;
-            }
-            out.write(skipBuffer, 0, nr);
-            remaining -= nr;
-        }
-
-        return n - remaining;
-    }
-
     public void close() throws IOException {
+        // if this.in is closed without reading to the end:
+        // read (and copy) until the end.
+        do {
+        } while (skip(MAX_SKIP_BUFFER_SIZE) == MAX_SKIP_BUFFER_SIZE);
+
+        out.flush();
         out.close();
-        super.close();
+        in.close();
     }
 }

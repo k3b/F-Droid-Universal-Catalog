@@ -19,6 +19,8 @@
 
 package de.k3b.fdroid.v1.service;
 
+import org.springframework.lang.NonNull;
+
 import java.security.cert.X509Certificate;
 import java.util.jar.JarEntry;
 
@@ -33,10 +35,13 @@ import de.k3b.fdroid.v1.service.util.JarUtilities;
  * throws {@link V1JarException} if something goes wrong.
  */
 public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase {
+    @NonNull
     private final Repo repoInDatabase;
     private de.k3b.fdroid.v1.domain.Repo repoInJar = null;
 
-    public V1RepoVerifyJarParser(Repo repoInDatabase) {
+    public V1RepoVerifyJarParser(@NonNull Repo repoInDatabase) {
+        if (repoInDatabase == null) throw new NullPointerException();
+
         this.repoInDatabase = repoInDatabase;
     }
 
@@ -51,7 +56,7 @@ public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase {
         if (this.repoInJar == null) {
             throw new V1JarException(repoInDatabase, "Missing Repo-Json-Entry in downloaded " + RepoCommon.V1_JAR_NAME);
         }
-        if (repoInDatabase != null && repoInDatabase.getTimestamp() != 0 && repoInJar.getTimestamp() < repoInDatabase.getTimestamp()) {
+        if (repoInDatabase.getTimestamp() != 0 && repoInJar.getTimestamp() < repoInDatabase.getTimestamp()) {
             throw new V1JarException("Downloaded " + RepoCommon.V1_JAR_NAME +
                     " is older than current database index! "
                     + Repo.asDateString(repoInJar.getTimestamp()) + " < " + Repo.asDateString(repoInDatabase.getTimestamp()));
