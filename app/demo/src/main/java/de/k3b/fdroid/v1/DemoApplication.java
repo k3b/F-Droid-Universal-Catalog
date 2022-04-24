@@ -20,6 +20,8 @@ package de.k3b.fdroid.v1;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,13 +30,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Properties;
 
 import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.jpa.repository.testcase.TestEntity;
 import de.k3b.fdroid.jpa.repository.testcase.TestRepositoryJpa;
+import de.k3b.fdroid.v1.service.V1CommandService;
 import de.k3b.fdroid.v1.service.V1UpdateServiceEx;
 
 /**
@@ -48,27 +58,88 @@ import de.k3b.fdroid.v1.service.V1UpdateServiceEx;
 public class DemoApplication {
 	private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);
 
+	@Value("${de.k3b.fdroid.db.dir}")
+	private String dbDir;
+
+	@Value("${de.k3b.fdroid.downloads:~/.fdroid/downloads}")
+	private String downloadPath;
+
+	@Value("${spring.datasource.url}")
+	private String jdbc;
+
+	private @Autowired RepoRepository repoRepository;
+	private @Autowired V1UpdateServiceEx importer;
+
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		if (args == null || args.length == 0) {
+			System.out.println(V1CommandService.getHelp());
+			System.exit(0);
+		}
+
+		changeJdbcIfServerRunning();
+
+		SpringApplication application = new SpringApplication(DemoApplication.class);
+		// ... customize application settings here
+		application.run(args);
+	}
+
+	private static void changeJdbcIfServerRunning() {
+		String serverConnect = "";
+		Connection c;
+		try {
+			String dbName = getProperty("de.k3b.fdroid.db.name");
+			serverConnect = "jdbc:hsqldb:hsql://localhost/" + dbName;
+			c = DriverManager.getConnection(serverConnect);
+			System.out.println(c.toString());
+			c.close();
+			System.out.println("Connecting to running server " + serverConnect);
+			System.setProperty("spring.datasource.url",serverConnect);
+		} catch (SQLException throwables) {
+			System.out.println("No running server " + serverConnect + " found. Using local file instead");
+		}
+	}
+
+	private static String getProperty(String key)  {
+		String dbName;
+		dbName = System.getProperty(key);
+
+		if (dbName == null) dbName = System.getenv(key);
+		if (dbName == null) {
+			Properties p = new Properties();
+			try {
+				p.load(DemoApplication.class.getResourceAsStream("/application.properties"));
+				dbName = p.getProperty(key);
+			} catch (IOException ioException) {
+				// ignore if not found
+			}
+		}
+		return dbName;
 	}
 
 	@Bean
-	public CommandLineRunner demo(V1UpdateServiceEx importer, TestRepositoryJpa repository, AppRepository appRepo) {
-		return (args) -> {
-//			demoTestEntity(repository);
-//			demoAppEntity(appRepo);
+	public CommandLineRunner demo() {
+		new File(dbDir).mkdirs();
+		new File(downloadPath).mkdirs();
 
-			String inputPath;
-			inputPath = "/home/EVE/StudioProjects/FDroid/app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.jar";
-//			inputPath = "/home/EVE/StudioProjects/FDroid/app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.small.json";
-			InputStream is = new FileInputStream(inputPath);
-			if (inputPath.toLowerCase().endsWith(".jar")) {
-				importer.readFromJar(is);
-			} else {
-				importer.readJsonStream(is);
-			}
-			is.close();
+		// jdbc
+		System.out.println("Using jdbc " + jdbc);
+		return (args) -> {
+			V1CommandService commandService = new V1CommandService(repoRepository, importer, downloadPath);
+			commandService.exec(args);
 		};
+	}
+
+	private void demoImport(V1UpdateServiceEx importer) throws IOException {
+		String inputPath;
+		inputPath = "/home/EVE/StudioProjects/FDroid/app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.jar";
+//			inputPath = "/home/EVE/StudioProjects/FDroid/app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.small.json";
+		InputStream is = new FileInputStream(inputPath);
+		if (inputPath.toLowerCase().endsWith(".jar")) {
+			importer.readFromJar(is);
+		} else {
+			importer.readJsonStream(is);
+		}
+		is.close();
 	}
 
 	private void demoAppEntity(AppRepository appRepo) {

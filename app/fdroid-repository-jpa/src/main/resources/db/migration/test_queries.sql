@@ -105,6 +105,15 @@ inner join APP a on av.APP_ID = a.id
 where av.APP_ID in (12769,46084,468,31082,53984)
 order by a.PACKAGE_NAME, av.VERSION_CODE desc;
 
+----
+
+-- jdbc:hsqldb:file:/home/EVE/.fdroid/db/fdroid
+-- jdbc:hsqldb:hsql://localhost/fdroid
+
+-- java -classpath ~/Downloads/hsqldb/lib/hsqldb.jar org.hsqldb.server.Server --database.0 file:evers-db-create --dbname.0 evers-db-create
+-- java -classpath ~/Downloads/hsqldb/lib/hsqldb.jar org.hsqldb.server.Server --database.0 file:fdroid --dbname.0 fdroid
+
+
 -----------------------------------
 
 -- hide all localized that are not de en es nl fr
@@ -115,6 +124,6 @@ update Locale set languagePriority = 6 where code = 'nl';
 update Locale set languagePriority = 5 where code = 'fr';
 update Locale set languagePriority = -1 where languagePriority = 0;
 
-INSERT INTO HardwareProfile(id,name,sdkVersion,nativecode) VALUES(3,'android-10', 29, 'armeabi-v7a,armeabi');
-INSERT INTO HardwareProfile(id,name,sdkVersion,nativecode) VALUES(2,'android-7.0', 24, 'arme64-v8a,armeabi-v7a,armeabi');
-INSERT INTO HardwareProfile(id,name,sdkVersion,nativecode) VALUES(1, 'android-4.2', 17, 'armeabi-v7a');
+insert into HardwareProfile(id,name,sdkVersion,nativecode) values(3,'android-10', 29, 'armeabi-v7a,armeabi');
+insert into HardwareProfile(id,name,sdkVersion,nativecode) values(2,'android-7.0', 24, 'arme64-v8a,armeabi-v7a,armeabi');
+insert into HardwareProfile(id,name,sdkVersion,nativecode) values(1, 'android-4.2', 17, 'armeabi-v7a');

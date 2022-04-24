@@ -31,6 +31,6 @@ public class PojoCommonTest {
         PojoCommon sut = new PojoCommon();
 
         sut.toStringBuilder(sb, "var", "1234567890abcdefg", 10);
-        assertEquals("12345...fg", sb.toString());
+        assertEquals("var=12345...fg,", sb.toString());
     }
 }

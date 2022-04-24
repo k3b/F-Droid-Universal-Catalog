@@ -128,8 +128,10 @@ public class Repo extends RepoCommon implements ItemWithId {
     public String getV1Url() {
         String server = getLastUsedDownloadMirror();
         StringBuilder url = new StringBuilder().append(server);
-        if (!server.endsWith("/")) url.append("/");
-        url.append(V1_JAR_NAME);
+        if (!server.endsWith(".jar")) {
+            if (!server.endsWith("/")) url.append("/");
+            url.append(V1_JAR_NAME);
+        }
         return url.toString();
     }
 

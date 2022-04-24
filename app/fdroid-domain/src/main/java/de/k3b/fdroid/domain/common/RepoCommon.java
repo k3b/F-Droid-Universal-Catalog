@@ -44,7 +44,12 @@ public class RepoCommon extends PojoCommon {
         dest.setMaxage(src.getMaxage());
         dest.setIcon(src.getIcon());
         dest.setAddress(src.getAddress());
-        dest.setDescription(src.getDescription());
+        String description = src.getDescription();
+        if (description != null && description.length() > 255) {
+            dest.setDescription(description.substring(0,255));
+        } else {
+            dest.setDescription(description);
+        }
     }
 
     public String getName() {
