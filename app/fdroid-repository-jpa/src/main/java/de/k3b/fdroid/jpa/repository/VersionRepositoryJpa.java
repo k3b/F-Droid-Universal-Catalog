@@ -20,7 +20,6 @@ package de.k3b.fdroid.jpa.repository;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -36,13 +35,6 @@ import de.k3b.fdroid.domain.Version;
 @Repository
 public interface VersionRepositoryJpa extends CrudRepository<Version, Integer> {
     List<Version> findByAppId(int appId);
-
-    @Query("SELECT v FROM AppVersion v inner join App as a on v.appId = a.id " +
-            "WHERE a.repoId = :repoId AND a.packageName = :packageName AND v.versionCode = :versionCode")
-    Version findByRepoPackageAndVersionCode(
-            @Param("repoId") int repoId,
-            @Param("packageName") String packageName,
-            @Param("versionCode") int versionCode);
 
     @Query(value = "select al from AppVersion al " +
             "where al.appId in (?1) " +

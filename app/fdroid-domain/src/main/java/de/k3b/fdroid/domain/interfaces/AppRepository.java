@@ -32,9 +32,7 @@ public interface AppRepository extends AppRepositoryFindIdsByExpression {
 
     void delete(App app);
 
-    App findByRepoIdAndPackageName(int repoId, String packageName);
-
-    int findIdByRepoIdAndPackageName(int repoId, String packageName);
+    App findByPackageName(String packageName);
 
     List<App> findAll();
 

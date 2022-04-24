@@ -51,7 +51,7 @@ public class LocalizedUpdateService {
     public List<Localized> update(int appId, de.k3b.fdroid.domain.App roomApp, Map<String, de.k3b.fdroid.v1.domain.Localized> v1LocalizedMap) {
         List<Localized> roomLocalizedList = localizedRepository.findByAppId(appId);
         deleteHidden(roomLocalizedList);
-        deleteRemoved(roomLocalizedList, v1LocalizedMap);
+        // deleteRemoved(roomLocalizedList, v1LocalizedMap);
 
         StringBuilder name = new StringBuilder();
         StringBuilder summary = new StringBuilder();

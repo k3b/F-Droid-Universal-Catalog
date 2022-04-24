@@ -33,6 +33,4 @@ public interface VersionRepository extends AppDetailRepository<Version> {
     void delete(Version version);
 
     List<Version> findByAppId(int appId);
-
-    Version findByRepoPackageAndVersionCode(int repoId, String packageName, int versionCode);
 }

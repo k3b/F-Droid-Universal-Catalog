@@ -1,6 +1,6 @@
 CREATE TABLE HardwareProfile (
   id INT NOT NULL,
-  name VARCHAR(255),
+  name VARCHAR(255) NOT NULL,
   sdkVersion INT,
   nativecode VARCHAR(255),
   deleteIfNotCompatible BOOLEAN default false,
@@ -10,8 +10,8 @@ CREATE TABLE HardwareProfile (
 
 CREATE TABLE AppHardware (
   id INT NOT NULL,
-  appId INT,
-  hardwareProfileId INT,
+  appId INT NOT NULL,
+  hardwareProfileId INT NOT NULL,
 
   -- ProfileCommon max (with no prefix)
   added BIGINT,

@@ -28,10 +28,8 @@ import de.k3b.fdroid.domain.interfaces.AppDetail;
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  * Database Entity compatible with Android-Room and non-android-j2se-jpa
  */
-@androidx.room.Entity(foreignKeys = @androidx.room.ForeignKey(entity = Repo.class,
-        parentColumns = "id", childColumns = "repoId",
-        onDelete = androidx.room.ForeignKey.CASCADE),
-        indices = {@androidx.room.Index("id"), @androidx.room.Index({"repoId", "packageName"})}
+@androidx.room.Entity(
+        indices = {@androidx.room.Index("id"), @androidx.room.Index({"packageName"})}
 )
 @javax.persistence.Entity
 @javax.persistence.Table(name = "App")
@@ -41,9 +39,6 @@ public class App extends AppCommon implements AppDetail {
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @androidx.room.PrimaryKey(autoGenerate = true)
     private int id;
-
-    private int repoId = -1;
-    // public Repo repo;
 
     // public List<Localized> localisations;
     // public List<Version> versions;
@@ -74,19 +69,12 @@ public class App extends AppCommon implements AppDetail {
     }
 
     @androidx.room.Ignore
-    public App(int repoId) {
-        setRepoId(repoId);
-    }
-
-    @androidx.room.Ignore
-    public App(int repoId, String packageName) {
-        this(repoId);
+    public App(String packageName) {
         setPackageName(packageName);
     }
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
-        toStringBuilder(sb, "repoId", this.repoId);
         super.toStringBuilder(sb);
         toStringBuilder(sb, "searchVersion", this.searchVersion);
         toStringBuilder(sb, "searchSdk", this.searchSdk);
@@ -111,14 +99,6 @@ public class App extends AppCommon implements AppDetail {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getRepoId() {
-        return repoId;
-    }
-
-    public void setRepoId(int repoId) {
-        this.repoId = repoId;
     }
 
     public String getSearchName() {

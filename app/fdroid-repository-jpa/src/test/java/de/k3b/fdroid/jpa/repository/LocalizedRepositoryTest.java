@@ -49,7 +49,7 @@ public class LocalizedRepositoryTest {
     public void init() {
         appId = jpaTestHelper.createApp().getId();
 
-        Locale locale = jpaTestHelper.createLocale("@+");
+        Locale locale = jpaTestHelper.createLocale( "@+");
         locale.setLanguagePriority(5);
         localeId = jpaTestHelper.save(locale).getId();
 
@@ -87,7 +87,6 @@ public class LocalizedRepositoryTest {
     @Test
     public void findNonHiddenByAppIds() {
         int a2 = jpaTestHelper.createApp().getId();
-
 
         Locale l2 = jpaTestHelper.createLocale("@-");
         l2.setLanguagePriority(LanguageService.LANGUAGE_PRIORITY_HIDDEN);

@@ -50,13 +50,8 @@ public class AppRepositoryAdapter implements AppRepository {
     }
 
     @Override
-    public App findByRepoIdAndPackageName(int repoId, String packageName) {
-        return appDao.findByRepoIdAndPackageName(repoId, packageName);
-    }
-
-    @Override
-    public int findIdByRepoIdAndPackageName(int repoId, String packageName) {
-        return appDao.findIdByRepoIdAndPackageName(repoId, packageName);
+    public App findByPackageName(String packageName) {
+        return appDao.findByPackageName(packageName);
     }
 
     @Override

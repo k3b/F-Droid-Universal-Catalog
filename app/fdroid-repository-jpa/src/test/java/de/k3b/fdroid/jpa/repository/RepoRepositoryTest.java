@@ -29,8 +29,7 @@ import de.k3b.fdroid.domain.interfaces.RepoRepository;
 
 @DataJpaTest
 public class RepoRepositoryTest {
-    private static final String MY_ADDRESS = "my.package.name";
-    private static final String MY_ICON = "myIcon.ico";
+    private static String myAddress = "my.package.name";
 
     @Autowired
     JpaTestHelper jpaTestHelper;
@@ -40,10 +39,8 @@ public class RepoRepositoryTest {
 
     @BeforeEach
     public void init() {
-        Repo r = new Repo();
-        r.setIcon(MY_ICON);
-        r.setAddress(MY_ADDRESS);
-        repo.insert(r);
+        Repo r = jpaTestHelper.createRepo();
+        myAddress = r.getAddress();
     }
 
     @Test
@@ -54,7 +51,7 @@ public class RepoRepositoryTest {
 
     @Test
     public void findByAddress() {
-        Repo r = repo.findByAddress(MY_ADDRESS);
+        Repo r = repo.findByAddress(myAddress);
         Assert.notNull(r, "found");
     }
 }

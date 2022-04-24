@@ -44,9 +44,7 @@ public class AppRepositoryTest {
 
     @BeforeEach
     public void init() {
-        repoId = jpaTestHelper.createRepo().getId();
-        App app = new App(repoId);
-        app.setPackageName(MY_PACKAGE_NAME);
+        App app = new App(MY_PACKAGE_NAME);
         app.setIcon(MY_ICON);
         repo.insert(app);
         appId = app.getId();
@@ -60,7 +58,7 @@ public class AppRepositoryTest {
 
     @Test
     public void findByRepoIdAndPackageName() {
-        App app = repo.findByRepoIdAndPackageName(repoId, MY_PACKAGE_NAME);
+        App app = repo.findByPackageName(MY_PACKAGE_NAME);
         Assert.notNull(app, "found");
     }
 

@@ -32,6 +32,6 @@ import de.k3b.fdroid.domain.interfaces.AppRepositoryFindIdsByExpression;
  */
 @Repository
 public interface AppRepositoryJpa extends CrudRepository<App, Integer>, AppRepositoryFindIdsByExpression {
-    App findByRepoIdAndPackageName(int repoId, String packageName);
+    App findByPackageName(String packageName);
 }
 

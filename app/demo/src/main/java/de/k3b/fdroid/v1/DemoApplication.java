@@ -151,7 +151,6 @@ public class DemoApplication {
 		for (de.k3b.fdroid.domain.App app : all) appRepo.delete(app);
 
 		de.k3b.fdroid.domain.App app = new de.k3b.fdroid.domain.App();
-		app.setRepoId(1);
 		app.setPackageName("my.package.name");
 		app.setIcon("myIcon.ico");
 		appRepo.insert(app);
@@ -163,12 +162,8 @@ public class DemoApplication {
 		log.info("");
 
 
-		de.k3b.fdroid.domain.App app3 = appRepo.findByRepoIdAndPackageName(1, "my.package.name");
+		de.k3b.fdroid.domain.App app3 = appRepo.findByPackageName("my.package.name");
 		log.info("search result " + app3.toString());
-
-		// not working
-		int id = appRepo.findIdByRepoIdAndPackageName(1, "my.package.name");
-		log.info("search result " + id);
 
 		all = appRepo.findAll();
 		for (de.k3b.fdroid.domain.App a : all) appRepo.delete(a);

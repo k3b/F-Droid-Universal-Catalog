@@ -39,15 +39,8 @@ public class AppRepositoryAdapter extends RepositoryAdapterBase<App, AppReposito
     }
 
     @Override
-    public App findByRepoIdAndPackageName(int repoId, String packageName) {
-        return jpa.findByRepoIdAndPackageName(repoId, packageName);
-    }
-
-    @Override
-    public int findIdByRepoIdAndPackageName(int repoId, String packageName) {
-        App app = findByRepoIdAndPackageName(repoId, packageName);
-        if (app != null) return app.getId();
-        return -1;
+    public App findByPackageName(String packageName) {
+        return jpa.findByPackageName(packageName);
     }
 
     @Override

@@ -50,10 +50,9 @@ public class AppUpdateService {
     }
 
     public de.k3b.fdroid.domain.App update(int repoId, de.k3b.fdroid.v1.domain.App v1App) {
-        de.k3b.fdroid.domain.App roomApp = appRepository.findByRepoIdAndPackageName(repoId, v1App.getPackageName());
+        de.k3b.fdroid.domain.App roomApp = appRepository.findByPackageName(v1App.getPackageName());
         if (roomApp == null) {
             roomApp = new de.k3b.fdroid.domain.App();
-            roomApp.setRepoId(repoId);
             AppCommon.copyCommon(roomApp, v1App);
             roomApp.setSearchCategory(StringUtil.toCsvStringOrNull(v1App.getCategories()));
             appRepository.insert(roomApp);

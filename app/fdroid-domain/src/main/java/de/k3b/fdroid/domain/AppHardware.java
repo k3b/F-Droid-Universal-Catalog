@@ -33,7 +33,10 @@ import de.k3b.fdroid.domain.interfaces.AppDetail;
  * Database Entity compatible with Android-Room and non-android-j2se-jpa
  */
 
-@androidx.room.Entity(
+@androidx.room.Entity(foreignKeys = {@androidx.room.ForeignKey(entity = App.class,
+        parentColumns = "id", childColumns = "appId",onDelete = androidx.room.ForeignKey.CASCADE),
+        @androidx.room.ForeignKey(entity = HardwareProfile.class,
+                parentColumns = "id", childColumns = "hardwareProfileId",onDelete = androidx.room.ForeignKey.CASCADE)},
         indices = {@androidx.room.Index({"appId", "hardwareProfileId"})})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
@@ -57,7 +60,9 @@ public class AppHardware extends PojoCommon implements AppDetail {
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
     @androidx.room.PrimaryKey(autoGenerate = true)
     private int id;
+    @androidx.room.ColumnInfo(index = true)
     private int appId;
+    @androidx.room.ColumnInfo(index = true)
     private int hardwareProfileId;
 
     // needed by android-room and jpa

@@ -72,7 +72,7 @@ public class AppWithDetails extends PojoCommon implements AppDetail {
     @Override
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "app",
-                app.getPackageName() + "(R:" + app.getRepoId() + " + A:" + app.getId() + ")");
+                app.getPackageName() + "(A:" + app.getId() + ")");
         super.toStringBuilder(sb);
         toStringBuilder(sb, "localizedList", this.localizedList.size());
         toStringBuilder(sb, "versionList", this.versionList.size());

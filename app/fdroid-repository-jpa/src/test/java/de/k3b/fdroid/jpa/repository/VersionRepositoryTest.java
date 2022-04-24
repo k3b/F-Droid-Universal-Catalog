@@ -27,8 +27,6 @@ import org.springframework.util.Assert;
 import java.util.Arrays;
 import java.util.List;
 
-import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.Version;
 import de.k3b.fdroid.domain.interfaces.VersionRepository;
 
@@ -43,48 +41,36 @@ public class VersionRepositoryTest {
     private int repoId;
 
     @Autowired
-    private VersionRepository repo;
+    private VersionRepository versionRepository;
 
     @BeforeEach
     public void init() {
-        Repo repo = jpaTestHelper.createRepo();
-        repoId = repo.getId();
-        appId = jpaTestHelper.createApp(repo).getId();
+        repoId = jpaTestHelper.createRepo().getId();
+        appId = jpaTestHelper.createApp().getId();
 
-        App app = new App(repoId, MY_PACKAGE_NAME);
-        jpaTestHelper.save(app);
-        appId = app.getId();
-
-        Version version = new Version();
-        version.setAppId(appId);
+        Version version = new Version(appId,repoId);
         version.setVersionCode(MY_VERSION_CODE);
         version.setApkName(MY_NAME);
         version.setSrcname("my source name");
         version.setNativecode("helloWorldCpu");
-        this.repo.insert(version);
+        this.versionRepository.insert(version);
     }
 
     @Test
     public void injectedComponentsAreNotNull() {
-        Assert.notNull(repo, "repo");
+        Assert.notNull(versionRepository, "repo");
         Assert.notNull(jpaTestHelper, "jpaTestHelper");
     }
 
     @Test
-    public void findByRepoPackageAndVersionCode() {
-        Version version = repo.findByRepoPackageAndVersionCode(repoId, MY_PACKAGE_NAME, MY_VERSION_CODE);
-        Assert.notNull(version, "found");
-    }
-
-    @Test
     public void findByAppId() {
-        List<Version> version = repo.findByAppId(appId);
+        List<Version> version = versionRepository.findByAppId(appId);
         Assert.isTrue(version.size() == 1, "found 1");
     }
 
     @Test
     public void findByAppIds() {
-        List<Version> version = repo.findByAppIds(Arrays.asList(appId));
+        List<Version> version = versionRepository.findByAppIds(Arrays.asList(appId));
         Assert.isTrue(version.size() == 1, "found 1");
     }
 }

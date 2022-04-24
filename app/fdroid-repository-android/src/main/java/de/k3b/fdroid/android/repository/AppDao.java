@@ -42,11 +42,8 @@ public interface AppDao { // extends AppRepository {
     @Delete
     void delete(App app);
 
-    @Query("SELECT * FROM App WHERE App.repoId = :repoId AND App.packageName = :packageName")
-    App findByRepoIdAndPackageName(int repoId, String packageName);
-
-    @Query("SELECT App.id FROM App WHERE App.repoId = :repoId AND App.packageName = :packageName")
-    int findIdByRepoIdAndPackageName(int repoId, String packageName);
+    @Query("SELECT * FROM App WHERE App.packageName = :packageName")
+    App findByPackageName(String packageName);
 
     @Query("SELECT * FROM App")
     List<App> findAll();

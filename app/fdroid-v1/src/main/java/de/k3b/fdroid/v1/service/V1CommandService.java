@@ -57,15 +57,16 @@ public class V1CommandService {
     public static CharSequence getHelp() {
         StringBuilder s = new StringBuilder();
         s.append("\nusage java -jar demo.jar [options]\n\n");
-        s.append("-f {expression} find app");
-        s.append("-r reload database from downloaded jars\n");
-        s.append("-d dir show downloaded jars\n");
+        s.append("-f(ind App) {expression} \n");
+        s.append("-r(eload reload database from downloaded jars)\n");
+        s.append("-d(ir show downloaded jars)\n");
 
         return s;
     }
 
     public void exec(String... args) throws IOException {
         int i = 0;
+        File f;
         while (i < args.length) {
             String arg =  args[i];
             if (arg.startsWith("-f") && i < args.length - 1) {
@@ -75,7 +76,10 @@ public class V1CommandService {
                 execReloadDbFromDownload();
             } else if (arg.startsWith("-d")) {
                 System.out.println(execDir(new StringBuilder()));
+            } else if ((f = new File(new File(downloadPath), arg)).exists()) {
+                execImportLocalFile(f.getAbsolutePath());
             } else {
+
                 System.out.println(getHelp());
                 System.exit(-1);
 
@@ -128,6 +132,8 @@ public class V1CommandService {
         File dir = new File(downloadPath);
         for (File f : dir.listFiles()) {
             String absolutePath = f.getAbsolutePath();
+            System.out.println();
+            System.out.println("reload " + absolutePath);
             if (absolutePath.endsWith(RepoCommon.V1_JAR_NAME)) {
                 execImportLocalFile(absolutePath);
             }

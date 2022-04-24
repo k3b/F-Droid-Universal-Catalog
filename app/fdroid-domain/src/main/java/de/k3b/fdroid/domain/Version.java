@@ -27,8 +27,12 @@ import de.k3b.fdroid.util.StringUtil;
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  * Database Entity compatible with Android-Room and non-android-j2se-jpa
  */
-@androidx.room.Entity(tableName = "AppVersion", indices = {@androidx.room.Index("id"),
-        @androidx.room.Index({"id", "appId"})})
+@androidx.room.Entity(foreignKeys = {@androidx.room.ForeignKey(entity = App.class,
+        parentColumns = "id", childColumns = "appId",onDelete = androidx.room.ForeignKey.CASCADE),
+        @androidx.room.ForeignKey(entity = Repo.class,
+                parentColumns = "id", childColumns = "repoId",onDelete = androidx.room.ForeignKey.CASCADE)},
+        tableName = "AppVersion", indices = {@androidx.room.Index("id"),
+        @androidx.room.Index({"appId", "repoId"})})
 @javax.persistence.Entity(name = "AppVersion")
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 public class Version extends VersionCommon implements AppDetail {
@@ -37,7 +41,11 @@ public class Version extends VersionCommon implements AppDetail {
     @androidx.room.PrimaryKey(autoGenerate = true)
     private int id;
 
+    @androidx.room.ColumnInfo(index = true)
     private int appId;
+
+    @androidx.room.ColumnInfo(index = true)
+    private int repoId;
 
     private String nativecode;
 
@@ -53,6 +61,12 @@ public class Version extends VersionCommon implements AppDetail {
     }
 
     @androidx.room.Ignore
+    public Version(int appId, int repoId) {
+        setAppId(appId);
+        setRepoId(repoId);
+    }
+
+    @androidx.room.Ignore
     public Version(int minSdkVersion, int targetSdkVersion, int maxSdkVersion, String nativecode) {
         setSdk(minSdkVersion, targetSdkVersion, maxSdkVersion);
         setNativecode(nativecode);
@@ -61,6 +75,7 @@ public class Version extends VersionCommon implements AppDetail {
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         toStringBuilder(sb, "appId", this.appId);
+        toStringBuilder(sb, "repoId", this.repoId);
         super.toStringBuilder(sb);
         toStringBuilder(sb, "nativecode", this.nativecode);
     }
@@ -79,6 +94,14 @@ public class Version extends VersionCommon implements AppDetail {
 
     public void setAppId(int appId) {
         this.appId = appId;
+    }
+
+    public int getRepoId() {
+        return repoId;
+    }
+
+    public void setRepoId(int repoId) {
+        this.repoId = repoId;
     }
 
     public String getNativecode() {

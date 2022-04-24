@@ -70,19 +70,19 @@ public class VersionUpdateService {
 
     // update(repoId, packageName,List<v1Version>) -> update(app,List<v1Version>)
     private void updateGetCorrespondingApp(int repoId, String packageName, List<de.k3b.fdroid.v1.domain.Version> v1VersionList) {
-        App app = getOrCreateApp(repoId, packageName);
+        App app = getOrCreateApp(packageName);
 
-        update(app, v1VersionList);
+        update(repoId, app, v1VersionList);
     }
 
     // most processing is done here
-    private void update(App app, List<de.k3b.fdroid.v1.domain.Version> v1VersionList) {
+    private void update(int repoId, App app, List<de.k3b.fdroid.v1.domain.Version> v1VersionList) {
         if (progressListener != null) {
             progressListener.onProgress(".", app.getPackageName());
         }
 
         List<Version> roomVersionList = versionRepository.findByAppId(app.getId());
-        updateMapV1ToDbContentent(app.getId(), roomVersionList, v1VersionList);
+        updateMapV1ToDbContentent(app.getId(), repoId, roomVersionList, v1VersionList);
 
         versionService.fixMaxSdk(roomVersionList);
         versionService.updateAppAggregates(app, roomVersionList);
@@ -97,31 +97,41 @@ public class VersionUpdateService {
 
     }
 
-    private void updateMapV1ToDbContentent(int appId, List<Version> roomVersionList, List<de.k3b.fdroid.v1.domain.Version> v1VersionList) {
+    private void updateMapV1ToDbContentent(int appId, int repoId, List<Version> roomVersionList, List<de.k3b.fdroid.v1.domain.Version> v1VersionList) {
         Map<Integer, Version> roomCode2Version = new HashMap<>();
         for (Version roomVersion : roomVersionList) {
-            roomCode2Version.put(roomVersion.getVersionCode(), roomVersion);
+            if (roomVersion.getRepoId() == repoId) {
+                roomCode2Version.put(roomVersion.getVersionCode(), roomVersion);
+            }
         }
 
+        Map<Integer, Version> roomCode2VersionRemaining = new HashMap<>(roomCode2Version);
         for (de.k3b.fdroid.v1.domain.Version v1Version : v1VersionList) {
-            Version roomVersion = roomCode2Version.get(v1Version.getVersionCode());
+            int versionCode = v1Version.getVersionCode();
+            Version roomVersion = roomCode2Version.get(versionCode);
             if (roomVersion == null) {
-                roomVersion = new Version();
-                roomVersion.setAppId(appId);
-                roomCode2Version.put(v1Version.getVersionCode(), roomVersion);
+                roomVersion = new Version(appId, repoId);
                 roomVersionList.add(roomVersion);
+                roomCode2Version.put(versionCode, roomVersion);
+            } else {
+                roomCode2VersionRemaining.remove(versionCode);
             }
 
             VersionCommon.copyCommon(roomVersion, v1Version);
             roomVersion.setNativecode(StringUtil.toCsvStringOrNull(v1Version.getNativecode()));
         }
+
+        for (Version roomVersion : roomCode2VersionRemaining.values()) {
+            roomVersionList.remove(roomVersion);
+            versionRepository.delete(roomVersion);
+        }
     }
 
-    private App getOrCreateApp(int repoId, String packageName) {
-        App app = appRepository.findByRepoIdAndPackageName(repoId, packageName);
+    private App getOrCreateApp(String packageName) {
+        App app = appRepository.findByPackageName(packageName);
 
         if (app == null) {
-            app = new de.k3b.fdroid.domain.App(repoId, packageName);
+            app = new de.k3b.fdroid.domain.App(packageName);
             appRepository.insert(app);
         }
         return app;

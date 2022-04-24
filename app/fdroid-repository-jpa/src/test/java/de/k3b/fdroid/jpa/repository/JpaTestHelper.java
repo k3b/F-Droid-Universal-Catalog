@@ -34,20 +34,11 @@ public class JpaTestHelper {
     @Autowired
     EntityManager entityManager;
 
-    public void createItems() {
-        Repo repo = createRepo();
-        createApp(repo);
-
-    }
+    private int nextNo = 1;
 
     public App createApp() {
-        return createApp(createRepo());
-    }
-
-    public App createApp(Repo repo) {
-        App app = new App(repo.getId());
-        entityManager.persist(app);
-        app.setPackageName("test.app." + app.getId());
+        App app = new App();
+        app.setPackageName("test.app." + nextNo++);
         return save(app);
     }
 
@@ -58,9 +49,8 @@ public class JpaTestHelper {
 
     public Repo createRepo() {
         Repo repo = new Repo();
-        entityManager.persist(repo);
-        repo.setName("test-repo-" + repo.getId());
-        repo.setAddress("testrepo.org." + repo.getId());
+        repo.setName("test-repo-" + nextNo++);
+        repo.setAddress("testrepo.org." + nextNo++);
         return save(repo);
     }
 
@@ -71,14 +61,14 @@ public class JpaTestHelper {
     }
 
     public Category createCategory() {
-        Category category = save(new Category());
-        category.setName("name" + category.getId());
+        Category category = new Category();
+        category.setName("name" + nextNo++);
         return save(category);
     }
 
     public HardwareProfile createHardwareProfile() {
-        HardwareProfile hardwareProfile = save(new HardwareProfile());
-        hardwareProfile.setName("name" + hardwareProfile.getId());
+        HardwareProfile hardwareProfile = new HardwareProfile();
+        hardwareProfile.setName("name" + nextNo++);
         return save(hardwareProfile);
     }
 }

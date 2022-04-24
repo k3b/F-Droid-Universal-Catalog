@@ -2,21 +2,15 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "a5a06769043c390febc7e20a75f44bd1",
+    "identityHash": "980ac0fcb323a31dbc1d602a84060a3f",
     "entities": [
       {
         "tableName": "App",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `repoId` INTEGER NOT NULL, `searchName` TEXT, `searchSummary` TEXT, `searchDescription` TEXT, `searchWhatsNew` TEXT, `searchVersion` TEXT, `searchSdk` TEXT, `searchSigner` TEXT, `searchCategory` TEXT, `packageName` TEXT, `changelog` TEXT, `suggestedVersionName` TEXT, `suggestedVersionCode` TEXT, `issueTracker` TEXT, `license` TEXT, `sourceCode` TEXT, `webSite` TEXT, `added` INTEGER NOT NULL, `icon` TEXT, `lastUpdated` INTEGER NOT NULL, FOREIGN KEY(`repoId`) REFERENCES `Repo`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `searchName` TEXT, `searchSummary` TEXT, `searchDescription` TEXT, `searchWhatsNew` TEXT, `searchVersion` TEXT, `searchSdk` TEXT, `searchSigner` TEXT, `searchCategory` TEXT, `packageName` TEXT, `changelog` TEXT, `suggestedVersionName` TEXT, `suggestedVersionCode` TEXT, `issueTracker` TEXT, `license` TEXT, `sourceCode` TEXT, `webSite` TEXT, `added` INTEGER NOT NULL, `icon` TEXT, `lastUpdated` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "repoId",
-            "columnName": "repoId",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -152,33 +146,20 @@
             "createSql": "CREATE INDEX IF NOT EXISTS `index_App_id` ON `${TABLE_NAME}` (`id`)"
           },
           {
-            "name": "index_App_repoId_packageName",
+            "name": "index_App_packageName",
             "unique": false,
             "columnNames": [
-              "repoId",
               "packageName"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_App_repoId_packageName` ON `${TABLE_NAME}` (`repoId`, `packageName`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_App_packageName` ON `${TABLE_NAME}` (`packageName`)"
           }
         ],
-        "foreignKeys": [
-          {
-            "table": "Repo",
-            "onDelete": "CASCADE",
-            "onUpdate": "NO ACTION",
-            "columns": [
-              "repoId"
-            ],
-            "referencedColumns": [
-              "id"
-            ]
-          }
-        ]
+        "foreignKeys": []
       },
       {
         "tableName": "AppCategory",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `categoryId` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `categoryId` INTEGER NOT NULL, FOREIGN KEY(`appId`) REFERENCES `App`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`categoryId`) REFERENCES `Category`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -215,9 +196,50 @@
             ],
             "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_AppCategory_appId_categoryId` ON `${TABLE_NAME}` (`appId`, `categoryId`)"
+          },
+          {
+            "name": "index_AppCategory_appId",
+            "unique": false,
+            "columnNames": [
+              "appId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_AppCategory_appId` ON `${TABLE_NAME}` (`appId`)"
+          },
+          {
+            "name": "index_AppCategory_categoryId",
+            "unique": false,
+            "columnNames": [
+              "categoryId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_AppCategory_categoryId` ON `${TABLE_NAME}` (`categoryId`)"
           }
         ],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "App",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "appId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "Category",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "categoryId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       },
       {
         "tableName": "Category",
@@ -302,12 +324,22 @@
           ],
           "autoGenerate": true
         },
-        "indices": [],
+        "indices": [
+          {
+            "name": "index_Locale_id",
+            "unique": false,
+            "columnNames": [
+              "id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Locale_id` ON `${TABLE_NAME}` (`id`)"
+          }
+        ],
         "foreignKeys": []
       },
       {
         "tableName": "Localized",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `localeId` INTEGER NOT NULL, `name` TEXT, `summary` TEXT, `description` TEXT, `icon` TEXT, `video` TEXT, `whatsNew` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `localeId` INTEGER NOT NULL, `name` TEXT, `summary` TEXT, `description` TEXT, `icon` TEXT, `video` TEXT, `whatsNew` TEXT, FOREIGN KEY(`appId`) REFERENCES `App`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`localeId`) REFERENCES `Locale`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -389,9 +421,50 @@
             ],
             "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_Localized_appId_localeId` ON `${TABLE_NAME}` (`appId`, `localeId`)"
+          },
+          {
+            "name": "index_Localized_appId",
+            "unique": false,
+            "columnNames": [
+              "appId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Localized_appId` ON `${TABLE_NAME}` (`appId`)"
+          },
+          {
+            "name": "index_Localized_localeId",
+            "unique": false,
+            "columnNames": [
+              "localeId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Localized_localeId` ON `${TABLE_NAME}` (`localeId`)"
           }
         ],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "App",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "appId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "Locale",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "localeId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       },
       {
         "tableName": "Repo",
@@ -497,7 +570,7 @@
       },
       {
         "tableName": "AppVersion",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `nativecode` TEXT, `minSdkVersion` INTEGER NOT NULL, `targetSdkVersion` INTEGER NOT NULL, `maxSdkVersion` INTEGER NOT NULL, `hash` TEXT, `hashType` TEXT, `sig` TEXT, `signer` TEXT, `srcname` TEXT, `apkName` TEXT, `versionCode` INTEGER NOT NULL, `versionName` TEXT, `added` INTEGER NOT NULL, `size` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `repoId` INTEGER NOT NULL, `nativecode` TEXT, `minSdkVersion` INTEGER NOT NULL, `targetSdkVersion` INTEGER NOT NULL, `maxSdkVersion` INTEGER NOT NULL, `hash` TEXT, `hashType` TEXT, `sig` TEXT, `signer` TEXT, `srcname` TEXT, `apkName` TEXT, `versionCode` INTEGER NOT NULL, `versionName` TEXT, `added` INTEGER NOT NULL, `size` INTEGER NOT NULL, FOREIGN KEY(`appId`) REFERENCES `App`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`repoId`) REFERENCES `Repo`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -508,6 +581,12 @@
           {
             "fieldPath": "appId",
             "columnName": "appId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "repoId",
+            "columnName": "repoId",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -613,21 +692,62 @@
             "createSql": "CREATE INDEX IF NOT EXISTS `index_AppVersion_id` ON `${TABLE_NAME}` (`id`)"
           },
           {
-            "name": "index_AppVersion_id_appId",
+            "name": "index_AppVersion_appId_repoId",
             "unique": false,
             "columnNames": [
-              "id",
+              "appId",
+              "repoId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_AppVersion_appId_repoId` ON `${TABLE_NAME}` (`appId`, `repoId`)"
+          },
+          {
+            "name": "index_AppVersion_appId",
+            "unique": false,
+            "columnNames": [
               "appId"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_AppVersion_id_appId` ON `${TABLE_NAME}` (`id`, `appId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_AppVersion_appId` ON `${TABLE_NAME}` (`appId`)"
+          },
+          {
+            "name": "index_AppVersion_repoId",
+            "unique": false,
+            "columnNames": [
+              "repoId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_AppVersion_repoId` ON `${TABLE_NAME}` (`repoId`)"
           }
         ],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "App",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "appId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "Repo",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "repoId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       },
       {
         "tableName": "AppHardware",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `hardwareProfileId` INTEGER NOT NULL, `apkName` TEXT, `versionCode` INTEGER, `versionName` TEXT, `added` INTEGER, `size` INTEGER, `min_apkName` TEXT, `min_versionCode` INTEGER, `min_versionName` TEXT, `min_added` INTEGER, `min_size` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `hardwareProfileId` INTEGER NOT NULL, `apkName` TEXT, `versionCode` INTEGER, `versionName` TEXT, `added` INTEGER, `size` INTEGER, `min_apkName` TEXT, `min_versionCode` INTEGER, `min_versionName` TEXT, `min_added` INTEGER, `min_size` INTEGER, FOREIGN KEY(`appId`) REFERENCES `App`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`hardwareProfileId`) REFERENCES `HardwareProfile`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -724,9 +844,50 @@
             ],
             "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_AppHardware_appId_hardwareProfileId` ON `${TABLE_NAME}` (`appId`, `hardwareProfileId`)"
+          },
+          {
+            "name": "index_AppHardware_appId",
+            "unique": false,
+            "columnNames": [
+              "appId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_AppHardware_appId` ON `${TABLE_NAME}` (`appId`)"
+          },
+          {
+            "name": "index_AppHardware_hardwareProfileId",
+            "unique": false,
+            "columnNames": [
+              "hardwareProfileId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_AppHardware_hardwareProfileId` ON `${TABLE_NAME}` (`hardwareProfileId`)"
           }
         ],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "App",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "appId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "HardwareProfile",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "hardwareProfileId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       },
       {
         "tableName": "HardwareProfile",
@@ -776,7 +937,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a5a06769043c390febc7e20a75f44bd1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '980ac0fcb323a31dbc1d602a84060a3f')"
     ]
   }
 }
