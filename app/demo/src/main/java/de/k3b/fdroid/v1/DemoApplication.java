@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Properties;
 
 import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.jpa.repository.testcase.TestEntity;
 import de.k3b.fdroid.jpa.repository.testcase.TestRepositoryJpa;
@@ -67,8 +68,10 @@ public class DemoApplication {
 	@Value("${spring.datasource.url}")
 	private String jdbc;
 
-	private @Autowired RepoRepository repoRepository;
-	private @Autowired V1UpdateServiceEx importer;
+	@Autowired private RepoRepository repoRepository;
+	@Autowired private AppRepository appRepository;
+	@Autowired private LocalizedRepository localizedRepository;
+	@Autowired private V1UpdateServiceEx importer;
 
 	public static void main(String[] args) {
 		if (args == null || args.length == 0) {
@@ -124,7 +127,8 @@ public class DemoApplication {
 		// jdbc
 		System.out.println("Using jdbc " + jdbc);
 		return (args) -> {
-			V1CommandService commandService = new V1CommandService(repoRepository, importer, downloadPath);
+			V1CommandService commandService = new V1CommandService(
+					repoRepository, appRepository, localizedRepository, importer, downloadPath);
 			commandService.exec(args);
 		};
 	}

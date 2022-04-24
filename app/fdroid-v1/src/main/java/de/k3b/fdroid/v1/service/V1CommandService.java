@@ -22,18 +22,34 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
+import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.domain.common.PojoCommon;
 import de.k3b.fdroid.domain.common.RepoCommon;
+import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
+import de.k3b.fdroid.service.AppWithDetailsPagerService;
+import de.k3b.fdroid.service.adapter.AppRepositoryAdapterImpl;
+import de.k3b.fdroid.service.adapter.LocalizedRepositoryAdapterImpl;
+import de.k3b.fdroid.util.StringUtil;
 
 public class V1CommandService {
     private final RepoRepository repoRepository;
+    private final AppRepository appRepository;
+    private final LocalizedRepository localizedRepository;
     private final V1UpdateService v1UpdateService;
     private String downloadPath = System.getProperty("user.home") + "/.fdroid/downloads";
 
-    public V1CommandService(RepoRepository repoRepository, V1UpdateService v1UpdateService, String downloadPath) {
+    public V1CommandService(RepoRepository repoRepository, AppRepository appRepository,
+                            LocalizedRepository localizedRepository, V1UpdateService v1UpdateService,
+                            String downloadPath) {
         this.repoRepository = repoRepository;
+        this.appRepository = appRepository;
+        this.localizedRepository = localizedRepository;
         this.v1UpdateService = v1UpdateService;
         if (downloadPath != null) this.downloadPath = downloadPath.replace("~", System.getProperty("user.home"));
     }
@@ -41,6 +57,7 @@ public class V1CommandService {
     public static CharSequence getHelp() {
         StringBuilder s = new StringBuilder();
         s.append("\nusage java -jar demo.jar [options]\n\n");
+        s.append("-f {expression} find app");
         s.append("-r reload database from downloaded jars\n");
         s.append("-d dir show downloaded jars\n");
 
@@ -48,8 +65,13 @@ public class V1CommandService {
     }
 
     public void exec(String... args) throws IOException {
-        for (String arg : args) {
-            if (arg.startsWith("-r")) {
+        int i = 0;
+        while (i < args.length) {
+            String arg =  args[i];
+            if (arg.startsWith("-f") && i < args.length - 1) {
+                System.out.println(execFind(args[i+1]));
+                i++;
+            } else if (arg.startsWith("-r")) {
                 execReloadDbFromDownload();
             } else if (arg.startsWith("-d")) {
                 System.out.println(execDir(new StringBuilder()));
@@ -58,13 +80,35 @@ public class V1CommandService {
                 System.exit(-1);
 
             }
+            i++;
         }
     }
 
-    private void execStartServer() {
-        // Server s = null;
-        // org.hsqldb.server.Server s = null;
-        // org.hsqldb.ClientConnection c = null;
+    private String execFind(String search) {
+        List<Integer> appIdList = appRepository.findIdsByExpressionSortByScore(search);
+
+        AppWithDetailsPagerService details = new AppWithDetailsPagerService(
+                new AppRepositoryAdapterImpl(appRepository),
+                new LocalizedRepositoryAdapterImpl(localizedRepository), null, null);
+
+        details.init(appIdList, 10);
+
+        StringBuilder result = new StringBuilder()
+                .append("# Search for '").append(search).append("':\n")
+                .append("PackageName\tName\tSdk\tVersion\tLastUpdated\n");
+        int max = Math.min(appIdList.size(), 40);
+        for (int i = 0; i < max; i++) {
+            add(result, details.getAppByOffset(i), details.getName(i));
+        }
+        return result.toString();
+    }
+
+    private void add(StringBuilder result, App app, String name) {
+        Object[] cols = new Object[]{
+                app.getPackageName(), name, app.getSearchSdk(),
+                app.getSearchVersion(), PojoCommon.asDateString(app.getLastUpdated())};
+        result.append(StringUtil.toCsvStringOrNull(Arrays.asList(cols), "\t"))
+        .append("\n");
     }
 
     public  CharSequence execDir(StringBuilder s) {

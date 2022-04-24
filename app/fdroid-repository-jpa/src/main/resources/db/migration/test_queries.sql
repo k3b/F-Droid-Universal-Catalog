@@ -117,6 +117,7 @@ order by a.PACKAGE_NAME, av.VERSION_CODE desc;
 -----------------------------------
 
 -- hide all localized that are not de en es nl fr
+
 update Locale set languagePriority = 9 where code = 'de';
 update Locale set languagePriority = 8 where code = 'en';
 update Locale set languagePriority = 7 where code = 'es';
