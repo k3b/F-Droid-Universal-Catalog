@@ -85,12 +85,13 @@ public class VersionUpdateService {
         updateMapV1ToDbContentent(app.getId(), repoId, roomVersionList, v1VersionList);
 
         versionService.fixMaxSdk(roomVersionList);
-        versionService.recalculateSearchFields(app, roomVersionList);
-
-        if (v1VersionList.size() > 10) {
-            List<Version> deletedVersionList = versionService.removeInterimVersions(roomVersionList);
+        if (v1VersionList.size() > 14) {
+            List<Version> deletedVersionList = versionService.removeInterimVersions(roomVersionList, repoId);
             deleteAll(deletedVersionList);
         }
+
+        versionService.recalculateSearchFields(app, roomVersionList);
+
         saveAll(roomVersionList);
 
         appRepository.update(app);

@@ -111,7 +111,7 @@ public class VersionServiceTest {
 
         List<Version> versionList = new ArrayList<>(Arrays.asList(vN_C9, vNaC1, vNaC5, vN_C3));
 
-        List<Version> removed = versionService.removeInterimVersions(versionList);
+        List<Version> removed = versionService.removeInterimVersions(versionList, 0);
         assertArrayEquals("removed (order: sort)", new Version[]{vNaC1, vN_C3},
                 removed.toArray(new Version[0]));
         assertArrayEquals("versionList (order: original list)", new Version[]{vN_C9, vNaC5},

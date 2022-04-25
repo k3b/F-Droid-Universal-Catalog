@@ -156,29 +156,28 @@ public class VersionService {
      * Version items are removed, so that there will be only on entry of each combination of
      * * native-code, minsdk,targetSdk,maxsdk left
      * */
-    public List<Version> removeInterimVersions(List<Version> versionList) {
+    public List<Version> removeInterimVersions(List<Version> versionList, int repoId) {
         List<Version> removed = new ArrayList<>();
         if (versionList != null && !versionList.isEmpty()) {
             Version[] sorted = sortedByNativeAndCodeDecending(versionList);
-            Version max = sorted[0];
-            String maxKey = getKey(max);
-            int i = 1;
+            String maxKey = null;
+            int i = 0;
             while (i < sorted.length) {
                 Version v = sorted[i];
-                String key = getKey(v);
+                if (v.getRepoId() == repoId) {
+                    String key = getKey(v);
 
-                if (maxKey.compareTo(key) == 0) {
-                    removed.add(v);
-                    versionList.remove(v);
-                } else {
-                    max = v;
-                    maxKey = key;
+                    if (maxKey == null || maxKey.compareTo(key) != 0) {
+                        maxKey = key;
+                    } else {
+                        removed.add(v);
+                        versionList.remove(v);
+                    }
                 }
                 i++;
             }
         }
         return removed;
-
     }
 
     private String getKey(Version v) {
