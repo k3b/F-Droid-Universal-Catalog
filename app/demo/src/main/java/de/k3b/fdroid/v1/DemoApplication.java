@@ -73,6 +73,9 @@ public class DemoApplication {
 	@Autowired private LocalizedRepository localizedRepository;
 	@Autowired private V1UpdateServiceEx importer;
 
+	// example commandline parameters
+	// F-Droid_Archive-index-v1.jar reload archive
+	// -f "k3b" find apps by k3b
 	public static void main(String[] args) {
 		if (args == null || args.length == 0) {
 			System.out.println(V1CommandService.getHelp());

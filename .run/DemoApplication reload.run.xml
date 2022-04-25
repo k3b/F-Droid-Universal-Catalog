@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration name="DemoApplication reload" default="false" factoryName="Application" type="Application">
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="de.k3b.fdroid.v1.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+    <module name="FDroid_Json_Parser.app.demo" />
+    <option name="MAIN_CLASS_NAME" value="de.k3b.fdroid.v1.DemoApplication" />
+    <option name="PROGRAM_PARAMETERS" value="-r" />
+  </configuration>
+</component>

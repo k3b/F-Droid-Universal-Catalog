@@ -43,15 +43,18 @@ import de.k3b.fdroid.util.StringUtil;
  */
 
 public class LanguageService {
-    /**
-     * if languagePriority has this value, then locale-s are hidden
-     */
+    /* See {@link #getLanguagePriorityNewItem(String)} */
     public static final int LANGUAGE_PRIORITY_HIDDEN = -1;
 
     private static final Map<String, String> LANGUAGE_DEFINITIONS = defineLanguages();
 
+    /** used to guess language priority. Calculated on demand by {@link #getMyLocale()}.
+     * See {@link #getLanguagePriorityNewItem(String)} */
+    private static String myLocale = null;
+
     private final LocaleRepository localeRepository;
 
+    /* See {@link #getLanguagePriorityNewItem(String)} */
     private final int languagePriorityNewItem = 0;
 
     Map<Integer, de.k3b.fdroid.domain.Locale> id2Locale = null;
@@ -59,6 +62,38 @@ public class LanguageService {
 
     public LanguageService(LocaleRepository localeRepository) {
         this.localeRepository = localeRepository;
+    }
+
+    /** used to guess language priority. see {@link #getLanguagePriorityNewItem(String)}. */
+    private static String getMyLocale() {
+        if (myLocale == null) {
+            // see http://web.archive.org/web/20141015235927/http://blog.ej-technologies.com/2011/12/default-locale-changes-in-java-7.html
+            // java-7
+            String result = System.getProperty("user.language.display");
+            // java-6
+            if (result == null) result = System.getProperty("user.language");
+            if (result == null) {
+                java.util.Locale myLocale = java.util.Locale.getDefault();
+                result = myLocale.getLanguage();
+            }
+            myLocale = result;
+        }
+        return myLocale;
+    }
+
+    public LanguageService init() {
+        return init(localeRepository.findAll());
+    }
+
+    // to allow unittesting without the need to mock localeRepository
+    public LanguageService init(List<de.k3b.fdroid.domain.Locale> locales) {
+        id2Locale = new HashMap<>();
+        code2Locale = new HashMap<>();
+
+        for (de.k3b.fdroid.domain.Locale locale : locales) {
+            init(locale);
+        }
+        return this;
     }
 
     public static boolean setTranslations(String localeCode, de.k3b.fdroid.domain.Locale locale) {
@@ -240,30 +275,11 @@ public class LanguageService {
         return languagePriority == LANGUAGE_PRIORITY_HIDDEN;
     }
 
-    private void init(de.k3b.fdroid.domain.Locale locale) {
-        id2Locale.put(locale.getId(), locale);
-        code2Locale.put(locale.getCode(), locale);
-    }
-
     public static Localized findByLocaleId(List<Localized> roomLocalizedList, int localeId) {
         for (Localized l : roomLocalizedList) {
             if (l.getLocaleId() == localeId) return l;
         }
         return null;
-    }
-
-    public LanguageService init() {
-        return init(localeRepository.findAll());
-    }
-
-    protected LanguageService init(List<de.k3b.fdroid.domain.Locale> locales) {
-        id2Locale = new HashMap<>();
-        code2Locale = new HashMap<>();
-
-        for (de.k3b.fdroid.domain.Locale locale : locales) {
-            init(locale);
-        }
-        return this;
     }
 
     public String getLocaleCodeById(int localeId) {
@@ -287,6 +303,11 @@ public class LanguageService {
         return LANGUAGE_PRIORITY_HIDDEN;
     }
 
+    private void init(de.k3b.fdroid.domain.Locale locale) {
+        id2Locale.put(locale.getId(), locale);
+        code2Locale.put(locale.getCode(), locale);
+    }
+
     /**
      * @return null if this locale is hidden (LanguagePriority < 0)
      */
@@ -295,11 +316,7 @@ public class LanguageService {
             de.k3b.fdroid.domain.Locale locale = code2Locale.get(localeCode);
             if (locale == null) {
                 // create on demand
-                locale = new de.k3b.fdroid.domain.Locale();
-                locale.setCode(localeCode);
-                locale.setLanguagePriority(languagePriorityNewItem);
-
-                setTranslations(localeCode, locale);
+                locale = createNewLocale(localeCode);
                 localeRepository.insert(locale);
                 init(locale);
             } else if (StringUtil.isEmpty(locale.getNameEnglish())) {
@@ -312,5 +329,30 @@ public class LanguageService {
             }
         }
         return null;
+    }
+
+    private de.k3b.fdroid.domain.Locale createNewLocale(String localeCode) {
+        de.k3b.fdroid.domain.Locale locale;
+        locale = new de.k3b.fdroid.domain.Locale();
+        locale.setCode(localeCode);
+        locale.setLanguagePriority(getLanguagePriorityNewItem(localeCode));
+
+        setTranslations(localeCode, locale);
+        return locale;
+    }
+
+    /**
+     * When a language is created on demand (first use on import)
+     * {@link #getLanguagePriorityNewItem(String)} calculates visibility and priority.
+     *
+     * if languagePriority == -1, then locale-s are hidden.
+     * 0 means tolerated with lowest priority.
+     * 1 is used for en=english which is default fallback, because fdroid always has english text
+     * 99 (highest priority) is used for system.display language of the operation system.
+     */
+    private int getLanguagePriorityNewItem(String localeCode) {
+        if (localeCode.equals("en")) return 1;
+        if (localeCode.equals(getMyLocale())) return 99;
+        return languagePriorityNewItem;
     }
 }
