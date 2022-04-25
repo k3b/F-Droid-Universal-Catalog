@@ -39,17 +39,17 @@ public class AppCommon extends PojoCommon {
     private long lastUpdated;
 
     public static void copyCommon(AppCommon dest, AppCommon src) {
-        dest.setIcon(src.getIcon());
-        dest.setPackageName(src.getPackageName());
-        dest.setChangelog(src.getChangelog());
-        dest.setSuggestedVersionName(src.getSuggestedVersionName());
-        dest.setSuggestedVersionCode(src.getSuggestedVersionCode());
-        dest.setIssueTracker(src.getIssueTracker());
-        dest.setLicense(src.getLicense());
-        dest.setSourceCode(src.getSourceCode());
-        dest.setWebSite(src.getWebSite());
-        dest.setAdded(src.getAdded());
-        dest.setLastUpdated(src.getLastUpdated());
+        dest.setIcon(ifNotNull(src.getIcon(),dest.getIcon()));
+        dest.setPackageName(ifNotNull(src.getPackageName(),dest.getPackageName()));
+        dest.setChangelog(ifNotNull(src.getChangelog(),dest.getChangelog()));
+        dest.setSuggestedVersionName(ifNotNull(src.getSuggestedVersionName(),dest.getSuggestedVersionName()));
+        dest.setSuggestedVersionCode(ifNotNull(src.getSuggestedVersionCode(),dest.getSuggestedVersionCode()));
+        dest.setIssueTracker(ifNotNull(src.getIssueTracker(),dest.getIssueTracker()));
+        dest.setLicense(ifNotNull(src.getLicense(),dest.getLicense()));
+        dest.setSourceCode(ifNotNull(src.getSourceCode(),dest.getSourceCode()));
+        dest.setWebSite(ifNotNull(src.getWebSite(),dest.getWebSite()));
+        dest.setAdded(ifNotNull(src.getAdded(),dest.getAdded()));
+        dest.setLastUpdated(ifNotNull(src.getLastUpdated(), dest.getLastUpdated()));
     }
 
     public String getChangelog() {

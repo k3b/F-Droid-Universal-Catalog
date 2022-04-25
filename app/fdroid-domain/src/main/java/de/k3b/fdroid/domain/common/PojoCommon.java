@@ -138,6 +138,14 @@ public class PojoCommon {
             sb.append(name).append('=').append(asDateString(value)).append(',');
     }
 
+    public static long ifNotNull(long val, long defaultValue) {
+        return val != 0 ? val : defaultValue;
+    }
+
+    public static String ifNotNull(String val, String defaultValue) {
+        return val != null && val.length() > 0 ? val : defaultValue;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

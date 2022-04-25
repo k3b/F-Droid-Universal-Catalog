@@ -38,12 +38,12 @@ public class LocalizedCommon extends PojoCommon {
     private String whatsNew;
 
     public static void copyCommon(LocalizedCommon dest, LocalizedCommon src) {
-        dest.setName(src.getName());
-        dest.setIcon(src.getIcon());
-        dest.setDescription(src.getDescription());
-        dest.setSummary(src.getSummary());
-        dest.setVideo(src.getVideo());
-        dest.setWhatsNew(src.getWhatsNew());
+        dest.setName(ifNotNull(src.getName(), dest.getName()));
+        dest.setIcon(ifNotNull(src.getIcon(),dest.getIcon()));
+        dest.setDescription(ifNotNull(src.getDescription(),dest.getDescription()));
+        dest.setSummary(ifNotNull(src.getSummary(),dest.getSummary()));
+        dest.setVideo(ifNotNull(src.getVideo(),dest.getVideo()));
+        dest.setWhatsNew(ifNotNull(src.getWhatsNew(),dest.getWhatsNew()));
     }
 
     public String getName() {
