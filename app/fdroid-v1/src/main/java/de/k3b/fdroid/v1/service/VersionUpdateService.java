@@ -85,7 +85,7 @@ public class VersionUpdateService {
         updateMapV1ToDbContentent(app.getId(), repoId, roomVersionList, v1VersionList);
 
         versionService.fixMaxSdk(roomVersionList);
-        versionService.updateAppAggregates(app, roomVersionList);
+        versionService.recalculateSearchFields(app, roomVersionList);
 
         saveAll(roomVersionList);
         appRepository.update(app);

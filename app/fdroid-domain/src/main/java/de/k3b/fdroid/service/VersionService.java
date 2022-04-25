@@ -77,7 +77,8 @@ public class VersionService {
                 HardwareProfileService.isCompatibleNativecode(lastFound.getNativecodeArray(), v.getNativecodeArray());
     }
 
-    public void updateAppAggregates(App app, List<Version> roomVersionList) {
+    /** App.searchXxx calculated from detail Version-s */
+    public void recalculateSearchFields(App app, List<Version> roomVersionList) {
         Version minVersion = null;
         Version maxVersion = null;
         StringBuilder signer = new StringBuilder();
@@ -130,6 +131,17 @@ public class VersionService {
         version.append(",");
         if (!StringUtil.isEmpty(maxSdkVersion)) version.append(numFormatter.format(maxSdkVersion));
         version.append("]");
+    }
+
+    /** com.simplemobiletools.gallery(.pro) has more than 100 versions
+     * with small bugfixes/feature-increments.
+     *
+     * To reduce the amount of data,
+     * Version items are removed, so that there will be only on entry of each combination of
+     * * native-code, minsdk,targetSdk,maxsdk left
+     * */
+    public void removeInterimVersions() {
+
     }
 
 }

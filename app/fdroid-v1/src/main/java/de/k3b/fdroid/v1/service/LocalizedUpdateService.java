@@ -19,17 +19,14 @@
 
 package de.k3b.fdroid.v1.service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.domain.Locale;
 import de.k3b.fdroid.domain.Localized;
 import de.k3b.fdroid.domain.common.LocalizedCommon;
-import de.k3b.fdroid.domain.common.PojoCommon;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.service.LanguageService;
+import de.k3b.fdroid.service.LocalizedService;
 
 /**
  * update android-room-database from fdroid-v1-rest-gson data
@@ -37,11 +34,13 @@ import de.k3b.fdroid.service.LanguageService;
 public class LocalizedUpdateService {
     private final LocalizedRepository localizedRepository;
     private final LanguageService languageService;
+    private final LocalizedService localizedService;
 
     public LocalizedUpdateService(LocalizedRepository localizedRepository,
                                   LanguageService languageService) {
         this.localizedRepository = localizedRepository;
         this.languageService = languageService;
+        this.localizedService = new LocalizedService(localizedRepository, languageService);
     }
 
     public LocalizedUpdateService init() {
@@ -51,7 +50,7 @@ public class LocalizedUpdateService {
 
     public List<Localized> update(int appId, de.k3b.fdroid.domain.App roomApp, Map<String, de.k3b.fdroid.v1.domain.Localized> v1LocalizedMap) {
         List<Localized> roomLocalizedList = localizedRepository.findByAppId(appId);
-        deleteHidden(roomLocalizedList);
+        localizedService.deleteHidden(roomLocalizedList);
         // deleteRemoved(roomLocalizedList, v1LocalizedMap);
 
         for (Map.Entry<String, de.k3b.fdroid.v1.domain.Localized> v1Entry : v1LocalizedMap.entrySet()) {
@@ -76,89 +75,10 @@ public class LocalizedUpdateService {
         } // for each v1 language
 
         if (roomApp != null) {
-            recalculateSearchFields(roomApp, roomLocalizedList);
+            localizedService.recalculateSearchFields(roomApp, roomLocalizedList);
         }
         return roomLocalizedList;
 
-    }
-
-    /** App.searchXxx calculated from detail Localized-s */
-    private void recalculateSearchFields(App roomApp, List<Localized> roomLocalizedList) {
-        StringBuilder name = new StringBuilder();
-        StringBuilder summary = new StringBuilder();
-        StringBuilder description = new StringBuilder();
-        StringBuilder whatsNew = new StringBuilder();
-
-        Localized[] roomLocalizedListSortByPrio = sortByPrioDesc(roomLocalizedList);
-
-        for (Localized loc : roomLocalizedListSortByPrio) {
-
-            Locale locale = languageService.getLocaleById(loc.getLocaleId());
-            String languagePrefix = "";
-            if (languageService.getOrCreateLocaleByCode(locale.getCode()).getLanguagePriority() < 1) {
-                // only visible if it is not a prefered language
-                languagePrefix = locale.getCode() + ": ";
-            }
-
-            add("name", PojoCommon.MAX_LEN_AGGREGATED, roomApp, name, languagePrefix, loc.getName(), " | ");
-            add("summary", PojoCommon.MAX_LEN_AGGREGATED, roomApp, summary, languagePrefix, loc.getSummary(), "\n");
-            add("description", PojoCommon.MAX_LEN_AGGREGATED_DESCRIPTION, roomApp, description, languagePrefix, loc.getDescription(), "\n\n------------\n\n");
-            add("whatsNew", PojoCommon.MAX_LEN_AGGREGATED, roomApp, whatsNew, languagePrefix, loc.getWhatsNew(), "\n\n------------\n\n");
-
-        }
-        roomApp.setSearchName(name.toString());
-        roomApp.setSearchSummary(summary.toString());
-        roomApp.setSearchDescription(description.toString());
-        roomApp.setSearchWhatsNew(whatsNew.toString());
-    }
-
-    protected Localized[] sortByPrioDesc(List<Localized> roomLocalizedList) {
-        // :-( : List<>.sort() requieres android api 24. not compatible with api 14
-        Localized[] result = roomLocalizedList.toArray(new Localized[0]);
-        Arrays.sort(result, (x, y) -> compareByPrio(x,y));
-        return result;
-    }
-
-    private int compareByPrio(Localized x, Localized y) {
-        int px = languageService.getLocaleById(x.getLocaleId()).getLanguagePriority();
-        int py = languageService.getLocaleById(y.getLocaleId()).getLanguagePriority();
-        return -Integer.compare(px,py);
-    }
-
-    private void add(String fieldName, int maxLen, App roomApp, StringBuilder dest,
-                     String languagePrefix, String src, String seperator) {
-        if (src != null && src.length() > 0 && !dest.toString().contains(src)) {
-            if (dest.length() > 0) {
-                dest.append(seperator);
-            }
-
-            dest.append(languagePrefix).append(src);
-            if (dest.length() > maxLen) {
-                throw new IllegalArgumentException(fieldName + " > " + maxLen +
-                        " in " + roomApp.getPackageName() +
-                        ": ('" + dest + "')\n\t" + roomApp);
-            }
-        }
-    }
-
-    /**
-     * delete all from list that should be hidden
-     */
-    public void deleteHidden(List<Localized> roomLocalizedList) {
-        for (int i = roomLocalizedList.size() - 1; i >= 0; i--) {
-            Localized roomLocalized = roomLocalizedList.get(i);
-            if (roomLocalized != null && isHidden(roomLocalized)) {
-                localizedRepository.delete(roomLocalized);
-                roomLocalizedList.remove(i);
-            }
-        }
-    }
-
-    public boolean isHidden(Localized roomLocalized) {
-        if (roomLocalized == null) return true;
-
-        Locale locale = languageService.getLocaleById(roomLocalized.getLocaleId());
-        return (locale != null && LanguageService.isHidden(locale));
     }
 
     private String getLocaleCodeByLocalized(Localized roomLocalized) {

@@ -86,7 +86,7 @@ public class LanguageService {
     }
 
     // to allow unittesting without the need to mock localeRepository
-    public LanguageService init(List<de.k3b.fdroid.domain.Locale> locales) {
+    protected LanguageService init(List<de.k3b.fdroid.domain.Locale> locales) {
         id2Locale = new HashMap<>();
         code2Locale = new HashMap<>();
 
@@ -94,6 +94,11 @@ public class LanguageService {
             init(locale);
         }
         return this;
+    }
+
+    protected void init(de.k3b.fdroid.domain.Locale locale) {
+        id2Locale.put(locale.getId(), locale);
+        code2Locale.put(locale.getCode(), locale);
     }
 
     public static boolean setTranslations(String localeCode, de.k3b.fdroid.domain.Locale locale) {
@@ -301,11 +306,6 @@ public class LanguageService {
             return found.getId();
         }
         return LANGUAGE_PRIORITY_HIDDEN;
-    }
-
-    private void init(de.k3b.fdroid.domain.Locale locale) {
-        id2Locale.put(locale.getId(), locale);
-        code2Locale.put(locale.getCode(), locale);
     }
 
     /**
