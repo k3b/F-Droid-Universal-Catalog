@@ -34,7 +34,6 @@ import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.service.AppWithDetailsPagerService;
 import de.k3b.fdroid.service.adapter.AppRepositoryAdapterImpl;
-import de.k3b.fdroid.service.adapter.LocalizedRepositoryAdapterImpl;
 import de.k3b.fdroid.util.StringUtil;
 
 public class V1CommandService {
@@ -93,7 +92,8 @@ public class V1CommandService {
 
         AppWithDetailsPagerService details = new AppWithDetailsPagerService(
                 new AppRepositoryAdapterImpl(appRepository),
-                new LocalizedRepositoryAdapterImpl(localizedRepository), null, null);
+                null, // new LocalizedRepositoryAdapterImpl(localizedRepository),
+                null, null);
 
         details.init(appIdList, 10);
 
@@ -102,7 +102,9 @@ public class V1CommandService {
                 .append("PackageName\tName\tSdk\tVersion\tLastUpdated\n");
         int max = Math.min(appIdList.size(), 40);
         for (int i = 0; i < max; i++) {
-            add(result, details.getAppByOffset(i), details.getName(i));
+            App app = details.getAppByOffset(i);
+            String name = app.getSearchName().split("\\|")[0]; // details.getName(i);
+            add(result, app, name);
         }
         return result.toString();
     }
