@@ -87,7 +87,12 @@ public class VersionUpdateService {
         versionService.fixMaxSdk(roomVersionList);
         versionService.recalculateSearchFields(app, roomVersionList);
 
+        if (v1VersionList.size() > 10) {
+            List<Version> deletedVersionList = versionService.removeInterimVersions(roomVersionList);
+            deleteAll(deletedVersionList);
+        }
         saveAll(roomVersionList);
+
         appRepository.update(app);
 
         if (this.hardwareProfileService != null) {
@@ -135,6 +140,14 @@ public class VersionUpdateService {
             appRepository.insert(app);
         }
         return app;
+    }
+
+    private void deleteAll(List<Version> roomVersionList) {
+        for (Version roomVersion : roomVersionList) {
+            if (roomVersion.getId() != 0) {
+                versionRepository.delete(roomVersion);
+            }
+        }
     }
 
     private void saveAll(List<Version> roomVersionList) {

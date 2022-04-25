@@ -40,7 +40,7 @@ public class LocalizedServiceTest {
     @Before
     public void init() {
         languageService = new LanguageService(null).init(Arrays.asList());
-        localizedService = new LocalizedService(null, languageService);
+        localizedService = new LocalizedService(languageService);
 
         localizedEn = createLocalized(1, "en");
         localizedDe = createLocalized(99, "de");

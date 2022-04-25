@@ -18,10 +18,14 @@
  */
 package de.k3b.fdroid.service;
 
+import static org.junit.Assert.assertArrayEquals;
+
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import de.k3b.fdroid.domain.Version;
 
@@ -33,25 +37,25 @@ public class VersionServiceTest {
     @Test
     public void fixMaxSdk_withNativecode() {
         String nativeCode1 = "cpu1"; // vxx1
-        Version v141 = createVersion(141, 0, nativeCode1);
-        Version v151 = createVersion(151, 0, nativeCode1);
-        Version v161 = createVersion(161, 0, nativeCode1);
-        Version v171 = createVersion(171, 0, nativeCode1);
+        Version v141 = createVersion(nativeCode1, 141, 0);
+        Version v151 = createVersion(nativeCode1, 151, 0);
+        Version v161 = createVersion(nativeCode1, 161, 0);
+        Version v171 = createVersion(nativeCode1, 171, 0);
 
         String nativeCode2 = "cpu2"; // vxx2
-        Version v142 = createVersion(142, 0, nativeCode2);
-        Version v152 = createVersion(152, 0, nativeCode2);
-        Version v162 = createVersion(162, 0, nativeCode2);
-        Version v172 = createVersion(172, 0, nativeCode2);
+        Version v142 = createVersion(nativeCode2, 142, 0);
+        Version v152 = createVersion(nativeCode2, 152, 0);
+        Version v162 = createVersion(nativeCode2, 162, 0);
+        Version v172 = createVersion(nativeCode2, 172, 0);
 
         String nativeCode3 = "cpu3"; // not affected by other maxsdk
-        Version v143 = createVersion(143, 0, nativeCode3);
+        Version v143 = createVersion(nativeCode3, 143, 0);
 
         String nativeCode4 = null; // no native-code. Affected by first maxsdk
-        Version v144 = createVersion(144, 0, nativeCode4);
+        Version v144 = createVersion(nativeCode4, 144, 0);
 
-        Version v159_15 = createVersion(159, SDK15, nativeCode1);
-        Version v169_16 = createVersion(169, SDK16, nativeCode2);
+        Version v159_15 = createVersion(nativeCode1, 159, SDK15);
+        Version v169_16 = createVersion(nativeCode2, 169, SDK16);
 
         versionService.fixMaxSdk(Arrays.asList(v141, v142, v143, v144, v151, v152, v159_15, v161, v162, v169_16, v171, v172));
 
@@ -80,15 +84,15 @@ public class VersionServiceTest {
     @Test
     public void fixMaxSdk_noNativecode() {
         String nativeCode = null;
-        Version v141 = createVersion(141, 0, nativeCode);
+        Version v141 = createVersion(nativeCode, 141, 0);
 
-        Version v151 = createVersion(151, 0, nativeCode);
-        Version v159 = createVersion(159, SDK15, nativeCode);
+        Version v151 = createVersion(nativeCode, 151, 0);
+        Version v159 = createVersion(nativeCode, 159, SDK15);
 
-        Version v161 = createVersion(161, 0, nativeCode);
-        Version v169 = createVersion(169, SDK16, nativeCode);
+        Version v161 = createVersion(nativeCode, 161, 0);
+        Version v169 = createVersion(nativeCode, 169, SDK16);
 
-        Version v171 = createVersion(171, 0, nativeCode);
+        Version v171 = createVersion(nativeCode, 171, 0);
 
         versionService.fixMaxSdk(Arrays.asList(v151, v171, v159, v141, v161, v169));
         Assert.assertEquals("v171 unmodified", 0, v171.getMaxSdkVersion());
@@ -98,7 +102,39 @@ public class VersionServiceTest {
     }
 
 
-    private Version createVersion(int versionCode, int maxSdk, String nativeCode) {
+    @Test
+    public void removeInterimVersions() {
+        Version vNaC5 = createVersion("a",5);
+        Version vNaC1 = createVersion("a",1);
+        Version vN_C9 = createVersion(null,9);
+        Version vN_C3 = createVersion(null,3);
+
+        List<Version> versionList = new ArrayList<>(Arrays.asList(vN_C9, vNaC1, vNaC5, vN_C3));
+
+        List<Version> removed = versionService.removeInterimVersions(versionList);
+        assertArrayEquals("removed (order: sort)", new Version[]{vNaC1, vN_C3},
+                removed.toArray(new Version[0]));
+        assertArrayEquals("versionList (order: original list)", new Version[]{vN_C9, vNaC5},
+                versionList.toArray(new Version[0]));
+    }
+
+    @Test
+    public void sortedByNativeAndCodeDecending() {
+        Version vNaC5 = createVersion("a",5);
+        Version vNaC1 = createVersion("a",1);
+        Version vN_C9 = createVersion(null,9);
+        Version vN_C3 = createVersion(null,3);
+
+        List<Version> versionList = Arrays.asList(vN_C9, vNaC1, vNaC5, vN_C3);
+        Version[] result = versionService.sortedByNativeAndCodeDecending(versionList);
+        assertArrayEquals(new Version[]{vNaC5, vNaC1, vN_C9, vN_C3}, result);
+    }
+
+    private Version createVersion(String nativeCode, int versionCode) {
+        return createVersion(nativeCode, versionCode, 0);
+    }
+
+    private Version createVersion(String nativeCode, int versionCode, int maxSdk) {
         Version version = new Version();
         version.setVersionCode(versionCode);
         version.setNativecode(nativeCode);

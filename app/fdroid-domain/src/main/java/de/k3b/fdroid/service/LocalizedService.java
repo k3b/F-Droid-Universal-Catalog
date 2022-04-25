@@ -18,6 +18,7 @@
  */
 package de.k3b.fdroid.service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,14 +26,11 @@ import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.Locale;
 import de.k3b.fdroid.domain.Localized;
 import de.k3b.fdroid.domain.common.PojoCommon;
-import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 
 public class LocalizedService {
-    private final LocalizedRepository localizedRepository;
     private final LanguageService languageService;
 
-    public LocalizedService(LocalizedRepository localizedRepository, LanguageService languageService) {
-        this.localizedRepository = localizedRepository;
+    public LocalizedService(LanguageService languageService) {
         this.languageService = languageService;
     }
 
@@ -98,14 +96,16 @@ public class LocalizedService {
     /**
      * delete all from list that should be hidden
      */
-    public void deleteHidden(List<Localized> roomLocalizedList) {
+    public List<Localized>  deleteHidden(List<Localized> roomLocalizedList) {
+        List<Localized> deletedList = new ArrayList<>();
         for (int i = roomLocalizedList.size() - 1; i >= 0; i--) {
             Localized roomLocalized = roomLocalizedList.get(i);
             if (roomLocalized != null && isHidden(roomLocalized)) {
-                localizedRepository.delete(roomLocalized);
                 roomLocalizedList.remove(i);
+                deletedList.add(roomLocalized);
             }
         }
+        return deletedList;
     }
 
     public boolean isHidden(Localized roomLocalized) {

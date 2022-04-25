@@ -20,7 +20,9 @@
 package de.k3b.fdroid.service;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import de.k3b.fdroid.domain.App;
@@ -133,6 +135,20 @@ public class VersionService {
         version.append("]");
     }
 
+    public static Comparator<Version> compareByNativeAndVersionCodeDescending
+            = new Comparator<Version>() {
+        @Override
+        public int compare(Version o1, Version o2) {
+            int result = - s(o1.getNativecode()).compareTo(s(o2.getNativecode()));
+            if (result == 0) result = VersionCommon.compareByVersionCodeDescending().compare(o1,o2);
+            return result;
+        }
+
+        private String s(String s) {
+            return (s == null) ? "" : s;
+        }
+    };
+
     /** com.simplemobiletools.gallery(.pro) has more than 100 versions
      * with small bugfixes/feature-increments.
      *
@@ -140,8 +156,39 @@ public class VersionService {
      * Version items are removed, so that there will be only on entry of each combination of
      * * native-code, minsdk,targetSdk,maxsdk left
      * */
-    public void removeInterimVersions() {
+    public List<Version> removeInterimVersions(List<Version> versionList) {
+        List<Version> removed = new ArrayList<>();
+        if (versionList != null && !versionList.isEmpty()) {
+            Version[] sorted = sortedByNativeAndCodeDecending(versionList);
+            Version max = sorted[0];
+            String maxKey = getKey(max);
+            int i = 1;
+            while (i < sorted.length) {
+                Version v = sorted[i];
+                String key = getKey(v);
+
+                if (maxKey.compareTo(key) == 0) {
+                    removed.add(v);
+                    versionList.remove(v);
+                } else {
+                    max = v;
+                    maxKey = key;
+                }
+                i++;
+            }
+        }
+        return removed;
 
     }
 
+    private String getKey(Version v) {
+        return StringUtil.toCsvStringOrNull(Arrays.asList(
+                v.getNativecode(), v.getMinSdkVersion(),v.getTargetSdkVersion(),v.getMaxSdkVersion()), ";");
+    }
+
+    public Version[] sortedByNativeAndCodeDecending(List<Version> versionList) {
+        Version[] versions = versionList.toArray(new Version[0]);
+        Arrays.sort(versions, compareByNativeAndVersionCodeDescending);
+        return versions;
+    }
 }

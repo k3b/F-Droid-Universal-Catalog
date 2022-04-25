@@ -40,7 +40,7 @@ public class LocalizedUpdateService {
                                   LanguageService languageService) {
         this.localizedRepository = localizedRepository;
         this.languageService = languageService;
-        this.localizedService = new LocalizedService(localizedRepository, languageService);
+        this.localizedService = new LocalizedService(languageService);
     }
 
     public LocalizedUpdateService init() {
@@ -50,7 +50,7 @@ public class LocalizedUpdateService {
 
     public List<Localized> update(int appId, de.k3b.fdroid.domain.App roomApp, Map<String, de.k3b.fdroid.v1.domain.Localized> v1LocalizedMap) {
         List<Localized> roomLocalizedList = localizedRepository.findByAppId(appId);
-        localizedService.deleteHidden(roomLocalizedList);
+        List<Localized> deleted = localizedService.deleteHidden(roomLocalizedList);
         // deleteRemoved(roomLocalizedList, v1LocalizedMap);
 
         for (Map.Entry<String, de.k3b.fdroid.v1.domain.Localized> v1Entry : v1LocalizedMap.entrySet()) {
@@ -77,8 +77,17 @@ public class LocalizedUpdateService {
         if (roomApp != null) {
             localizedService.recalculateSearchFields(roomApp, roomLocalizedList);
         }
+        deleteAll(deleted);
         return roomLocalizedList;
 
+    }
+
+    private void deleteAll(List<Localized> deleted) {
+        for (Localized l : deleted) {
+            if(l.getId() != 0) {
+                localizedRepository.delete(l);
+            }
+        }
     }
 
     private String getLocaleCodeByLocalized(Localized roomLocalized) {
