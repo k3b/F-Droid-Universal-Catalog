@@ -14,10 +14,10 @@ dependencyResolutionManagement {
         // maven { url 'https://repo.spring.io/milestone' }
     }
 }
-rootProject.name = "FDroid Json Parser"
+rootProject.name = "F-Droid Universal Catalog"
 include ':app'
 include ':app:room-annotations'
-include ':app:demo'
+include ':app:fdroid-universal-cli'
 include ':app:fdroid-domain'
 include ':app:fdroid-v1'
 include ':app:fdroid-repository-jpa'

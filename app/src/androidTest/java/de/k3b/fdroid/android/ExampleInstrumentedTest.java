@@ -1,4 +1,4 @@
-package de.k3b.fdroidjsonparser;
+package de.k3b.fdroid.android;
 
 import android.content.Context;
 

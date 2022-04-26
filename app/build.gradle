@@ -6,7 +6,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "de.k3b.fdroidjsonparser"
+        applicationId "de.k3b.android.fdroid.universalcatalog"
         // api 18 android 4.2.1 requirerd for rounded icons
         minSdk 14 // TODO !!?? working with api14
 //        minSdk 18
@@ -43,6 +43,8 @@ android {
 dependencies {
     implementation 'javax.persistence:javax.persistence-api:2.2'
     implementation 'androidx.appcompat:appcompat:1.4.1'
+
+    implementation "androidx.recyclerview:recyclerview:1.2.1"
 
     implementation (project(path: ':app:fdroid-domain')) {transitive=false}
     implementation (project(path: ':app:fdroid-v1')) {transitive=false}

@@ -17,7 +17,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-package de.k3b.fdroidjsonparser;
+package de.k3b.fdroid.android;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
