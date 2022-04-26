@@ -11,3 +11,4 @@ captures
 /app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.jar
 .jpb
 /demo.jar
+/fdroid-universal-cli.jar

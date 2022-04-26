@@ -3,11 +3,22 @@
     package="de.k3b.fdroid.android">
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FDroidJsonParser" />
+        android:theme="@style/Theme.FDroidUniversalCatalog" >
+
+        <activity android:name=".view.AppListActivity"
+            android:label="@string/app_name"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
     <!--
         These are not compatible with api-14 insinde application
         * android:icon="@mipmap/ic_launcher"

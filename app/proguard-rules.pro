@@ -1,9 +1,13 @@
 # Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
+# By default, the flags in this file are appended to flags specified
+# in /Applications/adt-bundle-mac-x86_64-20140702/sdk/tools/proguard/proguard-android.txt
+# You can edit the include path and order by changing the proguardFiles
+# directive in build.gradle.
 #
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
+
+# Add any project specific keep options here:
 
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
@@ -12,10 +16,24 @@
 #   public *;
 #}
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+-dontwarn org.xmlpull.v1.**
+-dontwarn com.caverock.androidsvg.**
+-keep class org.xmlpull.** { *; }
+-dontnote MobileAds
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# jpa compatibility can be removed from android code
+-assumenosideeffects class javax.persistence.**  { *; }
+-assumenosideeffects class org.springframework.stereotype.**  { *; }
+
+# removed in org.mapsforge:mapsforge-map-android:0.10.0
+# but still referenced in org.osmdroid.mapsforge.MapsForgeTileSource
+# -assumenosideeffects class org.mapsforge.map.reader.ReadBuffer { public void setMaximumBufferSize(...); }
+
+###############
+# I use proguard only to remove unused stuff and to keep the app small.
+# I donot want to obfuscate (rename packages, classes, methods, ...) since this is open source
+-dontobfuscate
+-dontoptimize
+-keepnames class ** { *; }
+-keepnames interface ** { *; }
+-keepnames enum ** { *; }

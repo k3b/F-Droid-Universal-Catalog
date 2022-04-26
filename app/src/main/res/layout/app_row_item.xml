@@ -20,9 +20,16 @@
  */
 -->
 
-<resources>
-    <string name="app_name">FDroid Universal Catalog</string>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_item_height"
+    android:layout_marginLeft="@dimen/margin_medium"
+    android:layout_marginRight="@dimen/margin_medium"
+    android:gravity="center_vertical">
 
-    <!-- from list demo -->
-    <string name="element_text">Element</string>
-</resources>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/element_text"/>
+</FrameLayout>
