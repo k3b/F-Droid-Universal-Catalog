@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "980ac0fcb323a31dbc1d602a84060a3f",
+    "identityHash": "428fc4a565361257e2fa48926c73b52a",
     "entities": [
       {
         "tableName": "App",
@@ -273,6 +273,15 @@
             ],
             "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_Category_id` ON `${TABLE_NAME}` (`id`)"
+          },
+          {
+            "name": "index_Category_name",
+            "unique": true,
+            "columnNames": [
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Category_name` ON `${TABLE_NAME}` (`name`)"
           }
         ],
         "foreignKeys": []
@@ -937,7 +946,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '980ac0fcb323a31dbc1d602a84060a3f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '428fc4a565361257e2fa48926c73b52a')"
     ]
   }
 }
