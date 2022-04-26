@@ -60,9 +60,7 @@ public class LocalizedUpdateService {
                 de.k3b.fdroid.v1.domain.Localized v1Localized = v1Entry.getValue();
                 Localized roomLocalized = LanguageService.findByLocaleId(roomLocalizedList, localeId);
                 if (roomLocalized == null) {
-                    roomLocalized = new Localized();
-                    roomLocalized.setAppId(appId);
-                    roomLocalized.setLocaleId(localeId);
+                    roomLocalized = new Localized(appId, localeId);
                     LocalizedCommon.copyCommon(roomLocalized, v1Localized);
                     localizedRepository.insert(roomLocalized);
                     roomLocalizedList.add(roomLocalized);

@@ -47,6 +47,7 @@ dependencies {
     implementation (project(path: ':app:fdroid-domain')) {transitive=false}
     implementation (project(path: ':app:fdroid-v1')) {transitive=false}
     implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'commons-codec:commons-codec:1.9' // Hex.en/decodeHex
 
     implementation 'com.google.android.material:material:1.5.0'
     implementation project(path: ':app:fdroid-repository-android')
