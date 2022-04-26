@@ -31,8 +31,13 @@ import de.k3b.fdroid.domain.interfaces.HardwareProfileRepository;
 
 @Dao
 public interface HardwareProfileDao extends HardwareProfileRepository {
+    default void insert(HardwareProfile hardwareProfile) {
+        int result = (int) insertEx(hardwareProfile);
+        hardwareProfile.setId(result);
+    }
+
     @Insert
-    void insert(HardwareProfile hardwareProfile);
+    long insertEx(HardwareProfile hardwareProfile);
 
     @Update
     void update(HardwareProfile hardwareProfile);

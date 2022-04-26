@@ -31,8 +31,13 @@ import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 
 @Dao
 public interface LocalizedDao extends LocalizedRepository {
+    default void insert(Localized localized) {
+        int result = (int) insertEx(localized);
+        localized.setId(result);
+    }
+
     @Insert
-    void insert(Localized localized);
+    long insertEx(Localized localized);
 
     @Update
     void update(Localized localized);

@@ -31,8 +31,13 @@ import de.k3b.fdroid.domain.interfaces.RepoRepository;
 
 @Dao
 public interface RepoDao extends RepoRepository {
+    default void insert(Repo repo) {
+        int result = (int) insertEx(repo);
+        repo.setId(result);
+    }
+
     @Insert
-    void insert(Repo repo);
+    long insertEx(Repo category);
 
     @Update
     void update(Repo repo);

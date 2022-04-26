@@ -31,8 +31,13 @@ import de.k3b.fdroid.domain.interfaces.LocaleRepository;
 
 @Dao
 public interface LocaleDao extends LocaleRepository {
+    default void insert(Locale locale) {
+        int result = (int) insertEx(locale);
+        locale.setId(result);
+    }
+
     @Insert
-    void insert(Locale locale);
+    long insertEx(Locale category);
 
     @Update
     void update(Locale locale);

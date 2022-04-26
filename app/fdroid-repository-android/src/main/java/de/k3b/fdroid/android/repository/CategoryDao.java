@@ -31,8 +31,13 @@ import de.k3b.fdroid.domain.interfaces.CategoryRepository;
 
 @Dao
 public interface CategoryDao extends CategoryRepository {
+    default void insert(Category category) {
+        int result = (int) insertEx(category);
+        category.setId(result);
+    }
+
     @Insert
-    void insert(Category category);
+    long insertEx(Category category);
 
     @Update
     void update(Category category);

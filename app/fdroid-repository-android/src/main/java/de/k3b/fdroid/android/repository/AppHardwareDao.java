@@ -31,8 +31,13 @@ import de.k3b.fdroid.domain.interfaces.AppHardwareRepository;
 
 @Dao
 public interface AppHardwareDao extends AppHardwareRepository {
+    default void insert(AppHardware appHardware) {
+        int result = (int) insertEx(appHardware);
+        appHardware.setId(result);
+    }
+
     @Insert
-    void insert(AppHardware appHardware);
+    long insertEx(AppHardware appHardware);
 
     @Update
     void update(AppHardware appHardware);

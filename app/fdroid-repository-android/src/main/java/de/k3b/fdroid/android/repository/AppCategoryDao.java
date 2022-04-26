@@ -31,8 +31,13 @@ import de.k3b.fdroid.domain.interfaces.AppCategoryRepository;
 
 @Dao
 public interface AppCategoryDao extends AppCategoryRepository {
+    default void insert(AppCategory appCategory) {
+        int result = (int) insertEx(appCategory);
+        appCategory.setId(result);
+    }
+
     @Insert
-    void insert(AppCategory appCategory);
+    long insertEx(AppCategory appCategory);
 
     @Update
     void update(AppCategory appCategory);

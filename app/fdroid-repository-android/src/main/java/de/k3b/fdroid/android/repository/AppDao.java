@@ -33,8 +33,13 @@ import de.k3b.fdroid.domain.App;
 // NOTE: AppDao cannot be Generic, AppDao<App> is not possible :-(
 @Dao
 public interface AppDao { // extends AppRepository {
+    default void insert(App app) {
+        int result = (int) insertEx(app);
+        app.setId(result);
+    }
+
     @Insert
-    void insert(App apps);
+    long insertEx(App app);
 
     @Update
     void update(App roomApp);

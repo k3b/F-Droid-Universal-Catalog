@@ -31,8 +31,13 @@ import de.k3b.fdroid.domain.interfaces.VersionRepository;
 
 @Dao
 public interface VersionDao extends VersionRepository {
+    default void insert(Version version) {
+        int result = (int) insertEx(version);
+        version.setId(result);
+    }
+
     @Insert
-    void insert(Version version);
+    long insertEx(Version version);
 
     @Update
     void update(Version version);
