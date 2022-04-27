@@ -57,7 +57,7 @@ public class AppHardware extends PojoCommon implements AppDetail {
     })
     ProfileCommon min = new ProfileCommon();
     @javax.persistence.Id
-    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @androidx.room.PrimaryKey(autoGenerate = true)
     private int id;
     @androidx.room.ColumnInfo(index = true)

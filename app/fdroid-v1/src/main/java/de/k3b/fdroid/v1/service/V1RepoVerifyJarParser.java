@@ -38,6 +38,10 @@ public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase {
     @NonNull
     private final Repo repoInDatabase;
     private de.k3b.fdroid.v1.domain.Repo repoInJar = null;
+    private int lastAppCount=0;
+    private int lastVersionCount=0;
+
+
 
     public V1RepoVerifyJarParser(@NonNull Repo repoInDatabase) {
         if (repoInDatabase == null) throw new NullPointerException();
@@ -48,6 +52,8 @@ public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase {
     @Override
     protected void onRepo(de.k3b.fdroid.v1.domain.Repo repo) {
         this.repoInJar = repo;
+        lastAppCount=0;
+        lastVersionCount=0;
     }
 
     @Override
@@ -62,16 +68,20 @@ public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase {
                     + Repo.asDateString(repoInJar.getTimestamp()) + " < " + Repo.asDateString(repoInDatabase.getTimestamp()));
         }
         X509Certificate certificate = JarUtilities.getSigningCertFromJar(jarEntry);
+        repoInDatabase.setLastAppCount(lastAppCount);
+        repoInDatabase.setLastVersionCount(lastVersionCount);
         RepoCommon.copyCommon(repoInDatabase, repoInJar);
         JarUtilities.verifySigningCertificate(repoInDatabase, certificate);
     }
 
     @Override
     protected void onApp(App app) {
+        lastAppCount++;
     }
 
     @Override
     protected void onVersion(String name, Version version) {
+        lastVersionCount++;
     }
 
     @Override

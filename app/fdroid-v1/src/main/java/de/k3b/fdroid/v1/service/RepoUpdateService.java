@@ -22,6 +22,8 @@ package de.k3b.fdroid.v1.service;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.common.RepoCommon;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
+import de.k3b.fdroid.util.StringUtil;
+
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
@@ -36,12 +38,21 @@ public class RepoUpdateService {
         Repo roomRepo = repoRepository.findByAddress(v1Repo.getAddress());
         if (roomRepo == null) {
             roomRepo = new Repo();
-            RepoCommon.copyCommon(roomRepo, v1Repo);
+            copy(roomRepo, v1Repo);
             repoRepository.insert(roomRepo);
         } else {
-            RepoCommon.copyCommon(roomRepo, v1Repo);
+            copy(roomRepo, v1Repo);
             repoRepository.update(roomRepo);
         }
         return roomRepo;
+    }
+
+    private void copy(Repo dest, de.k3b.fdroid.v1.domain.Repo src) {
+        RepoCommon.copyCommon(dest, src);
+
+        dest.setMirrors(StringUtil.toCsvStringOrNull(src.getMirrors()));
+        if (dest.getLastUsedDownloadDateTimeUtc() < src.getTimestamp()) {
+            dest.setLastUsedDownloadDateTimeUtc(src.getTimestamp());
+        }
     }
 }

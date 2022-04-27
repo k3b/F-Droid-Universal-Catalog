@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "428fc4a565361257e2fa48926c73b52a",
+    "identityHash": "4d1a7f42a2ea4e9ea75968531ea3db60",
     "entities": [
       {
         "tableName": "App",
@@ -477,7 +477,7 @@
       },
       {
         "tableName": "Repo",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `mirrors` TEXT, `jarSigningCertificate` TEXT, `jarSigningCertificateFingerprint` TEXT, `lastUsedDownloadMirror` TEXT, `lastUsedDownloadDateTimeUtc` INTEGER NOT NULL, `name` TEXT, `timestamp` INTEGER NOT NULL, `version` INTEGER NOT NULL, `maxage` INTEGER NOT NULL, `icon` TEXT, `address` TEXT, `description` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `mirrors` TEXT, `jarSigningCertificate` TEXT, `jarSigningCertificateFingerprint` TEXT, `lastUsedDownloadMirror` TEXT, `lastUsedDownloadDateTimeUtc` INTEGER NOT NULL, `lastAppCount` INTEGER NOT NULL, `lastVersionCount` INTEGER NOT NULL, `autoDownloadEnabled` INTEGER NOT NULL, `name` TEXT, `timestamp` INTEGER NOT NULL, `version` INTEGER NOT NULL, `maxage` INTEGER NOT NULL, `icon` TEXT, `address` TEXT, `description` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -512,6 +512,24 @@
           {
             "fieldPath": "lastUsedDownloadDateTimeUtc",
             "columnName": "lastUsedDownloadDateTimeUtc",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastAppCount",
+            "columnName": "lastAppCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastVersionCount",
+            "columnName": "lastVersionCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "autoDownloadEnabled",
+            "columnName": "autoDownloadEnabled",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -946,7 +964,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '428fc4a565361257e2fa48926c73b52a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4d1a7f42a2ea4e9ea75968531ea3db60')"
     ]
   }
 }

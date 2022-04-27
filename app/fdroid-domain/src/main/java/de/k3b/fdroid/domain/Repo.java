@@ -39,7 +39,7 @@ import de.k3b.fdroid.util.StringUtil;
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 public class Repo extends RepoCommon implements ItemWithId {
     @javax.persistence.Id
-    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.AUTO)
+    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @androidx.room.PrimaryKey(autoGenerate = true)
     private int id;
 
@@ -59,11 +59,18 @@ public class Repo extends RepoCommon implements ItemWithId {
 
     private long lastUsedDownloadDateTimeUtc;
 
+    private int lastAppCount;
+    private int lastVersionCount;
+    private boolean autoDownloadEnabled;
+
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
+        toStringBuilder(sb, "autoDownloadEnabled", this.autoDownloadEnabled);
         super.toStringBuilder(sb);
         toStringBuilder(sb, "mirrors", this.mirrors);
         toDateStringBuilder(sb, "lastUsedDownloadDateTimeUtc", this.lastUsedDownloadDateTimeUtc);
+        toStringBuilder(sb, "lastAppCount", this.lastAppCount);
+        toStringBuilder(sb, "lastVersionCount", this.lastVersionCount);
         toStringBuilder(sb, "lastUsedDownloadMirror", this.lastUsedDownloadMirror);
         toStringBuilder(sb, "jarSigningCertificate", this.jarSigningCertificate, 14);
         toStringBuilder(sb, "jarSigningCertificateFingerprint", this.jarSigningCertificateFingerprint, 14);
@@ -83,6 +90,7 @@ public class Repo extends RepoCommon implements ItemWithId {
 
     public void setMirrors(String mirrors) {
         this.mirrors = mirrors;
+        mirrorsArray = null;
     }
 
     public String[] getMirrorsArray() {
@@ -144,5 +152,29 @@ public class Repo extends RepoCommon implements ItemWithId {
 
     public void setLastUsedDownloadDateTimeUtc(long lastUsedDownloadDateTimeUtc) {
         this.lastUsedDownloadDateTimeUtc = lastUsedDownloadDateTimeUtc;
+    }
+
+    public int getLastAppCount() {
+        return lastAppCount;
+    }
+
+    public void setLastAppCount(int lastAppCount) {
+        this.lastAppCount = lastAppCount;
+    }
+
+    public int getLastVersionCount() {
+        return lastVersionCount;
+    }
+
+    public void setLastVersionCount(int lastVersionCount) {
+        this.lastVersionCount = lastVersionCount;
+    }
+
+    public boolean isAutoDownloadEnabled() {
+        return autoDownloadEnabled;
+    }
+
+    public void setAutoDownloadEnabled(boolean autoDownloadEnabled) {
+        this.autoDownloadEnabled = autoDownloadEnabled;
     }
 }

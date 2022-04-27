@@ -43,6 +43,7 @@ import de.k3b.fdroid.v1.domain.Version;
  */
 public abstract class V1UpdateService {
     private final LanguageService languageService;
+    private final RepoRepository repoRepository;
     JsonStreamParser jsonStreamParser = new JsonStreamParser();
     RepoUpdateService repoUpdateService;
 
@@ -51,6 +52,7 @@ public abstract class V1UpdateService {
 
     FixLocaleService fixLocaleService = new FixLocaleService();
 
+    private de.k3b.fdroid.domain.Repo roomRepo;
     private int currentRepoId = 0;
 
     /*
@@ -106,6 +108,7 @@ public abstract class V1UpdateService {
 
         HardwareProfileService hardwareProfileService = new HardwareProfileService(appRepository, hardwareProfileRepository, appHardwareRepository, progressListener);
         versionUpdateService = new VersionUpdateService(appRepository, versionRepository, hardwareProfileService, progressListener);
+        this.repoRepository = repoRepository;
     }
 
     public void readFromJar(InputStream jarInputStream) throws IOException {
@@ -126,6 +129,8 @@ public abstract class V1UpdateService {
     abstract protected String log(String s);
 
     class JsonStreamParser extends FDroidCatalogJsonStreamParserBase {
+        private int lastAppCount=0;
+        private int lastVersionCount=0;
 
         /**
          * Stream event, when something has to be logged
@@ -144,8 +149,10 @@ public abstract class V1UpdateService {
          */
         @Override
         protected void onRepo(Repo v1Repo) {
-            de.k3b.fdroid.domain.Repo roomRepo = repoUpdateService.update(v1Repo);
+            roomRepo = repoUpdateService.update(v1Repo);
             currentRepoId = roomRepo.getId();
+            lastAppCount=0;
+            lastVersionCount=0;
         }
 
         /**
@@ -156,6 +163,8 @@ public abstract class V1UpdateService {
         @Override
         protected void onApp(App v1App) {
             if (v1App != null) {
+                lastAppCount++;
+
                 fixLocaleService.fix(v1App);
                 appUpdateService.update(currentRepoId, v1App);
             }
@@ -169,7 +178,16 @@ public abstract class V1UpdateService {
          */
         @Override
         protected void onVersion(String packageName, Version v1Version) {
+            lastVersionCount++;
             versionUpdateService.updateCollectVersions(currentRepoId, packageName, v1Version);
+        }
+
+        @Override
+        public void readJsonStream(InputStream jsonInputStream) throws IOException {
+            super.readJsonStream(jsonInputStream);
+            roomRepo.setLastAppCount(lastAppCount);
+            roomRepo.setLastVersionCount(lastVersionCount);
+            repoRepository.update(roomRepo);
         }
     }
 }

@@ -32,7 +32,7 @@ public class RepoCommon extends PojoCommon {
     private String name;
     private long timestamp;
     private int version;
-    private long maxage;
+    private int maxage;
     private String icon;
     private String address;
     private String description;
@@ -90,11 +90,11 @@ public class RepoCommon extends PojoCommon {
         this.version = version;
     }
 
-    public long getMaxage() {
+    public int getMaxage() {
         return maxage;
     }
 
-    public void setMaxage(long maxage) {
+    public void setMaxage(int maxage) {
         this.maxage = maxage;
     }
 
