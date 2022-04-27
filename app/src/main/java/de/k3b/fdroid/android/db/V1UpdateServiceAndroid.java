@@ -21,7 +21,6 @@ package de.k3b.fdroid.android.db;
 import android.util.Log;
 
 import de.k3b.fdroid.Global;
-import de.k3b.fdroid.android.repository.AppRepositoryAdapter;
 import de.k3b.fdroid.domain.interfaces.AppCategoryRepository;
 import de.k3b.fdroid.domain.interfaces.AppHardwareRepository;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
@@ -46,13 +45,12 @@ public class V1UpdateServiceAndroid extends V1UpdateService {
     }
 
     public static V1UpdateServiceAndroid create(FDroidDatabase db) {
-        CategoryService categoryService = new CategoryService(db.categoryDao());
-        LanguageService languageService = new LanguageService(db.localeDao());
-        AppRepository appRepository = new AppRepositoryAdapter(db.AppDao());
+        CategoryService categoryService = new CategoryService(db.categoryRepository());
+        LanguageService languageService = new LanguageService(db.localeRepository());
         ProgressListener progressListener = null;
-        return new V1UpdateServiceAndroid(db.repoDao(), appRepository,categoryService,
-                db.appCategoryDao(), db.versionDao(), db.localizedDao(), db.localeDao(),
-                db.hardwareProfileDao(), db.appHardwareDao(), languageService, progressListener){
+        return new V1UpdateServiceAndroid(db.repoRepository(), db.appRepository(),categoryService,
+                db.appCategoryRepository(), db.versionRepository(), db.localizedRepository(), db.localeRepository(),
+                db.hardwareProfileRepository(), db.appHardwareRepository(), languageService, progressListener){
 
         };
 

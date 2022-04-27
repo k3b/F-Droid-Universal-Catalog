@@ -24,7 +24,13 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import de.k3b.fdroid.android.R;
+import de.k3b.fdroid.android.db.FDroidDatabase;
+import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.service.AppWithDetailsPagerService;
+import de.k3b.fdroid.service.adapter.AppRepositoryAdapterImpl;
 
 
 public class AppListActivity extends Activity {
@@ -37,27 +43,23 @@ public class AppListActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        initDataset();
-
         setContentView(R.layout.activity_app_list);
 
         mRecyclerView =  findViewById(R.id.recyclerView);
 
-        mAdapter = new AppListAdapter(mDataset);
+        AppRepository appRepository = FDroidDatabase.getINSTANCE(this).appRepository();
+        String search = "k3b";
+        List<Integer> appIdList = appRepository.findIdsByExpressionSortByScore(search);
+
+        AppWithDetailsPagerService details = new AppWithDetailsPagerService(
+                new AppRepositoryAdapterImpl(appRepository),
+                null, // new LocalizedRepositoryAdapterImpl(localizedRepository),
+                null, null);
+
+        details.init(appIdList, 10);
+
+        mAdapter = new AppListAdapter(details);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
-
     }
-
-    /**
-     * Generates Strings for RecyclerView's adapter. This data would usually come
-     * from a local content provider or remote server.
-     */
-    private void initDataset() {
-        mDataset = new String[DATASET_COUNT];
-        for (int i = 0; i < DATASET_COUNT; i++) {
-            mDataset[i] = "This is element #" + i;
-        }
-    }
-
 }

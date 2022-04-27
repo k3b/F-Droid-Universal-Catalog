@@ -58,7 +58,7 @@ public class V1ImportIntegrationTest {
         db = Room.inMemoryDatabaseBuilder(context, FDroidDatabase.class).build();
 
         importer = V1UpdateServiceAndroid.create(db);
-        repoRepository = db.repoDao();
+        repoRepository = db.repoRepository();
     }
 
     @After

@@ -27,12 +27,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import de.k3b.fdroid.Global;
 import de.k3b.fdroid.android.R;
+import de.k3b.fdroid.service.AppWithDetailsPagerService;
 
 public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
-    private static final String TAG = "CustomAdapter";
+    private static final String TAG = Global.LOG_TAG + "AppList";
 
-    private String[] mDataSet;
+    private AppWithDetailsPagerService details;
 
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
@@ -61,10 +63,9 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     /**
      * Initialize the dataset of the Adapter.
      *
-     * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
      */
-    public AppListAdapter(String[] dataSet) {
-        mDataSet = dataSet;
+    public AppListAdapter(AppWithDetailsPagerService details) {
+        this.details = details;
     }
 
     // Create new views (invoked by the layout manager)
@@ -85,12 +86,12 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
 
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        viewHolder.getTextView().setText(mDataSet[position]);
+        viewHolder.getTextView().setText(details.getName(position));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataSet.length;
+        return details.size();
     }
 }

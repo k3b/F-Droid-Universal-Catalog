@@ -27,6 +27,7 @@ import androidx.room.RoomDatabase;
 import de.k3b.fdroid.android.repository.AppCategoryDao;
 import de.k3b.fdroid.android.repository.AppDao;
 import de.k3b.fdroid.android.repository.AppHardwareDao;
+import de.k3b.fdroid.android.repository.AppRepositoryAdapter;
 import de.k3b.fdroid.android.repository.CategoryDao;
 import de.k3b.fdroid.android.repository.HardwareProfileDao;
 import de.k3b.fdroid.android.repository.LocaleDao;
@@ -42,29 +43,37 @@ import de.k3b.fdroid.domain.Locale;
 import de.k3b.fdroid.domain.Localized;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.Version;
+import de.k3b.fdroid.domain.interfaces.AppRepository;
 
 @Database(version = 1, entities = {App.class, AppCategory.class, Category.class, Locale.class,
         Localized.class, Repo.class, Version.class, AppHardware.class, HardwareProfile.class})
 public abstract class FDroidDatabase extends RoomDatabase {
-    public abstract AppDao AppDao();
-
-    public abstract AppCategoryDao appCategoryDao();
-
-    public abstract CategoryDao categoryDao();
-
-    public abstract LocaleDao localeDao();
-
-    public abstract LocalizedDao localizedDao();
-
-    public abstract RepoDao repoDao();
-
-    public abstract VersionDao versionDao();
-
-    public abstract AppHardwareDao appHardwareDao();
-
-    public abstract HardwareProfileDao hardwareProfileDao();
-
     private static FDroidDatabase INSTANCE = null;
+
+    private AppRepository appRepository = null;
+
+    public AppRepository appRepository() {
+        if (appRepository == null) appRepository = new AppRepositoryAdapter(appDao());
+        return appRepository;
+    }
+
+    public abstract AppDao appDao();
+
+    public abstract AppCategoryDao appCategoryRepository();
+
+    public abstract CategoryDao categoryRepository();
+
+    public abstract LocaleDao localeRepository();
+
+    public abstract LocalizedDao localizedRepository();
+
+    public abstract RepoDao repoRepository();
+
+    public abstract VersionDao versionRepository();
+
+    public abstract AppHardwareDao appHardwareRepository();
+
+    public abstract HardwareProfileDao hardwareProfileRepository();
 
     public static FDroidDatabase getINSTANCE(Context context) {
         if (INSTANCE == null) {
@@ -74,5 +83,6 @@ public abstract class FDroidDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
+
 }
 

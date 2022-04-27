@@ -100,7 +100,7 @@ public class V1CommandService {
         StringBuilder result = new StringBuilder()
                 .append("# Search for '").append(search).append("':\n")
                 .append("PackageName\tName\tSdk\tVersion\tLastUpdated\n");
-        int max = Math.min(appIdList.size(), 40);
+        int max = Math.min(details.size(), 40);
         for (int i = 0; i < max; i++) {
             App app = details.getAppByOffset(i);
             String name = app.getSearchName().split("\\|")[0]; // details.getName(i);

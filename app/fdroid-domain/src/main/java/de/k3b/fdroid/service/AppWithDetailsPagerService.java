@@ -184,4 +184,8 @@ public class AppWithDetailsPagerService {
         }
         return from + 1;
     }
+
+    public int size() {
+        return appIds.length;
+    }
 }
