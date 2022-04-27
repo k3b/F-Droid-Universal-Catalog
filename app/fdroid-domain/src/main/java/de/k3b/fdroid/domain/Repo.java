@@ -149,6 +149,10 @@ public class Repo extends RepoCommon implements ItemWithId {
         }
         return getTimestamp();
     }
+    public String getLastUsedDownloadDateTimeUtcDate() {
+        long l = getLastUsedDownloadDateTimeUtc();
+        return l == 0 ? null : asDateString(l);
+    }
 
     public void setLastUsedDownloadDateTimeUtc(long lastUsedDownloadDateTimeUtc) {
         this.lastUsedDownloadDateTimeUtc = lastUsedDownloadDateTimeUtc;

@@ -53,7 +53,7 @@ dependencies {
     implementation (project(path: ':app:fdroid-v1')) {transitive=false}
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'commons-codec:commons-codec:1.9' // Hex.en/decodeHex
-
+    implementation 'com.samskivert:jmustache:1.15' // https://github.com/samskivert/jmustache to generate html
     implementation 'com.google.android.material:material:1.5.0'
     implementation project(path: ':app:fdroid-repository-android')
     // implementation 'androidx.constraintlayout:constraintlayout:2.1.3'

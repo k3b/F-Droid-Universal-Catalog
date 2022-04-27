@@ -19,6 +19,8 @@
 
 package de.k3b.fdroid.domain.common;
 
+import java.util.Date;
+
 @javax.persistence.MappedSuperclass
 /**
  * Common data for v1-Gson-json and android-room-database-Entities.
@@ -76,6 +78,9 @@ public class RepoCommon extends PojoCommon {
 
     public long getTimestamp() {
         return timestamp;
+    }
+    public String getTimestampDate() {
+        return timestamp == 0 ? null : asDateString(timestamp);
     }
 
     public void setTimestamp(long timestamp) {
