@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
 /*
  * Copyright (c) 2022 by k3b.
  *
@@ -18,24 +16,15 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
+package de.k3b.fdroid.service.adapter;
 
-# messages should be the same:
-# jpa/src/main/resources/messages_en.properties and
-# android/src/main/res/values/strings.xml
+/** small unitility to combine value plus translation resource for {@link de.k3b.fdroid.service.FormatService} */
+public class ValueAndStringTranslations {
+    public final Object v;
+    public final Object t;
 
--->
-
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">FDroid Universal Catalog</string>
-
-    <!-- repo_ -->
-    <string name="label_repo_title">App sources</string>
-    <string name="list_repo" tools:ignore="MissingTranslation"><![CDATA["<h3>{{v.name}}</h3>
-{{v.description}}<br>
-{{v.v1Url}} ({{v.lastAppCount}}) {{v.lastUsedDownloadDateTimeUtcDate}}<br>
-"]]></string>
-
-
-    <!-- from list demo -->
-    <string name="element_text">Element</string>
-</resources>
+    public ValueAndStringTranslations(Object v, Object t) {
+        this.v = v;
+        this.t = t;
+    }
+}

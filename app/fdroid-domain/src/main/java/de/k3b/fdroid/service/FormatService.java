@@ -30,7 +30,7 @@ import com.samskivert.mustache.Template;
 public class FormatService {
     final Template tmpl;
     public FormatService(String template) {
-        tmpl = Mustache.compiler().compile(template);
+        tmpl = Mustache.compiler().escapeHTML(true).compile(template);
     }
 
     public String format(Object values) {

@@ -38,6 +38,7 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.samskivert:jmustache:1.15' // https://github.com/samskivert/jmustache to generate html from template
 
     // jpa entity annotations that are not used by android but must exisit
     implementation 'javax.persistence:javax.persistence-api:2.2'

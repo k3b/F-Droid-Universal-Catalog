@@ -19,6 +19,8 @@
 
 package de.k3b.fdroid.service;
 
+import com.samskivert.mustache.Mustache;
+
 import junit.framework.TestCase;
 
 import de.k3b.fdroid.domain.Repo;
@@ -30,14 +32,30 @@ public class FormatServiceTest extends TestCase {
         FormatService formatService = new FormatService(
                 "Repo: '{{name}}({{lastAppCount}})' {{timestampDate}}");
         Repo repo = TestDataGenerator.fill(new Repo(), 4);
+        repo.setName("name with <html/>");
 
-        assertEquals("Repo: 'name#4(4)' 1970-01-01", formatService.format(repo));
-/*
-        FormatService formatService = new FormatService(
-                "Repo: '{{name}}({{lastAppCount}})' {{timestampDate}}\n" +
-                        "url : {{v1Url}} last {{getLastUsedDownloadDateTimeUtcDate}}");
-
- */
-
+        assertEquals("Repo: 'name with &lt;html/&gt;(4)' 1970-01-01", formatService.format(repo));
     }
+
+    public void testFormatCustom() {
+
+        class CustomType {
+            class CustomTypeMitContext implements Mustache.CustomContext  {
+                @Override
+                public Object get(String name) throws Exception {
+                    return name;
+                }
+            }
+
+            String a = "hello";
+            CustomTypeMitContext s = new CustomTypeMitContext();
+        }
+
+        FormatService formatService = new FormatService(
+                "a = {{a}} s.world = {{s.world}}");
+        CustomType customType = new CustomType();
+
+        assertEquals("a = hello s.world = world", formatService.format(customType));
+    }
+
 }
