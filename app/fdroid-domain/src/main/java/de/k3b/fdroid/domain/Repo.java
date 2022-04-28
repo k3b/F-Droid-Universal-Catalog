@@ -57,11 +57,26 @@ public class Repo extends RepoCommon implements ItemWithId {
 
     private String lastUsedDownloadMirror;
 
+    @androidx.room.ColumnInfo(defaultValue = "0")
     private long lastUsedDownloadDateTimeUtc;
 
+    @androidx.room.ColumnInfo(defaultValue = "0")
     private int lastAppCount;
+
+    @androidx.room.ColumnInfo(defaultValue = "0")
     private int lastVersionCount;
+
+    @androidx.room.ColumnInfo(defaultValue = "0")
     private boolean autoDownloadEnabled;
+
+    public Repo() {
+    }
+
+    @androidx.room.Ignore
+    public Repo(String name, String address) {
+        setName(name);
+        setAddress(address);
+    }
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
@@ -135,6 +150,7 @@ public class Repo extends RepoCommon implements ItemWithId {
 
     public String getV1Url() {
         String server = getLastUsedDownloadMirror();
+        if (server == null) return null;
         StringBuilder url = new StringBuilder().append(server);
         if (!server.endsWith(".jar")) {
             if (!server.endsWith("/")) url.append("/");

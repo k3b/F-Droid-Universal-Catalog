@@ -28,13 +28,20 @@ import de.k3b.fdroid.util.TestDataGenerator;
 
 public class FormatServiceTest extends TestCase {
 
-    public void testFormat() {
+    public void testFormat_allValuesPresent() {
         FormatService formatService = new FormatService(
                 "Repo: '{{name}}({{lastAppCount}})' {{timestampDate}}");
         Repo repo = TestDataGenerator.fill(new Repo(), 4);
         repo.setName("name with <html/>");
 
         assertEquals("Repo: 'name with &lt;html/&gt;(4)' 1970-01-01", formatService.format(repo));
+    }
+    public void testFormat_allValuesNull() {
+        FormatService formatService = new FormatService(
+                "Repo: '{{name}}({{lastAppCount}})' {{timestampDate}}");
+        Repo repo = new Repo();
+
+        assertEquals("Repo: '(0)'", formatService.format(repo));
     }
 
     public void testFormatCustom() {

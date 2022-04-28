@@ -32,9 +32,16 @@ public class RepoCommon extends PojoCommon {
     public static final String V1_JSON_NAME = "index-v1.json";
 
     private String name;
+
+    @androidx.room.ColumnInfo(defaultValue = "0")
     private long timestamp;
+
+    @androidx.room.ColumnInfo(defaultValue = "0")
     private int version;
+
+    @androidx.room.ColumnInfo(defaultValue = "0")
     private int maxage;
+
     private String icon;
     private String address;
     private String description;
