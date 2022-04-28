@@ -19,7 +19,6 @@
 package de.k3b.fdroid.android.view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
@@ -27,6 +26,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -52,18 +52,21 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView textView;
+        private final Button button;
+        Repo repo;
 
         public ViewHolder(View v) {
             super(v);
             // Define click listener for the ViewHolder's View.
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "Element " + getAbsoluteAdapterPosition() + "/"
-                                    + getBindingAdapterPosition() + " clicked.");
-                }
-            });
-            textView = (TextView) v.findViewById(R.id.textView);
+            v.setOnClickListener(v1 -> getActivity(v1).onRepoClick(repo));
+            textView = v.findViewById(R.id.textView);
+            button = v.findViewById(R.id.button);
+            button.setOnClickListener(v1 -> getActivity(v1).onRepoButtonClick(button, repo));
+        }
+
+        private RepoListActivity getActivity(View v1) {
+            RepoListActivity repoListActivity = (RepoListActivity) v1.getContext();
+            return repoListActivity;
         }
 
         public TextView getTextView() {
@@ -98,6 +101,7 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
         Log.d(TAG, "Element " + position + " set.");
 
         Repo repo = details.get(position);
+        viewHolder.repo = repo;
         ValueAndStringTranslations vt = new ValueAndStringTranslations(repo, res);
         String html = formatService.format (vt);
         Spanned spanned;

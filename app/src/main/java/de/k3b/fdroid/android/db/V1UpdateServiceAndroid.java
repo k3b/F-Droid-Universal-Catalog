@@ -36,7 +36,7 @@ import de.k3b.fdroid.v1.service.V1UpdateService;
 
 public class V1UpdateServiceAndroid extends V1UpdateService {
 
-    public static final String TAG = Global.LOG_TAG + "V1Import";
+    public static final String TAG = Global.LOG_TAG_IMPORT;
 
     public V1UpdateServiceAndroid(RepoRepository repoRepository, AppRepository appRepository, CategoryService categoryService, AppCategoryRepository appCategoryRepository, VersionRepository versionRepository, LocalizedRepository localizedRepository, LocaleRepository localeRepository, HardwareProfileRepository hardwareProfileRepository, AppHardwareRepository appHardwareRepository, LanguageService languageService, ProgressListener progressListener) {
         super(repoRepository, appRepository, categoryService, appCategoryRepository,

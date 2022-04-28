@@ -16,15 +16,24 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.service.adapter;
 
-/** small unitility to combine value plus translation resource for {@link de.k3b.fdroid.service.FormatService} */
-public class ValueAndStringTranslations<V> {
-    public final V v;
-    public final Object t;
+package de.k3b.fdroid.android;
 
-    public ValueAndStringTranslations(V v, Object t) {
-        this.v = v;
-        this.t = t;
+import android.content.Context;
+
+import java.io.File;
+
+import de.k3b.fdroid.v1.service.HttpV1JarDownloadService;
+
+public class AndroidServiceFactory {
+    private static File getTempDir(Context context, String subDirName) {
+        // https://stackoverflow.com/questions/3425906/creating-temporary-files-in-android
+        File outputDir = context.getCacheDir();
+        if (subDirName != null) outputDir = new File(outputDir,subDirName);
+        outputDir.mkdirs();
+        return outputDir;
+    }
+    public static HttpV1JarDownloadService getHttpV1JarDownloadService(Context context) {
+        return new HttpV1JarDownloadService(getTempDir(context, "download").getAbsolutePath(), null);
     }
 }

@@ -1,0 +1,18 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="DemoApplication download&amp;import cgeo nightly" type="Application" factoryName="Application">
+    <option name="ALTERNATIVE_JRE_PATH" value="11" />
+    <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+    <option name="MAIN_CLASS_NAME" value="de.k3b.fdroid.v1.DemoApplication" />
+    <module name="F-Droid_Universal_Catalog.app.fdroid-universal-cli" />
+    <option name="PROGRAM_PARAMETERS" value="https://fdroid.cgeo.org/nightly" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="de.k3b.fdroid.v1.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

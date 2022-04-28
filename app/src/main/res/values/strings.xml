@@ -37,4 +37,5 @@
 
     <!-- from list demo -->
     <string name="element_text">Element</string>
+    <string name="download">Download</string>
 </resources>

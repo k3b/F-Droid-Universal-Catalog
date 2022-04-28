@@ -21,6 +21,9 @@ package de.k3b.fdroid.android.view;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.PopupMenu;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,16 +33,14 @@ import java.util.List;
 import de.k3b.fdroid.android.R;
 import de.k3b.fdroid.android.db.FDroidDatabase;
 import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
-import de.k3b.fdroid.service.AppWithDetailsPagerService;
-import de.k3b.fdroid.service.adapter.AppRepositoryAdapterImpl;
 
 
 public class RepoListActivity extends Activity {
     protected RepoListAdapter mAdapter;
     protected RecyclerView mRecyclerView;
     protected RepoRepository repoRepository;
+    private List<Repo> items = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,6 +56,32 @@ public class RepoListActivity extends Activity {
         new RepoAsyncTask().execute();
     }
 
+    public void onRepoClick(Repo repo) {
+        repo.setAutoDownloadEnabled(!repo.isAutoDownloadEnabled());
+        repoRepository.update(repo);
+
+        mRecyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+    public void onRepoButtonClick(View view, final Repo repo) {
+        PopupMenu menu = new PopupMenu(this, view);
+        getMenuInflater().inflate(R.menu.menu_repo_list, menu.getMenu());
+        menu.setOnMenuItemClickListener(menuItem -> onRepoMenuClick(menuItem, repo));
+        menu.show();
+    }
+
+    private boolean onRepoMenuClick(MenuItem menuItem, Repo repo) {
+        switch (menuItem.getItemId()) {
+            case R.id.cmd_download: return onCmdDownload(menuItem, repo);
+
+        }
+        return false;
+    }
+
+    private boolean onCmdDownload(MenuItem menuItem, Repo repo) {
+        return true;
+    }
+
     private class RepoAsyncTask extends AsyncTask<Integer, Integer, List<Repo>> {
         @Override
         protected List<Repo> doInBackground(Integer... params) {
@@ -67,6 +94,7 @@ public class RepoListActivity extends Activity {
             mAdapter = new RepoListAdapter(RepoListActivity.this, repos);
             // Set CustomAdapter as the adapter for RecyclerView.
             mRecyclerView.setAdapter(mAdapter);
+            items = repos;
         }
     }
 }

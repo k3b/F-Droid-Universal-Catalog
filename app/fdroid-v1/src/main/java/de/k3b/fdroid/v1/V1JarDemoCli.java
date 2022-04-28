@@ -47,7 +47,7 @@ public class V1JarDemoCli {
     }
 
     private static void testDownbload() {
-        HttpV1JarDownloadService parser = new HttpV1JarDownloadService("~/.fdroid/downloads");
+        HttpV1JarDownloadService parser = new HttpV1JarDownloadService("~/.fdroid/downloads", null);
 
         // repo.setLastUsedDownloadDateTimeUtc(DateUtils.parseDate("Thu, 21 Apr 2022 17:36:30 GMT").getTime());
 

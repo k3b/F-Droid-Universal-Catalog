@@ -33,8 +33,20 @@ public interface RepoRepository {
     void delete(Repo repo);
 
     Repo findById(Integer repoId);
+    Repo findByName(String name);
 
     Repo findByAddress(String address);
 
     List<Repo> findAll();
+
+    default Repo findCorrespondigRepo(Repo repoFromImport) {
+        Repo repoFromDatabase = null;
+        if (repoFromDatabase == null && repoFromImport.getName() != null) {
+            repoFromDatabase = findByName(repoFromImport.getName());
+        }
+        if (repoFromDatabase == null && repoFromImport.getAddress() != null) {
+            repoFromDatabase = findByAddress(repoFromImport.getAddress());
+        }
+        return repoFromDatabase;
+    }
 }

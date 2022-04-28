@@ -78,7 +78,9 @@ public abstract class FDroidDatabase extends RoomDatabase {
     public static FDroidDatabase getINSTANCE(Context context) {
         if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                    FDroidDatabase.class, "FDroidData.db").build();
+                    FDroidDatabase.class, "FDroidData.db")
+                    .allowMainThreadQueries()
+                    .build();
 
         }
         return INSTANCE;

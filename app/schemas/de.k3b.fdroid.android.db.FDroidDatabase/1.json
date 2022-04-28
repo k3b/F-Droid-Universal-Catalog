@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2bbc90c735b8184e2322d03d4961de1f",
+    "identityHash": "ba39a2799b6109659aa1c91e59c142d7",
     "entities": [
       {
         "tableName": "App",
@@ -477,7 +477,7 @@
       },
       {
         "tableName": "Repo",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `mirrors` TEXT, `jarSigningCertificate` TEXT, `jarSigningCertificateFingerprint` TEXT, `lastUsedDownloadMirror` TEXT, `lastUsedDownloadDateTimeUtc` INTEGER NOT NULL DEFAULT 0, `lastAppCount` INTEGER NOT NULL DEFAULT 0, `lastVersionCount` INTEGER NOT NULL DEFAULT 0, `autoDownloadEnabled` INTEGER NOT NULL DEFAULT 0, `name` TEXT, `timestamp` INTEGER NOT NULL DEFAULT 0, `version` INTEGER NOT NULL DEFAULT 0, `maxage` INTEGER NOT NULL DEFAULT 0, `icon` TEXT, `address` TEXT, `description` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `mirrors` TEXT, `jarSigningCertificate` TEXT, `jarSigningCertificateFingerprint` TEXT, `lastUsedDownloadMirror` TEXT, `lastErrorMessage` TEXT, `lastUsedDownloadDateTimeUtc` INTEGER NOT NULL DEFAULT 0, `lastAppCount` INTEGER NOT NULL DEFAULT 0, `lastVersionCount` INTEGER NOT NULL DEFAULT 0, `autoDownloadEnabled` INTEGER NOT NULL DEFAULT 0, `name` TEXT, `timestamp` INTEGER NOT NULL DEFAULT 0, `version` INTEGER NOT NULL DEFAULT 0, `maxage` INTEGER NOT NULL DEFAULT 0, `icon` TEXT, `address` TEXT, `description` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -506,6 +506,12 @@
           {
             "fieldPath": "lastUsedDownloadMirror",
             "columnName": "lastUsedDownloadMirror",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lastErrorMessage",
+            "columnName": "lastErrorMessage",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -971,7 +977,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2bbc90c735b8184e2322d03d4961de1f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ba39a2799b6109659aa1c91e59c142d7')"
     ]
   }
 }

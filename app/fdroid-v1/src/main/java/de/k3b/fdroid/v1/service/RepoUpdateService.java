@@ -34,8 +34,11 @@ public class RepoUpdateService {
         this.repoRepository = repoRepository;
     }
 
-    public Repo update(de.k3b.fdroid.v1.domain.Repo v1Repo) {
-        Repo roomRepo = repoRepository.findByAddress(v1Repo.getAddress());
+    public Repo update(de.k3b.fdroid.v1.domain.Repo v1Repo, Repo roomRepoOrNull) {
+        Repo roomRepo = roomRepoOrNull;
+        if (roomRepo == null) {
+            roomRepo = repoRepository.findByAddress(v1Repo.getAddress());
+        }
         if (roomRepo == null) {
             roomRepo = new Repo();
             copy(roomRepo, v1Repo);

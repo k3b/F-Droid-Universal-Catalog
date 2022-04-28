@@ -40,15 +40,17 @@ public class V1CommandService {
     private final RepoRepository repoRepository;
     private final AppRepository appRepository;
     private final LocalizedRepository localizedRepository;
+    private final HttpV1JarDownloadService downloadService;
     private final V1UpdateService v1UpdateService;
     private String downloadPath = System.getProperty("user.home") + "/.fdroid/downloads";
 
     public V1CommandService(RepoRepository repoRepository, AppRepository appRepository,
-                            LocalizedRepository localizedRepository, V1UpdateService v1UpdateService,
+                            LocalizedRepository localizedRepository, HttpV1JarDownloadService downloadService, V1UpdateService v1UpdateService,
                             String downloadPath) {
         this.repoRepository = repoRepository;
         this.appRepository = appRepository;
         this.localizedRepository = localizedRepository;
+        this.downloadService = downloadService;
         this.v1UpdateService = v1UpdateService;
         if (downloadPath != null) this.downloadPath = downloadPath.replace("~", System.getProperty("user.home"));
     }
@@ -59,6 +61,8 @@ public class V1CommandService {
         s.append("-f(ind App) {expression} \n");
         s.append("-r(eload reload database from downloaded jars)\n");
         s.append("-d(ir show downloaded jars)\n");
+
+        s.append("http(s)://url download repository from url\n");
 
         return s;
     }
@@ -71,6 +75,8 @@ public class V1CommandService {
             if (arg.startsWith("-f") && i < args.length - 1) {
                 System.out.println(execFind(args[i+1]));
                 i++;
+            } else if (arg.startsWith("http")) {
+                System.out.println(execDownload(arg));
             } else if (arg.startsWith("-r")) {
                 execReloadDbFromDownload();
             } else if (arg.startsWith("-d")) {
@@ -85,6 +91,12 @@ public class V1CommandService {
             }
             i++;
         }
+    }
+
+    private String execDownload(String downloadUrl) {
+        V1DownloadAndImportService downloadService = new V1DownloadAndImportService(repoRepository, this.downloadService, v1UpdateService);
+        Repo repo = downloadService.download(downloadUrl, null);
+        return "";
     }
 
     private String execFind(String search) {
@@ -166,14 +178,14 @@ public class V1CommandService {
 
         InputStream is = new FileInputStream(inputPath);
         if (inputPath.toLowerCase().endsWith(".jar")) {
-            v1UpdateService.readFromJar(is);
+            v1UpdateService.readFromJar(is, null);
         } else {
             v1UpdateService.readJsonStream(is);
         }
     }
 
     private HttpV1JarDownloadService getHttpV1JarDownloadService() {
-        return new HttpV1JarDownloadService(this.downloadPath);
+        return new HttpV1JarDownloadService(this.downloadPath, null);
     }
 
     private void copy(Repo dest, Repo src, long downloadDate) {

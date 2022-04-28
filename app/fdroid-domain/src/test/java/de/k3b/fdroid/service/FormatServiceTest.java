@@ -41,7 +41,7 @@ public class FormatServiceTest extends TestCase {
                 "Repo: '{{name}}({{lastAppCount}})' {{timestampDate}}");
         Repo repo = new Repo();
 
-        assertEquals("Repo: '(0)'", formatService.format(repo));
+        assertEquals("Repo: '(0)' ", formatService.format(repo));
     }
 
     public void testFormat_conditionalValue() {

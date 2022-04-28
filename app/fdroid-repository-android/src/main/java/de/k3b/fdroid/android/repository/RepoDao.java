@@ -48,6 +48,9 @@ public interface RepoDao extends RepoRepository {
     @Query("SELECT * FROM Repo WHERE Repo.id = :repoId")
     Repo findById(Integer repoId);
 
+    @Query("SELECT * FROM Repo WHERE Repo.name = :name")
+    Repo findByName(String name);
+
     @Query("SELECT * FROM Repo WHERE Repo.address = :address")
     Repo findByAddress(String address);
 
@@ -58,6 +61,7 @@ public interface RepoDao extends RepoRepository {
         List<Repo> result = findAllEx();
         if (result.size() == 0) {
             // should be done with Room-Migratoins but the migratons-sql was never called
+            // https://developer.android.com/training/data-storage/room/migrating-db-versions
             Repo fdroid = new Repo("f-droid.org", "https://f-droid.org/repo");
             fdroid.setAutoDownloadEnabled(true);
             add(result,

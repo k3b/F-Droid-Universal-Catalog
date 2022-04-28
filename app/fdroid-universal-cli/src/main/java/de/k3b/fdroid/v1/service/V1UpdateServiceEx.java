@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
+import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.interfaces.AppCategoryRepository;
 import de.k3b.fdroid.domain.interfaces.AppHardwareRepository;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
@@ -39,7 +40,7 @@ import de.k3b.fdroid.service.LanguageService;
 @Service
 @Transactional
 public class V1UpdateServiceEx extends V1UpdateService {
-    private static final Logger log = LoggerFactory.getLogger(V1UpdateServiceEx.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
 
     public V1UpdateServiceEx(RepoRepository repoRepository, AppRepository appRepository,
                              CategoryService categoryService, AppCategoryRepository appCategoryRepository,
@@ -56,6 +57,7 @@ public class V1UpdateServiceEx extends V1UpdateService {
     @Override
     protected String log(String s) {
         System.out.println(s);
+        LOGGER.debug(s);
         return s;
     }
 }

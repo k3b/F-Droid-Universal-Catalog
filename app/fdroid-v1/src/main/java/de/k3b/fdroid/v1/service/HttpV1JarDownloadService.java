@@ -27,8 +27,11 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.client.utils.DateUtils;
 import org.apache.http.impl.client.HttpClients;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedInputStream;
@@ -39,19 +42,28 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
 
+import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.common.RepoCommon;
+import de.k3b.fdroid.domain.interfaces.ProgressListener;
 import de.k3b.fdroid.util.CopyInputStream;
 
 /* download v1-jar while simultaniously checking/updating signature */
 @Service
 public class HttpV1JarDownloadService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
+
     @NonNull
     private final String downloadPath;
+    @Nullable
+    private final ProgressListener progressListener;
     @NonNull
     private Repo repoInDatabase;
 
-    public HttpV1JarDownloadService(@Value("de.k3b.fdroid.downloads:~/.fdroid/downloads") @NonNull String downloadPath) {
+    public HttpV1JarDownloadService(
+            @Value("${de.k3b.fdroid.downloads:~/.fdroid/downloads}") @NonNull String downloadPath,
+            @Nullable ProgressListener progressListener) {
+        this.progressListener = progressListener;
         if (downloadPath == null) throw new NullPointerException();
 
         this.downloadPath = downloadPath.replace("~", System.getProperty("user.home"));
@@ -76,8 +88,9 @@ public class HttpV1JarDownloadService {
     }
 
     public File download(String downloadUrl, long lastModified, @NonNull Repo repo) throws IOException {
-        if (repo == null) throw new NullPointerException();
+        if (repo == null || downloadUrl == null) throw new NullPointerException();
 
+        downloadUrl = Repo.getV1Url(downloadUrl);
         this.repoInDatabase = repo;
         String name = getName(repoInDatabase);
         HttpClient client = HttpClients.custom().build();
@@ -136,7 +149,10 @@ public class HttpV1JarDownloadService {
     }
 
     protected void log(String message) {
+        LOGGER.debug(message);
         System.out.println(message);
+        if (progressListener != null) {
+            progressListener.log(message);
+        }
     }
-
 }

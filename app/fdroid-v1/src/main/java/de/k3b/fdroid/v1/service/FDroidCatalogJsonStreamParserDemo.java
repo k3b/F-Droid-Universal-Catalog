@@ -19,11 +19,15 @@
 
 package de.k3b.fdroid.v1.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Set;
 
+import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.common.PojoCommon;
 import de.k3b.fdroid.v1.domain.App;
 import de.k3b.fdroid.v1.domain.Localized;
@@ -35,6 +39,8 @@ import de.k3b.fdroid.v1.service.util.LocalizedStatistics;
  * json stream praser demo für FDroid.org index v1 format that logs found data to the console.
  */
 public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamParserBase {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
+
     FixLocaleService fixLocaleService = new FixLocaleService();
 
     private final StringBuilder appWithNoLocale = new StringBuilder();
@@ -46,6 +52,7 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
     @Override
     protected String log(String s) {
         System.out.println(s);
+        LOGGER.info(s);
         return s;
     }
 

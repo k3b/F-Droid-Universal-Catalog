@@ -37,6 +37,19 @@ public class StringUtilTest {
     }
 
     @Test
+    public void testReplaceEmptyString() {
+        assertEquals("null", null, StringUtil.replaceEmpty(null,null));
+        assertEquals("replaced", "replaced", StringUtil.replaceEmpty(null,"replaced"));
+        assertEquals("not-replaced", "not-replaced", StringUtil.replaceEmpty("not-replaced","replaced"));
+    }
+
+    @Test
+    public void testReplaceEmptyLong() {
+        assertEquals("replaced", 22, StringUtil.replaceEmpty(0,22));
+        assertEquals("not-replaced", 11, StringUtil.replaceEmpty(11,22));
+    }
+
+    @Test
     public void isEmptyString() {
         assertEquals("null", true, StringUtil.isEmpty((String) null));
         assertEquals("", true, StringUtil.isEmpty(""));

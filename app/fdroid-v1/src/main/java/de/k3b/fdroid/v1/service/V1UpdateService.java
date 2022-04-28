@@ -42,7 +42,6 @@ import de.k3b.fdroid.v1.domain.Version;
  * update android-room-database from fdroid-v1-rest-gson data
  */
 public abstract class V1UpdateService {
-    private final LanguageService languageService;
     private final RepoRepository repoRepository;
     JsonStreamParser jsonStreamParser = new JsonStreamParser();
     RepoUpdateService repoUpdateService;
@@ -97,7 +96,6 @@ public abstract class V1UpdateService {
                            AppHardwareRepository appHardwareRepository,
                            LanguageService languageService,
                            ProgressListener progressListener) {
-        this.languageService = languageService;
         repoUpdateService = new RepoUpdateService(repoRepository);
 
         AppCategoryUpdateService appCategoryUpdateService = new AppCategoryUpdateService(
@@ -111,7 +109,8 @@ public abstract class V1UpdateService {
         this.repoRepository = repoRepository;
     }
 
-    public void readFromJar(InputStream jarInputStream) throws IOException {
+    public void readFromJar(InputStream jarInputStream, de.k3b.fdroid.domain.Repo existingRepoOrNull) throws IOException {
+        roomRepo = existingRepoOrNull;
         init();
         jsonStreamParser.readFromJar(jarInputStream);
     }
@@ -126,6 +125,13 @@ public abstract class V1UpdateService {
         versionUpdateService.init();
     }
 
+    public void save(de.k3b.fdroid.domain.Repo repo) {
+        if (repo.getId() == 0) {
+            repoRepository.insert(repo);
+        } else {
+            repoRepository.update(repo);
+        }
+    }
     abstract protected String log(String s);
 
     class JsonStreamParser extends FDroidCatalogJsonStreamParserBase {
@@ -149,7 +155,7 @@ public abstract class V1UpdateService {
          */
         @Override
         protected void onRepo(Repo v1Repo) {
-            roomRepo = repoUpdateService.update(v1Repo);
+            roomRepo = repoUpdateService.update(v1Repo, roomRepo);
             currentRepoId = roomRepo.getId();
             lastAppCount=0;
             lastVersionCount=0;
@@ -187,7 +193,7 @@ public abstract class V1UpdateService {
             super.readJsonStream(jsonInputStream);
             roomRepo.setLastAppCount(lastAppCount);
             roomRepo.setLastVersionCount(lastVersionCount);
-            repoRepository.update(roomRepo);
+            save(roomRepo);
         }
     }
 }

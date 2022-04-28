@@ -33,6 +33,9 @@ import de.k3b.fdroid.util.StringUtil;
  * https://apt.izzysoft.de/fdroid/repo/index-v1.jar
  * https://f-droid.org/repo/index-v1.jar
  * https://f-droid.org/archive/index-v1.jar
+ *
+ * https://fdroid.cgeo.org/
+ * https://fdroid.cgeo.org/nightly/index-v1.jar with wrong repo.address
  */
 @androidx.room.Entity(indices = {@androidx.room.Index("id")})
 @javax.persistence.Entity
@@ -56,6 +59,8 @@ public class Repo extends RepoCommon implements ItemWithId {
     private String jarSigningCertificateFingerprint;
 
     private String lastUsedDownloadMirror;
+
+    private String lastErrorMessage;
 
     @androidx.room.ColumnInfo(defaultValue = "0")
     private long lastUsedDownloadDateTimeUtc;
@@ -81,6 +86,7 @@ public class Repo extends RepoCommon implements ItemWithId {
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         toStringBuilder(sb, "autoDownloadEnabled", this.autoDownloadEnabled);
+        toStringBuilder(sb, "lastErrorMessage", this.lastErrorMessage);
         super.toStringBuilder(sb);
         toStringBuilder(sb, "mirrors", this.mirrors);
         toDateStringBuilder(sb, "lastUsedDownloadDateTimeUtc", this.lastUsedDownloadDateTimeUtc);
@@ -150,6 +156,10 @@ public class Repo extends RepoCommon implements ItemWithId {
 
     public String getV1Url() {
         String server = getLastUsedDownloadMirror();
+        return getV1Url(server);
+    }
+
+    public static String getV1Url(String server) {
         if (server == null) return null;
         StringBuilder url = new StringBuilder().append(server);
         if (!server.endsWith(".jar")) {
@@ -196,5 +206,13 @@ public class Repo extends RepoCommon implements ItemWithId {
 
     public void setAutoDownloadEnabled(boolean autoDownloadEnabled) {
         this.autoDownloadEnabled = autoDownloadEnabled;
+    }
+
+    public String getLastErrorMessage() {
+        return lastErrorMessage;
+    }
+
+    public void setLastErrorMessage(String lastErrorMessage) {
+        this.lastErrorMessage = lastErrorMessage;
     }
 }

@@ -37,6 +37,11 @@ public class RepoRepositoryAdapter extends RepositoryAdapterBase<Repo, RepoRepos
     }
 
     @Override
+    public Repo findByName(String name) {
+        return jpa.findByName(name);
+    }
+
+    @Override
     public Repo findByAddress(String address) {
         return jpa.findByAddress(address);
     }

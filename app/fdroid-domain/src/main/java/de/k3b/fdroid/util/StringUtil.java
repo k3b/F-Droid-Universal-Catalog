@@ -37,6 +37,23 @@ public class StringUtil {
         return s == 0;
     }
 
+    public static String replaceEmpty(String newValue, String emptyValueReplacement) {
+        if (StringUtil.isEmpty(newValue)) return emptyValueReplacement;
+        return newValue;
+    }
+
+    public static long replaceEmpty(long newValue, long emptyValueReplacement) {
+        // do not overwrite existing value
+        if (StringUtil.isEmpty(newValue)) return emptyValueReplacement;
+        return newValue;
+    }
+
+    public static boolean replaceEmpty(boolean newValue, boolean emptyValueReplacement) {
+        // do not overwrite existing value
+        if (!newValue) return emptyValueReplacement;
+        return newValue;
+    }
+
     public static boolean contains(String search, String[] itemArray) {
         for (String item : itemArray) {
             if (search.equalsIgnoreCase(item)) return true;

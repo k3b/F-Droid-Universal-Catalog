@@ -38,7 +38,7 @@ import de.k3b.fdroid.util.StringUtil;
 import de.k3b.fdroid.v1.service.V1JarException;
 
 public class JarUtilities {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG + JarUtilities.class.getName());
+    private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_UTIL);
 
     private static final String ERR_CERTIFICATE_SIGNERS_COUNT = "More than one code certificate signers are not allowed!";
     private static final String ERR_CERTIFICATE_COUNT = "More than one code signing certificates are not allowed!";

@@ -45,6 +45,7 @@ import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.jpa.repository.testcase.TestEntity;
 import de.k3b.fdroid.jpa.repository.testcase.TestRepositoryJpa;
+import de.k3b.fdroid.v1.service.HttpV1JarDownloadService;
 import de.k3b.fdroid.v1.service.V1CommandService;
 import de.k3b.fdroid.v1.service.V1UpdateServiceEx;
 
@@ -71,7 +72,8 @@ public class DemoApplication {
 	@Autowired private RepoRepository repoRepository;
 	@Autowired private AppRepository appRepository;
 	@Autowired private LocalizedRepository localizedRepository;
-	@Autowired private V1UpdateServiceEx importer;
+	@Autowired private V1UpdateServiceEx importService;
+	@Autowired private HttpV1JarDownloadService downloadService;
 
 	// example commandline parameters
 	// F-Droid_Archive-index-v1.jar reload archive
@@ -131,7 +133,7 @@ public class DemoApplication {
 		System.out.println("Using jdbc " + jdbc);
 		return (args) -> {
 			V1CommandService commandService = new V1CommandService(
-					repoRepository, appRepository, localizedRepository, importer, downloadPath);
+					repoRepository, appRepository, localizedRepository, downloadService, importService, downloadPath);
 			commandService.exec(args);
 		};
 	}
@@ -142,7 +144,7 @@ public class DemoApplication {
 //			inputPath = "/home/EVE/StudioProjects/FDroid/app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.small.json";
 		InputStream is = new FileInputStream(inputPath);
 		if (inputPath.toLowerCase().endsWith(".jar")) {
-			importer.readFromJar(is);
+			importer.readFromJar(is, null);
 		} else {
 			importer.readJsonStream(is);
 		}

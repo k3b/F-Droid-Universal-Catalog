@@ -26,6 +26,10 @@ import com.samskivert.mustache.Template;
  * See https://github.com/samskivert/jmustache
  *
  * This is an abstraction from the JMustache implementation.
+ *
+ * For android specific textview:
+ * * https://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
+ * * https://stackoverflow.com/questions/9754076/which-html-tags-are-supported-by-android-textview
  */
 public class FormatService {
     final Template tmpl;

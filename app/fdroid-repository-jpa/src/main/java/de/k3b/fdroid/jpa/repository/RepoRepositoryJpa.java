@@ -32,5 +32,7 @@ import de.k3b.fdroid.domain.Repo;
 @Repository
 public interface RepoRepositoryJpa extends CrudRepository<Repo, Integer> {
     Repo findByAddress(String address);
+
+    Repo findByName(String name);
 }
 
