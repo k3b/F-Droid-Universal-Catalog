@@ -23,6 +23,9 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -31,6 +34,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 import java.util.zip.ZipEntry;
 
+import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.common.RepoCommon;
 import de.k3b.fdroid.v1.domain.App;
 import de.k3b.fdroid.v1.domain.Repo;
@@ -43,16 +47,21 @@ import de.k3b.fdroid.v1.domain.Version;
  * {@link #onRepo(Repo)}, {@link #onApp(App)}, {@link #onVersion(String, Version)}
  */
 public abstract class FDroidCatalogJsonStreamParserBase {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
+    public static String charsetName = "UTF-8";
 
     /**
      * parse the FDroid-Catalog-v1-Json into a stream of calls to consuming
      * {@link #onRepo(Repo)}, {@link #onApp(App)}, {@link #onVersion(String, Version)}
+     *
      * @param jsonInputStream uncompressed Json inputstream
      * @throws IOException if there are errors jsonInputStream the JSON inputstream
      */
     public void readJsonStream(InputStream jsonInputStream) throws IOException {
+        if (jsonInputStream == null) throw new NullPointerException();
+
         // StandardCharsets.UTF_8=Charset.forName("UTF-8") not supported by api-14
-        Charset utf8 = Charset.forName("UTF-8"); // StandardCharsets.UTF_8;
+        Charset utf8 = Charset.forName(charsetName); // StandardCharsets.UTF_8;
         try (JsonReader reader = new JsonReader(new InputStreamReader(jsonInputStream, utf8))) {
 
             Gson gson = new Gson();
@@ -68,6 +77,8 @@ public abstract class FDroidCatalogJsonStreamParserBase {
     }
 
     public void readFromJar(InputStream jarInputStream) throws IOException {
+        if (jarInputStream == null) throw new NullPointerException();
+
         try (JarInputStream zipInputStream = new JarInputStream(jarInputStream)) {
             ZipEntry entry;
             while (null != (entry = zipInputStream.getNextEntry())) {
