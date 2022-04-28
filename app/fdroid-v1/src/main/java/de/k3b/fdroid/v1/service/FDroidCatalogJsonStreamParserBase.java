@@ -93,15 +93,14 @@ public abstract class FDroidCatalogJsonStreamParserBase {
 
     /**
      * called after json reading of jar was completed. can be used to verify signature.
-     *
-     * @param zipInputStream
      */
     protected void afterJsonJarRead(JarEntry zipInputStream) {
     }
 
     private void readNameValue(Gson gson, JsonReader reader) throws IOException {
         String name = reader.nextName();
-        log("readObject(" + name + ")");
+        LOGGER.debug("readObject(" + name + ")");
+
         switch (name) {
             case "repo":
                 Repo repo = gson.fromJson(reader, Repo.class);
@@ -159,42 +158,50 @@ public abstract class FDroidCatalogJsonStreamParserBase {
         onApp(null);
     }
 
-    private String debug(JsonReader reader) throws IOException {
+    private void debug(JsonReader reader) throws IOException {
         JsonToken token = reader.peek();
         switch (token) {
             case BEGIN_ARRAY:
                 reader.beginArray();
-                return log("" + token);
+                LOGGER.debug("" + token);
+                break;
             case END_ARRAY:
                 reader.endArray();
-                return log("" + token);
+                LOGGER.debug("" + token);
+                break;
             case BEGIN_OBJECT:
                 reader.beginObject();
-                return log("" + token);
+                LOGGER.debug("" + token);
+                break;
             case END_OBJECT:
                 reader.endObject();
-                return log("" + token);
+                LOGGER.debug("" + token);
+                break;
             case NAME:
                 String name = reader.nextName();
-                return log("NAME(" + name +")" );
+                LOGGER.debug("NAME(" + name + ")");
+                break;
             case STRING:
                 String s = reader.nextString();
-                return log("STRING(" + s +")" );
+                LOGGER.debug("STRING(" + s + ")");
+                break;
             case NUMBER:
                 String n = reader.nextString();
-                return log("NUMBER(" + n +")" );
+                LOGGER.debug("NUMBER(" + n + ")");
+                break;
             case BOOLEAN:
                 boolean b = reader.nextBoolean();
-                return log("BOOLEAN(" + b +")" );
+                LOGGER.debug("BOOLEAN(" + b + ")");
+                break;
             case NULL:
                 reader.nextNull();
-                return log("" + token);
+                LOGGER.debug("" + token);
+                break;
             case END_DOCUMENT:
                 reader.endObject();
-                return log("" + token);
-                // return;
+                LOGGER.debug("" + token);
+                break;
         }
-        return "";
     }
 
     /** Stream event, when something has to be logged */
