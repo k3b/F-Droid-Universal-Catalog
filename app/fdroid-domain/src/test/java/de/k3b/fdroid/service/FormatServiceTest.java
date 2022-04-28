@@ -28,7 +28,7 @@ import de.k3b.fdroid.util.TestDataGenerator;
 
 public class FormatServiceTest extends TestCase {
 
-    public void testFormat_allValuesPresent() {
+    public void testFormat_allValuesPresentWithHtmlEscape() {
         FormatService formatService = new FormatService(
                 "Repo: '{{name}}({{lastAppCount}})' {{timestampDate}}");
         Repo repo = TestDataGenerator.fill(new Repo(), 4);
@@ -42,6 +42,18 @@ public class FormatServiceTest extends TestCase {
         Repo repo = new Repo();
 
         assertEquals("Repo: '(0)'", formatService.format(repo));
+    }
+
+    public void testFormat_conditionalValue() {
+        FormatService formatService = new FormatService(
+                "<h3 {{#autoDownloadEnabled}}style='background-color:lime;'{{/autoDownloadEnabled}}>{{name}}</h3>");
+        Repo repo = new Repo("My Name","");
+
+        repo.setAutoDownloadEnabled(true);
+        assertEquals("<h3 style='background-color:lime;'>My Name</h3>", formatService.format(repo));
+
+        repo.setAutoDownloadEnabled(false);
+        assertEquals("<h3 >My Name</h3>", formatService.format(repo));
     }
 
     public void testFormatCustom() {

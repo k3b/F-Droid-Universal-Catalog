@@ -18,23 +18,19 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-
-# messages should be the same:
-# jpa/src/main/resources/messages_en.properties and
-# android/src/main/res/values/strings.xml
-
 -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">FDroid Universal Catalog</string>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:layout_marginLeft="@dimen/margin_medium"
+    android:layout_marginRight="@dimen/margin_medium"
+    android:gravity="center_vertical">
 
-    <!-- repo_ -->
-    <string name="label_repo_title">App sources</string>
-    <string name="list_repo" tools:ignore="MissingTranslation"><![CDATA["<h3 {{#v.autoDownloadEnabled}}style='background-color:lime;'{{/v.autoDownloadEnabled}}>{{v.name}}</h3>
-{{v.description}}<br>
-{{v.v1Url}} ({{v.lastAppCount}}) {{v.lastUsedDownloadDateTimeUtcDate}}<br>
-"]]></string>
-
-    <!-- from list demo -->
-    <string name="element_text">Element</string>
-</resources>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="5"
+        android:text="@string/element_text"/>
+</FrameLayout>

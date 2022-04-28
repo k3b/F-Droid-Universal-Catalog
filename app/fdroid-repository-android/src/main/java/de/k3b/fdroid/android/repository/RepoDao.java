@@ -52,5 +52,29 @@ public interface RepoDao extends RepoRepository {
     Repo findByAddress(String address);
 
     @Query("SELECT * FROM Repo")
-    List<Repo> findAll();
+    List<Repo> findAllEx();
+
+    default List<Repo> findAll() {
+        List<Repo> result = findAllEx();
+        if (result.size() == 0) {
+            // should be done with Room-Migratoins but the migratons-sql was never called
+            Repo fdroid = new Repo("f-droid.org", "https://f-droid.org/repo");
+            fdroid.setAutoDownloadEnabled(true);
+            add(result,
+                    fdroid,
+                    new Repo("apt.izzysoft.de","https://apt.izzysoft.de/fdroid/repo"),
+                    new Repo("f-droid.org/archive","https://f-droid.org/archive"),
+                    new Repo("guardianproject.info","https://guardianproject.info/fdroid/repo")
+                    );
+        }
+        return result;
+    }
+
+    default void add(List<Repo> result, Repo... repos) {
+        for(Repo repo : repos) {
+            result.add(repo);
+            insert(repo);
+        }
+    }
+
 }

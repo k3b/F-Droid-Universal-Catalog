@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 /*
  * Copyright (c) 2022 by k3b.
@@ -19,22 +19,18 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-# messages should be the same:
-# jpa/src/main/resources/messages_en.properties and
-# android/src/main/res/values/strings.xml
-
 -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/sample_main_layout">
 
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <string name="app_name">FDroid Universal Catalog</string>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-    <!-- repo_ -->
-    <string name="label_repo_title">App sources</string>
-    <string name="list_repo" tools:ignore="MissingTranslation"><![CDATA["<h3 {{#v.autoDownloadEnabled}}style='background-color:lime;'{{/v.autoDownloadEnabled}}>{{v.name}}</h3>
-{{v.description}}<br>
-{{v.v1Url}} ({{v.lastAppCount}}) {{v.lastUsedDownloadDateTimeUtcDate}}<br>
-"]]></string>
-
-    <!-- from list demo -->
-    <string name="element_text">Element</string>
-</resources>
+</LinearLayout>

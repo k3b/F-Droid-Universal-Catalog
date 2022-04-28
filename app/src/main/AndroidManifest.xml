@@ -7,10 +7,15 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.FDroidUniversalCatalog" >
+        android:theme="@style/Theme.App.Light" >
 
         <activity android:name=".view.AppListActivity"
             android:label="@string/app_name"
+            android:exported="true">
+        </activity>
+
+        <activity android:name=".view.RepoListActivity"
+            android:label="@string/label_repo_title"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
