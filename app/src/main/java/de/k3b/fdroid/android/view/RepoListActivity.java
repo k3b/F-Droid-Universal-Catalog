@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import de.k3b.fdroid.android.FDroidApplicaton;
 import de.k3b.fdroid.android.R;
 import de.k3b.fdroid.android.db.FDroidDatabase;
 import de.k3b.fdroid.domain.Repo;
@@ -49,11 +50,21 @@ public class RepoListActivity extends Activity {
         setContentView(R.layout.activity_repo_list);
         setTitle(R.string.label_repo_title);
 
-        mRecyclerView =  findViewById(R.id.recyclerView);
+        mRecyclerView = findViewById(R.id.recyclerView);
 
         repoRepository = FDroidDatabase.getINSTANCE(this).repoRepository();
 
-        new RepoAsyncTask().execute();
+        FDroidApplicaton.executor.execute(() -> {
+            List<Repo> repos = repoRepository.findAll();
+
+            runOnUiThread(() -> {
+                mAdapter = new RepoListAdapter(RepoListActivity.this, repos);
+                // Set CustomAdapter as the adapter for RecyclerView.
+                mRecyclerView.setAdapter(mAdapter);
+                items = repos;
+
+            });
+        });
     }
 
     public void onRepoClick(Repo repo) {
@@ -80,21 +91,5 @@ public class RepoListActivity extends Activity {
 
     private boolean onCmdDownload(MenuItem menuItem, Repo repo) {
         return true;
-    }
-
-    private class RepoAsyncTask extends AsyncTask<Integer, Integer, List<Repo>> {
-        @Override
-        protected List<Repo> doInBackground(Integer... params) {
-            return repoRepository.findAll();
-        }
-
-        @Override
-        protected void onPostExecute(List<Repo> repos) {
-            super.onPostExecute(repos);
-            mAdapter = new RepoListAdapter(RepoListActivity.this, repos);
-            // Set CustomAdapter as the adapter for RecyclerView.
-            mRecyclerView.setAdapter(mAdapter);
-            items = repos;
-        }
     }
 }
