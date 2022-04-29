@@ -31,6 +31,7 @@ public class AppRepositoryJpaImpl implements AppRepositoryFindIdsByExpression {
     @Autowired
     private EntityManager entityManager;
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Integer> findIdsByExpressionSortByScore(String searchText) {
         StringBuilder sql = new StringBuilder().append("select id from (select\n" +
@@ -58,6 +59,7 @@ public class AppRepositoryJpaImpl implements AppRepositoryFindIdsByExpression {
             index++;
         }
 
+        //noinspection unchecked
         return (List<Integer>) nativeQuery.getResultList();
     }
 }

@@ -23,12 +23,13 @@ public class TestRepositoryJpaImpl implements CustomerRepositoryCustomAbc {
     public TestRepositoryJpaImpl() {
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Integer> findByAVeryComplicatedQuery(String searchText) {
-        Object result = entityManager
+        //noinspection unchecked
+        return (List<Integer>) entityManager
                 .createNativeQuery("select id from TestEntity where name like :search ")
                 .setParameter("search", "%" + searchText + "%")
                 .getResultList();
-        return (List<Integer>) result;
     }
 }

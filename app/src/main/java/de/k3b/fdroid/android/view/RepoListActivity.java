@@ -19,7 +19,6 @@
 package de.k3b.fdroid.android.view;
 
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -70,8 +69,10 @@ public class RepoListActivity extends Activity {
     public void onRepoClick(Repo repo) {
         repo.setAutoDownloadEnabled(!repo.isAutoDownloadEnabled());
         repoRepository.update(repo);
+        int position = items.indexOf(repo);
 
-        mRecyclerView.getAdapter().notifyDataSetChanged();
+        RecyclerView.Adapter<?> adapter = mRecyclerView.getAdapter();
+        if (adapter != null) adapter.notifyItemChanged(position);
     }
 
     public void onRepoButtonClick(View view, final Repo repo) {
@@ -82,9 +83,8 @@ public class RepoListActivity extends Activity {
     }
 
     private boolean onRepoMenuClick(MenuItem menuItem, Repo repo) {
-        switch (menuItem.getItemId()) {
-            case R.id.cmd_download: return onCmdDownload(menuItem, repo);
-
+        if (menuItem.getItemId() == R.id.cmd_download) {
+            return onCmdDownload(menuItem, repo);
         }
         return false;
     }

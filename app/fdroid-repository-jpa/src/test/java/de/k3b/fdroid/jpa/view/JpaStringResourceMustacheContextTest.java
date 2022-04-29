@@ -44,7 +44,7 @@ public class JpaStringResourceMustacheContextTest {
 
     @Test
     public void translateContextString() {
-        ValueAndStringTranslations vt = new ValueAndStringTranslations("World", translator);
+        ValueAndStringTranslations<String> vt = new ValueAndStringTranslations<>("World", translator);
 
         FormatService formatService = new FormatService(
                 "Hello '{{v}}' from {{t.app_name}}");
@@ -55,8 +55,8 @@ public class JpaStringResourceMustacheContextTest {
 
     @Test
     public void repoText() throws Exception {
-        Repo repo = TestDataGenerator.fill(new Repo(),4);
-        ValueAndStringTranslations vt = new ValueAndStringTranslations(repo, translator);
+        Repo repo = TestDataGenerator.fill(new Repo(), 4);
+        ValueAndStringTranslations<Repo> vt = new ValueAndStringTranslations<>(repo, translator);
 
         String template = (String) translator.get("list_repo");
         FormatService formatService = new FormatService(template);

@@ -19,8 +19,6 @@
 package de.k3b.fdroid.android.view;
 
 import android.content.Context;
-import android.os.Build;
-import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,6 +34,7 @@ import java.util.List;
 
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.android.R;
+import de.k3b.fdroid.android.util.Compat;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.service.FormatService;
 import de.k3b.fdroid.service.adapter.ValueAndStringTranslations;
@@ -45,7 +44,46 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
 
     private final AndroidStringResourceMustacheContext res;
     private final FormatService formatService;
-    private List<Repo> details;
+    private final List<Repo> details;
+
+    /**
+     * Initialize the dataset of the Adapter.
+     */
+    public RepoListAdapter(Context context, List<Repo> details) {
+        this.details = details;
+        res = new AndroidStringResourceMustacheContext(context);
+        formatService = new FormatService(context.getString(R.string.list_repo));
+    }
+
+    // Replace the contents of a view (invoked by the layout manager)
+    @Override
+    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+        Log.d(TAG, "Element " + position + " set.");
+
+        Repo repo = details.get(position);
+        viewHolder.repo = repo;
+        ValueAndStringTranslations<Repo> vt = new ValueAndStringTranslations<>(repo, res);
+        String html = formatService.format(vt);
+        Spanned spanned = Compat.fromHtml(html);
+        viewHolder.getTextView().setText(spanned);
+
+        // workaround: android Html.fromHtml(...) does not support BackgroundColor
+        // TODO how to do this with themes ?
+        int color = repo.isAutoDownloadEnabled() ? R.color.lime : R.color.white;
+        viewHolder.getTextView().setBackgroundResource(color);
+
+    }
+
+    // Create new views (invoked by the layout manager)
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        // Create a new view.
+        View v = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.repo_row_item, viewGroup, false);
+
+        return new ViewHolder(v);
+    }
 
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
@@ -65,58 +103,12 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
         }
 
         private RepoListActivity getActivity(View v1) {
-            RepoListActivity repoListActivity = (RepoListActivity) v1.getContext();
-            return repoListActivity;
+            return (RepoListActivity) v1.getContext();
         }
 
         public TextView getTextView() {
             return textView;
         }
-    }
-
-    /**
-     * Initialize the dataset of the Adapter.
-     *
-     */
-    public RepoListAdapter(Context context, List<Repo> details) {
-        this.details = details;
-        res = new AndroidStringResourceMustacheContext(context);
-        formatService = new FormatService(context.getString(R.string.list_repo));
-    }
-
-    // Create new views (invoked by the layout manager)
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        // Create a new view.
-        View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.repo_row_item, viewGroup, false);
-
-        return new ViewHolder(v);
-    }
-
-    // Replace the contents of a view (invoked by the layout manager)
-    @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        Log.d(TAG, "Element " + position + " set.");
-
-        Repo repo = details.get(position);
-        viewHolder.repo = repo;
-        ValueAndStringTranslations vt = new ValueAndStringTranslations(repo, res);
-        String html = formatService.format (vt);
-        Spanned spanned;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            spanned = Html.fromHtml(html, Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE);
-        } else {
-            spanned = Html.fromHtml(html);
-        }
-        viewHolder.getTextView().setText(spanned);
-
-        // workaround: android Html.fromHtml(...) does not support BackgroundColor
-        // TODO how to do this with themes ?
-        int color = repo.isAutoDownloadEnabled() ? R.color.lime : R.color.white;
-        viewHolder.getTextView().setBackgroundResource(color);
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)
