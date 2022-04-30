@@ -69,9 +69,12 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
 
         // workaround: android Html.fromHtml(...) does not support BackgroundColor
         // TODO how to do this with themes ?
-        int color = repo.isAutoDownloadEnabled() ? R.color.lime : R.color.white;
+        int color = repo.getDownloadTaskId() != null
+                ? R.color.purple_200 :
+                (repo.isAutoDownloadEnabled() ?
+                        R.color.lime :
+                        R.color.white);
         viewHolder.getTextView().setBackgroundResource(color);
-
     }
 
     // Create new views (invoked by the layout manager)

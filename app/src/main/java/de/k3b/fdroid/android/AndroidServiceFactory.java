@@ -23,17 +23,52 @@ import android.content.Context;
 
 import java.io.File;
 
+import de.k3b.fdroid.android.db.FDroidDatabase;
+import de.k3b.fdroid.android.db.V1UpdateServiceAndroid;
 import de.k3b.fdroid.v1.service.HttpV1JarDownloadService;
+import de.k3b.fdroid.v1.service.V1DownloadAndImportService;
+import de.k3b.fdroid.v1.service.V1UpdateService;
 
 public class AndroidServiceFactory {
-    private static File getTempDir(Context context, String subDirName) {
+    private static AndroidServiceFactory INSTANCE = null;
+    private final Context context;
+    private final FDroidDatabase database;
+
+    private V1DownloadAndImportService v1DownloadAndImportService = null;
+
+    private AndroidServiceFactory(Context context) {
+        this.context = context;
+        this.database = FDroidDatabase.getINSTANCE(context);
+    }
+
+    public static AndroidServiceFactory getINSTANCE(Context context) {
+        if (INSTANCE == null) {
+            INSTANCE = new AndroidServiceFactory(context);
+        }
+        return INSTANCE;
+    }
+
+    private File getTempDir(String subDirName) {
         // https://stackoverflow.com/questions/3425906/creating-temporary-files-in-android
         File outputDir = context.getCacheDir();
-        if (subDirName != null) outputDir = new File(outputDir,subDirName);
+        if (subDirName != null) outputDir = new File(outputDir, subDirName);
         outputDir.mkdirs();
         return outputDir;
     }
-    public static HttpV1JarDownloadService getHttpV1JarDownloadService(Context context) {
-        return new HttpV1JarDownloadService(getTempDir(context, "download").getAbsolutePath(), null);
+
+    public V1DownloadAndImportService getV1DownloadAndImportService() {
+        if (v1DownloadAndImportService == null) {
+            v1DownloadAndImportService = new V1DownloadAndImportService(
+                    database.repoRepository(), getHttpV1JarDownloadService(), getV1UpdateService());
+        }
+        return v1DownloadAndImportService;
+    }
+
+    private V1UpdateService getV1UpdateService() {
+        return V1UpdateServiceAndroid.create(database);
+    }
+
+    private HttpV1JarDownloadService getHttpV1JarDownloadService() {
+        return new HttpV1JarDownloadService(getTempDir("download").getAbsolutePath(), null);
     }
 }

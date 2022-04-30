@@ -29,11 +29,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import de.k3b.fdroid.android.AndroidServiceFactory;
 import de.k3b.fdroid.android.FDroidApplicaton;
 import de.k3b.fdroid.android.R;
 import de.k3b.fdroid.android.db.FDroidDatabase;
+import de.k3b.fdroid.android.service.ImportV1AndroidWorker;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
+import de.k3b.fdroid.v1.service.V1DownloadAndImportService;
 
 
 public class RepoListActivity extends Activity {
@@ -90,6 +93,7 @@ public class RepoListActivity extends Activity {
     }
 
     private boolean onCmdDownload(MenuItem menuItem, Repo repo) {
+        ImportV1AndroidWorker.scheduleDownload(this, repo.getId());
         return true;
     }
 }

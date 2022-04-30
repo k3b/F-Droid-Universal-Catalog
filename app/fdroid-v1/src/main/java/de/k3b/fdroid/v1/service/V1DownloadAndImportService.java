@@ -49,23 +49,60 @@ public class V1DownloadAndImportService {
     }
 
     /**
-     * @param downloadUrl where data comes from
+     * @throws V1JarException if security relevant properties differ
+     */
+    public static Repo copy(Repo dest, Repo src) throws V1JarException {
+        dest.setJarSigningCertificate(replaceEmptySecure(
+                src.getJarSigningCertificate(), dest.getJarSigningCertificate(), "jarSigningCertificate"));
+        dest.setJarSigningCertificateFingerprint(replaceEmptySecure(
+                src.getJarSigningCertificateFingerprint(), dest.getJarSigningCertificateFingerprint(), "jarSigningCertificateFingerprint"));
+        dest.setName(replaceEmptySecure(
+                src.getName(), dest.getName(), "name"));
+        dest.setAddress(replaceEmptySecure(
+                src.getAddress(), dest.getAddress(), "address"));
+
+        dest.setLastUsedDownloadMirror(replaceEmpty(src.getLastUsedDownloadMirror(), dest.getLastUsedDownloadMirror()));
+        // dest.setLastErrorMessage(replaceEmpty(src.getLastErrorMessage(), dest.getLastErrorMessage()));
+        dest.setLastErrorMessage(src.getLastErrorMessage());
+        dest.setLastUsedDownloadDateTimeUtc(replaceEmpty(src.getLastUsedDownloadDateTimeUtc(), dest.getLastUsedDownloadDateTimeUtc()));
+        dest.setAutoDownloadEnabled(replaceEmpty(src.isAutoDownloadEnabled(), dest.isAutoDownloadEnabled()));
+
+        RepoCommon.copyCommon(dest, src);
+        return dest;
+    }
+
+    /**
+     * @param downloadUrl                            where data comes from
+     * @param jarSigningCertificateFingerprintOrNull optionalan fingerprint
+     * @param taskId                                 optional info about task currently downloading.
      * @return info about the downloaded repo data. unsaved, (if something goes wrong)
      * @throws V1JarException if something went wrong.
      */
-    public Repo download(String downloadUrl, String jarSigningCertificateFingerprintOrNull) throws V1JarException {
+    public Repo download(String downloadUrl, String jarSigningCertificateFingerprintOrNull, String taskId) throws V1JarException {
         String context = "downloading";
         Repo repo = new Repo("NewRepository", downloadUrl);
         repo.setLastUsedDownloadMirror(downloadUrl);
         repo.setJarSigningCertificateFingerprint(jarSigningCertificateFingerprintOrNull);
+        repo.setDownloadTaskId(taskId);
         try {
             File file = downloadService.download(downloadUrl, 0, repo);
 
             context = "importing";
-            return importRepo(repo, file);
+            if (file != null) {
+                return importRepo(repo, file);
+            }
         } catch (Throwable exception) {
             return onException(repo, exception, context);
         }
+        return null;
+    }
+
+    public Repo download(int repoId, String taskId) throws V1JarException {
+        Repo repo = repoRepository.findById(repoId);
+        if (repo == null)
+            throw new V1JarException("download(repoId=" + repoId + "): Repo not found");
+        repo.setDownloadTaskId(taskId);
+        return download(repo);
     }
 
     /**
@@ -73,31 +110,21 @@ public class V1DownloadAndImportService {
      * @return null if nothing changed since last download else updated/saved repo data.exception = {DataIntegrityViolationException@9551} "org.springframework.dao.DataIntegrityViolationException: could not execute statement; SQL [n/a]; nested exception is org.hibernate.exception.DataException: could not execute statement"
      * @throws V1JarException if something went wrong.
      */
-    public Repo download(@NonNull Repo repo) throws V1JarException  {
+    public Repo download(@NonNull Repo repo) throws V1JarException {
         String context = "downloading";
+        // assume no error yet
+        repo.setLastErrorMessage(null);
         try {
             File file = downloadService.download(repo.getV1Url(), repo.getLastUsedDownloadDateTimeUtc(), repo);
             context = "importing";
-            return importRepo(repo, file);
+            if (file != null) {
+                return importRepo(repo, file);
+            }
         } catch (Throwable exception) {
             onException(repo, exception, context);
         } finally {
             // always save
             v1UpdateService.save(repo);
-        }
-        return repo;
-    }
-
-    private Repo importRepo(Repo repo, File file) throws IOException {
-        repo = fixRepo(repo);
-
-        if (file != null) {
-            v1UpdateService.readFromJar(new FileInputStream(file), repo);
-            repo.setLastUsedDownloadDateTimeUtc(System.currentTimeMillis());
-        } else {
-            // no error: there was no update since last download
-            repo.setLastUsedDownloadDateTimeUtc(System.currentTimeMillis());
-            return null;
         }
         return repo;
     }
@@ -113,26 +140,22 @@ public class V1DownloadAndImportService {
         return repoFromImport;
     }
 
-    /**
-     * @throws V1JarException if security relevant properties differ
-     */
-    public static Repo copy(Repo dest, Repo src) throws V1JarException {
-        dest.setJarSigningCertificate(replaceEmptySecure(
-                src.getJarSigningCertificate(), dest.getJarSigningCertificate(), "jarSigningCertificate"));
-        dest.setJarSigningCertificateFingerprint(replaceEmptySecure(
-                src.getJarSigningCertificateFingerprint(), dest.getJarSigningCertificateFingerprint(), "jarSigningCertificateFingerprint"));
-        dest.setName(replaceEmptySecure(
-                src.getName(), dest.getName(), "name"));
-        dest.setAddress(replaceEmptySecure(
-                src.getAddress(), dest.getAddress(), "address"));
+    private Repo importRepo(Repo repo, File file) throws IOException {
+        repo = fixRepo(repo);
 
-        dest.setLastUsedDownloadMirror(replaceEmpty(src.getLastUsedDownloadMirror(), dest.getLastUsedDownloadMirror()));
-        dest.setLastErrorMessage(replaceEmpty(src.getLastErrorMessage(), dest.getLastErrorMessage()));
-        dest.setLastUsedDownloadDateTimeUtc(replaceEmpty(src.getLastUsedDownloadDateTimeUtc(), dest.getLastUsedDownloadDateTimeUtc()));
-        dest.setAutoDownloadEnabled(replaceEmpty(src.isAutoDownloadEnabled(), dest.isAutoDownloadEnabled()));
-
-        RepoCommon.copyCommon(dest, src);
-        return dest;
+        if (file != null) {
+            v1UpdateService.readFromJar(new FileInputStream(file), repo);
+            repo.setLastUsedDownloadDateTimeUtc(System.currentTimeMillis());
+            repo.setDownloadTaskId(null);
+            repoRepository.save(repo);
+        } else {
+            // no error: there was no update since last download
+            repo.setLastUsedDownloadDateTimeUtc(System.currentTimeMillis());
+            repo.setDownloadTaskId(null);
+            repoRepository.save(repo);
+            return null;
+        }
+        return repo;
     }
 
     /**

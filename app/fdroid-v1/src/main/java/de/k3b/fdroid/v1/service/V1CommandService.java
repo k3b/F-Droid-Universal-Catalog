@@ -95,7 +95,7 @@ public class V1CommandService {
 
     private String execDownload(String downloadUrl) {
         V1DownloadAndImportService downloadService = new V1DownloadAndImportService(repoRepository, this.downloadService, v1UpdateService);
-        Repo repo = downloadService.download(downloadUrl, null);
+        Repo repo = downloadService.download(downloadUrl, null, null);
         return "";
     }
 
@@ -192,6 +192,7 @@ public class V1CommandService {
         RepoCommon.copyCommon(dest, src);
         dest.setLastUsedDownloadDateTimeUtc(downloadDate);
         dest.setLastUsedDownloadMirror(src.getLastUsedDownloadMirror());
+        dest.setDownloadTaskId(src.getDownloadTaskId());
         if (src.getJarSigningCertificate() != null) dest.setJarSigningCertificate(src.getJarSigningCertificate());
         if (src.getJarSigningCertificateFingerprint() != null) dest.setJarSigningCertificateFingerprint(src.getJarSigningCertificateFingerprint());
     }

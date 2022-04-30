@@ -16,6 +16,7 @@ CREATE TABLE Repo (
   lastVersionCount INT default 0 NOT NULL,
   jarSigningCertificate VARCHAR(3000),
   jarSigningCertificateFingerprint VARCHAR(255),
+  downloadTaskId VARCHAR(255),
   CONSTRAINT pk_repo PRIMARY KEY (id),
   CONSTRAINT ak_repo UNIQUE (name)
 );

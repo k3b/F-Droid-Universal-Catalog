@@ -30,9 +30,18 @@ public interface RepoRepository {
 
     void update(Repo repo);
 
+    default void save(Repo repo) {
+        if (repo.getId() == 0) {
+            insert(repo);
+        } else {
+            update(repo);
+        }
+    }
+
     void delete(Repo repo);
 
     Repo findById(Integer repoId);
+
     Repo findByName(String name);
 
     Repo findByAddress(String address);

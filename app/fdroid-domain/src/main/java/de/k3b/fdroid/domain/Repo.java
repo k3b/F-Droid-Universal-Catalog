@@ -74,6 +74,9 @@ public class Repo extends RepoCommon implements ItemWithId {
     @androidx.room.ColumnInfo(defaultValue = "0")
     private boolean autoDownloadEnabled;
 
+    // uuid of WorkRequest used to download/import
+    private String downloadTaskId;
+
     public Repo() {
     }
 
@@ -95,6 +98,7 @@ public class Repo extends RepoCommon implements ItemWithId {
         toStringBuilder(sb, "lastUsedDownloadMirror", this.lastUsedDownloadMirror);
         toStringBuilder(sb, "jarSigningCertificate", this.jarSigningCertificate, 14);
         toStringBuilder(sb, "jarSigningCertificateFingerprint", this.jarSigningCertificateFingerprint, 14);
+        toStringBuilder(sb, "downloadTaskId", this.downloadTaskId);
     }
 
     public int getId() {
@@ -214,5 +218,13 @@ public class Repo extends RepoCommon implements ItemWithId {
 
     public void setLastErrorMessage(String lastErrorMessage) {
         this.lastErrorMessage = lastErrorMessage;
+    }
+
+    public String getDownloadTaskId() {
+        return downloadTaskId;
+    }
+
+    public void setDownloadTaskId(String downloadTaskId) {
+        this.downloadTaskId = downloadTaskId;
     }
 }

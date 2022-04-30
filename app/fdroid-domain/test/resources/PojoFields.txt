@@ -63,9 +63,10 @@ de.k3b.fdroid.domain.common.ProfileCommon
 	versionCode(02)
 	versionName(3)
 de.k3b.fdroid.domain.Repo
-	address(15)
+	address(16)
 	autoDownloadEnabled
-	description(16)
+	description(17)
+	downloadTaskId(11)
 	id(01)
 	jarSigningCertificate(3)
 	jarSigningCertificateFingerprint(4)
@@ -74,11 +75,11 @@ de.k3b.fdroid.domain.Repo
 	lastUsedDownloadDateTimeUtc
 	lastUsedDownloadMirror(5)
 	lastVersionCount(09)
-	maxage(14)
+	maxage(15)
 	mirrors(2)
-	name(11)
+	name(12)
 	timestamp
-	version(13)
+	version(14)
 de.k3b.fdroid.domain.Version
 	added
 	apkName(13)

@@ -2,14 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.k3b.fdroid.android">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+
     <application
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.App.Light" >
+        android:theme="@style/Theme.App.Light">
 
-        <activity android:name=".view.AppListActivity"
+        <activity
+            android:name=".view.AppListActivity"
             android:label="@string/app_name"
             android:exported="true">
         </activity>
