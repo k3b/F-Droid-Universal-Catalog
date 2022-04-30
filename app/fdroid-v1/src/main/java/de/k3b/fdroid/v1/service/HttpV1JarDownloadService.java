@@ -19,14 +19,6 @@
 
 package de.k3b.fdroid.v1.service;
 
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpHeaders;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.RequestBuilder;
-import org.apache.http.client.utils.DateUtils;
-import org.apache.http.impl.client.HttpClients;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,6 +32,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Date;
 
 import de.k3b.fdroid.Global;
@@ -47,11 +41,14 @@ import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.common.RepoCommon;
 import de.k3b.fdroid.domain.interfaces.ProgressListener;
 import de.k3b.fdroid.util.CopyInputStream;
+import de.k3b.fdroid.v1.service.util.DateUtils;
 
 /* download v1-jar while simultaniously checking/updating signature */
 @Service
 public class HttpV1JarDownloadService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
+    public static final String HTTP_LAST_MODIFIED = "Last-Modified";
+    public static final String HTTP_IF_MODIFIED_SINCE = "If-Modified-Since";
 
     @NonNull
     private final String downloadPath;
@@ -67,12 +64,6 @@ public class HttpV1JarDownloadService {
         if (downloadPath == null) throw new NullPointerException();
 
         this.downloadPath = downloadPath.replace("~", System.getProperty("user.home"));
-    }
-
-    protected static String getHeaderValueOrNull(HttpResponse response, String name) {
-        Header firstHeader = response.getFirstHeader(name);
-        String value = (firstHeader == null) ? null : firstHeader.getValue();
-        return value;
     }
 
     private static String getName(Repo repo) {
@@ -93,33 +84,41 @@ public class HttpV1JarDownloadService {
         downloadUrl = Repo.getV1Url(downloadUrl);
         this.repoInDatabase = repo;
         String name = getName(repoInDatabase);
-        HttpClient client = HttpClients.custom().build();
-        RequestBuilder request = RequestBuilder.get().setUri(downloadUrl);
-        if (lastModified != 0) {
-            request.setHeader(HttpHeaders.IF_MODIFIED_SINCE, DateUtils.formatDate(new Date(lastModified)));
-        }
-        log("Downloading " + downloadUrl);
-        HttpResponse response = client.execute(request.build());
-        log("https result =" + response.getStatusLine().getReasonPhrase() +
-                "(" + response.getStatusLine().getStatusCode() + ")");
 
-        HttpEntity responseEntity = response.getEntity();
-        // Last-Modified: Thu, 21 Apr 2022 17:36:30 GMT
-        // ETag: "bf396-5dd2d8ce6f6f7"
-        String jarLastModified = getHeaderValueOrNull(response, HttpHeaders.LAST_MODIFIED);
+        log("Downloading " + downloadUrl);
+
+        HttpURLConnection connection = (HttpURLConnection) new URL(downloadUrl).openConnection();
+        if (lastModified != 0) {
+            connection.setRequestProperty(HTTP_IF_MODIFIED_SINCE, DateUtils.formatDate(new Date(lastModified)));
+        }
+
+        String jarLastModified = connection.getRequestProperty(HTTP_LAST_MODIFIED);
         if (repoInDatabase != null && jarLastModified != null) {
             repoInDatabase.setLastUsedDownloadDateTimeUtc(DateUtils.parseDate(jarLastModified).getTime());
         }
-        if (responseEntity != null) {
-            File jarfileDownload = getJarfile(name + ".tmp");
-            log("Downloading to " + jarfileDownload.getAbsolutePath());
-            download(responseEntity.getContent(), new FileOutputStream(jarfileDownload));
-            File jarfileFinal = getJarfile(getName(repoInDatabase));
-            if (jarfileFinal.exists()) jarfileFinal.delete();
-            log("Renaming to " + jarfileFinal.getAbsolutePath());
-            jarfileDownload.renameTo(jarfileFinal);
-            return jarfileFinal;
+        log("https result =" + connection.getResponseMessage() +
+                "(" + connection.getResponseCode() + "," + HTTP_LAST_MODIFIED +
+                "='" + jarLastModified + "')");
+
+        if (connection.getResponseCode() == HttpURLConnection.HTTP_NOT_MODIFIED) {
+            // 304
+            return null;
         }
+        if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            InputStream response = connection.getInputStream();
+
+            if (response != null) {
+                File jarfileDownload = getJarfile(name + ".tmp");
+                log("Downloading to " + jarfileDownload.getAbsolutePath());
+                download(response, new FileOutputStream(jarfileDownload));
+                File jarfileFinal = getJarfile(getName(repoInDatabase));
+                if (jarfileFinal.exists()) jarfileFinal.delete();
+                log("Renaming to " + jarfileFinal.getAbsolutePath());
+                jarfileDownload.renameTo(jarfileFinal);
+                return jarfileFinal;
+            }
+        }
+        //??? error handling
         return null;
     }
 
@@ -136,16 +135,14 @@ public class HttpV1JarDownloadService {
             downloadDir.mkdirs();
         }
 
-        File jarfile = new File(downloadDir, RepoCommon.getV1JarFileName(name));
-        return jarfile;
+        return new File(downloadDir, RepoCommon.getV1JarFileName(name));
     }
 
     private InputStream open(InputStream inputStream, OutputStream downloadFileOut) throws IOException {
         if (downloadFileOut != null) {
             inputStream = new CopyInputStream(inputStream, downloadFileOut);
         }
-        InputStream in = new BufferedInputStream(inputStream);
-        return in;
+        return new BufferedInputStream(inputStream);
     }
 
     protected void log(String message) {
