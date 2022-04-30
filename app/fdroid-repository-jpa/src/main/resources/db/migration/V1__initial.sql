@@ -5,7 +5,7 @@ CREATE TABLE Repo (
   timestamp BIGINT default 0,
   version INT default 0,
   maxage INT default 0,
-  icon VARCHAR(255),
+  -- icon VARCHAR(255), -- see #1
   address VARCHAR(255) NOT NULL,
   autoDownloadEnabled BOOLEAN default false,
   description VARCHAR(255),

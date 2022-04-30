@@ -27,9 +27,8 @@ de.k3b.fdroid.domain.common.ProfileCommon
 	versionCode(02)
 	versionName(3)
 de.k3b.fdroid.v1.domain.Repo
-	address(6)
-	description(7)
-	icon(5)
+	address(5)
+	description(6)
 	maxage(04)
 	name(1)
 	timestamp

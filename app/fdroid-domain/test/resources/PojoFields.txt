@@ -63,10 +63,9 @@ de.k3b.fdroid.domain.common.ProfileCommon
 	versionCode(02)
 	versionName(3)
 de.k3b.fdroid.domain.Repo
-	address(16)
+	address(15)
 	autoDownloadEnabled
-	description(17)
-	icon(15)
+	description(16)
 	id(01)
 	jarSigningCertificate(3)
 	jarSigningCertificateFingerprint(4)
