@@ -22,18 +22,18 @@ package de.k3b.fdroid.android.service;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
+import androidx.work.Constraints;
 import androidx.work.Data;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import java.util.UUID;
 
 import de.k3b.fdroid.android.AndroidServiceFactory;
+import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.util.StringUtil;
 import de.k3b.fdroid.v1.service.V1DownloadAndImportService;
@@ -46,6 +46,7 @@ public class ImportV1AndroidWorker extends Worker {
     private static final String KEY_DOWNLOAD_URL = "downloadUrl";
     private static final String KEY_JAR_SIGNING_CERTIFICATE_FINGERPRINT = "jarSigningCertificateFingerprintOrNull";
     private static final String KEY_RESULT = "resultMessage";
+    private static final String TAG_IMPORTV1 = "importV1";
 
     public ImportV1AndroidWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -90,16 +91,22 @@ public class ImportV1AndroidWorker extends Worker {
      */
 
     private static UUID scheduleDownload(Context context, Data data) {
-        WorkRequest uploadWorkRequest =
+        // WorkRequest importWorkRequest =
+        OneTimeWorkRequest importWorkRequest =
                 new OneTimeWorkRequest.Builder(ImportV1AndroidWorker.class)
                         .setInputData(data)
+                        .addTag(TAG_IMPORTV1)
+                        .setConstraints(new Constraints.Builder()
+                                .setRequiredNetworkType(Global.DOWNLOAD_NETWORK_TYPE)
+                                .build())
                         .build();
         WorkManager
                 .getInstance(context)
-                .enqueue(uploadWorkRequest);
-        return uploadWorkRequest.getId();
+                .enqueueUniqueWork(TAG_IMPORTV1, ExistingWorkPolicy.REPLACE, importWorkRequest);
+        return importWorkRequest.getId();
     }
 
+    /*
     private void t() {
         UUID workerId = scheduleDownload(null, 0);
 
@@ -115,7 +122,9 @@ public class ImportV1AndroidWorker extends Worker {
                 });
 
     }
+     */
 
+    @NonNull
     @Override
     public Result doWork() {
 
