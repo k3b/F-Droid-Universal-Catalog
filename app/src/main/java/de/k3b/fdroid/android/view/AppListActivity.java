@@ -26,8 +26,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.R;
-import de.k3b.fdroid.android.db.FDroidDatabase;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.service.AppWithDetailsPagerService;
 import de.k3b.fdroid.service.adapter.AppRepositoryAdapterImpl;
@@ -47,7 +47,7 @@ public class AppListActivity extends Activity {
 
         mRecyclerView =  findViewById(R.id.recyclerView);
 
-        AppRepository appRepository = FDroidDatabase.getINSTANCE(this).appRepository();
+        AppRepository appRepository = FDroidApplication.getFdroidDatabase().appRepository();
         String search = "k3b";
         List<Integer> appIdList = appRepository.findIdsByExpressionSortByScore(search);
 

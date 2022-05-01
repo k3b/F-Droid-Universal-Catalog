@@ -18,9 +18,33 @@
  */
 package de.k3b.fdroid.android;
 
+import android.app.Application;
+
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class FDroidApplicaton {
+import de.k3b.fdroid.android.db.FDroidDatabase;
+import de.k3b.fdroid.android.db.FDroidDatabaseFactory;
+
+public class FDroidApplication extends Application {
     public static final Executor executor = Executors.newFixedThreadPool(4);
+    private static AndroidServiceFactory androidServiceFactory = null;
+
+    private static FDroidDatabaseFactory fdroidDatabaseFactory = null;
+
+    public static AndroidServiceFactory getAndroidServiceFactory() {
+        return androidServiceFactory;
+    }
+
+    public static FDroidDatabaseFactory getFdroidDatabase() {
+        return fdroidDatabaseFactory;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        fdroidDatabaseFactory = FDroidDatabase.getINSTANCE(this);
+        androidServiceFactory = new AndroidServiceFactory(
+                this, fdroidDatabaseFactory);
+    }
 }

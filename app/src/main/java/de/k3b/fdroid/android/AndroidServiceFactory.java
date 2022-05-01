@@ -19,33 +19,25 @@
 
 package de.k3b.fdroid.android;
 
-import android.content.Context;
+import android.app.Application;
 
 import java.io.File;
 
-import de.k3b.fdroid.android.db.FDroidDatabase;
+import de.k3b.fdroid.android.db.FDroidDatabaseFactory;
 import de.k3b.fdroid.android.db.V1UpdateServiceAndroid;
 import de.k3b.fdroid.v1.service.HttpV1JarDownloadService;
 import de.k3b.fdroid.v1.service.V1DownloadAndImportService;
 import de.k3b.fdroid.v1.service.V1UpdateService;
 
 public class AndroidServiceFactory {
-    private static AndroidServiceFactory INSTANCE = null;
-    private final Context context;
-    private final FDroidDatabase database;
+    private final Application context;
+    private final FDroidDatabaseFactory database;
 
     private V1DownloadAndImportService v1DownloadAndImportService = null;
 
-    private AndroidServiceFactory(Context context) {
+    protected AndroidServiceFactory(Application context, FDroidDatabaseFactory database) {
         this.context = context;
-        this.database = FDroidDatabase.getINSTANCE(context);
-    }
-
-    public static AndroidServiceFactory getINSTANCE(Context context) {
-        if (INSTANCE == null) {
-            INSTANCE = new AndroidServiceFactory(context);
-        }
-        return INSTANCE;
+        this.database = database;
     }
 
     private File getTempDir(String subDirName) {

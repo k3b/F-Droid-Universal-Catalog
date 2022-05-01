@@ -32,7 +32,7 @@ import androidx.work.WorkerParameters;
 
 import java.util.UUID;
 
-import de.k3b.fdroid.android.AndroidServiceFactory;
+import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.util.StringUtil;
@@ -128,8 +128,8 @@ public class ImportV1AndroidWorker extends Worker {
     @Override
     public Result doWork() {
 
-        V1DownloadAndImportService v1DownloadAndImportService = AndroidServiceFactory
-                .getINSTANCE(getApplicationContext()).getV1DownloadAndImportService();
+        V1DownloadAndImportService v1DownloadAndImportService = FDroidApplication
+                .getAndroidServiceFactory().getV1DownloadAndImportService();
 
         Repo result;
         Data data = getInputData();

@@ -24,16 +24,8 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import de.k3b.fdroid.android.repository.AppCategoryDao;
 import de.k3b.fdroid.android.repository.AppDao;
-import de.k3b.fdroid.android.repository.AppHardwareDao;
 import de.k3b.fdroid.android.repository.AppRepositoryAdapter;
-import de.k3b.fdroid.android.repository.CategoryDao;
-import de.k3b.fdroid.android.repository.HardwareProfileDao;
-import de.k3b.fdroid.android.repository.LocaleDao;
-import de.k3b.fdroid.android.repository.LocalizedDao;
-import de.k3b.fdroid.android.repository.RepoDao;
-import de.k3b.fdroid.android.repository.VersionDao;
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.AppCategory;
 import de.k3b.fdroid.domain.AppHardware;
@@ -47,35 +39,12 @@ import de.k3b.fdroid.domain.interfaces.AppRepository;
 
 @Database(version = 1, entities = {App.class, AppCategory.class, Category.class, Locale.class,
         Localized.class, Repo.class, Version.class, AppHardware.class, HardwareProfile.class})
-public abstract class FDroidDatabase extends RoomDatabase {
-    private static FDroidDatabase INSTANCE = null;
+public abstract class FDroidDatabase extends RoomDatabase implements FDroidDatabaseFactory {
+    private static FDroidDatabaseFactory INSTANCE = null;
 
     private AppRepository appRepository = null;
 
-    public AppRepository appRepository() {
-        if (appRepository == null) appRepository = new AppRepositoryAdapter(appDao());
-        return appRepository;
-    }
-
-    public abstract AppDao appDao();
-
-    public abstract AppCategoryDao appCategoryRepository();
-
-    public abstract CategoryDao categoryRepository();
-
-    public abstract LocaleDao localeRepository();
-
-    public abstract LocalizedDao localizedRepository();
-
-    public abstract RepoDao repoRepository();
-
-    public abstract VersionDao versionRepository();
-
-    public abstract AppHardwareDao appHardwareRepository();
-
-    public abstract HardwareProfileDao hardwareProfileRepository();
-
-    public static FDroidDatabase getINSTANCE(Context context) {
+    public static FDroidDatabaseFactory getINSTANCE(Context context) {
         if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                     FDroidDatabase.class, "FDroidData.db")
@@ -85,6 +54,14 @@ public abstract class FDroidDatabase extends RoomDatabase {
         }
         return INSTANCE;
     }
+
+    @Override
+    public AppRepository appRepository() {
+        if (appRepository == null) appRepository = new AppRepositoryAdapter(appDao());
+        return appRepository;
+    }
+
+    public abstract AppDao appDao();
 
 }
 

@@ -44,13 +44,13 @@ public class V1UpdateServiceAndroid extends V1UpdateService {
                 appHardwareRepository, languageService, progressListener);
     }
 
-    public static V1UpdateServiceAndroid create(FDroidDatabase db) {
+    public static V1UpdateServiceAndroid create(FDroidDatabaseFactory db) {
         CategoryService categoryService = new CategoryService(db.categoryRepository());
         LanguageService languageService = new LanguageService(db.localeRepository());
         ProgressListener progressListener = null;
-        return new V1UpdateServiceAndroid(db.repoRepository(), db.appRepository(),categoryService,
+        return new V1UpdateServiceAndroid(db.repoRepository(), db.appRepository(), categoryService,
                 db.appCategoryRepository(), db.versionRepository(), db.localizedRepository(), db.localeRepository(),
-                db.hardwareProfileRepository(), db.appHardwareRepository(), languageService, progressListener){
+                db.hardwareProfileRepository(), db.appHardwareRepository(), languageService, progressListener) {
 
         };
 

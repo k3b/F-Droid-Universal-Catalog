@@ -29,15 +29,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import de.k3b.fdroid.android.AndroidServiceFactory;
-import de.k3b.fdroid.android.FDroidApplicaton;
+import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.R;
-import de.k3b.fdroid.android.db.FDroidDatabase;
 import de.k3b.fdroid.android.service.ImportV1AndroidWorker;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
-import de.k3b.fdroid.v1.service.V1DownloadAndImportService;
-
 
 public class RepoListActivity extends Activity {
     protected RepoListAdapter mAdapter;
@@ -54,9 +50,9 @@ public class RepoListActivity extends Activity {
 
         mRecyclerView = findViewById(R.id.recyclerView);
 
-        repoRepository = FDroidDatabase.getINSTANCE(this).repoRepository();
+        repoRepository = FDroidApplication.getFdroidDatabase().repoRepository();
 
-        FDroidApplicaton.executor.execute(() -> {
+        FDroidApplication.executor.execute(() -> {
             List<Repo> repos = repoRepository.findAll();
 
             runOnUiThread(() -> {
