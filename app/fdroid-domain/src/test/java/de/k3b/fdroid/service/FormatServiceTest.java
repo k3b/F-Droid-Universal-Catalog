@@ -30,7 +30,7 @@ public class FormatServiceTest extends TestCase {
 
     public void testFormat_allValuesPresentWithHtmlEscape() {
         FormatService formatService = new FormatService(
-                "Repo: '{{name}}({{lastAppCount}})' {{timestampDate}}");
+                "Repo: '{{name}}({{lastAppCount}})' {{timestampDate}}", null);
         Repo repo = TestDataGenerator.fill(new Repo(), 4);
         repo.setName("name with <html/>");
 
@@ -38,7 +38,7 @@ public class FormatServiceTest extends TestCase {
     }
     public void testFormat_allValuesNull() {
         FormatService formatService = new FormatService(
-                "Repo: '{{name}}({{lastAppCount}})' {{timestampDate}}");
+                "Repo: '{{name}}({{lastAppCount}})' {{timestampDate}}", null);
         Repo repo = new Repo();
 
         assertEquals("Repo: '(0)' ", formatService.format(repo));
@@ -46,8 +46,8 @@ public class FormatServiceTest extends TestCase {
 
     public void testFormat_conditionalValue() {
         FormatService formatService = new FormatService(
-                "<h3 {{#autoDownloadEnabled}}style='background-color:lime;'{{/autoDownloadEnabled}}>{{name}}</h3>");
-        Repo repo = new Repo("My Name","");
+                "<h3 {{#autoDownloadEnabled}}style='background-color:lime;'{{/autoDownloadEnabled}}>{{name}}</h3>", null);
+        Repo repo = new Repo("My Name", "");
 
         repo.setAutoDownloadEnabled(true);
         assertEquals("<h3 style='background-color:lime;'>My Name</h3>", formatService.format(repo));
@@ -59,19 +59,19 @@ public class FormatServiceTest extends TestCase {
     public void testFormatCustom() {
 
         class CustomType {
-            class CustomTypeMitContext implements Mustache.CustomContext  {
+            final String a = "hello";
+            final CustomTypeMitContext s = new CustomTypeMitContext();
+
+            class CustomTypeMitContext implements Mustache.CustomContext {
                 @Override
                 public Object get(String name) throws Exception {
                     return name;
                 }
             }
-
-            String a = "hello";
-            CustomTypeMitContext s = new CustomTypeMitContext();
         }
 
         FormatService formatService = new FormatService(
-                "a = {{a}} s.world = {{s.world}}");
+                "a = {{a}} s.world = {{s.world}}", null);
         CustomType customType = new CustomType();
 
         assertEquals("a = hello s.world = world", formatService.format(customType));

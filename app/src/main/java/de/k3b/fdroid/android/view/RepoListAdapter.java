@@ -37,7 +37,6 @@ import de.k3b.fdroid.android.R;
 import de.k3b.fdroid.android.util.Compat;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.service.FormatService;
-import de.k3b.fdroid.service.adapter.ValueAndStringTranslations;
 
 public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHolder> {
     private static final String TAG = Global.LOG_TAG + "RepoList";
@@ -52,7 +51,7 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
     public RepoListAdapter(Context context, List<Repo> details) {
         this.details = details;
         res = new AndroidStringResourceMustacheContext(context);
-        formatService = new FormatService(context.getString(R.string.list_repo));
+        formatService = new FormatService(context.getString(R.string.list_repo), res);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -62,8 +61,7 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
 
         Repo repo = details.get(position);
         viewHolder.repo = repo;
-        ValueAndStringTranslations<Repo> vt = new ValueAndStringTranslations<>(repo, res);
-        String html = formatService.format(vt);
+        String html = formatService.format(repo);
         Spanned spanned = Compat.fromHtml(html);
         viewHolder.getTextView().setText(spanned);
 

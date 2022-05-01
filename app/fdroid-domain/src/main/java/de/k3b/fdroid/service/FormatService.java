@@ -33,11 +33,27 @@ import com.samskivert.mustache.Template;
  */
 public class FormatService {
     final Template tmpl;
-    public FormatService(String template) {
+    private final ValueAndString vt;
+
+    public FormatService(String template, Mustache.CustomContext resourceTranslator) {
         tmpl = Mustache.compiler().escapeHTML(true).nullValue("").compile(template);
+        vt = resourceTranslator == null ? null : new ValueAndString(resourceTranslator);
     }
 
     public String format(Object values) {
-        return tmpl.execute(values);
+        if (vt == null) return tmpl.execute(values);
+
+        vt.v = values;
+        return tmpl.execute(vt);
     }
+
+    private class ValueAndString {
+        final Mustache.CustomContext t;
+        Object v;
+
+        public ValueAndString(Mustache.CustomContext resourceTranslator) {
+            t = resourceTranslator;
+        }
+    }
+
 }

@@ -18,12 +18,9 @@
  */
 package de.k3b.fdroid.jpa.view;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.aspectj.lang.annotation.Before;
-import org.junit.*;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +28,6 @@ import java.util.Locale;
 
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.service.FormatService;
-import de.k3b.fdroid.service.adapter.ValueAndStringTranslations;
 import de.k3b.fdroid.util.TestDataGenerator;
 
 public class JpaStringResourceMustacheContextTest {
@@ -44,22 +40,21 @@ public class JpaStringResourceMustacheContextTest {
 
     @Test
     public void translateContextString() {
-        ValueAndStringTranslations<String> vt = new ValueAndStringTranslations<>("World", translator);
-
-        FormatService formatService = new FormatService(
-                "Hello '{{v}}' from {{t.app_name}}");
-        String format = formatService.format(vt);
-        // R.string.app_name exists
+        String format = format("Hello '{{v}}' from {{t.app_name}}", "World");
         assertThat(format, equalTo("Hello 'World' from FDroid Universal Catalog"));
     }
 
     @Test
     public void repoText() throws Exception {
         Repo repo = TestDataGenerator.fill(new Repo(), 4);
-        ValueAndStringTranslations<Repo> vt = new ValueAndStringTranslations<>(repo, translator);
-
         String template = (String) translator.get("list_repo");
-        FormatService formatService = new FormatService(template);
-        String format = formatService.format(vt);
+        String format = format(template, repo);
+        System.out.println(format);
+    }
+
+    private String format(String template, Object values) {
+        FormatService formatService = new FormatService(
+                template, translator);
+        return formatService.format(values);
     }
 }
