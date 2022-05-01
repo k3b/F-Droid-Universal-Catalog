@@ -24,7 +24,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import de.k3b.fdroid.android.db.FDroidDatabase;
-import de.k3b.fdroid.android.db.FDroidDatabaseFactory;
+import de.k3b.fdroid.android.repository.FDroidDatabaseFactory;
+import de.k3b.fdroid.android.v1.service.AndroidServiceFactory;
 
 public class FDroidApplication extends Application {
     public static final Executor executor = Executors.newFixedThreadPool(4);

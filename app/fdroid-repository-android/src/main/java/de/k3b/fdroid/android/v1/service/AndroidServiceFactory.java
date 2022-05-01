@@ -17,14 +17,13 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-package de.k3b.fdroid.android;
+package de.k3b.fdroid.android.v1.service;
 
 import android.app.Application;
 
 import java.io.File;
 
-import de.k3b.fdroid.android.db.FDroidDatabaseFactory;
-import de.k3b.fdroid.android.db.V1UpdateServiceAndroid;
+import de.k3b.fdroid.android.repository.FDroidDatabaseFactory;
 import de.k3b.fdroid.v1.service.HttpV1JarDownloadService;
 import de.k3b.fdroid.v1.service.V1DownloadAndImportService;
 import de.k3b.fdroid.v1.service.V1UpdateService;
@@ -35,7 +34,7 @@ public class AndroidServiceFactory {
 
     private V1DownloadAndImportService v1DownloadAndImportService = null;
 
-    protected AndroidServiceFactory(Application context, FDroidDatabaseFactory database) {
+    public AndroidServiceFactory(Application context, FDroidDatabaseFactory database) {
         this.context = context;
         this.database = database;
     }

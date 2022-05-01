@@ -39,7 +39,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import de.k3b.fdroid.android.db.FDroidDatabase;
-import de.k3b.fdroid.android.db.V1UpdateServiceAndroid;
+import de.k3b.fdroid.android.v1.service.V1UpdateServiceAndroid;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.v1.service.V1RepoVerifyJarParser;

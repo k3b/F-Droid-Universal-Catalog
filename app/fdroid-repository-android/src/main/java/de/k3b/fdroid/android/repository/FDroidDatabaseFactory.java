@@ -16,16 +16,8 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.db;
+package de.k3b.fdroid.android.repository;
 
-import de.k3b.fdroid.android.repository.AppCategoryDao;
-import de.k3b.fdroid.android.repository.AppHardwareDao;
-import de.k3b.fdroid.android.repository.CategoryDao;
-import de.k3b.fdroid.android.repository.HardwareProfileDao;
-import de.k3b.fdroid.android.repository.LocaleDao;
-import de.k3b.fdroid.android.repository.LocalizedDao;
-import de.k3b.fdroid.android.repository.RepoDao;
-import de.k3b.fdroid.android.repository.VersionDao;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 
 public interface FDroidDatabaseFactory {

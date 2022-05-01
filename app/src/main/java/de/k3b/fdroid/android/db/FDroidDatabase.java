@@ -26,6 +26,7 @@ import androidx.room.RoomDatabase;
 
 import de.k3b.fdroid.android.repository.AppDao;
 import de.k3b.fdroid.android.repository.AppRepositoryAdapter;
+import de.k3b.fdroid.android.repository.FDroidDatabaseFactory;
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.AppCategory;
 import de.k3b.fdroid.domain.AppHardware;
