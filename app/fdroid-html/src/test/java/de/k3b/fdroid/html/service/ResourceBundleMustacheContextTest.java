@@ -47,8 +47,10 @@ public class ResourceBundleMustacheContextTest {
     @Test
     public void repoText() throws Exception {
         Repo repo = TestDataGenerator.fill(new Repo(), 4);
-        String template = (String) translator.get("list_repo");
-        String format = format(template, repo);
+        FormatService formatService = new FormatService(
+                "list_repo", Repo.class, translator);
+
+        String format = formatService.format(repo);
         System.out.println(format);
     }
 

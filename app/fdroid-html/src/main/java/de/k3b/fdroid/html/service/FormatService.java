@@ -22,11 +22,15 @@ package de.k3b.fdroid.html.service;
 import com.samskivert.mustache.Mustache;
 import com.samskivert.mustache.Template;
 
-/** Generate html snipptes from "Mustache Template".
+import java.io.InputStreamReader;
+import java.io.Reader;
+
+/**
+ * Generate html snipptes from "Mustache Template".
  * See https://github.com/samskivert/jmustache
- *
+ * <p>
  * This is an abstraction from the JMustache implementation.
- *
+ * <p>
  * For android specific textview:
  * * https://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
  * * https://stackoverflow.com/questions/9754076/which-html-tags-are-supported-by-android-textview
@@ -35,9 +39,15 @@ public class FormatService {
     final Template tmpl;
     private final ValueAndString vt;
 
+    public FormatService(String templateId, Class<?> itemclass, Mustache.CustomContext resourceTranslator) {
+        vt = createVt(resourceTranslator);
+        tmpl = Mustache.compiler().escapeHTML(true).nullValue("").compile(loadTemplate(templateId, itemclass));
+    }
+
+    @Deprecated
     public FormatService(String template, Mustache.CustomContext resourceTranslator) {
         tmpl = Mustache.compiler().escapeHTML(true).nullValue("").compile(template);
-        vt = resourceTranslator == null ? null : new ValueAndString(resourceTranslator);
+        vt = createVt(resourceTranslator);
     }
 
     public String format(Object values) {
@@ -45,6 +55,17 @@ public class FormatService {
 
         vt.v = values;
         return tmpl.execute(vt);
+    }
+
+
+    private ValueAndString createVt(Mustache.CustomContext resourceTranslator) {
+        return resourceTranslator == null ? null : new ValueAndString(resourceTranslator);
+    }
+
+    private Reader loadTemplate(String templateId, Class<?> itemclass) {
+        return new InputStreamReader(FormatService.class.getResourceAsStream("/html/" +
+                itemclass.getSimpleName() + "/" +
+                templateId + ".hbs"));
     }
 
     private class ValueAndString {
