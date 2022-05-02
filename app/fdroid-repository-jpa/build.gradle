@@ -23,6 +23,7 @@ dependencies {
 
     implementation (project(path: ':app:fdroid-domain'))
     implementation (project(path: ':app:fdroid-v1'))
+    // implementation (project(path: ':app:fdroid-html'))
 
     implementation 'javax.persistence:javax.persistence-api:2.2'
 

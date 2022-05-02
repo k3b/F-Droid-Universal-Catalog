@@ -16,18 +16,20 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.jpa.view;
+package de.k3b.fdroid.html.service;
 
 import com.samskivert.mustache.Mustache;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-/** translates {{app_name}} to messages_en.properties[app_name] */
-public class JpaStringResourceMustacheContext implements Mustache.CustomContext {
+/**
+ * translates {{app_name}} to messages_en.properties[app_name]
+ */
+public class ResourceBundleMustacheContext implements Mustache.CustomContext {
     private final ResourceBundle bundle;
 
-    public JpaStringResourceMustacheContext(Locale locale) {
+    public ResourceBundleMustacheContext(Locale locale) {
         this.bundle = ResourceBundle.getBundle("messages", locale);
     }
 

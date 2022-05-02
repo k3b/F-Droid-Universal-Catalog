@@ -39,7 +39,7 @@ import java.util.Locale;
 
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.service.FormatService;
+import de.k3b.fdroid.html.service.FormatService;
 import de.k3b.fdroid.util.TestDataGenerator;
 
 /**

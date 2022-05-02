@@ -16,32 +16,32 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.jpa.view;
+package de.k3b.fdroid.html.service;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
+import com.samskivert.mustache.Mustache;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Locale;
 
 import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.service.FormatService;
 import de.k3b.fdroid.util.TestDataGenerator;
 
-public class JpaStringResourceMustacheContextTest {
-    JpaStringResourceMustacheContext translator;
+public class ResourceBundleMustacheContextTest {
+    Mustache.CustomContext translator;
 
-    @BeforeEach
+    @Before
     public void setup() {
-        translator = new JpaStringResourceMustacheContext(Locale.US);
+        translator = new ResourceBundleMustacheContext(Locale.US);
     }
 
     @Test
     public void translateContextString() {
         String format = format("Hello '{{v}}' from {{t.app_name}}", "World");
-        assertThat(format, equalTo("Hello 'World' from FDroid Universal Catalog"));
+        MatcherAssert.assertThat(format, CoreMatchers.equalTo("Hello 'World' from FDroid Universal Catalog"));
     }
 
     @Test

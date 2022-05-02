@@ -17,7 +17,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-package de.k3b.fdroid.service;
+package de.k3b.fdroid.html.service;
 
 import com.samskivert.mustache.Mustache;
 

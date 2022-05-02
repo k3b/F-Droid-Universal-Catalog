@@ -36,7 +36,7 @@ import de.k3b.fdroid.Global;
 import de.k3b.fdroid.android.R;
 import de.k3b.fdroid.android.util.Compat;
 import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.service.FormatService;
+import de.k3b.fdroid.html.service.FormatService;
 
 public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHolder> {
     private static final String TAG = Global.LOG_TAG + "RepoList";

@@ -1,0 +1,26 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish' // required for jitpack
+}
+
+// required for jitpack
+ext {
+    PUBLISH_MODUL_DESCRIPTION = 'FDroid-Html generation support'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    implementation project(path: ':app:fdroid-domain')
+    // implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.samskivert:jmustache:1.15' // https://github.com/samskivert/jmustache to generate html
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+
+    def SLF4J_VERSION = rootProject.ext.SLF4J_VERSION
+    implementation "org.slf4j:slf4j-api:$SLF4J_VERSION"
+}

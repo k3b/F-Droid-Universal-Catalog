@@ -57,6 +57,10 @@ android {
 }
 
 dependencies {
+    implementation (project(path: ':app:fdroid-domain')) {transitive=false}
+    implementation (project(path: ':app:fdroid-v1')) {transitive=false}
+    implementation (project(path: ':app:fdroid-html'))
+
     implementation 'javax.persistence:javax.persistence-api:2.2'
     implementation 'androidx.appcompat:appcompat:1.4.1'
 
@@ -67,8 +71,6 @@ dependencies {
 
     implementation "androidx.recyclerview:recyclerview:1.2.1"
 
-    implementation (project(path: ':app:fdroid-domain')) {transitive=false}
-    implementation (project(path: ':app:fdroid-v1')) {transitive=false}
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'commons-codec:commons-codec:1.9' // Hex.en/decodeHex
     implementation 'com.samskivert:jmustache:1.15' // https://github.com/samskivert/jmustache to generate html
