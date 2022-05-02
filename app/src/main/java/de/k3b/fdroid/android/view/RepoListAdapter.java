@@ -19,7 +19,6 @@
 package de.k3b.fdroid.android.view;
 
 import android.content.Context;
-import android.text.Spanned;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +33,7 @@ import java.util.List;
 
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.android.R;
-import de.k3b.fdroid.android.util.Compat;
+import de.k3b.fdroid.android.html.util.HtmlUtil;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.html.service.FormatService;
 
@@ -43,6 +42,7 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
 
     private final FormatService formatService;
     private final List<Repo> details;
+    private final int defaultBackgroundColor;
 
     /**
      * Initialize the dataset of the Adapter.
@@ -51,6 +51,8 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
         this.details = details;
         formatService = new FormatService("list_repo", Repo.class,
                 new AndroidStringResourceMustacheContext(context));
+
+        this.defaultBackgroundColor = HtmlUtil.getDefaultBackgroundColor(context);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -60,18 +62,10 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
 
         Repo repo = details.get(position);
         viewHolder.repo = repo;
-        String html = formatService.format(repo);
-        Spanned spanned = Compat.fromHtml(html);
-        viewHolder.getTextView().setText(spanned);
+        TextView textView = viewHolder.getTextView();
 
-        // workaround: android Html.fromHtml(...) does not support BackgroundColor
-        // TODO how to do this with themes ?
-        int color = repo.getDownloadTaskId() != null
-                ? R.color.purple_200 :
-                (repo.isAutoDownloadEnabled() ?
-                        R.color.lime :
-                        R.color.white);
-        viewHolder.getTextView().setBackgroundResource(color);
+        String html = formatService.format(repo);
+        HtmlUtil.setHtml(textView, html, defaultBackgroundColor);
     }
 
     // Create new views (invoked by the layout manager)

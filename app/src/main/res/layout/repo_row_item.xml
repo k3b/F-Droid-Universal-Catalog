@@ -22,7 +22,7 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="140dp"
     android:layout_marginLeft="@dimen/margin_medium"
     android:layout_marginRight="@dimen/margin_medium"
     android:layout_marginTop="@dimen/margin_medium"
@@ -32,7 +32,7 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lines="5"
+        android:lines="7"
         android:text="@string/element_text"/>
     <Button
         android:layout_width="wrap_content"

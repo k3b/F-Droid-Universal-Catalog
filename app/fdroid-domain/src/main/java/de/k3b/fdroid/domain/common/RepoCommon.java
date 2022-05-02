@@ -19,14 +19,12 @@
 
 package de.k3b.fdroid.domain.common;
 
-import java.util.Date;
-
-@javax.persistence.MappedSuperclass
 /**
  * Common data for v1-Gson-json and android-room-database-Entities.
  * Only primitive types are allowed. No relations, no Objects, no Lists
  * as these are Gson/Android-Room-Database specific.
  */
+@javax.persistence.MappedSuperclass
 public class RepoCommon extends PojoCommon {
     public static final String V1_JAR_NAME = "index-v1.jar";
     public static final String V1_JSON_NAME = "index-v1.json";
@@ -129,6 +127,20 @@ public class RepoCommon extends PojoCommon {
     }
 
     public String getDescription() {
+        return description;
+    }
+
+    /**
+     * Only the first sence of the Description. The whole Description is
+     * to much for for an android listview
+     */
+    public String getShortDescription() {
+        int len = (description != null) ? description.length() : 0;
+        if (len > 100) {
+            len = description.indexOf('.');
+            if (len > 0) return description.substring(0, len + 1);
+        }
+
         return description;
     }
 
