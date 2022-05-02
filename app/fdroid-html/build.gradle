@@ -15,7 +15,10 @@ java {
 
 dependencies {
     implementation project(path: ':app:fdroid-domain')
+    api project(path: ':app:room-annotations')
     // implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'javax.persistence:javax.persistence-api:2.2'
+
     implementation 'com.samskivert:jmustache:1.15' // https://github.com/samskivert/jmustache to generate html
 
     testImplementation 'junit:junit:4.13.2'

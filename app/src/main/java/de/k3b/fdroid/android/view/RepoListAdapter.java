@@ -41,7 +41,6 @@ import de.k3b.fdroid.html.service.FormatService;
 public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHolder> {
     private static final String TAG = Global.LOG_TAG + "RepoList";
 
-    private final AndroidStringResourceMustacheContext res;
     private final FormatService formatService;
     private final List<Repo> details;
 
@@ -50,8 +49,8 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
      */
     public RepoListAdapter(Context context, List<Repo> details) {
         this.details = details;
-        res = new AndroidStringResourceMustacheContext(context);
-        formatService = new FormatService(context.getString(R.string.list_repo), res);
+        formatService = new FormatService("list_repo", Repo.class,
+                new AndroidStringResourceMustacheContext(context));
     }
 
     // Replace the contents of a view (invoked by the layout manager)

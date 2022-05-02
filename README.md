@@ -179,15 +179,4 @@ gdroid          https://gitlab.com/gdroid/gdroidclient/
 f-droid         https://gitlab.com/fdroid/fdroidclient
 fdroidclassic   https://git.bubu1.eu/Bubu/fdroidclassic
 
---------------
-todo
-> integrate HardwareProfileService.calculateAppHardware into v1 import v   integrate calculateMaxSdk
-
-lib
-
-demo:
-fatjar: ./gradlew clean :app:demo:bootJar
-
-    cmdline optionen
-    database path or server uri
-    v1 json download pfad oder dir oder https uri
+fdroid-html android generic test (lib zum ermitteln der templates)

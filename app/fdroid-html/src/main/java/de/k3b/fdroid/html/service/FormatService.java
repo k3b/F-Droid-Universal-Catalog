@@ -44,7 +44,6 @@ public class FormatService {
         tmpl = Mustache.compiler().escapeHTML(true).nullValue("").compile(loadTemplate(templateId, itemclass));
     }
 
-    @Deprecated
     public FormatService(String template, Mustache.CustomContext resourceTranslator) {
         tmpl = Mustache.compiler().escapeHTML(true).nullValue("").compile(template);
         vt = createVt(resourceTranslator);

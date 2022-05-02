@@ -16,32 +16,45 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.html.service;
+package de.k3b.fdroid.android.view;
+
+import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.samskivert.mustache.Mustache;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Locale;
 
+import de.k3b.fdroid.Global;
+import de.k3b.fdroid.html.service.FormatService;
+import de.k3b.fdroid.html.service.ResourceBundleMustacheContext;
 import de.k3b.fdroid.html.util.FormatUtil;
 
 /**
- * iterates over all mustache templates *.hbs and executes it-s formatter.
- * Assumed file structure
- * <p>
- * * .../FDroidUniversal/app/fdroid-html/src/test/java/de/k3b/fdroid/html/service
- * * .../FDroidUniversal/app/fdroid-html/build/resources/main/html/Repo/list_repo.hbs
+ * Instrumented test, which will execute on an Android device.
+ *
+ * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(Parameterized.class)
 public class GenericTemplateTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
     private static Mustache.CustomContext translator;
-
     private final Object testParamExampleItem;
     private final String testParamTemplateId;
+    Context appContext;
+    private Locale oldDefault;
 
     public GenericTemplateTest(Object exampleItem, String templateId) {
         super();
@@ -55,12 +68,39 @@ public class GenericTemplateTest {
         return FormatUtil.getTestCases();
     }
 
-    @Test
+    @Before
+    public void setup() {
+        setLocale("en", "US");
+        appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        translator = new AndroidStringResourceMustacheContext(appContext);
+
+    }
+
+    @After
+    public void teardown() {
+        //  restore the Locale in the tear down method, to avoid running into issues
+        Locale.setDefault(Locale.Category.DISPLAY, oldDefault);
+    }
+
+    @Test // iterate over resources does not work on android :-(
     public void domainTemplateTest() {
         System.out.println("<!-- running template " + testParamExampleItem.getClass().getSimpleName() + "/" + testParamTemplateId + " -->");
         FormatService formatService = new FormatService(
                 testParamTemplateId, testParamExampleItem.getClass(), translator);
         String format = formatService.format(testParamExampleItem);
-        System.out.println(format);
+        LOGGER.info(format);
+    }
+
+    // Locale during unit test on Android see https://stackoverflow.com/questions/16760194/locale-during-unit-test-on-android/21810126
+    private void setLocale(String language, String country) {
+        oldDefault = Locale.getDefault(Locale.Category.DISPLAY);
+        Locale locale = new Locale(language, country);
+        // here we update locale for date formatters
+        Locale.setDefault(Locale.Category.DISPLAY, locale);
+        // update locale for app resources
+        Resources res = InstrumentationRegistry.getInstrumentation().getTargetContext().getResources();
+        Configuration config = res.getConfiguration();
+        config.locale = locale;
+        res.updateConfiguration(config, res.getDisplayMetrics());
     }
 }
