@@ -32,10 +32,12 @@ import java.io.IOException;
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.common.RepoCommon;
+import de.k3b.fdroid.domain.interfaces.ProgressObservable;
+import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.util.StringUtil;
 
-public class V1DownloadAndImportService {
+public class V1DownloadAndImportService implements ProgressObservable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
     private final RepoRepository repoRepository;
     private final HttpV1JarDownloadService downloadService;
@@ -181,5 +183,12 @@ public class V1DownloadAndImportService {
         String message = "Error " + context + " " + repo.getV1Url();
         LOGGER.error(message + " (" + repo + ")", exception);
         throw new V1JarException(message, exception);
+    }
+
+
+    @Override
+    public void setProgressListener(ProgressObserver progressObserver) {
+        downloadService.setProgressListener(progressObserver);
+        v1UpdateService.setProgressListener(progressObserver);
     }
 }

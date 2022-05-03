@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.v1.service;
 
+import org.springframework.lang.NonNull;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -132,8 +134,7 @@ public class V1CommandService {
     public  CharSequence execDir(StringBuilder s) {
         s.append("Files in ").append(downloadPath).append("\n\n");
 
-        File dir = new File(downloadPath);
-        for (File f : dir.listFiles()) {
+        for (File f : listFiles()) {
             String name = f.getName();
             if (!name.startsWith(".")) {
                 s.append("  ").append(name).append("\n");
@@ -142,9 +143,15 @@ public class V1CommandService {
         return s;
     }
 
-    private void execReloadDbFromDownload() throws IOException {
+    @NonNull
+    private File[] listFiles() {
         File dir = new File(downloadPath);
-        for (File f : dir.listFiles()) {
+        File[] files = dir.listFiles();
+        return files == null ? new File[0] : files;
+    }
+
+    private void execReloadDbFromDownload() throws IOException {
+        for (File f : listFiles()) {
             String absolutePath = f.getAbsolutePath();
             System.out.println();
             System.out.println("reload " + absolutePath);
@@ -153,7 +160,8 @@ public class V1CommandService {
             }
         }
     }
-    private void execDownloadV1Jar(String url, boolean execImport) throws IOException {
+
+    private Repo execDownloadV1Jar(String url, boolean execImport) throws IOException {
         if (repoRepository == null) throw new NullPointerException("Missing repoRepository");
 
         HttpV1JarDownloadService parser = getHttpV1JarDownloadService();
@@ -171,6 +179,7 @@ public class V1CommandService {
             repoRepository.insert(repoDownloaded);
             repoFound = repoDownloaded;
         }
+        return repoFound;
     }
 
     private void execImportLocalFile(String inputPath) throws IOException {
@@ -185,7 +194,7 @@ public class V1CommandService {
     }
 
     private HttpV1JarDownloadService getHttpV1JarDownloadService() {
-        return new HttpV1JarDownloadService(this.downloadPath, null);
+        return new HttpV1JarDownloadService(this.downloadPath);
     }
 
     private void copy(Repo dest, Repo src, long downloadDate) {

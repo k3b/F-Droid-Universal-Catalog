@@ -19,8 +19,14 @@
 
 package de.k3b.fdroid.domain.interfaces;
 
-public interface ProgressListener {
-    void onProgress(String prograssChar, String packageName);
+public interface ProgressObserver {
+    /**
+     * Called in a regular intervall. (i.e. every 100kBytes-Downloaded or every 100 apps-processed.
+     * Intervall decided by caller
+     */
+    void onProgress(int counter, String progressChar, String progressContext);
+
+    ProgressObserver setProgressContext(String progressPrefix, String progressSuffix);
 
     void log(String message);
 }

@@ -33,34 +33,32 @@ import de.k3b.fdroid.domain.common.ProfileCommon;
 import de.k3b.fdroid.domain.interfaces.AppHardwareRepository;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.HardwareProfileRepository;
-import de.k3b.fdroid.domain.interfaces.ProgressListener;
+import de.k3b.fdroid.domain.interfaces.ProgressObservable;
+import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.util.StringUtil;
 
 /**
  * Service to cache/find/insert HardwareProfile info.
  */
 
-public class HardwareProfileService {
+public class HardwareProfileService implements ProgressObservable {
     private final AppRepository appRepository;
     private final HardwareProfileRepository hardwareProfileRepository;
     private final AppHardwareRepository appHardwareRepository;
-    private final ProgressListener progressListener;
+    private ProgressObserver progressObserver;
 
     private List<HardwareProfile> hardwareProfiles;
     private boolean hpForDelete = false;
 
     /**
-     * @param appRepository    if not null: may delete app if it is not compatible with any profile
-     * @param progressListener if not null: show message if not compatible app is deleted
+     * @param appRepository if not null: may delete app if it is not compatible with any profile
      */
     public HardwareProfileService(@Nullable AppRepository appRepository,
                                   HardwareProfileRepository hardwareProfileRepository,
-                                  AppHardwareRepository appHardwareRepository,
-                                  @Nullable ProgressListener progressListener) {
+                                  AppHardwareRepository appHardwareRepository) {
         this.appRepository = appRepository;
         this.hardwareProfileRepository = hardwareProfileRepository;
         this.appHardwareRepository = appHardwareRepository;
-        this.progressListener = progressListener;
     }
 
     /**
@@ -185,7 +183,7 @@ public class HardwareProfileService {
     }
 
     private void deleteAppIfNotCompatible(App app, List<AppHardware> appHardwareListCompatible, String nativecode) {
-        if (hpForDelete && appHardwareListCompatible.isEmpty()) {
+        if (hpForDelete && appHardwareListCompatible.isEmpty() && app != null) {
             StringBuilder message = new StringBuilder()
                     .append("Deleting app '").append(app.getPackageName()).append("':").append(app.getSearchName())
                     .append(" (sdk:").append(app.getSearchSdk());
@@ -199,6 +197,10 @@ public class HardwareProfileService {
     }
 
     private void log(String message) {
-        if (progressListener != null) progressListener.log(message);
+        if (progressObserver != null) progressObserver.log(message);
+    }
+
+    public void setProgressListener(ProgressObserver progressObserver) {
+        this.progressObserver = progressObserver;
     }
 }

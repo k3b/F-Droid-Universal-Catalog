@@ -28,7 +28,8 @@ import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.Version;
 import de.k3b.fdroid.domain.common.VersionCommon;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
-import de.k3b.fdroid.domain.interfaces.ProgressListener;
+import de.k3b.fdroid.domain.interfaces.ProgressObservable;
+import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.domain.interfaces.VersionRepository;
 import de.k3b.fdroid.service.HardwareProfileService;
 import de.k3b.fdroid.service.VersionService;
@@ -37,7 +38,9 @@ import de.k3b.fdroid.util.StringUtil;
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
-public class VersionUpdateService {
+public class VersionUpdateService implements ProgressObservable {
+    private static final int PROGRESS_INTERVALL = 100;
+
     private final AppRepository appRepository;
     private final VersionRepository versionRepository;
 
@@ -45,22 +48,24 @@ public class VersionUpdateService {
 
     PackageCollector packageCollector = new PackageCollector();
     private final HardwareProfileService hardwareProfileService;
-    ProgressListener progressListener = null;
+    ProgressObserver progressObserver = null;
+    private int progressCounter = 0;
+    private int progressCountdown = 0;
 
     public VersionUpdateService(AppRepository appRepository,
                                 VersionRepository versionRepository,
-                                HardwareProfileService hardwareProfileService,
-                                ProgressListener progressListener) {
+                                HardwareProfileService hardwareProfileService) {
         this.appRepository = appRepository;
         this.versionRepository = versionRepository;
         this.hardwareProfileService = hardwareProfileService;
-        this.progressListener = progressListener;
     }
 
     public void init() {
         if (this.hardwareProfileService != null) {
             this.hardwareProfileService.init();
         }
+        progressCounter = 0;
+        progressCountdown = 0;
     }
 
     // update(repoId, packageName,v1Version) -> update(repoId, packageName,List<v1Version>)
@@ -77,8 +82,10 @@ public class VersionUpdateService {
 
     // most processing is done here
     private void update(int repoId, App app, List<de.k3b.fdroid.v1.domain.Version> v1VersionList) {
-        if (progressListener != null) {
-            progressListener.onProgress(".", app.getPackageName());
+        progressCounter++;
+        if (progressObserver != null && (--progressCountdown) <= 0) {
+            progressObserver.onProgress(progressCounter, ".", app.getPackageName());
+            progressCountdown = PROGRESS_INTERVALL;
         }
 
         List<Version> roomVersionList = versionRepository.findByAppId(app.getId());
@@ -137,7 +144,7 @@ public class VersionUpdateService {
         App app = appRepository.findByPackageName(packageName);
 
         if (app == null) {
-            app = new de.k3b.fdroid.domain.App(packageName);
+            app = new App(packageName);
             appRepository.insert(app);
         }
         return app;
@@ -161,6 +168,12 @@ public class VersionUpdateService {
         }
     }
 
+    public void setProgressListener(ProgressObserver progressObserver) {
+        this.progressObserver = progressObserver;
+        if (this.hardwareProfileService != null)
+            hardwareProfileService.setProgressListener(progressObserver);
+    }
+
     private class PackageCollector {
         private String lastPackageName = null;
         private List<de.k3b.fdroid.v1.domain.Version> v1VersionList = new ArrayList<>();
@@ -177,7 +190,6 @@ public class VersionUpdateService {
                 v1VersionList.add(v1Version);
             }
         }
-
     }
 
 }

@@ -35,6 +35,7 @@ import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.domain.interfaces.VersionRepository;
 import de.k3b.fdroid.service.CategoryService;
+import de.k3b.fdroid.service.ConsoleProgressUpdateObserver;
 import de.k3b.fdroid.service.LanguageService;
 
 @Service
@@ -51,7 +52,8 @@ public class V1UpdateServiceEx extends V1UpdateService {
                              AppHardwareRepository appHardwareRepository,
                              LanguageService languageService) {
         super(repoRepository, appRepository, categoryService, appCategoryRepository,
-                versionRepository, localizedRepository, localeRepository, hardwareProfileRepository, appHardwareRepository, languageService, new DemoProgreeUpdateListener());
+                versionRepository, localizedRepository, localeRepository, hardwareProfileRepository, appHardwareRepository, languageService);
+        setProgressListener(new ConsoleProgressUpdateObserver());
     }
 
     @Override

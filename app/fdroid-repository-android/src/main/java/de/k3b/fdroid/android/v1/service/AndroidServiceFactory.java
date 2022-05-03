@@ -60,6 +60,6 @@ public class AndroidServiceFactory {
     }
 
     private HttpV1JarDownloadService getHttpV1JarDownloadService() {
-        return new HttpV1JarDownloadService(getTempDir("download").getAbsolutePath(), null);
+        return new HttpV1JarDownloadService(getTempDir("download").getAbsolutePath());
     }
 }

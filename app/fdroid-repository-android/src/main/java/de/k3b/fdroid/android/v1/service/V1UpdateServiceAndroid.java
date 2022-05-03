@@ -28,7 +28,6 @@ import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.HardwareProfileRepository;
 import de.k3b.fdroid.domain.interfaces.LocaleRepository;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
-import de.k3b.fdroid.domain.interfaces.ProgressListener;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.domain.interfaces.VersionRepository;
 import de.k3b.fdroid.service.CategoryService;
@@ -39,19 +38,23 @@ public class V1UpdateServiceAndroid extends V1UpdateService {
 
     public static final String TAG = Global.LOG_TAG_IMPORT;
 
-    public V1UpdateServiceAndroid(RepoRepository repoRepository, AppRepository appRepository, CategoryService categoryService, AppCategoryRepository appCategoryRepository, VersionRepository versionRepository, LocalizedRepository localizedRepository, LocaleRepository localeRepository, HardwareProfileRepository hardwareProfileRepository, AppHardwareRepository appHardwareRepository, LanguageService languageService, ProgressListener progressListener) {
+    public V1UpdateServiceAndroid(
+            RepoRepository repoRepository, AppRepository appRepository,
+            CategoryService categoryService, AppCategoryRepository appCategoryRepository,
+            VersionRepository versionRepository, LocalizedRepository localizedRepository,
+            LocaleRepository localeRepository, HardwareProfileRepository hardwareProfileRepository,
+            AppHardwareRepository appHardwareRepository, LanguageService languageService) {
         super(repoRepository, appRepository, categoryService, appCategoryRepository,
                 versionRepository, localizedRepository, localeRepository, hardwareProfileRepository,
-                appHardwareRepository, languageService, progressListener);
+                appHardwareRepository, languageService);
     }
 
     public static V1UpdateServiceAndroid create(FDroidDatabaseFactory db) {
         CategoryService categoryService = new CategoryService(db.categoryRepository());
         LanguageService languageService = new LanguageService(db.localeRepository());
-        ProgressListener progressListener = null;
         return new V1UpdateServiceAndroid(db.repoRepository(), db.appRepository(), categoryService,
                 db.appCategoryRepository(), db.versionRepository(), db.localizedRepository(), db.localeRepository(),
-                db.hardwareProfileRepository(), db.appHardwareRepository(), languageService, progressListener) {
+                db.hardwareProfileRepository(), db.appHardwareRepository(), languageService) {
 
         };
 

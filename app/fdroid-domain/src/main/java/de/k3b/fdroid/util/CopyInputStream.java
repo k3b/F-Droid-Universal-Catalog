@@ -23,19 +23,30 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import de.k3b.fdroid.domain.interfaces.ProgressObservable;
+import de.k3b.fdroid.domain.interfaces.ProgressObserver;
+
 /**
  * reading and processing {@link InputStream} and also
  * copying it-s content to a {@link OutputStream}.
  * <p>
  * Example: Simultanious parsing a zip from https and saving it as a file.
  */
-public class CopyInputStream extends InputStream {
+public class CopyInputStream extends InputStream implements ProgressObservable {
     // MAX_SKIP_BUFFER_SIZE is used to determine the maximum buffer size to
     // use when skipping.
     private static final int MAX_SKIP_BUFFER_SIZE = 2048;
+    private static final int COUNTDOWN_INTERVALL = 100 * 1024; // 100 KByte
 
     private final InputStream in;
     private final OutputStream out;
+    private ProgressObserver progressObserver;
+    private int byteCount = 0;
+
+    /**
+     * reset to {@link #COUNTDOWN_INTERVALL} when below 0
+     */
+    private int countdown = 0;
 
     public CopyInputStream(InputStream in, OutputStream out) {
         if (in == null || out == null) throw new NullPointerException();
@@ -47,17 +58,31 @@ public class CopyInputStream extends InputStream {
     public int read() throws IOException {
         int c = in.read();
         if (c != -1) out.write(c);
+        byteCount++;
+        if (progressObserver != null && (--countdown) < 0) {
+            onProgressUpdate(byteCount / 1024);
+        }
         return c;
     }
 
     public void close() throws IOException {
-        // if this.in is closed without reading to the end:
-        // read (and copy) until the end.
         do {
+            // if this.in is closed without reading to the end:
+            // read (and copy) until the end.
         } while (skip(MAX_SKIP_BUFFER_SIZE) == MAX_SKIP_BUFFER_SIZE);
 
         out.flush();
         out.close();
         in.close();
     }
+
+    public void setProgressListener(ProgressObserver progressObserver) {
+        this.progressObserver = progressObserver;
+    }
+
+    private void onProgressUpdate(int byteCount) {
+        progressObserver.onProgress(byteCount, ".", "");
+        countdown = COUNTDOWN_INTERVALL;
+    }
+
 }

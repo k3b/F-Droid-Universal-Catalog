@@ -21,52 +21,56 @@ package de.k3b.fdroid.v1.service;
 
 import de.k3b.fdroid.domain.common.AppCommon;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
-import de.k3b.fdroid.domain.interfaces.ProgressListener;
+import de.k3b.fdroid.domain.interfaces.ProgressObservable;
+import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.util.StringUtil;
 
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
-public class AppUpdateService {
+public class AppUpdateService implements ProgressObservable {
+    private static final int PROGRESS_INTERVALL = 100;
+
     private final AppRepository appRepository;
     private final AppCategoryUpdateService appCategoryUpdateService;
     private final LocalizedUpdateService localizedUpdateService;
-    private final ProgressListener progressListener;
+
+    private ProgressObserver progressObserver = null;
+    private int progressCounter = 0;
+    private int progressCountdown = 0;
 
     public AppUpdateService(AppRepository appRepository,
                             AppCategoryUpdateService appCategoryUpdateService,
-                            LocalizedUpdateService localizedUpdateService,
-                            ProgressListener progressListener) {
+                            LocalizedUpdateService localizedUpdateService) {
         this.appRepository = appRepository;
         this.appCategoryUpdateService = appCategoryUpdateService;
         this.localizedUpdateService = localizedUpdateService;
-
-        this.progressListener = progressListener;
     }
 
     public void init() {
         this.appCategoryUpdateService.init();
         this.localizedUpdateService.init();
+        progressCounter = 0;
+        progressCountdown = 0;
     }
 
     public de.k3b.fdroid.domain.App update(int repoId, de.k3b.fdroid.v1.domain.App v1App) {
         de.k3b.fdroid.domain.App roomApp = appRepository.findByPackageName(v1App.getPackageName());
+        String progressChar = ".";
         if (roomApp == null) {
+            progressChar = "+";
             roomApp = new de.k3b.fdroid.domain.App();
-            AppCommon.copyCommon(roomApp, v1App);
-            roomApp.setSearchCategory(StringUtil.toCsvStringOrNull(v1App.getCategories()));
-            appRepository.insert(roomApp);
-            if (progressListener != null) {
-                progressListener.onProgress("+", roomApp.getPackageName());
-            }
-        } else {
-            AppCommon.copyCommon(roomApp, v1App);
-            roomApp.setSearchCategory(StringUtil.toCsvStringOrNull(v1App.getCategories()));
-            appRepository.update(roomApp);
-            if (progressListener != null) {
-                progressListener.onProgress(".", roomApp.getPackageName());
-            }
         }
+        AppCommon.copyCommon(roomApp, v1App);
+        roomApp.setSearchCategory(StringUtil.toCsvStringOrNull(v1App.getCategories()));
+        appRepository.save(roomApp);
+
+        progressCounter++;
+        if (progressObserver != null && (--progressCountdown) <= 0) {
+            progressObserver.onProgress(progressCounter, progressChar, roomApp.getPackageName());
+            progressCountdown = PROGRESS_INTERVALL;
+        }
+
         if (appCategoryUpdateService != null)
             appCategoryUpdateService.update(roomApp.getId(), v1App.getCategories());
         if (localizedUpdateService != null) {
@@ -74,5 +78,10 @@ public class AppUpdateService {
             appRepository.update(roomApp);
         }
         return roomApp;
+    }
+
+    @Override
+    public void setProgressListener(ProgressObserver progressObserver) {
+        this.progressObserver = progressObserver;
     }
 }

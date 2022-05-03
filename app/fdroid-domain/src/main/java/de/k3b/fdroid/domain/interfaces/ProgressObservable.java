@@ -16,33 +16,15 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
+
 package de.k3b.fdroid.domain.interfaces;
 
-import java.util.List;
-
-import de.k3b.fdroid.domain.App;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * Android independant interfaces to use the Database
+ * Classes that implements this interface can report progress info
+ * via {@link ProgressObserver}
  */
-public interface AppRepository extends AppRepositoryFindIdsByExpression {
-    void insert(App app);
-
-    void update(App app);
-
-    default void save(App app) {
-        if (app.getId() == 0) {
-            insert(app);
-        } else {
-            update(app);
-        }
-    }
-
-    void delete(App app);
-
-    App findByPackageName(String packageName);
-
-    List<App> findAll();
-
-    List<App> findByIds(List<Integer> ids);
+public interface ProgressObservable {
+    void setProgressListener(@Nullable ProgressObserver progressObserver);
 }

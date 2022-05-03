@@ -16,24 +16,30 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
+package de.k3b.fdroid.domain;
 
-package de.k3b.fdroid.v1.service;
+import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 
-import de.k3b.fdroid.domain.interfaces.ProgressListener;
+public class ProgressObserverAdapter implements ProgressObserver {
+    private final ProgressObserver child;
 
-public class DemoProgreeUpdateListener implements ProgressListener {
-    private static final int INTERVALL = 100;
-    private int counter = 0;
+    public ProgressObserverAdapter(ProgressObserver child) {
+
+        this.child = child;
+    }
 
     @Override
-    public void onProgress(String prograssChar, String packageName) {
-        counter++;
-        if (counter % INTERVALL == 0) System.out.print(prograssChar);
+    public void onProgress(int counter, String progressChar, String progressContext) {
+        child.onProgress(counter, progressChar, progressContext);
+    }
+
+    @Override
+    public ProgressObserver setProgressContext(String progressPrefix, String progressSuffix) {
+        return child.setProgressContext(progressPrefix, progressSuffix);
     }
 
     @Override
     public void log(String message) {
-        System.out.println();
-        System.out.println(message);
+        child.log(message);
     }
 }

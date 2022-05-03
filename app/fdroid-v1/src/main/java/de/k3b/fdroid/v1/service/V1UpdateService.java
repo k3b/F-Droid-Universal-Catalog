@@ -19,6 +19,8 @@
 
 package de.k3b.fdroid.v1.service;
 
+import org.springframework.lang.Nullable;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -28,7 +30,8 @@ import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.HardwareProfileRepository;
 import de.k3b.fdroid.domain.interfaces.LocaleRepository;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
-import de.k3b.fdroid.domain.interfaces.ProgressListener;
+import de.k3b.fdroid.domain.interfaces.ProgressObservable;
+import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.domain.interfaces.VersionRepository;
 import de.k3b.fdroid.service.CategoryService;
@@ -41,10 +44,12 @@ import de.k3b.fdroid.v1.domain.Version;
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
-public abstract class V1UpdateService {
+public abstract class V1UpdateService implements ProgressObservable {
     private final RepoRepository repoRepository;
-    JsonStreamParser jsonStreamParser = new JsonStreamParser();
+    private final HardwareProfileService hardwareProfileService;
+    JsonStreamParser jsonStreamParser;
     RepoUpdateService repoUpdateService;
+    private ProgressObserver progressObserver;
 
     AppUpdateService appUpdateService;
     VersionUpdateService versionUpdateService;
@@ -53,20 +58,6 @@ public abstract class V1UpdateService {
 
     private de.k3b.fdroid.domain.Repo roomRepo;
     private int currentRepoId = 0;
-
-    /*
-    public V1UpdateService(FDroidDatabase fDroidDatabase) {
-
-        this(
-                fDroidDatabase.repoDao(),
-                fDroidDatabase.appDao(),
-                fDroidDatabase.categoryDao(),
-                fDroidDatabase.appCategoryDao(),
-                fDroidDatabase.versionDao(),
-                fDroidDatabase.localizedDao(),
-                fDroidDatabase.localeDao());
-    }
-     */
 
     public V1UpdateService(RepoRepository repoRepository, AppRepository appRepository,
                            CategoryService categoryService,
@@ -77,35 +68,16 @@ public abstract class V1UpdateService {
                            HardwareProfileRepository hardwareProfileRepository,
                            AppHardwareRepository appHardwareRepository,
                            LanguageService languageService) {
-        this(repoRepository, appRepository,
-                categoryService,
-                appCategoryRepository,
-                versionRepository,
-                localizedRepository,
-                localeRepository,
-                hardwareProfileRepository, appHardwareRepository, languageService, null);
-    }
-
-    public V1UpdateService(RepoRepository repoRepository, AppRepository appRepository,
-                           CategoryService categoryService,
-                           AppCategoryRepository appCategoryRepository,
-                           VersionRepository versionRepository,
-                           LocalizedRepository localizedRepository,
-                           LocaleRepository localeRepository,
-                           HardwareProfileRepository hardwareProfileRepository,
-                           AppHardwareRepository appHardwareRepository,
-                           LanguageService languageService,
-                           ProgressListener progressListener) {
         repoUpdateService = new RepoUpdateService(repoRepository);
 
         AppCategoryUpdateService appCategoryUpdateService = new AppCategoryUpdateService(
                 categoryService, appCategoryRepository);
         LocalizedUpdateService localizedUpdateService = new LocalizedUpdateService(
                 localizedRepository, languageService);
-        appUpdateService = new AppUpdateService(appRepository, appCategoryUpdateService, localizedUpdateService, progressListener);
+        appUpdateService = new AppUpdateService(appRepository, appCategoryUpdateService, localizedUpdateService);
 
-        HardwareProfileService hardwareProfileService = new HardwareProfileService(appRepository, hardwareProfileRepository, appHardwareRepository, progressListener);
-        versionUpdateService = new VersionUpdateService(appRepository, versionRepository, hardwareProfileService, progressListener);
+        hardwareProfileService = new HardwareProfileService(appRepository, hardwareProfileRepository, appHardwareRepository);
+        versionUpdateService = new VersionUpdateService(appRepository, versionRepository, hardwareProfileService);
         this.repoRepository = repoRepository;
     }
 
@@ -123,6 +95,7 @@ public abstract class V1UpdateService {
     public void init() {
         appUpdateService.init();
         versionUpdateService.init();
+        jsonStreamParser = new JsonStreamParser();
     }
 
     public void save(de.k3b.fdroid.domain.Repo repo) {
@@ -132,16 +105,22 @@ public abstract class V1UpdateService {
             repoRepository.update(repo);
         }
     }
+
     abstract protected String log(String s);
 
+    public void setProgressListener(@Nullable ProgressObserver progressObserver) {
+        this.progressObserver = progressObserver;
+        this.appUpdateService.setProgressListener(progressObserver);
+        this.versionUpdateService.setProgressListener(progressObserver);
+        this.hardwareProfileService.setProgressListener(progressObserver);
+    }
+
     class JsonStreamParser extends FDroidCatalogJsonStreamParserBase {
-        private int lastAppCount=0;
-        private int lastVersionCount=0;
+        private int lastAppCount = 0;
+        private int lastVersionCount = 0;
 
         /**
          * Stream event, when something has to be logged
-         *
-         * @param s
          */
         @Override
         protected String log(String s) {
@@ -150,8 +129,6 @@ public abstract class V1UpdateService {
 
         /**
          * Stream event, when a {@link Repo} was read
-         *
-         * @param v1Repo
          */
         @Override
         protected void onRepo(Repo v1Repo) {
@@ -163,12 +140,14 @@ public abstract class V1UpdateService {
 
         /**
          * Stream event, when a {@link App} was read
-         *
-         * @param v1App
          */
         @Override
         protected void onApp(App v1App) {
             if (v1App != null) {
+                if (lastAppCount == 0 && progressObserver != null) {
+                    progressObserver.setProgressContext("🗃 " + roomRepo.getName() + " : ", " / " + roomRepo.getLastAppCount());
+                }
+
                 lastAppCount++;
 
                 fixLocaleService.fix(v1App);
@@ -178,12 +157,12 @@ public abstract class V1UpdateService {
 
         /**
          * Stream event, when a {@link Version} was read
-         *
-         * @param packageName
-         * @param v1Version
          */
         @Override
         protected void onVersion(String packageName, Version v1Version) {
+            if (lastAppCount == 0 && progressObserver != null) {
+                progressObserver.setProgressContext("🏬 " + roomRepo.getName() + " : ", " / " + roomRepo.getLastAppCount());
+            }
             lastVersionCount++;
             versionUpdateService.updateCollectVersions(currentRepoId, packageName, v1Version);
         }

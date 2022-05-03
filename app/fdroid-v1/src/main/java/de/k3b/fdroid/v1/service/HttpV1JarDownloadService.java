@@ -39,28 +39,28 @@ import java.util.Date;
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.common.RepoCommon;
-import de.k3b.fdroid.domain.interfaces.ProgressListener;
+import de.k3b.fdroid.domain.interfaces.ProgressObservable;
+import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.util.CopyInputStream;
 import de.k3b.fdroid.v1.service.util.DateUtils;
 
 /* download v1-jar while simultaniously checking/updating signature */
 @Service
-public class HttpV1JarDownloadService {
+public class HttpV1JarDownloadService implements ProgressObservable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
     public static final String HTTP_LAST_MODIFIED = "Last-Modified";
     public static final String HTTP_IF_MODIFIED_SINCE = "If-Modified-Since";
 
     @NonNull
     private final String downloadPath;
-    @Nullable
-    private final ProgressListener progressListener;
-    @NonNull
+
     private Repo repoInDatabase;
 
+    @Nullable
+    private ProgressObserver progressObserver = null;
+
     public HttpV1JarDownloadService(
-            @Value("${de.k3b.fdroid.downloads:~/.fdroid/downloads}") @NonNull String downloadPath,
-            @Nullable ProgressListener progressListener) {
-        this.progressListener = progressListener;
+            @Value("${de.k3b.fdroid.downloads:~/.fdroid/downloads}") @NonNull String downloadPath) {
         if (downloadPath == null) throw new NullPointerException();
 
         this.downloadPath = downloadPath.replace("~", System.getProperty("user.home"));
@@ -87,7 +87,12 @@ public class HttpV1JarDownloadService {
 
         log("Downloading " + downloadUrl);
 
-        HttpURLConnection connection = (HttpURLConnection) new URL(downloadUrl).openConnection();
+        URL url = new URL(downloadUrl);
+        if (progressObserver != null) {
+            progressObserver.setProgressContext("🌍⬇ : " + url.getHost() + " : ", " kB");
+        }
+
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         if (lastModified != 0) {
             connection.setRequestProperty(HTTP_IF_MODIFIED_SINCE, DateUtils.formatDate(new Date(lastModified)));
         }
@@ -96,6 +101,14 @@ public class HttpV1JarDownloadService {
         if (repoInDatabase != null && jarLastModified != null) {
             repoInDatabase.setLastUsedDownloadDateTimeUtc(DateUtils.parseDate(jarLastModified).getTime());
         }
+
+        if (progressObserver != null) {
+            int contentLength = connection.getContentLength() / 1024;
+            if (contentLength > 0) {
+                progressObserver.setProgressContext(null, " / " + contentLength + " kB");
+            }
+        }
+
         log("https result =" + connection.getResponseMessage() +
                 "(" + connection.getResponseCode() + "," + HTTP_LAST_MODIFIED +
                 "='" + jarLastModified + "')");
@@ -140,16 +153,24 @@ public class HttpV1JarDownloadService {
 
     private InputStream open(InputStream inputStream, OutputStream downloadFileOut) throws IOException {
         if (downloadFileOut != null) {
-            inputStream = new CopyInputStream(inputStream, downloadFileOut);
+            CopyInputStream copyInputStream = new CopyInputStream(inputStream, downloadFileOut);
+            copyInputStream.setProgressListener(progressObserver);
+            inputStream = copyInputStream;
         }
         return new BufferedInputStream(inputStream);
     }
 
     protected void log(String message) {
         LOGGER.debug(message);
-        System.out.println(message);
-        if (progressListener != null) {
-            progressListener.log(message);
+        if (progressObserver != null) {
+            progressObserver.log(message);
+        } else {
+            System.out.println(message);
         }
+    }
+
+    @Override
+    public void setProgressListener(ProgressObserver progressObserver) {
+        this.progressObserver = progressObserver;
     }
 }
