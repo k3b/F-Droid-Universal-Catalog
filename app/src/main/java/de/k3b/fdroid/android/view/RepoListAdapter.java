@@ -33,6 +33,7 @@ import java.util.List;
 
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.android.R;
+import de.k3b.fdroid.android.html.AndroidStringResourceMustacheContext;
 import de.k3b.fdroid.android.html.util.HtmlUtil;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.html.service.FormatService;

@@ -16,11 +16,12 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.view;
+package de.k3b.fdroid.android.html;
 
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.util.Log;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -31,8 +32,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Locale;
@@ -48,15 +47,14 @@ import de.k3b.fdroid.html.util.FormatUtil;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(Parameterized.class)
-public class GenericTemplateTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
+public class GenericTemplateTestAndroid_Broken {
     private static Mustache.CustomContext translator;
     private final Object testParamExampleItem;
     private final String testParamTemplateId;
     Context appContext;
     private Locale oldDefault;
 
-    public GenericTemplateTest(Object exampleItem, String templateId) {
+    public GenericTemplateTestAndroid_Broken(Object exampleItem, String templateId) {
         super();
         this.testParamExampleItem = exampleItem;
         this.testParamTemplateId = templateId;
@@ -65,6 +63,8 @@ public class GenericTemplateTest {
     @Parameterized.Parameters
     public static Collection<Object[]> input() throws Exception {
         translator = new ResourceBundleMustacheContext(Locale.US);
+
+        // TODO list all resources does not work under android. How to fix?
         return FormatUtil.getTestCases();
     }
 
@@ -88,7 +88,7 @@ public class GenericTemplateTest {
         FormatService formatService = new FormatService(
                 testParamTemplateId, testParamExampleItem.getClass(), translator);
         String format = formatService.format(testParamExampleItem);
-        LOGGER.info(format);
+        Log.i(Global.LOG_TAG_HTML, format);
     }
 
     // Locale during unit test on Android see https://stackoverflow.com/questions/16760194/locale-during-unit-test-on-android/21810126

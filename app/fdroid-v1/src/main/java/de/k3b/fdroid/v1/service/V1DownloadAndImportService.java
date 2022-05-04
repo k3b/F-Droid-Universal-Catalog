@@ -187,8 +187,8 @@ public class V1DownloadAndImportService implements ProgressObservable {
 
 
     @Override
-    public void setProgressListener(ProgressObserver progressObserver) {
-        downloadService.setProgressListener(progressObserver);
-        v1UpdateService.setProgressListener(progressObserver);
+    public void setProgressObserver(ProgressObserver progressObserver) {
+        downloadService.setProgressObserver(progressObserver);
+        v1UpdateService.setProgressObserver(progressObserver);
     }
 }

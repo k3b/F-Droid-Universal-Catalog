@@ -6,8 +6,8 @@ v TextView: replace "style-bgcolor" with "class status_xxx"
 Progress:
 setText(null) ==> reload all
 
-v fdroid-html v de.k3b.fdroid.android.view.GenericTemplateTest ? loop over template files does not
-work under android
+v fdroid-html v de.k3b.fdroid.android.html.GenericTemplateTestAndroid_Broken ? loop over template
+files does not work under android
 
 - Android RepoListActivity v Android RepoListAdapter - yellow=Download-in-progress - red = error
     - Status area with progress info

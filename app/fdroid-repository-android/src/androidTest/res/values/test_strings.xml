@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
  * Copyright (c) 2022 by k3b.
  *
@@ -16,23 +17,13 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.view;
 
-import android.content.Context;
+# messages should be the same:
+# jpa/src/main/resources/messages_en.properties and
+# android/src/main/res/values/strings.xml
 
-import com.samskivert.mustache.Mustache;
+-->
 
-/** translates {{app_name}} to Context.getString(R.string.app_name) */
-public class AndroidStringResourceMustacheContext implements Mustache.CustomContext {
-    private final Context context;
-
-    public AndroidStringResourceMustacheContext(Context context) {
-        this.context = context;
-    }
-
-    @Override
-    public Object get(String name) throws Exception {
-        int identifier = context.getResources().getIdentifier(name, "string", context.getPackageName());
-        return context.getString(identifier);
-    }
-}
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="test_label">AndroidTest</string>
+</resources>

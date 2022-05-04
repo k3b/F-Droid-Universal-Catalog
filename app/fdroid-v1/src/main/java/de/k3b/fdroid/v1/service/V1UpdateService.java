@@ -108,11 +108,11 @@ public abstract class V1UpdateService implements ProgressObservable {
 
     abstract protected String log(String s);
 
-    public void setProgressListener(@Nullable ProgressObserver progressObserver) {
+    public void setProgressObserver(@Nullable ProgressObserver progressObserver) {
         this.progressObserver = progressObserver;
-        this.appUpdateService.setProgressListener(progressObserver);
-        this.versionUpdateService.setProgressListener(progressObserver);
-        this.hardwareProfileService.setProgressListener(progressObserver);
+        this.appUpdateService.setProgressObserver(progressObserver);
+        this.versionUpdateService.setProgressObserver(progressObserver);
+        this.hardwareProfileService.setProgressObserver(progressObserver);
     }
 
     class JsonStreamParser extends FDroidCatalogJsonStreamParserBase {

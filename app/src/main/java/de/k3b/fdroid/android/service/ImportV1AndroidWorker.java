@@ -22,10 +22,12 @@ package de.k3b.fdroid.android.service;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
@@ -35,6 +37,7 @@ import java.util.UUID;
 import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.util.StringUtil;
 import de.k3b.fdroid.v1.service.V1DownloadAndImportService;
 import de.k3b.fdroid.v1.service.V1JarException;
@@ -47,9 +50,17 @@ public class ImportV1AndroidWorker extends Worker {
     private static final String KEY_JAR_SIGNING_CERTIFICATE_FINGERPRINT = "jarSigningCertificateFingerprintOrNull";
     private static final String KEY_RESULT = "resultMessage";
     private static final String TAG_IMPORTV1 = "importV1";
+    public static final String KEY_PROGRESS = "progress";
+
+    V1DownloadAndImportService v1DownloadAndImportService;
 
     public ImportV1AndroidWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
+
+        v1DownloadAndImportService = FDroidApplication
+                .getAndroidServiceFactory().getV1DownloadAndImportService();
+
+        v1DownloadAndImportService.setProgressObserver(new ProgressObserverAdapter());
     }
 
     public static UUID scheduleDownload(Context context,
@@ -71,24 +82,24 @@ public class ImportV1AndroidWorker extends Worker {
         return scheduleDownload(context, data);
     }
 
-    /*
-    https://developer.android.com/topic/libraries/architecture/workmanager/advanced#params
-
-    do something with the result:
-
-    UUID workerId = scheduleDownload(...)
-
-    WorkManager.getInstance(myContext).getWorkInfoByIdLiveData(workerId)
-    .observe(lifecycleOwner, info -> {
-         if (info != null && info.getState().isFinished()) {
-           int myResult = info.getOutputData().getInt(KEY_RESULT,
-                  myDefaultValue));
-           // ... do something with the result ...
-         }
-    });
-
-
+    /**
+     * Allows an activity to receive Progress-Messages
+     *
+     * @param progressObserver where the progress-info goes to
+     * @return false if no worker for taskId was found
      */
+    public static boolean registerProgressObserver(String taskId, AndroidWorkerProgressObserver progressObserver) {
+        LiveData<WorkInfo> data = WorkManager
+                .getInstance(progressObserver.getProgressMessageTextView().getContext())
+                .getWorkInfoByIdLiveData(UUID.fromString(taskId));
+        if (data.getValue() == null) return false;
+        data.observe(progressObserver,
+                info -> {
+                    // if (info != null && info.getState()==??? ) // TODO fintue filter
+                    progressObserver.onProgressMessage(info.getProgress().getString(KEY_PROGRESS));
+                });
+        return true;
+    }
 
     private static UUID scheduleDownload(Context context, Data data) {
         // WorkRequest importWorkRequest =
@@ -106,30 +117,9 @@ public class ImportV1AndroidWorker extends Worker {
         return importWorkRequest.getId();
     }
 
-    /*
-    private void t() {
-        UUID workerId = scheduleDownload(null, 0);
-
-        LiveData<WorkInfo> liveData = WorkManager.getInstance(null).getWorkInfoByIdLiveData(workerId);
-        WorkInfo workInfo = liveData.getValue();
-        liveData
-                .observe(null, info -> {
-                    if (info != null && info.getState().isFinished()) {
-                        int myResult = info.getOutputData().getInt(KEY_RESULT,
-                                0);
-                        // ... do something with the result ...
-                    }
-                });
-
-    }
-     */
-
     @NonNull
     @Override
     public Result doWork() {
-
-        V1DownloadAndImportService v1DownloadAndImportService = FDroidApplication
-                .getAndroidServiceFactory().getV1DownloadAndImportService();
 
         Repo result;
         Data data = getInputData();
@@ -156,5 +146,30 @@ public class ImportV1AndroidWorker extends Worker {
                 .putString(KEY_RESULT, message)
                 .build();
         return Result.failure(output);
+    }
+
+    /**
+     * Translates from k3b-s internal {@link ProgressObserver} to {@link Worker#setProgressAsync(Data)}
+     */
+    private class ProgressObserverAdapter implements ProgressObserver {
+        private String progressPrefix = "";
+        private String progressSuffix = "";
+
+        @Override
+        public ProgressObserver setProgressContext(String progressPrefix, String progressSuffix) {
+            if (progressPrefix != null) this.progressPrefix = progressPrefix;
+            if (progressSuffix != null) this.progressSuffix = progressSuffix;
+            return this;
+        }
+
+        @Override
+        public void onProgress(int count, String progressChar, String packageName) {
+            log(progressPrefix + count + progressSuffix);
+        }
+
+        @Override
+        public void log(final String message) {
+            ImportV1AndroidWorker.this.setProgressAsync(new Data.Builder().putString(KEY_PROGRESS, message).build());
+        }
     }
 }

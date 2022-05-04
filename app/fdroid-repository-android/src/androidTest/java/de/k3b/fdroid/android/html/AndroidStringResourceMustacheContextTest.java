@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.view;
+package de.k3b.fdroid.android.html;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -24,6 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.util.Log;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -32,12 +33,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
 
-import de.k3b.fdroid.Global;
+import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.html.service.FormatService;
 import de.k3b.fdroid.util.TestDataGenerator;
@@ -49,8 +48,6 @@ import de.k3b.fdroid.util.TestDataGenerator;
  */
 @RunWith(AndroidJUnit4.class)
 public class AndroidStringResourceMustacheContextTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
-
     private Locale oldDefault;
     AndroidStringResourceMustacheContext translator;
     Context appContext;
@@ -70,16 +67,21 @@ public class AndroidStringResourceMustacheContextTest {
 
     @Test
     public void translateContextString() {
-        String format = format("Hello '{{v}}' from {{t.app_name}}", "World");
-        assertThat(format, equalTo("Hello 'World' from FDroid Universal Catalog"));
+        FormatService formatService = new FormatService(
+                "Hello '{{v}}' from {{t.test_label}}", translator);
+        String format = formatService.format("World");
+
+        // R.strings.test_label=AndroidTest
+        assertThat(format, equalTo("Hello 'World' from AndroidTest"));
     }
 
     @Test
     public void repoText() throws Exception {
         Repo repo = TestDataGenerator.fill(new Repo(), 4);
-        String template = (String) translator.get("list_repo");
-        String format = format(template, repo);
-        LOGGER.info(format);
+        FormatService formatService = new FormatService(
+                "list_repo", repo.getClass(), translator);
+        String format = formatService.format(repo);
+        Log.i(Global.LOG_TAG_HTML, format);
     }
 
     // Locale during unit test on Android see https://stackoverflow.com/questions/16760194/locale-during-unit-test-on-android/21810126
@@ -95,9 +97,4 @@ public class AndroidStringResourceMustacheContextTest {
         res.updateConfiguration(config, res.getDisplayMetrics());
     }
 
-    private String format(String template, Object values) {
-        FormatService formatService = new FormatService(
-                template, translator);
-        return formatService.format(values);
-    }
 }

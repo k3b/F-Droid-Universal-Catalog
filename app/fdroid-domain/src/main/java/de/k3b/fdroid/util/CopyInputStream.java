@@ -76,7 +76,7 @@ public class CopyInputStream extends InputStream implements ProgressObservable {
         in.close();
     }
 
-    public void setProgressListener(ProgressObserver progressObserver) {
+    public void setProgressObserver(ProgressObserver progressObserver) {
         this.progressObserver = progressObserver;
     }
 

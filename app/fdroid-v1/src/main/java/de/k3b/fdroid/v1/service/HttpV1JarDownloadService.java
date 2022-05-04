@@ -154,7 +154,7 @@ public class HttpV1JarDownloadService implements ProgressObservable {
     private InputStream open(InputStream inputStream, OutputStream downloadFileOut) throws IOException {
         if (downloadFileOut != null) {
             CopyInputStream copyInputStream = new CopyInputStream(inputStream, downloadFileOut);
-            copyInputStream.setProgressListener(progressObserver);
+            copyInputStream.setProgressObserver(progressObserver);
             inputStream = copyInputStream;
         }
         return new BufferedInputStream(inputStream);
@@ -170,7 +170,7 @@ public class HttpV1JarDownloadService implements ProgressObservable {
     }
 
     @Override
-    public void setProgressListener(ProgressObserver progressObserver) {
+    public void setProgressObserver(ProgressObserver progressObserver) {
         this.progressObserver = progressObserver;
     }
 }

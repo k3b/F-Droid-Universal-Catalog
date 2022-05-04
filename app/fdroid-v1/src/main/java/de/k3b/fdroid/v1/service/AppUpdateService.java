@@ -81,7 +81,7 @@ public class AppUpdateService implements ProgressObservable {
     }
 
     @Override
-    public void setProgressListener(ProgressObserver progressObserver) {
+    public void setProgressObserver(ProgressObserver progressObserver) {
         this.progressObserver = progressObserver;
     }
 }

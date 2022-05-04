@@ -168,10 +168,10 @@ public class VersionUpdateService implements ProgressObservable {
         }
     }
 
-    public void setProgressListener(ProgressObserver progressObserver) {
+    public void setProgressObserver(ProgressObserver progressObserver) {
         this.progressObserver = progressObserver;
         if (this.hardwareProfileService != null)
-            hardwareProfileService.setProgressListener(progressObserver);
+            hardwareProfileService.setProgressObserver(progressObserver);
     }
 
     private class PackageCollector {

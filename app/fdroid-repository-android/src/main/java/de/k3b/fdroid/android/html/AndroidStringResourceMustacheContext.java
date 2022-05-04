@@ -16,15 +16,23 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
+package de.k3b.fdroid.android.html;
 
-package de.k3b.fdroid.domain.interfaces;
+import android.content.Context;
 
-import org.jetbrains.annotations.Nullable;
+import com.samskivert.mustache.Mustache;
 
-/**
- * Classes that implements this interface can report progress info
- * via {@link ProgressObserver}
- */
-public interface ProgressObservable {
-    void setProgressObserver(@Nullable ProgressObserver progressObserver);
+/** translates {{app_name}} to Context.getString(R.string.app_name) */
+public class AndroidStringResourceMustacheContext implements Mustache.CustomContext {
+    private final Context context;
+
+    public AndroidStringResourceMustacheContext(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public Object get(String name) throws Exception {
+        int identifier = context.getResources().getIdentifier(name, "string", context.getPackageName());
+        return context.getString(identifier);
+    }
 }

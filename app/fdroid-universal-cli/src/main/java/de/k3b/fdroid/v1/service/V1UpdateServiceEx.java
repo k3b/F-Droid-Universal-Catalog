@@ -53,7 +53,7 @@ public class V1UpdateServiceEx extends V1UpdateService {
                              LanguageService languageService) {
         super(repoRepository, appRepository, categoryService, appCategoryRepository,
                 versionRepository, localizedRepository, localeRepository, hardwareProfileRepository, appHardwareRepository, languageService);
-        setProgressListener(new ConsoleProgressUpdateObserver());
+        setProgressObserver(new ConsoleProgressUpdateObserver());
     }
 
     @Override

@@ -200,7 +200,7 @@ public class HardwareProfileService implements ProgressObservable {
         if (progressObserver != null) progressObserver.log(message);
     }
 
-    public void setProgressListener(ProgressObserver progressObserver) {
+    public void setProgressObserver(ProgressObserver progressObserver) {
         this.progressObserver = progressObserver;
     }
 }
