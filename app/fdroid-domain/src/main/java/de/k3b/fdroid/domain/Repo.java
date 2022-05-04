@@ -240,9 +240,13 @@ public class Repo extends RepoCommon implements ItemWithId {
      * Called by reflection from fdroid-html
      */
     public String getStateCode() {
-        if (!StringUtil.isEmpty(getDownloadTaskId())) return STATE_BUSY;
+        if (isBusy()) return STATE_BUSY;
         if (!StringUtil.isEmpty(getLastErrorMessage())) return STATE_ERROR;
         if (isAutoDownloadEnabled()) return STATE_ENABLED;
         return STATE_DISABLED;
+    }
+
+    public boolean isBusy() {
+        return !StringUtil.isEmpty(getDownloadTaskId());
     }
 }

@@ -48,6 +48,8 @@ public interface RepoRepository {
 
     List<Repo> findAll();
 
+    List<Repo> findByBusy();
+
     default Repo findCorrespondigRepo(Repo repoFromImport) {
         Repo repoFromDatabase = null;
         if (repoFromDatabase == null && repoFromImport.getName() != null) {
@@ -57,5 +59,14 @@ public interface RepoRepository {
             repoFromDatabase = findByAddress(repoFromImport.getAddress());
         }
         return repoFromDatabase;
+    }
+
+    default Repo getBusy(List<Repo> repos) {
+        if (repos != null) {
+            for (Repo repo : repos) {
+                if (repo.isBusy()) return repo;
+            }
+        }
+        return null;
     }
 }

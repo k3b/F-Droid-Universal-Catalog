@@ -21,6 +21,7 @@ package de.k3b.fdroid;
 
 public class Global {
     public static final String LOG_TAG = "k3b-fdroid-";
+    public static final String LOG_TAG_APP = Global.LOG_TAG + "app";
     public static final String LOG_TAG_IMPORT = Global.LOG_TAG + "import";
     public static final String LOG_TAG_UTIL = Global.LOG_TAG + "util";
     public static final String LOG_TAG_HTML = Global.LOG_TAG + "html";

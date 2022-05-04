@@ -18,15 +18,20 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.util.Assert;
 
+import java.util.List;
+
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
-
 @DataJpaTest
 public class RepoRepositoryTest {
     private static String myAddress = "my.package.name";
@@ -53,5 +58,17 @@ public class RepoRepositoryTest {
     public void findByAddress() {
         Repo r = repo.findByAddress(myAddress);
         Assert.notNull(r, "found");
+    }
+
+
+    @Test
+    public void findByBusy() {
+        jpaTestHelper.createRepo();
+        Repo r = jpaTestHelper.createRepo();
+        r.setDownloadTaskId("notEmpty");
+        jpaTestHelper.save(r);
+
+        List<Repo> repoList = repo.findByBusy();
+        assertThat(repoList.size(), is(1));
     }
 }

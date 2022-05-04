@@ -20,6 +20,8 @@ package de.k3b.fdroid.jpa.repository;
 
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.jpa.repository.base.RepositoryAdapterBase;
@@ -45,4 +47,10 @@ public class RepoRepositoryAdapter extends RepositoryAdapterBase<Repo, RepoRepos
     public Repo findByAddress(String address) {
         return jpa.findByAddress(address);
     }
+
+    @Override
+    public List<Repo> findByBusy() {
+        return jpa.findByBusy();
+    }
+
 }

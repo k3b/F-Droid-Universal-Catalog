@@ -18,8 +18,11 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 import de.k3b.fdroid.domain.Repo;
 
@@ -32,6 +35,11 @@ import de.k3b.fdroid.domain.Repo;
 @Repository
 public interface RepoRepositoryJpa extends CrudRepository<Repo, Integer> {
     Repo findByAddress(String address);
+
+    @Query(value = "select r from Repo r " +
+            "where r.downloadTaskId is not null " +
+            "order by r.lastUsedDownloadDateTimeUtc asc")
+    List<Repo> findByBusy();
 
     Repo findByName(String name);
 }

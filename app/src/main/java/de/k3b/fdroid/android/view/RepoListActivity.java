@@ -20,17 +20,22 @@ package de.k3b.fdroid.android.view;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.UUID;
 
 import de.k3b.fdroid.android.FDroidApplication;
+import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.android.R;
+import de.k3b.fdroid.android.service.AndroidWorkerProgressObserver;
 import de.k3b.fdroid.android.service.ImportV1AndroidWorker;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
@@ -40,6 +45,8 @@ public class RepoListActivity extends Activity {
     protected RecyclerView mRecyclerView;
     protected RepoRepository repoRepository;
     private List<Repo> items = null;
+    private TextView mStatusView;
+    private AndroidWorkerProgressObserver repoDownloadObserver = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,24 +56,85 @@ public class RepoListActivity extends Activity {
         setTitle(R.string.label_repo_title);
 
         mRecyclerView = findViewById(R.id.recyclerView);
+        mStatusView = findViewById(R.id.status);
 
         repoRepository = FDroidApplication.getFdroidDatabase().repoRepository();
 
+        reload();
+    }
+
+    private void reload() {
+        Log.i(Global.LOG_TAG_APP, "Start reload repo");
         FDroidApplication.executor.execute(() -> {
             List<Repo> repos = repoRepository.findAll();
-
-            runOnUiThread(() -> {
-                mAdapter = new RepoListAdapter(RepoListActivity.this, repos);
-                // Set CustomAdapter as the adapter for RecyclerView.
-                mRecyclerView.setAdapter(mAdapter);
-                items = repos;
-
-            });
+            runOnUiThread(() -> onReloadDone(repos));
         });
+    }
+
+    // @MainThread
+    private void onReloadDone(List<Repo> repos) {
+        Log.i(Global.LOG_TAG_APP, "done reload repo");
+        fixRepoDownloadObserver(repos);
+
+        this.items = repos;
+        this.mAdapter = new RepoListAdapter(this, repos);
+        // Set CustomAdapter as the adapter for RecyclerView.
+        this.mRecyclerView.setAdapter(this.mAdapter);
+    }
+
+    private void fixRepoDownloadObserver(List<Repo> repos) {
+        // finish current observer if done.
+        if (this.repoDownloadObserver != null && !this.repoDownloadObserver.isAlive()) {
+            Log.i(Global.LOG_TAG_APP, "destroy repoDownloadObserver for " + repoDownloadObserver.getRepoId());
+
+            this.repoDownloadObserver.onDestroy();
+            this.repoDownloadObserver = null;
+        }
+
+        Repo busy;
+        AndroidWorkerProgressObserver newRepoObserver = null;
+        while (this.repoDownloadObserver == null
+                && (busy = repoRepository.getBusy(repos)) != null) {
+
+            if (newRepoObserver == null) {
+                newRepoObserver = new AndroidWorkerProgressObserver(
+                        this.mStatusView, () -> reload());
+            }
+
+            if (ImportV1AndroidWorker.registerProgressObserver(busy.getDownloadTaskId(), newRepoObserver)) {
+                this.repoDownloadObserver = newRepoObserver;
+                this.repoDownloadObserver.setRepoId(busy.getId());
+                Log.i(Global.LOG_TAG_APP, "created repoDownloadObserver for " + repoDownloadObserver.getRepoId());
+
+                newRepoObserver = null;
+            } else {
+                busy.setDownloadTaskId(null); // not busy any more
+                Log.i(Global.LOG_TAG_APP, "Repo " + busy.getId() + " not busy any more.");
+                repoRepository.save(busy);
+            }
+        }
+        if (newRepoObserver != null) {
+            Log.i(Global.LOG_TAG_APP, "repoDownloadObserver : no busy repo found");
+            newRepoObserver.onDestroy();
+            newRepoObserver = null;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (repoDownloadObserver != null) {
+            repoDownloadObserver.onDestroy();
+        }
+        repoDownloadObserver = null;
+        super.onDestroy();
     }
 
     public void onRepoClick(Repo repo) {
         repo.setAutoDownloadEnabled(!repo.isAutoDownloadEnabled());
+        saveChanges(repo);
+    }
+
+    private void saveChanges(Repo repo) {
         repoRepository.update(repo);
         int position = items.indexOf(repo);
 
@@ -89,7 +157,9 @@ public class RepoListActivity extends Activity {
     }
 
     private boolean onCmdDownload(MenuItem menuItem, Repo repo) {
-        ImportV1AndroidWorker.scheduleDownload(this, repo.getId());
+        UUID uuid = ImportV1AndroidWorker.scheduleDownload(this, repo.getId());
+        repo.setDownloadTaskId(uuid.toString());
+        saveChanges(repo);
         return true;
     }
 }

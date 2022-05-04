@@ -20,6 +20,7 @@
 package de.k3b.fdroid.android.service;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -51,6 +52,7 @@ public class ImportV1AndroidWorker extends Worker {
     private static final String KEY_RESULT = "resultMessage";
     private static final String TAG_IMPORTV1 = "importV1";
     public static final String KEY_PROGRESS = "progress";
+    private final ProgressObserverAdapter progressObserver;
 
     V1DownloadAndImportService v1DownloadAndImportService;
 
@@ -60,7 +62,8 @@ public class ImportV1AndroidWorker extends Worker {
         v1DownloadAndImportService = FDroidApplication
                 .getAndroidServiceFactory().getV1DownloadAndImportService();
 
-        v1DownloadAndImportService.setProgressObserver(new ProgressObserverAdapter());
+        progressObserver = new ProgressObserverAdapter();
+        v1DownloadAndImportService.setProgressObserver(progressObserver);
     }
 
     public static UUID scheduleDownload(Context context,
@@ -92,9 +95,14 @@ public class ImportV1AndroidWorker extends Worker {
         LiveData<WorkInfo> data = WorkManager
                 .getInstance(progressObserver.getProgressMessageTextView().getContext())
                 .getWorkInfoByIdLiveData(UUID.fromString(taskId));
-        if (data.getValue() == null) return false;
+
+        if (data.getValue() == null) {
+            Log.d(Global.LOG_TAG_IMPORT, "registerProgressObserver(" + taskId + ") on observe repo: ");
+            return false;
+        }
         data.observe(progressObserver,
                 info -> {
+                    Log.d(Global.LOG_TAG_IMPORT, "on observe repo: " + info);
                     // if (info != null && info.getState()==??? ) // TODO fintue filter
                     progressObserver.onProgressMessage(info.getProgress().getString(KEY_PROGRESS));
                 });
@@ -138,6 +146,9 @@ public class ImportV1AndroidWorker extends Worker {
         if (!StringUtil.isEmpty(result.getLastErrorMessage())) {
             return fail(result.getLastErrorMessage());
         }
+        progressObserver.log("done");
+        progressObserver.log(null);
+
         return Result.success();
     }
 
@@ -145,6 +156,8 @@ public class ImportV1AndroidWorker extends Worker {
         Data output = new Data.Builder()
                 .putString(KEY_RESULT, message)
                 .build();
+        progressObserver.log(message);
+        progressObserver.log(null);
         return Result.failure(output);
     }
 
@@ -169,6 +182,7 @@ public class ImportV1AndroidWorker extends Worker {
 
         @Override
         public void log(final String message) {
+            Log.d(Global.LOG_TAG_IMPORT, message);
             ImportV1AndroidWorker.this.setProgressAsync(new Data.Builder().putString(KEY_PROGRESS, message).build());
         }
     }

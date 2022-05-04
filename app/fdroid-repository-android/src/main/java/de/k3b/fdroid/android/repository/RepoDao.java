@@ -54,6 +54,9 @@ public interface RepoDao extends RepoRepository {
     @Query("SELECT * FROM Repo WHERE Repo.address = :address")
     Repo findByAddress(String address);
 
+    @Query("SELECT * FROM Repo WHERE Repo.downloadTaskId is not null")
+    List<Repo> findByBusy();
+
     @Query("SELECT * FROM Repo")
     List<Repo> findAllEx();
 

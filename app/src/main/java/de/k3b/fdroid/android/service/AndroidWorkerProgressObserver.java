@@ -21,7 +21,6 @@ package de.k3b.fdroid.android.service;
 
 import android.widget.TextView;
 
-import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.Lifecycle;
@@ -48,6 +47,7 @@ public class AndroidWorkerProgressObserver implements LifecycleOwner {
     @Nullable
     private final WeakReference<Runnable> onNullProgressMessageHandler;
 
+    private int repoId = 0;
     /**
      * Use with {@link ImportV1AndroidWorker#registerProgressObserver(String, AndroidWorkerProgressObserver)}
      *
@@ -85,7 +85,7 @@ public class AndroidWorkerProgressObserver implements LifecycleOwner {
         return progressMessageTextView.get();
     }
 
-    @MainThread
+    // @MainThread
     public void onProgressMessage(String progressMessage) {
         TextView textView = getProgressMessageTextView();
         Runnable onNullProgressMessageHandler = getOnNullProgressMessageHandler();
@@ -104,5 +104,17 @@ public class AndroidWorkerProgressObserver implements LifecycleOwner {
      */
     public void onDestroy() {
         lifecycle.setCurrentState(Lifecycle.State.DESTROYED);
+    }
+
+    public boolean isAlive() {
+        return !getLifecycle().getCurrentState().equals(Lifecycle.State.DESTROYED);
+    }
+
+    public int getRepoId() {
+        return repoId;
+    }
+
+    public void setRepoId(int repoId) {
+        this.repoId = repoId;
     }
 }
