@@ -16,12 +16,19 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
+package de.k3b.fdroid.html.service;
 
-package de.k3b.fdroid;
+import com.samskivert.mustache.Mustache;
 
-public class Global {
-    public static final String LOG_TAG = "k3b-fdroid-";
-    public static final String LOG_TAG_IMPORT = Global.LOG_TAG + "import";
-    public static final String LOG_TAG_UTIL = Global.LOG_TAG + "util";
-    public static final String LOG_TAG_HTML = Global.LOG_TAG + "html";
+/**
+ * translates {{app_name}} to messages_en.properties[app_name]
+ */
+public class DummyMustacheContext implements Mustache.CustomContext {
+    public DummyMustacheContext() {
+    }
+
+    @Override
+    public Object get(String name) throws Exception {
+        return "{{v." + name + "}}";
+    }
 }

@@ -24,6 +24,7 @@ dependencies {
     implementation "org.slf4j:slf4j-api:$SLF4J_VERSION"
 
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
 }
 // required for jitpack
 apply from: "${rootProject.projectDir}/publish-module2.gradle"

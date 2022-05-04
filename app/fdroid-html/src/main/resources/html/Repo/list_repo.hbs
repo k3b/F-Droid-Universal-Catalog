@@ -1,4 +1,6 @@
-<h3 {{#v.autoDownloadEnabled}}style='background-color:lime;'{{/v.autoDownloadEnabled}}>{{v.name}}
-    ({{v.lastAppCount}})</h3>
-{{v.shortDescription}}<br/>
-{{v.lastUsedDownloadDateTimeUtcDate}} {{v.v1Url}}
+<div {{#v.stateCode}} class='state_{{v.stateCode}}'{{/v.stateCode}}>
+    <h3>{{v.name}} ({{v.lastAppCount}})</h3>
+    {{v.shortDescription}}<br/>
+    {{#v.lastErrorMessage}}{{v.lastErrorMessage}}<br/>{{/v.lastErrorMessage}}
+    {{v.downloadTaskId}} {{v.lastUsedDownloadDateTimeUtcDate}} {{v.v1Url}}
+</div>

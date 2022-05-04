@@ -19,6 +19,10 @@
 -dontwarn org.xmlpull.v1.**
 -dontwarn com.caverock.androidsvg.**
 -keep class org.xmlpull.** { *; }
+
+## called via reflection from fdroid-html
+-keep class de.k3b.fdroid.domain.** { *; }
+
 -dontnote MobileAds
 
 # jpa compatibility can be removed from android code

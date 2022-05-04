@@ -16,12 +16,30 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
+package de.k3b.fdroid.html.service;
 
-package de.k3b.fdroid;
+import static org.junit.Assert.assertEquals;
 
-public class Global {
-    public static final String LOG_TAG = "k3b-fdroid-";
-    public static final String LOG_TAG_IMPORT = Global.LOG_TAG + "import";
-    public static final String LOG_TAG_UTIL = Global.LOG_TAG + "util";
-    public static final String LOG_TAG_HTML = Global.LOG_TAG + "html";
+import com.samskivert.mustache.Mustache;
+
+import org.junit.Test;
+
+import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.html.util.HtmlUtil;
+
+public class RepoTemplateIntegrationTest {
+    private final Mustache.CustomContext dummy = new DummyMustacheContext();
+
+    @Test
+    public void listRepo_containsStateError() {
+        Repo repo = new Repo();
+        repo.setLastErrorMessage("some error");
+
+        FormatService formatService = new FormatService(
+                "list_repo", Repo.class, dummy);
+
+        String html = formatService.format(repo);
+        String cssClass = HtmlUtil.getHtmlCssClassState(html);
+        assertEquals("error", cssClass);
+    }
 }

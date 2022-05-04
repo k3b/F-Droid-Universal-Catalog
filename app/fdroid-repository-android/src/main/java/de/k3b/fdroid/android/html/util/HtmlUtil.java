@@ -19,7 +19,7 @@
 package de.k3b.fdroid.android.html.util;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.res.Resources;
 import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
@@ -27,10 +27,7 @@ import android.util.TypedValue;
 import android.widget.TextView;
 
 @SuppressWarnings("deprecation")
-public class HtmlUtil {
-
-    public static final String STYLE_BACKGROUND_COLOR = "background-color:";
-
+public class HtmlUtil extends de.k3b.fdroid.html.util.HtmlUtil {
     public static Spanned fromHtml(String html) {
         Spanned spanned;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -42,7 +39,9 @@ public class HtmlUtil {
         return spanned;
     }
 
-    public static void setHtml(TextView textView, String htmlRaw, Integer backgroundColor) {
+    public static void setHtml(TextView textView, String htmlRaw,
+                               int defaultForegroundColor,
+                               int defaultBackgroundColor) {
         String html = htmlRaw
                 .replace("\r", " ")
                 .replace("\n", " ")
@@ -52,23 +51,26 @@ public class HtmlUtil {
         Spanned spanned = HtmlUtil.fromHtml(html);
         textView.setText(spanned);
 
-        backgroundColor = getBackgroundColor(html, backgroundColor);
-        textView.setBackgroundColor(backgroundColor);
+        // interpret html: css-class='state_xxxx' will be translated to android-resource-colors
+        String cssClass = getHtmlCssClassState(html);
+        Context context = textView.getContext();
+        textView.setBackgroundColor(getColorByName(context, cssClass, "bg_state_", defaultBackgroundColor));
+        textView.setTextColor(getColorByName(context, cssClass, "fg_state_", defaultForegroundColor));
     }
 
-    private static Integer getBackgroundColor(String html, Integer backgroundColor) {
-        // TextView does not support html backgroundcolor.
-        // if html contains some style=background-color:...
-        int found = html.indexOf(STYLE_BACKGROUND_COLOR);
-        if (found > 1) {
-            found += STYLE_BACKGROUND_COLOR.length();
-            int end = html.indexOf(";", found);
-            if (end > 0) {
-                String colorSpec = html.substring(found, end);
-                backgroundColor = Color.parseColor(colorSpec);
+    public static Integer getColorByName(Context context, String name, String namePrefix, Integer notFoundValueColor) {
+        if (name != null) {
+            String colorName = namePrefix + name;
+
+            Resources resources = context.getResources();
+
+            // assume that the android color resources are in the same module as this class.
+            int identifier = resources.getIdentifier(colorName, "color", context.getPackageName());
+            if (identifier != 0) {
+                return resources.getColor(identifier);
             }
         }
-        return backgroundColor;
+        return notFoundValueColor;
     }
 
     public static int getDefaultBackgroundColor(Context context) {
@@ -78,6 +80,15 @@ public class HtmlUtil {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
             colorId = android.R.attr.colorSecondary;
         }
+        TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(colorId, typedValue, true);
+        return context.getResources().getColor(typedValue.resourceId);
+    }
+
+    public static int getDefaultForegroundColor(Context context) {
+        // https://stackoverflow.com/questions/67749943/programmatically-set-a-views-color-to-androidattr-color-attributes
+        // ?android:attr/colorBackground == android.R.attr.colorSecondary
+        int colorId = android.R.attr.colorForeground;
         TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(colorId, typedValue, true);
         return context.getResources().getColor(typedValue.resourceId);

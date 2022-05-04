@@ -41,6 +41,11 @@ import de.k3b.fdroid.util.StringUtil;
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 public class Repo extends RepoCommon implements ItemWithId {
+    public static final String STATE_BUSY = "busy"; // while downloding. bg-color=yellow
+    public static final String STATE_ERROR = "error"; // download failed bg-color=red
+    public static final String STATE_ENABLED = "enabled"; // bg-color=green
+    public static final String STATE_DISABLED = null; // no bg-color
+
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @androidx.room.PrimaryKey(autoGenerate = true)
@@ -179,6 +184,7 @@ public class Repo extends RepoCommon implements ItemWithId {
         }
         return getTimestamp();
     }
+
     public String getLastUsedDownloadDateTimeUtcDate() {
         long l = getLastUsedDownloadDateTimeUtc();
         return l == 0 ? null : asDateString(l);
@@ -226,5 +232,17 @@ public class Repo extends RepoCommon implements ItemWithId {
 
     public void setDownloadTaskId(String downloadTaskId) {
         this.downloadTaskId = downloadTaskId;
+    }
+
+    /**
+     * will be translated to html-css-class='state_xxxxx'.
+     * In android to backgroundcolor 'bg_state_xxxxx'
+     * Called by reflection from fdroid-html
+     */
+    public String getStateCode() {
+        if (!StringUtil.isEmpty(getDownloadTaskId())) return STATE_BUSY;
+        if (!StringUtil.isEmpty(getLastErrorMessage())) return STATE_ERROR;
+        if (isAutoDownloadEnabled()) return STATE_ENABLED;
+        return STATE_DISABLED;
     }
 }

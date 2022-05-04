@@ -1,5 +1,11 @@
 todo
 
+html:
+v TextView: replace "style-bgcolor" with "class status_xxx"
+
+Progress:
+setText(null) ==> reload all
+
 v fdroid-html v de.k3b.fdroid.android.view.GenericTemplateTest ? loop over template files does not
 work under android
 

@@ -16,12 +16,26 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
+package de.k3b.fdroid.html.util;
 
-package de.k3b.fdroid;
+public class HtmlUtil {
+    public static final String HTML_CSS_CLASS_STATE = "class='state_"; // ie: status_error
 
-public class Global {
-    public static final String LOG_TAG = "k3b-fdroid-";
-    public static final String LOG_TAG_IMPORT = Global.LOG_TAG + "import";
-    public static final String LOG_TAG_UTIL = Global.LOG_TAG + "util";
-    public static final String LOG_TAG_HTML = Global.LOG_TAG + "html";
+    /**
+     * extracts css-class from html starting with 'state_....'.
+     * Example getHtmlCssClassState("...class='state_test' ") returns "test"
+     *
+     * @return null if not found
+     */
+    public static String getHtmlCssClassState(String html) {
+        int found = html.indexOf(HTML_CSS_CLASS_STATE);
+        if (found > 1) {
+            found += HTML_CSS_CLASS_STATE.length();
+            int end = html.indexOf("'", found);
+            if (end > 0) {
+                return html.substring(found, end);
+            }
+        }
+        return null;
+    }
 }

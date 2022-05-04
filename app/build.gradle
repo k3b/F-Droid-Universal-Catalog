@@ -87,6 +87,7 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
     testImplementation (project(path: ':app:fdroid-v1')) {transitive=false}
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

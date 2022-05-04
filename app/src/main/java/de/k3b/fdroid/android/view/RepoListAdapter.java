@@ -43,6 +43,7 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
     private final FormatService formatService;
     private final List<Repo> details;
     private final int defaultBackgroundColor;
+    private final int defaultForegroundColor;
 
     /**
      * Initialize the dataset of the Adapter.
@@ -53,6 +54,7 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
                 new AndroidStringResourceMustacheContext(context));
 
         this.defaultBackgroundColor = HtmlUtil.getDefaultBackgroundColor(context);
+        this.defaultForegroundColor = HtmlUtil.getDefaultForegroundColor(context);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -65,7 +67,7 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
         TextView textView = viewHolder.getTextView();
 
         String html = formatService.format(repo);
-        HtmlUtil.setHtml(textView, html, defaultBackgroundColor);
+        HtmlUtil.setHtml(textView, html, defaultForegroundColor, defaultBackgroundColor);
     }
 
     // Create new views (invoked by the layout manager)
