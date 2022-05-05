@@ -54,6 +54,10 @@ android {
     lintOptions {
         disable 'IconLocation' // 'density-independent launcher icon'
     }
+
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -70,6 +74,8 @@ dependencies {
     implementation "androidx.work:work-runtime:$work_version"
 
     implementation "androidx.recyclerview:recyclerview:1.2.1"
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel:2.4.1")
 
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'commons-codec:commons-codec:1.9' // Hex.en/decodeHex

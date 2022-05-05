@@ -18,7 +18,6 @@
  */
 package de.k3b.fdroid.android.view;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -33,7 +32,7 @@ import de.k3b.fdroid.service.AppWithDetailsPagerService;
 import de.k3b.fdroid.service.adapter.AppRepositoryAdapterImpl;
 
 
-public class AppListActivity extends Activity {
+public class AppListActivity extends BaseActivity {
     private static final int DATASET_COUNT = 60;
     protected String[] mDataset;
     protected AppListAdapter mAdapter;

@@ -18,68 +18,51 @@
  */
 package de.k3b.fdroid.android.view;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 import java.util.UUID;
 
-import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.android.R;
+import de.k3b.fdroid.android.databinding.ActivityRepoListBinding;
 import de.k3b.fdroid.android.service.AndroidWorkerProgressObserver;
 import de.k3b.fdroid.android.service.ImportV1AndroidWorker;
 import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.domain.interfaces.RepoRepository;
 
-public class RepoListActivity extends Activity {
-    protected RepoListAdapter mAdapter;
-    protected RecyclerView mRecyclerView;
-    protected RepoRepository repoRepository;
-    private List<Repo> items = null;
-    private TextView mStatusView;
+// AppCompatActivity:1,4,1 requires minsdk 17
+public class RepoListActivity extends BaseActivity {
+    private RepoListViewModel repoListViewModel;
+    private ActivityRepoListBinding binding;
+
     private AndroidWorkerProgressObserver repoDownloadObserver = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_repo_list);
+        binding = ActivityRepoListBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         setTitle(R.string.label_repo_title);
 
-        mRecyclerView = findViewById(R.id.recyclerView);
-        mStatusView = findViewById(R.id.status);
-
-        repoRepository = FDroidApplication.getFdroidDatabase().repoRepository();
-
-        reload();
+        repoListViewModel = new ViewModelProvider(this).get(RepoListViewModel.class);
     }
 
-    private void reload() {
-        Log.i(Global.LOG_TAG_APP, "Start reload repo");
-        FDroidApplication.executor.execute(() -> {
-            List<Repo> repos = repoRepository.findAll();
-            runOnUiThread(() -> onReloadDone(repos));
+    @Override
+    protected void onResume() {
+        super.onResume();
+        repoListViewModel.getItems().observe(this, repos -> {
+            RepoListAdapter repoListAdapter = new RepoListAdapter(this, repos);
+            binding.recyclerView.setAdapter(repoListAdapter);
         });
-    }
-
-    // @MainThread
-    private void onReloadDone(List<Repo> repos) {
-        Log.i(Global.LOG_TAG_APP, "done reload repo");
-        fixRepoDownloadObserver(repos);
-
-        this.items = repos;
-        this.mAdapter = new RepoListAdapter(this, repos);
-        // Set CustomAdapter as the adapter for RecyclerView.
-        this.mRecyclerView.setAdapter(this.mAdapter);
     }
 
     private void fixRepoDownloadObserver(List<Repo> repos) {
@@ -94,11 +77,11 @@ public class RepoListActivity extends Activity {
         Repo busy;
         AndroidWorkerProgressObserver newRepoObserver = null;
         while (this.repoDownloadObserver == null
-                && (busy = repoRepository.getBusy(repos)) != null) {
+                && (busy = repoListViewModel.repoRepository.getBusy(repos)) != null) {
 
             if (newRepoObserver == null) {
                 newRepoObserver = new AndroidWorkerProgressObserver(
-                        this.mStatusView, () -> reload());
+                        this.binding.status, () -> repoListViewModel.reload());
             }
 
             if (ImportV1AndroidWorker.registerProgressObserver(busy.getDownloadTaskId(), newRepoObserver)) {
@@ -110,7 +93,7 @@ public class RepoListActivity extends Activity {
             } else {
                 busy.setDownloadTaskId(null); // not busy any more
                 Log.i(Global.LOG_TAG_APP, "Repo " + busy.getId() + " not busy any more.");
-                repoRepository.save(busy);
+                repoListViewModel.repoRepository.save(busy);
             }
         }
         if (newRepoObserver != null) {
@@ -135,10 +118,10 @@ public class RepoListActivity extends Activity {
     }
 
     private void saveChanges(Repo repo) {
-        repoRepository.update(repo);
-        int position = items.indexOf(repo);
+        repoListViewModel.repoRepository.update(repo);
+        int position = repoListViewModel.getItems().getValue().indexOf(repo);
 
-        RecyclerView.Adapter<?> adapter = mRecyclerView.getAdapter();
+        RecyclerView.Adapter<?> adapter = binding.recyclerView.getAdapter();
         if (adapter != null) adapter.notifyItemChanged(position);
     }
 
