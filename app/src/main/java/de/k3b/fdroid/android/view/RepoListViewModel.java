@@ -39,6 +39,7 @@ public class RepoListViewModel extends DownloadViewModel {
 
     public void reload() {
         Log.i(Global.LOG_TAG_APP, "Start reload repo");
+        setCurrentRepo(null);
         FDroidApplication.executor.execute(() -> {
             getRepoList().postValue(repoRepository.findAll());
         });

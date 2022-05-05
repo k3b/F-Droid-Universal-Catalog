@@ -92,10 +92,11 @@ public abstract class V1UpdateService implements ProgressObservable {
         jsonStreamParser.readJsonStream(jsonInputStream);
     }
 
-    public void init() {
+    public JsonStreamParser init() {
         appUpdateService.init();
         versionUpdateService.init();
         jsonStreamParser = new JsonStreamParser();
+        return jsonStreamParser;
     }
 
     public void save(de.k3b.fdroid.domain.Repo repo) {

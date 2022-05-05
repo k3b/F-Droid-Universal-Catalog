@@ -32,12 +32,11 @@ import java.io.IOException;
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.common.RepoCommon;
-import de.k3b.fdroid.domain.interfaces.ProgressObservable;
 import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.util.StringUtil;
 
-public class V1DownloadAndImportService implements ProgressObservable {
+public class V1DownloadAndImportService implements V1DownloadAndImportServiceInterface {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
     private final RepoRepository repoRepository;
     private final HttpV1JarDownloadService downloadService;
@@ -76,11 +75,12 @@ public class V1DownloadAndImportService implements ProgressObservable {
 
     /**
      * @param downloadUrl                            where data comes from
-     * @param jarSigningCertificateFingerprintOrNull optionalan fingerprint
+     * @param jarSigningCertificateFingerprintOrNull optional a fingerprint
      * @param taskId                                 optional info about task currently downloading.
      * @return info about the downloaded repo data. unsaved, (if something goes wrong)
      * @throws V1JarException if something went wrong.
      */
+    @Override
     public Repo download(String downloadUrl, String jarSigningCertificateFingerprintOrNull, String taskId) throws V1JarException {
         String context = "downloading";
         Repo repo = new Repo("NewRepository", downloadUrl);
@@ -100,6 +100,7 @@ public class V1DownloadAndImportService implements ProgressObservable {
         return null;
     }
 
+    @Override
     public Repo download(int repoId, String taskId) throws V1JarException {
         Repo repo = repoRepository.findById(repoId);
         if (repo == null)
@@ -195,6 +196,7 @@ public class V1DownloadAndImportService implements ProgressObservable {
         v1UpdateService.setProgressObserver(progressObserver);
     }
 
+    @Override
     public Repo getLastRepo() {
         return lastRepo;
     }

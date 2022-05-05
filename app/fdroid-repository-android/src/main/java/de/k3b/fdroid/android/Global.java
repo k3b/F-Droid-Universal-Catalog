@@ -26,4 +26,9 @@ import androidx.work.NetworkType;
  */
 public class Global extends de.k3b.fdroid.Global {
     public static final NetworkType DOWNLOAD_NETWORK_TYPE = NetworkType.CONNECTED;
+
+    /**
+     * true verifying-download plus seperate file import. non-verifying i
+     */
+    public static final boolean USE_VERIFYING_DOWNLOAD = true;
 }

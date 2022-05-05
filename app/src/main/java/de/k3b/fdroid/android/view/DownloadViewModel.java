@@ -48,9 +48,9 @@ public class DownloadViewModel extends ViewModel {
             saveChanges(repo);
         }
 
+
         WorkManager.getInstance(context).getWorkInfoByIdLiveData(uuid).observe(
                 (LifecycleOwner) context, wi -> onDownloadStatusChange(wi));
-        setCurrentRepoInstance(repo);
     }
 
     private void onDownloadStatusChange(WorkInfo workInfo) {
@@ -59,11 +59,7 @@ public class DownloadViewModel extends ViewModel {
             progress = workInfo.getProgress().getString(ImportV1AndroidWorker.KEY_PROGRESS);
 
             if (workInfo.getState().isFinished()) {
-                Repo repo = getCurrentRepo().getValue();
-                if (repo != null && repo.isBusy()) {
-                    repo.setDownloadTaskId(null);
-                    saveChanges(repo);
-                }
+                setCurrentRepoInstance(null); // memorized value is probably outdated
             }
         }
         getDownloadStatus().setValue(progress == null ? "" : progress);

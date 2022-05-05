@@ -39,7 +39,7 @@ import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.util.StringUtil;
-import de.k3b.fdroid.v1.service.V1DownloadAndImportService;
+import de.k3b.fdroid.v1.service.V1DownloadAndImportServiceInterface;
 import de.k3b.fdroid.v1.service.V1JarException;
 
 // see https://developer.android.com/topic/libraries/architecture/workmanager/basics
@@ -53,7 +53,7 @@ public class ImportV1AndroidWorker extends Worker {
     public static final String KEY_PROGRESS = "progress";
     private final ProgressObserverAdapter progressObserver;
 
-    V1DownloadAndImportService v1DownloadAndImportService;
+    V1DownloadAndImportServiceInterface v1DownloadAndImportService;
     RepoRepository repoRepository;
 
     public ImportV1AndroidWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -127,6 +127,7 @@ public class ImportV1AndroidWorker extends Worker {
             if (repo != null) repoRepository.save(repo);
             return fail(ex.getMessage());
         }
+        if (result != null) repoRepository.save(result);
         if (result != null && !StringUtil.isEmpty(result.getLastErrorMessage())) {
             return fail(result.getLastErrorMessage());
         }

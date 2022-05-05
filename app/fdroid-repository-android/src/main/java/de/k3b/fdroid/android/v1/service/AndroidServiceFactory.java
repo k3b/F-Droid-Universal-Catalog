@@ -23,17 +23,20 @@ import android.app.Application;
 
 import java.io.File;
 
+import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.android.repository.FDroidDatabaseFactory;
 import de.k3b.fdroid.android.repository.RepoDao;
 import de.k3b.fdroid.v1.service.HttpV1JarDownloadService;
+import de.k3b.fdroid.v1.service.HttpV1JarImportService;
 import de.k3b.fdroid.v1.service.V1DownloadAndImportService;
+import de.k3b.fdroid.v1.service.V1DownloadAndImportServiceInterface;
 import de.k3b.fdroid.v1.service.V1UpdateService;
 
 public class AndroidServiceFactory {
     private final Application context;
     private final FDroidDatabaseFactory database;
 
-    private V1DownloadAndImportService v1DownloadAndImportService = null;
+    private V1DownloadAndImportServiceInterface v1DownloadAndImportService = null;
 
     public AndroidServiceFactory(Application context, FDroidDatabaseFactory database) {
         this.context = context;
@@ -48,10 +51,14 @@ public class AndroidServiceFactory {
         return outputDir;
     }
 
-    public V1DownloadAndImportService getV1DownloadAndImportService() {
+    public V1DownloadAndImportServiceInterface getV1DownloadAndImportService() {
         if (v1DownloadAndImportService == null) {
-            v1DownloadAndImportService = new V1DownloadAndImportService(
-                    getRepoRepository(), getHttpV1JarDownloadService(), getV1UpdateService());
+            if (Global.USE_VERIFYING_DOWNLOAD) {
+                v1DownloadAndImportService = new V1DownloadAndImportService(
+                        getRepoRepository(), getHttpV1JarDownloadService(), getV1UpdateService());
+            } else {
+                v1DownloadAndImportService = new HttpV1JarImportService(database.repoRepository(), getV1UpdateService());
+            }
         }
         return v1DownloadAndImportService;
     }

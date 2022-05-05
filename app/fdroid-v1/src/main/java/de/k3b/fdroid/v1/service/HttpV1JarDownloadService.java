@@ -54,7 +54,7 @@ public class HttpV1JarDownloadService implements ProgressObservable {
     @NonNull
     private final String downloadPath;
 
-    private Repo repoInDatabase;
+    protected Repo repoInDatabase;
 
     @Nullable
     private ProgressObserver progressObserver = null;
@@ -121,25 +121,32 @@ public class HttpV1JarDownloadService implements ProgressObservable {
             InputStream response = connection.getInputStream();
 
             if (response != null) {
-                File jarfileDownload = getJarfile(name + ".tmp");
-                log("Downloading to " + jarfileDownload.getAbsolutePath());
-                download(response, new FileOutputStream(jarfileDownload));
-                File jarfileFinal = getJarfile(getName(repoInDatabase));
-                if (jarfileFinal.exists()) jarfileFinal.delete();
-                log("Renaming to " + jarfileFinal.getAbsolutePath());
-                jarfileDownload.renameTo(jarfileFinal);
-                return jarfileFinal;
+                return download(name, response);
             }
         }
-        //??? error handling
         return null;
     }
 
-    private void download(InputStream inputStream, OutputStream downloadFileOut) throws IOException {
-        V1RepoVerifyJarParser repoParser = new V1RepoVerifyJarParser(repoInDatabase);
+    protected File download(String name, InputStream response) throws IOException {
+        File jarfileDownload = getJarfile(name + ".tmp");
+        log("Downloading to " + jarfileDownload.getAbsolutePath());
+        download(response, new FileOutputStream(jarfileDownload));
+        File jarfileFinal = getJarfile(getName(repoInDatabase));
+        if (jarfileFinal.exists()) jarfileFinal.delete();
+        log("Renaming to " + jarfileFinal.getAbsolutePath());
+        jarfileDownload.renameTo(jarfileFinal);
+        return jarfileFinal;
+    }
+
+    protected void download(InputStream inputStream, OutputStream downloadFileOut) throws IOException {
+        FDroidCatalogJsonStreamParserBase repoParser = createParser();
         try (InputStream in = open(inputStream, downloadFileOut)) {
             repoParser.readFromJar(in);
         }
+    }
+
+    protected FDroidCatalogJsonStreamParserBase createParser() {
+        return new V1RepoVerifyJarParser(repoInDatabase);
     }
 
     public File getJarfile(String name) {
