@@ -26,10 +26,8 @@ import android.widget.PopupMenu;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-import java.util.UUID;
 
 import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.android.R;
@@ -40,7 +38,7 @@ import de.k3b.fdroid.domain.Repo;
 
 // AppCompatActivity:1,4,1 requires minsdk 17
 public class RepoListActivity extends BaseActivity {
-    private RepoListViewModel repoListViewModel;
+    private RepoListViewModel viewModel;
     private ActivityRepoListBinding binding;
 
     private AndroidWorkerProgressObserver repoDownloadObserver = null;
@@ -53,19 +51,19 @@ public class RepoListActivity extends BaseActivity {
         setContentView(binding.getRoot());
         setTitle(R.string.label_repo_title);
 
-        repoListViewModel = new ViewModelProvider(this).get(RepoListViewModel.class);
+        viewModel = new ViewModelProvider(this).get(RepoListViewModel.class);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        repoListViewModel.getItems().observe(this, repos -> {
-            RepoListAdapter repoListAdapter = new RepoListAdapter(this, repos);
+        viewModel.getRepoList().observe(this, repoList -> {
+            RepoListAdapter repoListAdapter = new RepoListAdapter(this, repoList);
             binding.recyclerView.setAdapter(repoListAdapter);
         });
     }
 
-    private void fixRepoDownloadObserver(List<Repo> repos) {
+    private void fixRepoDownloadObserver(List<Repo> repoList) {
         // finish current observer if done.
         if (this.repoDownloadObserver != null && !this.repoDownloadObserver.isAlive()) {
             Log.i(Global.LOG_TAG_APP, "destroy repoDownloadObserver for " + repoDownloadObserver.getRepoId());
@@ -77,11 +75,11 @@ public class RepoListActivity extends BaseActivity {
         Repo busy;
         AndroidWorkerProgressObserver newRepoObserver = null;
         while (this.repoDownloadObserver == null
-                && (busy = repoListViewModel.repoRepository.getBusy(repos)) != null) {
+                && (busy = viewModel.repoRepository.getBusy(repoList)) != null) {
 
             if (newRepoObserver == null) {
                 newRepoObserver = new AndroidWorkerProgressObserver(
-                        this.binding.status, () -> repoListViewModel.reload());
+                        this.binding.status, () -> viewModel.reload());
             }
 
             if (ImportV1AndroidWorker.registerProgressObserver(busy.getDownloadTaskId(), newRepoObserver)) {
@@ -93,7 +91,7 @@ public class RepoListActivity extends BaseActivity {
             } else {
                 busy.setDownloadTaskId(null); // not busy any more
                 Log.i(Global.LOG_TAG_APP, "Repo " + busy.getId() + " not busy any more.");
-                repoListViewModel.repoRepository.save(busy);
+                viewModel.repoRepository.save(busy);
             }
         }
         if (newRepoObserver != null) {
@@ -113,16 +111,7 @@ public class RepoListActivity extends BaseActivity {
     }
 
     public void onRepoClick(Repo repo) {
-        repo.setAutoDownloadEnabled(!repo.isAutoDownloadEnabled());
-        saveChanges(repo);
-    }
-
-    private void saveChanges(Repo repo) {
-        repoListViewModel.repoRepository.update(repo);
-        int position = repoListViewModel.getItems().getValue().indexOf(repo);
-
-        RecyclerView.Adapter<?> adapter = binding.recyclerView.getAdapter();
-        if (adapter != null) adapter.notifyItemChanged(position);
+        viewModel.toggleAutoDownloadEnabled(repo);
     }
 
     public void onRepoButtonClick(View view, final Repo repo) {
@@ -140,9 +129,7 @@ public class RepoListActivity extends BaseActivity {
     }
 
     private boolean onCmdDownload(MenuItem menuItem, Repo repo) {
-        UUID uuid = ImportV1AndroidWorker.scheduleDownload(this, repo.getId());
-        repo.setDownloadTaskId(uuid.toString());
-        saveChanges(repo);
+        viewModel.onCmdDownload(this, repo);
         return true;
     }
 }
