@@ -160,7 +160,7 @@ public abstract class V1UpdateService implements ProgressObservable {
          */
         @Override
         protected void onVersion(String packageName, Version v1Version) {
-            if (lastAppCount == 0 && progressObserver != null) {
+            if (lastVersionCount == 0 && progressObserver != null) {
                 progressObserver.setProgressContext("🏬 " + roomRepo.getName() + " : ", " / " + roomRepo.getLastAppCount());
             }
             lastVersionCount++;

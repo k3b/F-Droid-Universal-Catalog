@@ -37,6 +37,7 @@ import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.interfaces.ProgressObserver;
+import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.util.StringUtil;
 import de.k3b.fdroid.v1.service.V1DownloadAndImportService;
 import de.k3b.fdroid.v1.service.V1JarException;
@@ -53,6 +54,7 @@ public class ImportV1AndroidWorker extends Worker {
     private final ProgressObserverAdapter progressObserver;
 
     V1DownloadAndImportService v1DownloadAndImportService;
+    RepoRepository repoRepository;
 
     public ImportV1AndroidWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -62,6 +64,8 @@ public class ImportV1AndroidWorker extends Worker {
 
         progressObserver = new ProgressObserverAdapter();
         v1DownloadAndImportService.setProgressObserver(progressObserver);
+
+        repoRepository = FDroidApplication.getAndroidServiceFactory().getRepoRepository();
     }
 
     public static UUID scheduleDownload(Context context,
@@ -118,6 +122,9 @@ public class ImportV1AndroidWorker extends Worker {
         } catch (V1JarException ex) {
             Log.e(Global.LOG_TAG_IMPORT, ex.getMessage(), ex);
 
+            // save repo errormessage
+            Repo repo = v1DownloadAndImportService.getLastRepo();
+            if (repo != null) repoRepository.save(repo);
             return fail(ex.getMessage());
         }
         if (result != null && !StringUtil.isEmpty(result.getLastErrorMessage())) {

@@ -42,6 +42,7 @@ public class V1DownloadAndImportService implements ProgressObservable {
     private final RepoRepository repoRepository;
     private final HttpV1JarDownloadService downloadService;
     private final V1UpdateService v1UpdateService;
+    private Repo lastRepo;
 
     public V1DownloadAndImportService(
             RepoRepository repoRepository, HttpV1JarDownloadService downloadService, V1UpdateService v1UpdateService) {
@@ -180,6 +181,8 @@ public class V1DownloadAndImportService implements ProgressObservable {
     private Repo onException(Repo repo, Throwable exception, String context) {
         repo.setLastErrorMessage(Repo.asDateString(System.currentTimeMillis()) + ": " + exception.getMessage());
 
+        this.setLastRepo(repo);
+
         String message = "Error " + context + " " + repo.getV1Url();
         LOGGER.error(message + " (" + repo + ")", exception);
         throw new V1JarException(message, exception);
@@ -190,5 +193,13 @@ public class V1DownloadAndImportService implements ProgressObservable {
     public void setProgressObserver(ProgressObserver progressObserver) {
         downloadService.setProgressObserver(progressObserver);
         v1UpdateService.setProgressObserver(progressObserver);
+    }
+
+    public Repo getLastRepo() {
+        return lastRepo;
+    }
+
+    public void setLastRepo(Repo lastRepo) {
+        this.lastRepo = lastRepo;
     }
 }

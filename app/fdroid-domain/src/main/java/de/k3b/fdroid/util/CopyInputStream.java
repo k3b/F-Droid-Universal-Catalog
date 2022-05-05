@@ -36,7 +36,7 @@ public class CopyInputStream extends InputStream implements ProgressObservable {
     // MAX_SKIP_BUFFER_SIZE is used to determine the maximum buffer size to
     // use when skipping.
     private static final int MAX_SKIP_BUFFER_SIZE = 2048;
-    private static final int COUNTDOWN_INTERVALL = 100 * 1024; // 100 KByte
+    private static final int COUNTDOWN_INTERVALL = 20 * 1024; // 20 KByte
 
     private final InputStream in;
     private final OutputStream out;

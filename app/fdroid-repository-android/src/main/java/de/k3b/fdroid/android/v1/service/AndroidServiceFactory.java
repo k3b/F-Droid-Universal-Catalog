@@ -24,6 +24,7 @@ import android.app.Application;
 import java.io.File;
 
 import de.k3b.fdroid.android.repository.FDroidDatabaseFactory;
+import de.k3b.fdroid.android.repository.RepoDao;
 import de.k3b.fdroid.v1.service.HttpV1JarDownloadService;
 import de.k3b.fdroid.v1.service.V1DownloadAndImportService;
 import de.k3b.fdroid.v1.service.V1UpdateService;
@@ -50,9 +51,13 @@ public class AndroidServiceFactory {
     public V1DownloadAndImportService getV1DownloadAndImportService() {
         if (v1DownloadAndImportService == null) {
             v1DownloadAndImportService = new V1DownloadAndImportService(
-                    database.repoRepository(), getHttpV1JarDownloadService(), getV1UpdateService());
+                    getRepoRepository(), getHttpV1JarDownloadService(), getV1UpdateService());
         }
         return v1DownloadAndImportService;
+    }
+
+    public RepoDao getRepoRepository() {
+        return database.repoRepository();
     }
 
     private V1UpdateService getV1UpdateService() {
