@@ -23,12 +23,10 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
@@ -85,30 +83,6 @@ public class ImportV1AndroidWorker extends Worker {
         return scheduleDownload(context, data);
     }
 
-    /**
-     * Allows an activity to receive Progress-Messages
-     *
-     * @param progressObserver where the progress-info goes to
-     * @return false if no worker for taskId was found
-     */
-    public static boolean registerProgressObserver(String taskId, AndroidWorkerProgressObserver progressObserver) {
-        LiveData<WorkInfo> data = WorkManager
-                .getInstance(progressObserver.getProgressMessageTextView().getContext())
-                .getWorkInfoByIdLiveData(UUID.fromString(taskId));
-
-        if (data.getValue() == null) {
-            Log.d(Global.LOG_TAG_IMPORT, "registerProgressObserver(" + taskId + ") on observe repo: ");
-            return false;
-        }
-        data.observe(progressObserver,
-                info -> {
-                    Log.d(Global.LOG_TAG_IMPORT, "on observe repo: " + info);
-                    // if (info != null && info.getState()==??? ) // TODO fintue filter
-                    progressObserver.onProgressMessage(info.getProgress().getString(KEY_PROGRESS));
-                });
-        return true;
-    }
-
     private static UUID scheduleDownload(Context context, Data data) {
         // WorkRequest importWorkRequest =
         OneTimeWorkRequest importWorkRequest =
@@ -119,10 +93,11 @@ public class ImportV1AndroidWorker extends Worker {
                                 .setRequiredNetworkType(Global.DOWNLOAD_NETWORK_TYPE)
                                 .build())
                         .build();
-        WorkManager
-                .getInstance(context)
-                .enqueueUniqueWork(TAG_IMPORTV1, ExistingWorkPolicy.REPLACE, importWorkRequest);
-        return importWorkRequest.getId();
+        WorkManager workManager = WorkManager
+                .getInstance(context);
+        workManager.enqueueUniqueWork(TAG_IMPORTV1, ExistingWorkPolicy.REPLACE, importWorkRequest);
+        UUID workRequestId = importWorkRequest.getId();
+        return workRequestId;
     }
 
     @NonNull
@@ -141,13 +116,14 @@ public class ImportV1AndroidWorker extends Worker {
                 result = v1DownloadAndImportService.download(downloadUrl, jarSigningCertificateFingerprintOrNull, getId().toString());
             }
         } catch (V1JarException ex) {
+            Log.e(Global.LOG_TAG_IMPORT, ex.getMessage(), ex);
+
             return fail(ex.getMessage());
         }
-        if (!StringUtil.isEmpty(result.getLastErrorMessage())) {
+        if (result != null && !StringUtil.isEmpty(result.getLastErrorMessage())) {
             return fail(result.getLastErrorMessage());
         }
         progressObserver.log("done");
-        progressObserver.log(null);
 
         return Result.success();
     }
@@ -157,7 +133,6 @@ public class ImportV1AndroidWorker extends Worker {
                 .putString(KEY_RESULT, message)
                 .build();
         progressObserver.log(message);
-        progressObserver.log(null);
         return Result.failure(output);
     }
 

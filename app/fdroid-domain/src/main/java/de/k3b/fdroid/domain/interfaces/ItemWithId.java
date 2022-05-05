@@ -20,4 +20,10 @@ package de.k3b.fdroid.domain.interfaces;
 
 public interface ItemWithId {
     int getId();
+
+    static <T extends ItemWithId> boolean sameId(T lhs, T rhs) {
+        int lhsId = lhs == null ? -1 : lhs.getId();
+        int rhsId = rhs == null ? -1 : rhs.getId();
+        return lhsId == rhsId;
+    }
 }

@@ -128,7 +128,7 @@ public class V1DownloadAndImportService implements ProgressObservable {
             // always save
             v1UpdateService.save(repo);
         }
-        return repo;
+        return null;
     }
 
     private Repo fixRepo(Repo repoFromImport) {

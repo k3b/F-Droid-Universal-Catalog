@@ -249,4 +249,14 @@ public class Repo extends RepoCommon implements ItemWithId {
     public boolean isBusy() {
         return !StringUtil.isEmpty(getDownloadTaskId());
     }
+
+    public static Repo findByDownloadTaskId(Iterable<Repo> repos, String downloadTaskId) {
+        if (repos != null && !StringUtil.isEmpty(downloadTaskId)) {
+            for (Repo repo : repos) {
+                if (downloadTaskId.compareTo(repo.getDownloadTaskId()) == 0) return repo;
+            }
+        }
+        return null;
+    }
+
 }

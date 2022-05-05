@@ -19,7 +19,6 @@
 package de.k3b.fdroid.android.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
@@ -27,21 +26,14 @@ import android.widget.PopupMenu;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.List;
-
-import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.android.R;
 import de.k3b.fdroid.android.databinding.ActivityRepoListBinding;
-import de.k3b.fdroid.android.service.AndroidWorkerProgressObserver;
-import de.k3b.fdroid.android.service.ImportV1AndroidWorker;
 import de.k3b.fdroid.domain.Repo;
 
 // AppCompatActivity:1,4,1 requires minsdk 17
 public class RepoListActivity extends BaseActivity {
     private RepoListViewModel viewModel;
     private ActivityRepoListBinding binding;
-
-    private AndroidWorkerProgressObserver repoDownloadObserver = null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,53 +53,7 @@ public class RepoListActivity extends BaseActivity {
             RepoListAdapter repoListAdapter = new RepoListAdapter(this, repoList);
             binding.recyclerView.setAdapter(repoListAdapter);
         });
-    }
-
-    private void fixRepoDownloadObserver(List<Repo> repoList) {
-        // finish current observer if done.
-        if (this.repoDownloadObserver != null && !this.repoDownloadObserver.isAlive()) {
-            Log.i(Global.LOG_TAG_APP, "destroy repoDownloadObserver for " + repoDownloadObserver.getRepoId());
-
-            this.repoDownloadObserver.onDestroy();
-            this.repoDownloadObserver = null;
-        }
-
-        Repo busy;
-        AndroidWorkerProgressObserver newRepoObserver = null;
-        while (this.repoDownloadObserver == null
-                && (busy = viewModel.repoRepository.getBusy(repoList)) != null) {
-
-            if (newRepoObserver == null) {
-                newRepoObserver = new AndroidWorkerProgressObserver(
-                        this.binding.status, () -> viewModel.reload());
-            }
-
-            if (ImportV1AndroidWorker.registerProgressObserver(busy.getDownloadTaskId(), newRepoObserver)) {
-                this.repoDownloadObserver = newRepoObserver;
-                this.repoDownloadObserver.setRepoId(busy.getId());
-                Log.i(Global.LOG_TAG_APP, "created repoDownloadObserver for " + repoDownloadObserver.getRepoId());
-
-                newRepoObserver = null;
-            } else {
-                busy.setDownloadTaskId(null); // not busy any more
-                Log.i(Global.LOG_TAG_APP, "Repo " + busy.getId() + " not busy any more.");
-                viewModel.repoRepository.save(busy);
-            }
-        }
-        if (newRepoObserver != null) {
-            Log.i(Global.LOG_TAG_APP, "repoDownloadObserver : no busy repo found");
-            newRepoObserver.onDestroy();
-            newRepoObserver = null;
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (repoDownloadObserver != null) {
-            repoDownloadObserver.onDestroy();
-        }
-        repoDownloadObserver = null;
-        super.onDestroy();
+        viewModel.getDownloadStatus().observe(this, s -> binding.status.setText(s));
     }
 
     public void onRepoClick(Repo repo) {
