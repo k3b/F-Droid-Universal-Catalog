@@ -1,3 +1,7 @@
+https://github.com/k3b/F-Droid-Universal-Catalog/README.md
+
+# F-Droid-Universal-Catalog
+
 Goal: Create a crossplatform library to transfer a [fdroid] [Repo-Catalog] (= FDroid Json Catalog
 data) to Database
 
@@ -35,8 +39,7 @@ Glossar:
     * Zipped-file containing the [Repo-Catalog]. The zip contains [index-v1.json]
         * See https://en.wikipedia.org/wiki/ZIP_(file_format)
     * Can be downloaded from a [Repo] or [Mirror]
-    * Example: [Repo].[Address] = "https://f-droid.org/repo" can be downloded
-      from "https://f-droid.org/repo/index-v1.jar"
+    * Example: [Repo].[Address] = "https://f-droid.org/repo" can be downloded from "https://f-droid.org/repo/index-v1.jar"
 * [index-v1.json]  (alias for [Repo-Catalog] in fileformat [fdroid-v1] )
     * contains the [fdroid-v1] [Repo]-Catalog in [JSON] format.
 * JSON (JavaScript Object Notation)
@@ -149,7 +152,7 @@ Database Differences between Android-Room and j2se-jpa
 
 * Room-Entities don't allow object references
     *
-    see https://developer.android.com/training/data-storage/room/referencing-data#understand-no-object-references
+  see https://developer.android.com/training/data-storage/room/referencing-data#understand-no-object-references
     * only primitive types, primarykeys and foreinkeys are allowed in entities. No List<Xxx> or
       Object references.
     * Model navigation: instead of using entity members (List<Xxx> or Object references) you must

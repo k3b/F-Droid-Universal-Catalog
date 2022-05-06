@@ -19,7 +19,7 @@
 
 package de.k3b.fdroid.v1.service.util;
 
-import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.binary.Hex2;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -107,9 +107,9 @@ public class JarUtilities {
     public static void verifySigningCertificate(Repo repo, X509Certificate rawCertFromJar) throws V1JarException {
         String certFromJar;
         try {
-            certFromJar = Hex.encodeHexString(rawCertFromJar.getEncoded());
+            certFromJar = Hex2.encodeHexString(rawCertFromJar.getEncoded());
         } catch (CertificateEncodingException e) {
-            certFromJar = Hex.encodeHexString(new byte[0]);
+            certFromJar = Hex2.encodeHexString(new byte[0]);
         }
 
         if (StringUtil.isEmpty(certFromJar)) {
