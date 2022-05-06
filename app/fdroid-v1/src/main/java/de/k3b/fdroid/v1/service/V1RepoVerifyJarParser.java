@@ -19,8 +19,12 @@
 
 package de.k3b.fdroid.v1.service;
 
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
+
 import org.springframework.lang.NonNull;
 
+import java.io.IOException;
 import java.security.cert.X509Certificate;
 import java.util.jar.JarEntry;
 
@@ -72,6 +76,20 @@ public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase {
         repoInDatabase.setLastVersionCount(lastVersionCount);
         RepoCommon.copyCommon(repoInDatabase, repoInJar);
         JarUtilities.verifySigningCertificate(repoInDatabase, certificate);
+    }
+
+    @Override
+    protected App appFromJson(Gson gson, JsonReader reader) throws IOException {
+        // save memory: we are not interested in this
+        skipJsonValue(reader);
+        return null;
+    }
+
+    @Override
+    protected Version versionFromJson(Gson gson, JsonReader reader) throws IOException {
+        // save memory: we are not interested in this
+        skipJsonValue(reader);
+        return null;
     }
 
     @Override

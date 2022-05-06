@@ -112,8 +112,7 @@ public abstract class FDroidCatalogJsonStreamParserBase {
 
         switch (name) {
             case "repo":
-                Repo repo = gson.fromJson(reader, Repo.class);
-                onRepo(repo);
+                onRepo(repoFromJson(gson, reader));
                 break;
             case "apps":
                 readAppsArray(gson, reader);
@@ -122,9 +121,25 @@ public abstract class FDroidCatalogJsonStreamParserBase {
                 readPackagesArray(gson, reader);
                 break;
             default:
-                reader.skipValue();
+                skipJsonValue(reader);
                 break;
         }
+    }
+
+    protected void skipJsonValue(JsonReader reader) throws IOException {
+        reader.skipValue();
+    }
+
+    protected Repo repoFromJson(Gson gson, JsonReader reader) throws IOException {
+        return gson.fromJson(reader, Repo.class);
+    }
+
+    protected App appFromJson(Gson gson, JsonReader reader) throws IOException {
+        return gson.fromJson(reader, App.class);
+    }
+
+    protected Version versionFromJson(Gson gson, JsonReader reader) throws IOException {
+        return gson.fromJson(reader, Version.class);
     }
 
     private void readPackagesArray(Gson gson, JsonReader reader) throws IOException {
@@ -138,8 +153,7 @@ public abstract class FDroidCatalogJsonStreamParserBase {
             token = reader.peek();
             while (!JsonToken.END_ARRAY.equals(token)) {
                 if (JsonToken.BEGIN_OBJECT.equals(token)) {
-                    Version version = gson.fromJson(reader, Version.class);
-                    onVersion(packageName, version);
+                    onVersion(packageName, versionFromJson(gson, reader));
                     token = reader.peek();
                 } else {
                     debug(reader);
@@ -156,8 +170,7 @@ public abstract class FDroidCatalogJsonStreamParserBase {
         JsonToken token = reader.peek();
         while (!JsonToken.END_ARRAY.equals(token)) {
             if (JsonToken.BEGIN_OBJECT.equals(token)) {
-                App app = gson.fromJson(reader, App.class);
-                onApp(app);
+                onApp(appFromJson(gson, reader));
                 token = reader.peek();
             } else {
                 debug(reader);
