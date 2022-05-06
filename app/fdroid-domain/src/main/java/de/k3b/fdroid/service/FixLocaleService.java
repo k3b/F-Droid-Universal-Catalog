@@ -27,6 +27,9 @@ import java.util.TreeMap;
 
 import de.k3b.fdroid.domain.common.LocalizedCommon;
 
+/**
+ * Consolidate Locales so that for examle en, en_US, en_GB become one locale "en"
+ */
 public class FixLocaleService {
     public PropertyMerger merger = new PropertyMerger();
 

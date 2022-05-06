@@ -38,6 +38,9 @@ import de.k3b.fdroid.service.AppWithDetailsPagerService;
 import de.k3b.fdroid.service.adapter.AppRepositoryAdapterImpl;
 import de.k3b.fdroid.util.StringUtil;
 
+/**
+ * Commandline interpreter to dispatch service method calls.
+ */
 public class V1CommandService {
     private final RepoRepository repoRepository;
     private final AppRepository appRepository;
@@ -59,7 +62,7 @@ public class V1CommandService {
 
     public static CharSequence getHelp() {
         StringBuilder s = new StringBuilder();
-        s.append("\nusage java -jar demo.jar [options]\n\n");
+        s.append("\nusage java -jar fdroid-universal-cli.jar [options]\n\n");
         s.append("-f(ind App) {expression} \n");
         s.append("-r(eload reload database from downloaded jars)\n");
         s.append("-d(ir show downloaded jars)\n");
@@ -128,7 +131,7 @@ public class V1CommandService {
                 app.getPackageName(), name, app.getSearchSdk(),
                 app.getSearchVersion(), PojoCommon.asDateString(app.getLastUpdated())};
         result.append(StringUtil.toCsvStringOrNull(Arrays.asList(cols), "\t"))
-        .append("\n");
+                .append("\n");
     }
 
     public  CharSequence execDir(StringBuilder s) {
@@ -168,7 +171,7 @@ public class V1CommandService {
         Repo repoDownloaded = new Repo();
         repoDownloaded.setLastUsedDownloadMirror(url);
         long downloadDate = System.currentTimeMillis();
-        File jarFile = parser.download(url, 0, repoDownloaded);
+        File jarFile = parser.downloadHttps(url, 0, repoDownloaded);
 
         Repo repoFound = repoRepository.findByAddress(repoDownloaded.getAddress());
         if (repoFound != null) {

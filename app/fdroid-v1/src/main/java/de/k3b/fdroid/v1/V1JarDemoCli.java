@@ -62,7 +62,7 @@ public class V1JarDemoCli {
         for (String url : urls) {
             Repo repo = new Repo();
             try {
-                parser.download(url, repo.getLastUsedDownloadDateTimeUtc(), repo);
+                parser.downloadHttps(url, repo.getLastUsedDownloadDateTimeUtc(), repo);
 
             } catch (Exception ex) {
                 System.out.println(repo + ":" + ex.getMessage());

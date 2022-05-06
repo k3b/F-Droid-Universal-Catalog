@@ -37,6 +37,10 @@ import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.util.StringUtil;
 import de.k3b.fdroid.v1.service.V1JarException;
 
+/**
+ * Utils to verify Signing-Cert-s and their Fingerprints and
+ * cecking F-Droid-v1 specific restrictions.
+ */
 public class JarUtilities {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_UTIL);
 
@@ -49,11 +53,14 @@ public class JarUtilities {
     private static final String ERR_CERTIFICATE_CREATE_FINGERPRINT = "Unable to create Code signing certificate fingerprint";
 
     /**
-     * Inspired by getSigningCertFromJar in
+     * Gets Signing Cert from jarEntry. Throws {@link V1JarException} if cert-info
+     * does not confrom to v1-fdroid-security-cert-restrictions.
+     * <p>
+     * Code inspired by getSigningCertFromJar in
      * https://git.bubu1.eu/Bubu/fdroidclassic/-/blob/main/app/src/main/java/org/fdroid/fdroid/IndexUpdater.java .
      * <p>
      * FDroid's index.jar is signed using a particular format and does not allow lots of
-     * signing setups that would be valid for a regular jar.  This validates those
+     * signing setups that would be valid for a regular jar.  This code validates those
      * restrictions.
      */
     public static X509Certificate getSigningCertFromJar(JarEntry jarEntry) throws V1JarException {
@@ -91,7 +98,7 @@ public class JarUtilities {
      * store the certificate as valid.  If there is a fingerprint, then first
      * check that the signing certificate in the jar matches that fingerprint.
      * <p>
-     * This is also responsible for adding the {@link Repo} instance to the
+     * This code is also responsible for adding the {@link Repo} instance to the
      * database for the first time.
      * <p>
      *

@@ -36,6 +36,17 @@ import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.util.StringUtil;
 
+/**
+ * Database-save but slow implementation to download and import a https:.../index-v1.jar :
+ * <p>
+ * first download file with simultanious certificate check and app-count-update.
+ * then import the downloaded catalog data into database.
+ * <p>
+ * Advantage: If certificate checks fail the database content is not affected.
+ * Advantage: downloaded local xxx-index-v1.jar can be reused later without re-downloading.
+ * Disadvantage: Slower execution: the jar-json file has to be parsed twice. Additional temp-file required
+ * Too slow on my old low-internal-memory-Android-4.2 tablet :-(
+ */
 public class V1DownloadAndImportService implements V1DownloadAndImportServiceInterface {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
     private final RepoRepository repoRepository;
@@ -88,7 +99,7 @@ public class V1DownloadAndImportService implements V1DownloadAndImportServiceInt
         repo.setJarSigningCertificateFingerprint(jarSigningCertificateFingerprintOrNull);
         repo.setDownloadTaskId(taskId);
         try {
-            File file = downloadService.download(downloadUrl, 0, repo);
+            File file = downloadService.downloadHttps(downloadUrl, 0, repo);
 
             context = "importing";
             if (file != null) {
@@ -119,7 +130,7 @@ public class V1DownloadAndImportService implements V1DownloadAndImportServiceInt
         // assume no error yet
         repo.setLastErrorMessage(null);
         try {
-            File file = downloadService.download(repo.getV1Url(), repo.getLastUsedDownloadDateTimeUtc(), repo);
+            File file = downloadService.downloadHttps(repo.getV1Url(), repo.getLastUsedDownloadDateTimeUtc(), repo);
             context = "importing";
             if (file != null) {
                 return importRepo(repo, file);

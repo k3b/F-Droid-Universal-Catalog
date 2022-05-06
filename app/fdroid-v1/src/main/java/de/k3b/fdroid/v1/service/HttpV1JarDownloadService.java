@@ -75,10 +75,10 @@ public class HttpV1JarDownloadService implements ProgressObservable {
     }
 
     public File download(@NonNull Repo repo) throws IOException {
-        return download(repo.getV1Url(), repo.getLastUsedDownloadDateTimeUtc(), repo);
+        return downloadHttps(repo.getV1Url(), repo.getLastUsedDownloadDateTimeUtc(), repo);
     }
 
-    public File download(String downloadUrl, long lastModified, @NonNull Repo repo) throws IOException {
+    public File downloadHttps(String downloadUrl, long lastModified, @NonNull Repo repo) throws IOException {
         if (repo == null || downloadUrl == null) throw new NullPointerException();
 
         downloadUrl = Repo.getV1Url(downloadUrl);
@@ -121,16 +121,16 @@ public class HttpV1JarDownloadService implements ProgressObservable {
             InputStream response = connection.getInputStream();
 
             if (response != null) {
-                return download(name, response);
+                return downloadInputStream(name, response);
             }
         }
         return null;
     }
 
-    protected File download(String name, InputStream response) throws IOException {
+    protected File downloadInputStream(String name, InputStream inputStream) throws IOException {
         File jarfileDownload = getJarfile(name + ".tmp");
         log("Downloading to " + jarfileDownload.getAbsolutePath());
-        download(response, new FileOutputStream(jarfileDownload));
+        parseAndDownload(inputStream, new FileOutputStream(jarfileDownload));
         File jarfileFinal = getJarfile(getName(repoInDatabase));
         if (jarfileFinal.exists()) jarfileFinal.delete();
         log("Renaming to " + jarfileFinal.getAbsolutePath());
@@ -138,7 +138,7 @@ public class HttpV1JarDownloadService implements ProgressObservable {
         return jarfileFinal;
     }
 
-    protected void download(InputStream inputStream, OutputStream downloadFileOut) throws IOException {
+    protected void parseAndDownload(InputStream inputStream, OutputStream downloadFileOut) throws IOException {
         FDroidCatalogJsonStreamParserBase repoParser = createParser();
         try (InputStream in = open(inputStream, downloadFileOut)) {
             repoParser.readFromJar(in);

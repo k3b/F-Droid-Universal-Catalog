@@ -41,7 +41,9 @@ import de.k3b.fdroid.v1.domain.Repo;
 import de.k3b.fdroid.v1.domain.Version;
 
 /**
- * Abstract Json Stream parser for FDroid-Catalog-v1 format.
+ * Abstract Json-Stream-Parser for FDroid-Catalog-v1 format.
+ * * can import big json files without too much memory requirements.
+ * * Only the data of one app is kept in memory at a time.
  * <p>
  * To implement overwrite the abstract methods
  * {@link #onRepo(Repo)}, {@link #onApp(App)}, {@link #onVersion(String, Version)}
@@ -55,7 +57,7 @@ public abstract class FDroidCatalogJsonStreamParserBase {
      * {@link #onRepo(Repo)}, {@link #onApp(App)}, {@link #onVersion(String, Version)}
      *
      * @param jsonInputStream uncompressed Json inputstream
-     * @throws IOException if there are errors jsonInputStream the JSON inputstream
+     * @throws IOException if there are errors in the InputStream or the JSON v1 format.
      */
     public void readJsonStream(InputStream jsonInputStream) throws IOException {
         if (jsonInputStream == null) throw new NullPointerException();
@@ -76,6 +78,13 @@ public abstract class FDroidCatalogJsonStreamParserBase {
         }
     }
 
+    /**
+     * parse the compressed/signed jar file into a stream of calls to consuming
+     * {@link #onRepo(Repo)}, {@link #onApp(App)}, {@link #onVersion(String, Version)}
+     *
+     * @param jarInputStream jar-/zip-compressed inputstream containing json data
+     * @throws IOException if there are errors in the InputStream, the jar-compression or the JSON v1 format.
+     */
     public void readFromJar(InputStream jarInputStream) throws IOException {
         if (jarInputStream == null) throw new NullPointerException();
 
