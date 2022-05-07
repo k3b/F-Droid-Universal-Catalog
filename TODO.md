@@ -1,5 +1,11 @@
 todo
 
+* add spring-boot-webserver
+* add support to add a Repo to RepoListActivity
+* > Edit repo Dialog
+* ? Barcodescanner
+* ? url with schema "fdroid:....." via Manifest-Intentfilter ApiActivity with dispatch to affected
+  gui
 
 Android-Architecture
 
@@ -19,7 +25,8 @@ Android-Architecture
   * Android-Room-Dao (can provide Android-LiveData)
 
 html:
-v TextView: replace "style-bgcolor" with "class status_xxx"
+
+* v TextView: replace "style-bgcolor" with "class status_xxx"
 
 Progress:
 

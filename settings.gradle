@@ -18,6 +18,7 @@ rootProject.name = "F-Droid Universal Catalog"
 include ':app'
 include ':app:room-annotations'
 include ':app:fdroid-universal-cli'
+include ':app:fdroid-universal-web'
 include ':app:fdroid-domain'
 include ':app:fdroid-v1'
 include ':app:fdroid-repository-jpa'
