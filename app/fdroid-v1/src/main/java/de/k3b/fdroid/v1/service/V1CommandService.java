@@ -29,7 +29,7 @@ import java.util.List;
 
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.domain.common.PojoCommon;
+import de.k3b.fdroid.domain.common.EntityCommon;
 import de.k3b.fdroid.domain.common.RepoCommon;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
@@ -129,7 +129,7 @@ public class V1CommandService {
     private void add(StringBuilder result, App app, String name) {
         Object[] cols = new Object[]{
                 app.getPackageName(), name, app.getSearchSdk(),
-                app.getSearchVersion(), PojoCommon.asDateString(app.getLastUpdated())};
+                app.getSearchVersion(), EntityCommon.asDateString(app.getLastUpdated())};
         result.append(StringUtil.toCsvStringOrNull(Arrays.asList(cols), "\t"))
                 .append("\n");
     }

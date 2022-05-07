@@ -18,10 +18,10 @@
  */
 
 /**
- * Android independant interfaces to use the Database
+ * Android independent interfaces to use the Database
  */
 package de.k3b.fdroid.domain.interfaces;
 
 /**
- * domain interfaces (Android independant ):
+ * domain interfaces (Android independent ):
  */

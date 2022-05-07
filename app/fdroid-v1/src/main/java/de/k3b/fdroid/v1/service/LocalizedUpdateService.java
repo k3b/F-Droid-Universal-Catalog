@@ -27,11 +27,13 @@ import de.k3b.fdroid.domain.common.LocalizedCommon;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.service.LanguageService;
 import de.k3b.fdroid.service.LocalizedService;
+import de.k3b.fdroid.v1.domain.UpdateService;
 
 /**
- * update android-room-database from fdroid-v1-rest-gson data
+ * {@link UpdateService} that updates {@link de.k3b.fdroid.domain.Localized}
+ * from {@link de.k3b.fdroid.v1.domain.Localized} using a {@link LocalizedRepository}
  */
-public class LocalizedUpdateService {
+public class LocalizedUpdateService implements UpdateService {
     private final LocalizedRepository localizedRepository;
     private final LanguageService languageService;
     private final LocalizedService localizedService;

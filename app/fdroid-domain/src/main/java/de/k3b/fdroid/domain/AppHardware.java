@@ -21,26 +21,26 @@ package de.k3b.fdroid.domain;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 
-import de.k3b.fdroid.domain.common.PojoCommon;
+import de.k3b.fdroid.domain.common.EntityCommon;
 import de.k3b.fdroid.domain.common.ProfileCommon;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
 
 /**
  * One Database Entity per {@link App} that is compatible with a {@link HardwareProfile}.
  * <p>
- * Android independant: Pojo-s with all properties that are persisted in the Database.
+ * Android independent: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, embedded entities, primaryKeys and foreignKeys. No Relations or Objects or lists.
  * Database Entity compatible with Android-Room and non-android-j2se-jpa
  */
 
 @androidx.room.Entity(foreignKeys = {@androidx.room.ForeignKey(entity = App.class,
-        parentColumns = "id", childColumns = "appId",onDelete = androidx.room.ForeignKey.CASCADE),
+        parentColumns = "id", childColumns = "appId", onDelete = androidx.room.ForeignKey.CASCADE),
         @androidx.room.ForeignKey(entity = HardwareProfile.class,
-                parentColumns = "id", childColumns = "hardwareProfileId",onDelete = androidx.room.ForeignKey.CASCADE)},
+                parentColumns = "id", childColumns = "hardwareProfileId", onDelete = androidx.room.ForeignKey.CASCADE)},
         indices = {@androidx.room.Index({"appId", "hardwareProfileId"})})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
-public class AppHardware extends PojoCommon implements AppDetail {
+public class AppHardware extends EntityCommon implements AppDetail {
     @androidx.room.Embedded
     @javax.persistence.Embedded
     ProfileCommon max = new ProfileCommon();

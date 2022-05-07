@@ -17,5 +17,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-/** Android-Room specific XxxxDao implementations for android independant XxxxRepository. */
+/**
+ * Android-Room specific XxxxDao implementations for android independent XxxxRepository.
+ */
 package de.k3b.fdroid.android.repository;

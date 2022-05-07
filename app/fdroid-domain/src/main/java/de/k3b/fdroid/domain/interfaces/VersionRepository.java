@@ -23,9 +23,11 @@ import java.util.List;
 import de.k3b.fdroid.domain.Version;
 
 /**
- * Android independant interfaces to use the Database
+ * Android independent interfaces to use the Database.
+ * <p>
+ * Persists {@link Version} (that implements {@link DatabaseEntityWithId}) in the Database.
  */
-public interface VersionRepository extends AppDetailRepository<Version> {
+public interface VersionRepository extends Repository, AppDetailRepository<Version> {
     void insert(Version version);
 
     void update(Version version);

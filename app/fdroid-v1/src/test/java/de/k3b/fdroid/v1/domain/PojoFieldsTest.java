@@ -21,7 +21,7 @@ package de.k3b.fdroid.v1.domain;
 
 import org.junit.Test;
 
-import de.k3b.fdroid.domain.common.PojoCommon;
+import de.k3b.fdroid.domain.common.EntityCommon;
 import de.k3b.fdroid.domain.common.ProfileCommon;
 
 /**
@@ -33,7 +33,7 @@ public class PojoFieldsTest {
     public void entityReport() throws Exception {
         Class<?>[] classes = new Class<?>[]{App.class, Localized.class, ProfileCommon.class, Repo.class,
                 Version.class};
-        PojoCommon.createPojoFieldsFile(classes);
+        EntityCommon.createPojoFieldsFile(classes);
     }
 
 }

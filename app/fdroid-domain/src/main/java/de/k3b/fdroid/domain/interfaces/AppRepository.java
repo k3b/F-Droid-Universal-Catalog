@@ -23,9 +23,11 @@ import java.util.List;
 import de.k3b.fdroid.domain.App;
 
 /**
- * Android independant interfaces to use the Database
+ * Android independent interfaces to use the Database.
+ * <p>
+ * Persists {@link App} (that implements {@link DatabaseEntityWithId}) in the Database.
  */
-public interface AppRepository extends AppRepositoryFindIdsByExpression {
+public interface AppRepository extends Repository, AppRepositoryFindIdsByExpression {
     void insert(App app);
 
     void update(App app);

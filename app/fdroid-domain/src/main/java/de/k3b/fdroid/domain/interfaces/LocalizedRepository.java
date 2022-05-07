@@ -23,9 +23,11 @@ import java.util.List;
 import de.k3b.fdroid.domain.Localized;
 
 /**
- * Android independant interfaces to use the Database
+ * Android independent interfaces to use the Database.
+ * <p>
+ * Persists {@link Localized} (that implements {@link DatabaseEntityWithId}) in the Database.
  */
-public interface LocalizedRepository {
+public interface LocalizedRepository extends Repository {
     void insert(Localized localized);
 
     void update(Localized localized);

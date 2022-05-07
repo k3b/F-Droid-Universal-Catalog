@@ -27,7 +27,7 @@ import javax.persistence.Column;
  * Only primitive types are allowed. No relations, no Objects, no Lists
  * as these are Gson/Android-Room-Database specific.
  */
-public class LocalizedCommon extends PojoCommon {
+public class LocalizedCommon extends EntityCommon {
     private String name;
     private String summary;
     @Column(length = MAX_LEN_AGGREGATED)

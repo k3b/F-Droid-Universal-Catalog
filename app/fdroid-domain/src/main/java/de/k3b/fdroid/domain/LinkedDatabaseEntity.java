@@ -19,13 +19,13 @@
 package de.k3b.fdroid.domain;
 
 import de.k3b.fdroid.domain.interfaces.AppDetail;
-import de.k3b.fdroid.domain.interfaces.ItemWithId;
+import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 
-public class LinkedItem<LINK extends AppDetail, ITEM extends ItemWithId> implements AppDetail {
+public class LinkedDatabaseEntity<LINK extends AppDetail, ITEM extends DatabaseEntityWithId> implements AppDetail {
     private final LINK link;
     private final ITEM item;
 
-    public LinkedItem(LINK link, ITEM item) {
+    public LinkedDatabaseEntity(LINK link, ITEM item) {
         this.link = link;
         this.item = item;
     }

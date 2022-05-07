@@ -27,9 +27,12 @@ import de.k3b.fdroid.domain.common.LocalizedCommon;
 
 /**
  * Data for a Localisation (Translation) of an android app (read from FDroid-Catalog-v1-Json format).
+ * <p>
+ * The {@link V1JsonEntity} {@link Localized} correspond to the
+ * {@link de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId} {@link de.k3b.fdroid.domain.Localized}.
  */
 @Generated("jsonschema2pojo")
-public class Localized extends LocalizedCommon {
+public class Localized extends LocalizedCommon implements V1JsonEntity {
     private List<String> phoneScreenshots = null;
 
     public List<String> getPhoneScreenshots() {

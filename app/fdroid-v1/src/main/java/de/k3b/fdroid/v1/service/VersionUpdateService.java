@@ -34,11 +34,13 @@ import de.k3b.fdroid.domain.interfaces.VersionRepository;
 import de.k3b.fdroid.service.HardwareProfileService;
 import de.k3b.fdroid.service.VersionService;
 import de.k3b.fdroid.util.StringUtil;
+import de.k3b.fdroid.v1.domain.UpdateService;
 
 /**
- * update android-room-database from fdroid-v1-rest-gson data
+ * {@link UpdateService} that updates {@link de.k3b.fdroid.domain.Version}
+ * from {@link de.k3b.fdroid.v1.domain.Version} using a {@link VersionRepository}
  */
-public class VersionUpdateService implements ProgressObservable {
+public class VersionUpdateService implements UpdateService, ProgressObservable {
     private static final int PROGRESS_INTERVALL = 100;
 
     private final AppRepository appRepository;

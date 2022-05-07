@@ -18,18 +18,18 @@
  */
 package de.k3b.fdroid.domain;
 
-import de.k3b.fdroid.domain.common.PojoCommon;
-import de.k3b.fdroid.domain.interfaces.ItemWithId;
+import de.k3b.fdroid.domain.common.EntityCommon;
+import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 
 /**
- * Android independant: Pojo-s with all properties that are persisted in the Database.
+ * Android independent: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  * Database Entity compatible with Android-Room and non-android-j2se-jpa
  */
 @androidx.room.Entity(indices = {@androidx.room.Index("id")})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
-public class Locale extends PojoCommon implements ItemWithId {
+public class Locale extends EntityCommon implements DatabaseEntityWithId {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @androidx.room.PrimaryKey(autoGenerate = true)

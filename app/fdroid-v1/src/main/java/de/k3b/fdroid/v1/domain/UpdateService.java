@@ -16,25 +16,18 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.domain.interfaces;
 
-import java.util.List;
+package de.k3b.fdroid.v1.domain;
 
-import de.k3b.fdroid.domain.Category;
+import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
+import de.k3b.fdroid.domain.interfaces.Enitity;
 
 /**
- * Android independent interfaces to use the Database.
+ * A FDroid-Catalog-v1-Json format {@link Enitity} used to read
+ * F-Drdoid Catalog Data in the "V1" json format.
  * <p>
- * Persists {@link Category} (that implements {@link DatabaseEntityWithId}) in the Database.
+ * Each Xxx{@link V1JsonEntity} has a corresponding Xxx{@link DatabaseEntityWithId}
+ * and there is a Xxx{@link UpdateService} that updates Xxx{@link DatabaseEntityWithId} from {@link V1JsonEntity}
  */
-public interface CategoryRepository extends Repository {
-    void insert(Category category);
-
-    void update(Category category);
-
-    void delete(Category category);
-
-    List<Category> findAll();
-
-    Category findByName(String name);
+public interface UpdateService {
 }

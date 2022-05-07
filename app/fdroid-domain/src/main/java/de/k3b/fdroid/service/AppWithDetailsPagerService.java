@@ -27,7 +27,7 @@ import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.AppCategory;
 import de.k3b.fdroid.domain.AppWithDetails;
 import de.k3b.fdroid.domain.Category;
-import de.k3b.fdroid.domain.LinkedItem;
+import de.k3b.fdroid.domain.LinkedDatabaseEntity;
 import de.k3b.fdroid.domain.Localized;
 import de.k3b.fdroid.domain.Version;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
@@ -40,7 +40,7 @@ public class AppWithDetailsPagerService {
     private final AppDetailRepository<App> appRepository;
     private final AppDetailRepository<Localized> localizedRepository;
     private final AppDetailRepository<Version> versionRepository;
-    private final AppDetailRepository<LinkedItem<AppCategory, Category>> categoryRepository;
+    private final AppDetailRepository<LinkedDatabaseEntity<AppCategory, Category>> categoryRepository;
 
     private Integer[] appIds;
     private AppWithDetails[] appWithDetailsList;
@@ -50,7 +50,7 @@ public class AppWithDetailsPagerService {
             AppDetailRepository<App> appRepository,
             AppDetailRepository<Localized> localizedRepository,
             AppDetailRepository<Version> versionRepository,
-            AppDetailRepository<LinkedItem<AppCategory, Category>> categoryRepository) {
+            AppDetailRepository<LinkedDatabaseEntity<AppCategory, Category>> categoryRepository) {
         this.appRepository = appRepository;
         this.localizedRepository = localizedRepository;
         this.versionRepository = versionRepository;

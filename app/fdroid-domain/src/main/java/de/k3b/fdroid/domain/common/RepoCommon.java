@@ -25,7 +25,7 @@ package de.k3b.fdroid.domain.common;
  * as these are Gson/Android-Room-Database specific.
  */
 @javax.persistence.MappedSuperclass
-public class RepoCommon extends PojoCommon {
+public class RepoCommon extends EntityCommon {
     public static final String V1_JAR_NAME = "index-v1.jar";
     public static final String V1_JSON_NAME = "index-v1.json";
 

@@ -24,7 +24,7 @@ import de.k3b.fdroid.domain.common.AppCommon;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
 
 /**
- * Android independant: Pojo-s with all properties that are persisted in the Database.
+ * Android independent: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  * Database Entity compatible with Android-Room and non-android-j2se-jpa
  */

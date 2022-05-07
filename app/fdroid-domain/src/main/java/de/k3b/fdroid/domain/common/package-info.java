@@ -19,7 +19,7 @@
 
 package de.k3b.fdroid.domain.common;
 /**
- * Android independant:
+ * Android independent:
  * Common data for v1-Gson-json and android-room-database-Entities.
  * Only primitive types are allowed. No relations, no Objects, no Lists
  * as these are Gson/Android-Room-Database specific.

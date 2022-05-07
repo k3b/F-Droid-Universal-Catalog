@@ -23,11 +23,13 @@ import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.common.RepoCommon;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.util.StringUtil;
+import de.k3b.fdroid.v1.domain.UpdateService;
 
 /**
- * update android-room-database from fdroid-v1-rest-gson data
+ * {@link UpdateService} that updates {@link de.k3b.fdroid.domain.Repo}
+ * from {@link de.k3b.fdroid.v1.domain.Repo} using a {@link RepoRepository}
  */
-public class RepoUpdateService {
+public class RepoUpdateService implements UpdateService {
     private final RepoRepository repoRepository;
 
     public RepoUpdateService(RepoRepository repoRepository) {

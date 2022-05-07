@@ -20,6 +20,6 @@
 package de.k3b.fdroid.v1.domain;
 
 /**
- * Android independant Pojo-s with all properties that are read from fdroid-v1 json files..
+ * Android independent Pojo-s with all properties that are read from fdroid-v1 json files..
  * may contain child-pojos
  */

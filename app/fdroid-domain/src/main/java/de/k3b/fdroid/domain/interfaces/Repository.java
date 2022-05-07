@@ -18,23 +18,11 @@
  */
 package de.k3b.fdroid.domain.interfaces;
 
-import java.util.List;
-
-import de.k3b.fdroid.domain.Category;
-
 /**
  * Android independent interfaces to use the Database.
  * <p>
- * Persists {@link Category} (that implements {@link DatabaseEntityWithId}) in the Database.
+ * For each de.k3b.fdroid.domain.Xxx (that implements {@link DatabaseEntityWithId})
+ * there is a corresponding XxxRepository to persist Xxx in the database.
  */
-public interface CategoryRepository extends Repository {
-    void insert(Category category);
-
-    void update(Category category);
-
-    void delete(Category category);
-
-    List<Category> findAll();
-
-    Category findByName(String name);
+public interface Repository {
 }

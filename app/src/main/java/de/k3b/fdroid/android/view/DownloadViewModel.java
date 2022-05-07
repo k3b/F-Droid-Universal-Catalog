@@ -32,7 +32,7 @@ import java.util.UUID;
 import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.service.ImportV1AndroidWorker;
 import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.domain.interfaces.ItemWithId;
+import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 
 public class DownloadViewModel extends ViewModel {
@@ -83,7 +83,7 @@ public class DownloadViewModel extends ViewModel {
      */
     public void setCurrentRepoInstance(Repo repo) {
         Repo old = getCurrentRepo().getValue();
-        if (!ItemWithId.sameId(old, repo)) {
+        if (!DatabaseEntityWithId.sameId(old, repo)) {
             setCurrentRepo(repo);
         }
     }

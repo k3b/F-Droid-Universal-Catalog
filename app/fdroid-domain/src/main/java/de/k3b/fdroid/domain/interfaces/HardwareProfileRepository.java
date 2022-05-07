@@ -23,9 +23,12 @@ import java.util.List;
 import de.k3b.fdroid.domain.HardwareProfile;
 
 /**
- * Android independant interfaces to use the Database
+ * Android independent interfaces to use the Database.
+ * <p>
+ * Persists {@link HardwareProfile} (that implements {@link DatabaseEntityWithId}) in the Database.
  */
-public interface HardwareProfileRepository {
+
+public interface HardwareProfileRepository extends Repository {
     void insert(HardwareProfile hardwareProfile);
 
     void update(HardwareProfile hardwareProfile);

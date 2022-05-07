@@ -23,9 +23,11 @@ import java.util.List;
 import de.k3b.fdroid.domain.Repo;
 
 /**
- * Android independant interfaces to use the Database
+ * Android independent interfaces to use the Database.
+ * <p>
+ * Persists {@link Repo} (that implements {@link DatabaseEntityWithId}) in the Database.
  */
-public interface RepoRepository {
+public interface RepoRepository extends Repository {
     void insert(Repo repo);
 
     void update(Repo repo);

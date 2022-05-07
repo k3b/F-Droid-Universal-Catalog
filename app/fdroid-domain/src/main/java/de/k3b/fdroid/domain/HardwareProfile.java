@@ -18,8 +18,8 @@
  */
 package de.k3b.fdroid.domain;
 
-import de.k3b.fdroid.domain.common.PojoCommon;
-import de.k3b.fdroid.domain.interfaces.ItemWithId;
+import de.k3b.fdroid.domain.common.EntityCommon;
+import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 import de.k3b.fdroid.util.StringUtil;
 
 /**
@@ -33,14 +33,14 @@ import de.k3b.fdroid.util.StringUtil;
  * <p>
  * (Hardware data can be taken from App-Manager(397=2.6.5.1) https://f-droid.org/packages/io.github.muntashirakon.AppManager/)
  * <p>
- * Android independant: Pojo-s with all properties that are persisted in the Database.
+ * Android independent: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  * Database Entity compatible with Android-Room and non-android-j2se-jpa
  */
 @androidx.room.Entity
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
-public class HardwareProfile extends PojoCommon implements ItemWithId {
+public class HardwareProfile extends EntityCommon implements DatabaseEntityWithId {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @androidx.room.PrimaryKey(autoGenerate = true)

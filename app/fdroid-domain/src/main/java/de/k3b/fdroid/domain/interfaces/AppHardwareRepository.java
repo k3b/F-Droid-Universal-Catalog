@@ -23,9 +23,11 @@ import java.util.List;
 import de.k3b.fdroid.domain.AppHardware;
 
 /**
- * Android independant interfaces to use the Database
+ * Android independent interfaces to use the Database.
+ * <p>
+ * Persists {@link AppHardware} (that implements {@link DatabaseEntityWithId}) in the Database.
  */
-public interface AppHardwareRepository {
+public interface AppHardwareRepository extends Repository {
     void insert(AppHardware appHardware);
 
     void update(AppHardware appHardware);

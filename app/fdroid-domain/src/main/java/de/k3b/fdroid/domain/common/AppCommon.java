@@ -25,7 +25,7 @@ package de.k3b.fdroid.domain.common;
  * Only primitive types are allowed. No relations, no Objects, no Lists
  * as these are Gson/Android-Room-Database specific.
  */
-public class AppCommon extends PojoCommon {
+public class AppCommon extends EntityCommon {
     private String packageName;
     private String changelog;
     private String suggestedVersionName;

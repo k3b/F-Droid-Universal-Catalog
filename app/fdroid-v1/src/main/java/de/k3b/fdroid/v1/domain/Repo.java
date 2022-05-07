@@ -27,9 +27,12 @@ import de.k3b.fdroid.domain.common.RepoCommon;
 
 /**
  * Data for a FDroid-Repository (read from FDroid-Catalog-v1-Json format).
+ * <p>
+ * The {@link V1JsonEntity} {@link Repo} correspond to the
+ * {@link de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId} {@link de.k3b.fdroid.domain.Repo}.
  */
 @Generated("jsonschema2pojo")
-public class Repo extends RepoCommon {
+public class Repo extends RepoCommon implements V1JsonEntity {
 
     private List<String> mirrors = null;
 

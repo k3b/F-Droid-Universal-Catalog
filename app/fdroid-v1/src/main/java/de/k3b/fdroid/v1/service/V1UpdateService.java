@@ -41,13 +41,14 @@ import de.k3b.fdroid.service.HardwareProfileService;
 import de.k3b.fdroid.service.LanguageService;
 import de.k3b.fdroid.v1.domain.App;
 import de.k3b.fdroid.v1.domain.Repo;
+import de.k3b.fdroid.v1.domain.UpdateService;
 import de.k3b.fdroid.v1.domain.Version;
 import de.k3b.fdroid.v1.service.util.JarUtilities;
 
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
-public abstract class V1UpdateService implements ProgressObservable {
+public abstract class V1UpdateService implements UpdateService, ProgressObservable {
     private final RepoRepository repoRepository;
     private final HardwareProfileService hardwareProfileService;
     JsonStreamParser jsonStreamParser;

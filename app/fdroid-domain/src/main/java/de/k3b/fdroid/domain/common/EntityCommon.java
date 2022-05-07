@@ -29,14 +29,15 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
+import de.k3b.fdroid.domain.interfaces.Enitity;
 import de.k3b.fdroid.util.TestDataGenerator;
 
 /**
- * what all Pojo-s have in Common:
+ * what all {@link Enitity} have in Common:
  * Nearly a pojo except there is toString() with toStringBuilder support.
  * pojo Properties are not allowed
  */
-public class PojoCommon {
+public class EntityCommon implements Enitity {
     /**
      * non standard string len for aggregated fields and for app description
      */
@@ -117,7 +118,7 @@ public class PojoCommon {
             sb.append(name).append('=').append(value).append(',');
     }
 
-    protected void toStringBuilder(StringBuilder sb, String name, PojoCommon value) {
+    protected void toStringBuilder(StringBuilder sb, String name, EntityCommon value) {
         if (value != null) {
             sb.append(name).append("=").append(value).append(",");
         }

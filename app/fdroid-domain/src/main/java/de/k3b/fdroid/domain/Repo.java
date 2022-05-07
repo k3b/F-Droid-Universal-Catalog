@@ -19,11 +19,11 @@
 package de.k3b.fdroid.domain;
 
 import de.k3b.fdroid.domain.common.RepoCommon;
-import de.k3b.fdroid.domain.interfaces.ItemWithId;
+import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 import de.k3b.fdroid.util.StringUtil;
 
 /**
- * Android independant: Pojo-s with all properties that are persisted in the Database.
+ * Android independent: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  * Database Entity compatible with Android-Room and non-android-j2se-jpa.
  * <p>
@@ -33,14 +33,14 @@ import de.k3b.fdroid.util.StringUtil;
  * https://apt.izzysoft.de/fdroid/repo/index-v1.jar
  * https://f-droid.org/repo/index-v1.jar
  * https://f-droid.org/archive/index-v1.jar
- *
+ * <p>
  * https://fdroid.cgeo.org/
  * https://fdroid.cgeo.org/nightly/index-v1.jar with wrong repo.address
  */
 @androidx.room.Entity(indices = {@androidx.room.Index("id")})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
-public class Repo extends RepoCommon implements ItemWithId {
+public class Repo extends RepoCommon implements DatabaseEntityWithId {
     public static final String STATE_BUSY = "busy"; // while downloding. bg-color=yellow
     public static final String STATE_ERROR = "error"; // download failed bg-color=red
     public static final String STATE_ENABLED = "enabled"; // bg-color=green

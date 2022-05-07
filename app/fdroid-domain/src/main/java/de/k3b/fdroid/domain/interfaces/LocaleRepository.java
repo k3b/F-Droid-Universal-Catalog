@@ -23,9 +23,11 @@ import java.util.List;
 import de.k3b.fdroid.domain.Locale;
 
 /**
- * Android independant interfaces to use the Database
+ * Android independent interfaces to use the Database.
+ * <p>
+ * Persists {@link Locale} (that implements {@link DatabaseEntityWithId}) in the Database.
  */
-public interface LocaleRepository {
+public interface LocaleRepository extends Repository {
     void insert(Locale locale);
 
     void update(Locale locale);

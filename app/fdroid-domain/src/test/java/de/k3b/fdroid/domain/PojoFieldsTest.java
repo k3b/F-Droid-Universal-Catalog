@@ -21,7 +21,7 @@ package de.k3b.fdroid.domain;
 
 import org.junit.Test;
 
-import de.k3b.fdroid.domain.common.PojoCommon;
+import de.k3b.fdroid.domain.common.EntityCommon;
 import de.k3b.fdroid.domain.common.ProfileCommon;
 
 /**
@@ -34,7 +34,7 @@ public class PojoFieldsTest {
         Class<?>[] classes = new Class<?>[]{App.class, AppCategory.class, AppHardware.class,
                 Category.class, HardwareProfile.class, Locale.class, Localized.class, ProfileCommon.class, Repo.class,
                 Version.class};
-        PojoCommon.createPojoFieldsFile(classes);
+        EntityCommon.createPojoFieldsFile(classes);
     }
 
 }

@@ -24,11 +24,13 @@ import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.ProgressObservable;
 import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.util.StringUtil;
+import de.k3b.fdroid.v1.domain.UpdateService;
 
 /**
- * update android-room-database from fdroid-v1-rest-gson data
+ * {@link UpdateService} that updates {@link de.k3b.fdroid.domain.App}
+ * from {@link de.k3b.fdroid.v1.domain.App} using a {@link AppRepository}
  */
-public class AppUpdateService implements ProgressObservable {
+public class AppUpdateService implements UpdateService, ProgressObservable {
     private static final int PROGRESS_INTERVALL = 100;
 
     private final AppRepository appRepository;

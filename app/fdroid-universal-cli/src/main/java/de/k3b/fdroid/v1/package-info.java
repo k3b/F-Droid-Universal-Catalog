@@ -18,7 +18,7 @@
  */
 
 /**
- * Android independant: Pojo-s with all properties that are persisted in the Database.
+ * Android independent: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  */
 package de.k3b.fdroid.v1;

@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import de.k3b.fdroid.Global;
-import de.k3b.fdroid.domain.common.PojoCommon;
+import de.k3b.fdroid.domain.common.EntityCommon;
 import de.k3b.fdroid.v1.domain.App;
 import de.k3b.fdroid.v1.domain.Localized;
 import de.k3b.fdroid.v1.domain.Repo;
@@ -68,7 +68,7 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
             Map<String, Localized> oldLocales = app.getLocalized();
             fixLocaleService.fix(app);
             StringBuilder nameWithLocales = new StringBuilder();
-            String lastUpdated = PojoCommon.asDateString(app.getLastUpdated());
+            String lastUpdated = EntityCommon.asDateString(app.getLastUpdated());
             if (lastUpdated != null) {
                 nameWithLocales.append(lastUpdated).append(" ");
             }
@@ -96,7 +96,7 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
     protected void onVersion(String name, Version version) {
         if (version != null) {
             log("onVersion(" + name +
-                    "," + version.getVersionName() + "," + PojoCommon.asDateString(version.getAdded()) +
+                    "," + version.getVersionName() + "," + EntityCommon.asDateString(version.getAdded()) +
                     ")");
         }
     }

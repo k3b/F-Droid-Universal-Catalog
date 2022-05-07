@@ -17,20 +17,17 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-package de.k3b.fdroid.domain.common;
+package de.k3b.fdroid.v1.domain;
 
-import static org.junit.Assert.assertEquals;
+import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
+import de.k3b.fdroid.domain.interfaces.Enitity;
 
-import org.junit.Test;
-
-public class PojoCommonTest {
-
-    @Test
-    public void toStringBuilder() {
-        StringBuilder sb = new StringBuilder();
-        PojoCommon sut = new PojoCommon();
-
-        sut.toStringBuilder(sb, "var", "1234567890abcdefg", 10);
-        assertEquals("var=12345...fg,", sb.toString());
-    }
+/**
+ * A FDroid-Catalog-v1-Json format {@link Enitity} used to read
+ * F-Drdoid Catalog Data in the "V1" json format.
+ * <p>
+ * Each Xxx{@link V1JsonEntity} has a corresponding Xxx{@link DatabaseEntityWithId}
+ * and there is a Xxx{@link UpdateService} that transfers Xxx{@link V1JsonEntity} to Xxx{@link DatabaseEntityWithId}
+ */
+public interface V1JsonEntity extends Enitity {
 }

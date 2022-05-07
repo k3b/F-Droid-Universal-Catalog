@@ -26,7 +26,7 @@ package de.k3b.fdroid.domain.common;
  * as these are Gson/Android-Room-Database specific.
  */
 @javax.persistence.MappedSuperclass
-public class ProfileCommon extends PojoCommon {
+public class ProfileCommon extends EntityCommon {
     private String apkName;
     private int versionCode;
     private String versionName;

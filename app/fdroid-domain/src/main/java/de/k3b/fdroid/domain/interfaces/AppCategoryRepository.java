@@ -23,9 +23,11 @@ import java.util.List;
 import de.k3b.fdroid.domain.AppCategory;
 
 /**
- * Android independant interfaces to use the Database
+ * Android independent interfaces to use the Database.
+ * <p>
+ * Persists {@link AppCategory} (that implements {@link DatabaseEntityWithId}) in the Database.
  */
-public interface AppCategoryRepository {
+public interface AppCategoryRepository extends Repository {
     void insert(AppCategory appCategory);
 
     void update(AppCategory appCategory);

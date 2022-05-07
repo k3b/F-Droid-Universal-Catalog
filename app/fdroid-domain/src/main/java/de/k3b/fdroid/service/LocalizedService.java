@@ -25,7 +25,7 @@ import java.util.List;
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.Locale;
 import de.k3b.fdroid.domain.Localized;
-import de.k3b.fdroid.domain.common.PojoCommon;
+import de.k3b.fdroid.domain.common.EntityCommon;
 
 public class LocalizedService {
     private final LanguageService languageService;
@@ -52,10 +52,10 @@ public class LocalizedService {
                 languagePrefix = locale.getCode() + ": ";
             }
 
-            add(name, loc.getName(), "name", PojoCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, " | ");
-            add(summary, loc.getSummary(), "summary", PojoCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, "\n");
-            add(description, loc.getDescription(), "description", PojoCommon.MAX_LEN_AGGREGATED_DESCRIPTION, roomApp, languagePrefix, "\n\n------------\n\n");
-            add(whatsNew, loc.getWhatsNew(), "whatsNew", PojoCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, "\n\n------------\n\n");
+            add(name, loc.getName(), "name", EntityCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, " | ");
+            add(summary, loc.getSummary(), "summary", EntityCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, "\n");
+            add(description, loc.getDescription(), "description", EntityCommon.MAX_LEN_AGGREGATED_DESCRIPTION, roomApp, languagePrefix, "\n\n------------\n\n");
+            add(whatsNew, loc.getWhatsNew(), "whatsNew", EntityCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, "\n\n------------\n\n");
 
         }
         roomApp.setSearchName(name.toString());

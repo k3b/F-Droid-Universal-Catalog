@@ -21,19 +21,20 @@ package de.k3b.fdroid.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.k3b.fdroid.domain.common.PojoCommon;
+import de.k3b.fdroid.domain.common.EntityCommon;
+import de.k3b.fdroid.domain.interfaces.AggregateRoot;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
 
 /**
- * DDD Aggregate-Root for {@link App}
+ * DDD {@link AggregateRoot} for {@link App}
  */
 @SuppressWarnings({"unchecked", "unsafe"})
-public class AppWithDetails extends PojoCommon implements AppDetail {
+public class AppWithDetails extends EntityCommon implements AppDetail, AggregateRoot {
     private final App app;
     private final List<Localized> localizedList = new ArrayList<>();
     private final List<Version> versionList = new ArrayList<>();
-    private final List<LinkedItem<AppCategory, Category>> categoryList = new ArrayList<>();
-    private final List<LinkedItem<Localized, Locale>> localeList = new ArrayList<>();
+    private final List<LinkedDatabaseEntity<AppCategory, Category>> categoryList = new ArrayList<>();
+    private final List<LinkedDatabaseEntity<Localized, Locale>> localeList = new ArrayList<>();
 
     public AppWithDetails(App app) {
         this.app = app;

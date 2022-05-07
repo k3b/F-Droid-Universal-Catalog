@@ -30,9 +30,12 @@ import de.k3b.fdroid.domain.common.AppCommon;
 
 /**
  * Data for an android app (read from FDroid-Catalog-v1-Json format).
+ * <p>
+ * The {@link V1JsonEntity} {@link App} correspond to the
+ * {@link de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId} {@link de.k3b.fdroid.domain.App}.
  */
 @Generated("jsonschema2pojo")
-public class App extends AppCommon {
+public class App extends AppCommon implements V1JsonEntity {
 
     // redundant fallback if there is no localized (converted to locale)
     private String summary;

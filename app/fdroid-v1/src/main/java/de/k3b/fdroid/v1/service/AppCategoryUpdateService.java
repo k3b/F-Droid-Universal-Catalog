@@ -23,11 +23,12 @@ import java.util.List;
 import de.k3b.fdroid.domain.AppCategory;
 import de.k3b.fdroid.domain.interfaces.AppCategoryRepository;
 import de.k3b.fdroid.service.CategoryService;
+import de.k3b.fdroid.v1.domain.UpdateService;
 
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
-public class AppCategoryUpdateService {
+public class AppCategoryUpdateService implements UpdateService {
     private final CategoryService categoryService;
     private final AppCategoryRepository appCategoryRepository;
 

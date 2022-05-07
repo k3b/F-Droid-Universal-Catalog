@@ -18,23 +18,11 @@
  */
 package de.k3b.fdroid.domain.interfaces;
 
-import java.util.List;
-
-import de.k3b.fdroid.domain.Category;
-
 /**
- * Android independent interfaces to use the Database.
+ * Entity : Entities- (from DDD) are java persistable classes
  * <p>
- * Persists {@link Category} (that implements {@link DatabaseEntityWithId}) in the Database.
+ * * ... has platform/infrastructure dependant java annotations (for jpa/android-room)
+ * * ... code does not depend on platform specific code (except the java-annotations)
  */
-public interface CategoryRepository extends Repository {
-    void insert(Category category);
-
-    void update(Category category);
-
-    void delete(Category category);
-
-    List<Category> findAll();
-
-    Category findByName(String name);
+public interface Enitity {
 }

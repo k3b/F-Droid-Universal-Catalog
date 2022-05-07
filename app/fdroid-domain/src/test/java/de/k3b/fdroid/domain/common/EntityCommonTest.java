@@ -16,14 +16,21 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.domain.interfaces;
 
-public interface ItemWithId {
-    int getId();
+package de.k3b.fdroid.domain.common;
 
-    static <T extends ItemWithId> boolean sameId(T lhs, T rhs) {
-        int lhsId = lhs == null ? -1 : lhs.getId();
-        int rhsId = rhs == null ? -1 : rhs.getId();
-        return lhsId == rhsId;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+public class EntityCommonTest {
+
+    @Test
+    public void toStringBuilder() {
+        StringBuilder sb = new StringBuilder();
+        EntityCommon sut = new EntityCommon();
+
+        sut.toStringBuilder(sb, "var", "1234567890abcdefg", 10);
+        assertEquals("var=12345...fg,", sb.toString());
     }
 }
