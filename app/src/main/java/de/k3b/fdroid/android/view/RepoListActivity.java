@@ -29,10 +29,10 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import de.k3b.android.util.BarcodeScanActivityResultContract;
 import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.android.R;
 import de.k3b.fdroid.android.databinding.ActivityRepoListBinding;
-import de.k3b.fdroid.android.util.BarcodeScanActivityResultContract;
 import de.k3b.fdroid.domain.Repo;
 
 // AppCompatActivity:1,4,1 requires minsdk 17

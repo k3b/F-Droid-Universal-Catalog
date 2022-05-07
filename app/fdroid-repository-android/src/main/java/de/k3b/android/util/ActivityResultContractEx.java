@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.util;
+package de.k3b.android.util;
 
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +39,21 @@ public abstract class ActivityResultContractEx<I, O> extends ActivityResultContr
     public boolean isAvailable(@NonNull Context context, I input) {
         PackageManager pm = context.getPackageManager();
         Intent intent = createIntent(context, input);
+
+        /* Lint warning
+            "Consider adding a `<queries>` declaration to your manifest when calling this
+            method; see https://g.co/dev/packagevisibility
+            for details"
+
+            https://g.co/dev/packagevisibility = https://developer.android.com/training/package-visibility/declaring
+
+            From the docs:
+            If your app targets Android 11 (api 30) or higher Manifest may need a <queries> element.
+
+            Promlem: I do not know in advance which Package(=android-app-id) will privide the barcode scanner-
+
+            With current targetSdk=31 (Android 12) the code is working on my android-10 device.
+         */
         List<ResolveInfo> resolveInfo = pm.queryIntentActivities(
                 intent, 0);
         return !resolveInfo.isEmpty();

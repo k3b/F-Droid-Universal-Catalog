@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.util;
+package de.k3b.android.util;
 
 import android.app.Activity;
 import android.content.Context;
@@ -37,7 +37,7 @@ public class BarcodeScanActivityResultContract extends ActivityResultContractEx<
 
     @Override
     public String parseResult(int resultCode, @Nullable Intent intent) {
-        return (resultCode == Activity.RESULT_OK) ? intent.getStringExtra("SCAN_RESULT") : null;
+        return (resultCode == Activity.RESULT_OK && intent != null) ? intent.getStringExtra("SCAN_RESULT") : null;
     }
 }
 
