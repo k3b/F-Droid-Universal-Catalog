@@ -9,7 +9,7 @@ android {
         applicationId "de.k3b.android.fdroid.universalcatalog"
         // api 18 android 4.2.1 requirerd for rounded icons
         minSdk 14 // TODO !!?? working with api14
-//        minSdk 18
+
         targetSdk 31
         versionCode 1
         versionName "1.0"
