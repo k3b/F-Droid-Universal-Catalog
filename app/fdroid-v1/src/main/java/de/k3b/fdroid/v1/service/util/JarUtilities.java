@@ -32,6 +32,9 @@ import java.util.Formatter;
 import java.util.List;
 import java.util.jar.JarEntry;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.util.StringUtil;
@@ -44,17 +47,15 @@ import de.k3b.fdroid.v1.service.V1JarException;
 public class JarUtilities {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_UTIL);
 
-    private static final String ERR_CERTIFICATE_SIGNERS_COUNT = "More than one code certificate signers are not allowed!";
-    private static final String ERR_CERTIFICATE_COUNT = "More than one code signing certificates are not allowed!";
-    private static final String ERR_CERTIFICATE_NOT_FOUND = "No code signing certificate found!";
-    private static final String ERR_CERTIFICATE_MISMATCH = "Code signing certificate does not match!";
-    private static final String ERR_CERTIFICATE_FINGERPRINT_MISMATCH = "Supplied code signing certificate fingerprint does not match!";
-    private static final String ERR_CERTIFICATE_KEY_LEN = "Code signing certificate key was shorter than 256 bytes (";
-    private static final String ERR_CERTIFICATE_CREATE_FINGERPRINT = "Unable to create Code signing certificate fingerprint";
+    protected static final String ERR_CERTIFICATE_SIGNERS_COUNT = "More than one code certificate signers are not allowed!";
+    protected static final String ERR_CERTIFICATE_COUNT = "More than one code signing certificates are not allowed!";
+    protected static final String ERR_CERTIFICATE_MISMATCH = "Code signing certificate does not match!";
+    protected static final String ERR_CERTIFICATE_FINGERPRINT_MISMATCH = "Supplied code signing certificate fingerprint does not match!";
+    protected static final String ERR_CERTIFICATE_KEY_LEN = "Code signing certificate key was shorter than 256 bytes (";
+    protected static final String ERR_CERTIFICATE_CREATE_FINGERPRINT = "Unable to create Code signing certificate fingerprint";
 
     /**
-     * Gets Signing Cert from jarEntry. Throws {@link V1JarException} if cert-info
-     * does not confrom to v1-fdroid-security-cert-restrictions.
+     * Gets Signing Cert from jarEntry.
      * <p>
      * Code inspired by getSigningCertFromJar in
      * https://git.bubu1.eu/Bubu/fdroidclassic/-/blob/main/app/src/main/java/org/fdroid/fdroid/IndexUpdater.java .
@@ -62,19 +63,22 @@ public class JarUtilities {
      * FDroid's index.jar is signed using a particular format and does not allow lots of
      * signing setups that would be valid for a regular jar.  This code validates those
      * restrictions.
+     *
+     * @return null if there is no certificate
+     * @throws V1JarException if cert-info does not confrom to v1-fdroid-security-cert-restrictions.
      */
-    public static X509Certificate getSigningCertFromJar(JarEntry jarEntry) throws V1JarException {
+    public static X509Certificate getSigningCertFromJar(Repo repo, JarEntry jarEntry) throws V1JarException {
         final CodeSigner[] codeSigners = jarEntry.getCodeSigners();
         if (codeSigners == null || codeSigners.length == 0) {
-            throw new V1JarException(ERR_CERTIFICATE_NOT_FOUND);
+            return null;
         }
         /* we could in theory support more than 1, but as of now we do not */
         if (codeSigners.length > 1) {
-            throw new V1JarException(ERR_CERTIFICATE_SIGNERS_COUNT);
+            throwError(repo, ERR_CERTIFICATE_SIGNERS_COUNT);
         }
         List<? extends Certificate> certs = codeSigners[0].getSignerCertPath().getCertificates();
         if (certs.size() != 1) {
-            throw new V1JarException(ERR_CERTIFICATE_COUNT);
+            throwError(repo, ERR_CERTIFICATE_COUNT);
         }
         return (X509Certificate) certs.get(0);
     }
@@ -104,46 +108,60 @@ public class JarUtilities {
      *
      * @param rawCertFromJar the {@link X509Certificate} embedded in the downloaded jar
      */
-    public static void verifySigningCertificate(Repo repo, X509Certificate rawCertFromJar) throws V1JarException {
-        String certFromJar;
-        try {
-            certFromJar = Hex2.encodeHexString(rawCertFromJar.getEncoded());
-        } catch (CertificateEncodingException e) {
-            certFromJar = Hex2.encodeHexString(new byte[0]);
-        }
+    public static void verifyAndUpdateSigningCertificate(@Nonnull Repo repo, @Nullable Certificate rawCertFromJar) throws V1JarException {
+        if (repo == null) throw new NullPointerException();
 
-        if (StringUtil.isEmpty(certFromJar)) {
-            throw new V1JarException(repo, ERR_CERTIFICATE_NOT_FOUND);
-        }
-
-        if (repo.getJarSigningCertificate() == null) {
-            // sticky certificate set on first run.
-            repo.setJarSigningCertificate(certFromJar);
-        } else {
-            if (!repo.getJarSigningCertificate().equalsIgnoreCase(certFromJar)) {
-                throw new V1JarException(repo, ERR_CERTIFICATE_MISMATCH);
+        String certFromJar = null; // assume no cert
+        if (rawCertFromJar != null) {
+            try {
+                certFromJar = Hex2.encodeHexString(rawCertFromJar.getEncoded());
+            } catch (CertificateEncodingException e) {
+                LOGGER.error("Invalid Cerificate in " + repo.getV1Url() + ": " + rawCertFromJar, e);
+                certFromJar = null;
             }
         }
 
-        if (repo.getJarSigningCertificateFingerprint() != null) {
-            String fingerprintFromJar = calcFingerprint(rawCertFromJar);
-            if (!repo.getJarSigningCertificateFingerprint().equalsIgnoreCase(fingerprintFromJar)) {
-                throw new V1JarException(repo, ERR_CERTIFICATE_FINGERPRINT_MISMATCH);
-            }
+        String certFromDb = StringUtil.emptyAsNull(repo.getJarSigningCertificate());
+        if (certFromDb != null && (certFromJar == null || !certFromDb.equalsIgnoreCase(certFromJar))) {
+            throwError(repo, ERR_CERTIFICATE_MISMATCH);
+            return;
         }
+
+        String fingerprintFromDb = StringUtil.emptyAsNull(repo.getJarSigningCertificateFingerprint());
+        String fingerprintFromJar = (certFromJar == null)
+                ? null
+                : StringUtil.emptyAsNull(calcFingerprint(repo, rawCertFromJar));
+
+        if (fingerprintFromDb != null && (fingerprintFromJar == null || !fingerprintFromDb.equalsIgnoreCase(fingerprintFromJar))) {
+            throwError(repo, ERR_CERTIFICATE_FINGERPRINT_MISMATCH);
+        }
+
+        // sticky certificate set on first run.
+        if (certFromDb == null) repo.setJarSigningCertificate(certFromJar);
+        // fingerprint is not set on first run
+    }
+
+    private static void throwError(@Nonnull Repo repo, String errorMessage) {
+        throwError(repo, errorMessage, null);
+    }
+
+    private static void throwError(@Nonnull Repo repo, String errorMessage, Throwable e) {
+        repo.setLastErrorMessage(errorMessage);
+        throw new V1JarException(repo, errorMessage, e);
     }
 
     /*
      * Inspired by calcFingerprint in
      * https://git.bubu1.eu/Bubu/fdroidclassic/-/blob/main/app/src/main/java/org/fdroid/fdroid/Utils.java .
      */
-    public static String calcFingerprint(Certificate cert) {
+    public static String calcFingerprint(Repo repo, Certificate cert) {
         if (cert == null) {
             return null;
         }
         try {
-            return calcFingerprint(cert.getEncoded());
+            return calcFingerprint(repo, cert.getEncoded());
         } catch (CertificateEncodingException e) {
+            LOGGER.error(ERR_CERTIFICATE_CREATE_FINGERPRINT + " for " + cert, e);
             return null;
         }
     }
@@ -152,12 +170,12 @@ public class JarUtilities {
      * Inspired by calcFingerprint in
      * https://git.bubu1.eu/Bubu/fdroidclassic/-/blob/main/app/src/main/java/org/fdroid/fdroid/Utils.java .
      */
-    public static String calcFingerprint(byte[] key) {
+    public static String calcFingerprint(Repo repo, byte[] key) {
         if (key == null) {
             return null;
         }
         if (key.length < 256) {
-            throw new V1JarException(ERR_CERTIFICATE_KEY_LEN + key.length + "), cannot be valid!");
+            throwError(repo, ERR_CERTIFICATE_KEY_LEN + key.length + "), cannot be valid!");
         }
         String ret = null;
         try {
@@ -172,7 +190,7 @@ public class JarUtilities {
             ret = formatter.toString();
             formatter.close();
         } catch (Throwable e) {
-            throw new V1JarException(ERR_CERTIFICATE_CREATE_FINGERPRINT, e);
+            throwError(repo, ERR_CERTIFICATE_CREATE_FINGERPRINT, e);
         }
         return ret;
     }

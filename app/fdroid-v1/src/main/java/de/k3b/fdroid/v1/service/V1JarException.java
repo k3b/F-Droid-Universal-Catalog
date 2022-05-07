@@ -35,6 +35,10 @@ public class V1JarException extends RuntimeException {
         super(createMessage(repo, message));
     }
 
+    public V1JarException(Repo repo, String message, Throwable cause) {
+        super(createMessage(repo, message), cause);
+    }
+
     private static String createMessage(Repo repo, String message) {
         if (repo == null) return message;
         StringBuilder msg = new StringBuilder().append("Repo ").append(repo.getName() != null ? repo.getName() : "").append(": ").append(message);

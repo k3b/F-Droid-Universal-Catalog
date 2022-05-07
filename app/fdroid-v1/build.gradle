@@ -25,6 +25,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.hamcrest:hamcrest:2.2'
+    testImplementation('org.mockito:mockito-core:4.0.0')
     implementation 'javax.persistence:javax.persistence-api:2.2'
 
     implementation 'org.springframework:spring-beans:5.3.19' // @Value

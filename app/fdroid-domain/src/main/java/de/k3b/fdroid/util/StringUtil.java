@@ -30,11 +30,16 @@ public class StringUtil {
     }
 
     public static boolean isEmpty(String s) {
-        return s == null || s.length() == 0;
+        return s == null || s.isEmpty();
     }
 
     public static boolean isEmpty(long s) {
         return s == 0;
+    }
+
+    public static String emptyAsNull(String s) {
+        if (s != null && s.isEmpty()) return null;
+        return s;
     }
 
     public static String replaceEmpty(String newValue, String emptyValueReplacement) {

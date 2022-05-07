@@ -71,11 +71,11 @@ public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase {
                     " is older than current database index! "
                     + Repo.asDateString(repoInJar.getTimestamp()) + " < " + Repo.asDateString(repoInDatabase.getTimestamp()));
         }
-        X509Certificate certificate = JarUtilities.getSigningCertFromJar(jarEntry);
+        X509Certificate certificate = JarUtilities.getSigningCertFromJar(repoInDatabase, jarEntry);
         repoInDatabase.setLastAppCount(lastAppCount);
         repoInDatabase.setLastVersionCount(lastVersionCount);
         RepoCommon.copyCommon(repoInDatabase, repoInJar);
-        JarUtilities.verifySigningCertificate(repoInDatabase, certificate);
+        JarUtilities.verifyAndUpdateSigningCertificate(repoInDatabase, certificate);
     }
 
     @Override
