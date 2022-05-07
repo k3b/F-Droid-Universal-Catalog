@@ -60,6 +60,7 @@ public class DownloadViewModel extends ViewModel {
 
             if (workInfo.getState().isFinished()) {
                 setCurrentRepoInstance(null); // memorized value is probably outdated
+                reload();
             }
         }
         getDownloadStatus().setValue(progress == null ? "" : progress);
@@ -72,6 +73,9 @@ public class DownloadViewModel extends ViewModel {
     protected void saveChanges(Repo repo) {
         repoRepository.update(repo);
         setCurrentRepo(repo);
+    }
+
+    public void reload() {
     }
 
     /**

@@ -127,9 +127,13 @@ public class ImportV1AndroidWorker extends Worker {
             if (repo != null) repoRepository.save(repo);
             return fail(ex.getMessage());
         }
-        if (result != null) repoRepository.save(result);
-        if (result != null && !StringUtil.isEmpty(result.getLastErrorMessage())) {
-            return fail(result.getLastErrorMessage());
+        if (result != null) {
+            result.setDownloadTaskId(null);
+            repoRepository.save(result);
+            if (!StringUtil.isEmpty(result.getLastErrorMessage())) {
+                progressObserver.log("failed " + result.getLastErrorMessage());
+                return fail(result.getLastErrorMessage());
+            }
         }
         progressObserver.log("done");
 

@@ -23,6 +23,8 @@ import org.springframework.lang.Nullable;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.cert.X509Certificate;
+import java.util.jar.JarEntry;
 
 import de.k3b.fdroid.domain.interfaces.AppCategoryRepository;
 import de.k3b.fdroid.domain.interfaces.AppHardwareRepository;
@@ -40,6 +42,7 @@ import de.k3b.fdroid.service.LanguageService;
 import de.k3b.fdroid.v1.domain.App;
 import de.k3b.fdroid.v1.domain.Repo;
 import de.k3b.fdroid.v1.domain.Version;
+import de.k3b.fdroid.v1.service.util.JarUtilities;
 
 /**
  * update android-room-database from fdroid-v1-rest-gson data
@@ -169,11 +172,15 @@ public abstract class V1UpdateService implements ProgressObservable {
         }
 
         @Override
-        public void readJsonStream(InputStream jsonInputStream) throws IOException {
-            super.readJsonStream(jsonInputStream);
+        protected void afterJsonJarRead(JarEntry jarEntry) {
+            super.afterJsonJarRead(jarEntry);
             roomRepo.setLastAppCount(lastAppCount);
             roomRepo.setLastVersionCount(lastVersionCount);
+            X509Certificate certificate = JarUtilities.getSigningCertFromJar(roomRepo, jarEntry);
+            JarUtilities.verifyAndUpdateSigningCertificate(roomRepo, certificate);
+            roomRepo.setDownloadTaskId(null);
             save(roomRepo);
         }
+
     }
 }

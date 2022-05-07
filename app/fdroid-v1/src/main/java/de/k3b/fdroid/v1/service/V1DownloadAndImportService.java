@@ -141,7 +141,7 @@ public class V1DownloadAndImportService implements V1DownloadAndImportServiceInt
             // always save
             v1UpdateService.save(repo);
         }
-        return null;
+        return repo;
     }
 
     private Repo fixRepo(Repo repoFromImport) {
