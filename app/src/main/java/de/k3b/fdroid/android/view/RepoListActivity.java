@@ -25,6 +25,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -38,6 +39,10 @@ import de.k3b.fdroid.domain.Repo;
 public class RepoListActivity extends BaseActivity {
     private RepoListViewModel viewModel;
     private ActivityRepoListBinding binding;
+
+    private final BarcodeScanActivityResultContract barcodeScanContract = new BarcodeScanActivityResultContract();
+    private final ActivityResultLauncher<Void> barcodeScanLauncher
+            = registerForActivityResult(barcodeScanContract, this::onCmdBarcodeResult);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,8 +76,7 @@ public class RepoListActivity extends BaseActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem menuItem = menu.findItem(R.id.cmd_scan_qr);
         if (menuItem != null) {
-            menuItem.setVisible(new BarcodeScanActivityResultContract()
-                    .isAvailable(this, null));
+            menuItem.setVisible(barcodeScanContract.isAvailable(this, null));
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -95,15 +99,21 @@ public class RepoListActivity extends BaseActivity {
     }
 
     private boolean onCmdBarcode() {
-        BarcodeScanActivityResultContract contract = new BarcodeScanActivityResultContract();
-        if (contract.isAvailable(this, null)) {
-            registerForActivityResult(contract,
-                    s -> Log.e(Global.LOG_TAG_APP, "Scanresult " + s)).launch(null);
-        } else {
-            Log.e(Global.LOG_TAG_APP, "No scanner installed");
+        try {
+            if (barcodeScanContract.isAvailable(this, null)) {
+                barcodeScanLauncher.launch(null);
+            } else {
+                Log.e(Global.LOG_TAG_APP, "No scanner installed");
+            }
+        } catch (Exception ex) {
+            Log.e(Global.LOG_TAG_APP, "error", ex);
         }
 
         return true;
+    }
+
+    private void onCmdBarcodeResult(String s) {
+        Log.e(Global.LOG_TAG_APP, "Scanresult " + s);
     }
 
     public void onRepoClick(Repo repo) {
