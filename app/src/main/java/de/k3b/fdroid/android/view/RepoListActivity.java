@@ -19,6 +19,7 @@
 package de.k3b.fdroid.android.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,8 +28,10 @@ import android.widget.PopupMenu;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.android.R;
 import de.k3b.fdroid.android.databinding.ActivityRepoListBinding;
+import de.k3b.fdroid.android.util.BarcodeScanActivityResultContract;
 import de.k3b.fdroid.domain.Repo;
 
 // AppCompatActivity:1,4,1 requires minsdk 17
@@ -65,6 +68,16 @@ public class RepoListActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem menuItem = menu.findItem(R.id.cmd_scan_qr);
+        if (menuItem != null) {
+            menuItem.setVisible(new BarcodeScanActivityResultContract()
+                    .isAvailable(this, null));
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         // Handle action bar menuItem clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -74,9 +87,23 @@ public class RepoListActivity extends BaseActivity {
         if (id == R.id.cmd_reload_list) {
             viewModel.reload();
             return true;
+        } else if (id == R.id.cmd_scan_qr) {
+            return onCmdBarcode();
         } else {
             return super.onOptionsItemSelected(menuItem);
         }
+    }
+
+    private boolean onCmdBarcode() {
+        BarcodeScanActivityResultContract contract = new BarcodeScanActivityResultContract();
+        if (contract.isAvailable(this, null)) {
+            registerForActivityResult(contract,
+                    s -> Log.e(Global.LOG_TAG_APP, "Scanresult " + s)).launch(null);
+        } else {
+            Log.e(Global.LOG_TAG_APP, "No scanner installed");
+        }
+
+        return true;
     }
 
     public void onRepoClick(Repo repo) {

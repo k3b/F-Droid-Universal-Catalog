@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
 /*
  * Copyright (c) 2022 by k3b.
  *
@@ -18,18 +16,28 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
--->
+package de.k3b.fdroid.android.util;
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/cmd_reload_list"
-        android:title="@string/refresh"
-        app:showAsAction="ifRoom" />
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 
-    <item
-        android:id="@+id/cmd_scan_qr"
-        android:title="@string/scan_qr"
-        app:showAsAction="ifRoom" />
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-</menu>
+/**
+ * ask external app to scan a barcode for me
+ */
+public class BarcodeScanActivityResultContract extends ActivityResultContractEx<Void, String> {
+    @NonNull
+    @Override
+    public Intent createIntent(@NonNull Context context, Void input) {
+        return new Intent("com.google.zxing.client.android.SCAN");
+    }
+
+    @Override
+    public String parseResult(int resultCode, @Nullable Intent intent) {
+        return (resultCode == Activity.RESULT_OK) ? intent.getStringExtra("SCAN_RESULT") : null;
+    }
+}
+

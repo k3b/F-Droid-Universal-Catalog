@@ -35,4 +35,6 @@
     <string name="element_text">Element</string>
     <string name="download">Download</string>
     <string name="refresh">Refresh</string>
+    <string name="scan_qr">Scan QR-Code</string>
+
 </resources>

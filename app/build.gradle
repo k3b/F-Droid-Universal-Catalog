@@ -45,6 +45,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
                     'proguard-rules.pro'
         }
+        /* Uncomment to se what progruard will remove
+        debug {
+            shrinkResources true
+
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-rules.pro'
+        }
+         */
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
