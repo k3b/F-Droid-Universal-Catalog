@@ -28,7 +28,9 @@ public class Global extends de.k3b.fdroid.Global {
     public static final NetworkType DOWNLOAD_NETWORK_TYPE = NetworkType.CONNECTED;
 
     /**
-     * true verifying-download plus seperate file import. non-verifying i
+     * true verifying-download plus seperate file import.
+     * false non-verifying import while downloading (android 4.2)
      */
+    // public static final boolean USE_VERIFYING_DOWNLOAD = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT);
     public static final boolean USE_VERIFYING_DOWNLOAD = true;
 }

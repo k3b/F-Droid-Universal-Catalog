@@ -19,6 +19,7 @@
 package de.k3b.fdroid.android.view;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
@@ -56,13 +57,35 @@ public class RepoListActivity extends BaseActivity {
         viewModel.getDownloadStatus().observe(this, s -> binding.status.setText(s));
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        boolean result = super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_repo_list, menu);
+        return result;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        // Handle action bar menuItem clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = menuItem.getItemId();
+
+        if (id == R.id.cmd_reload_list) {
+            viewModel.reload();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(menuItem);
+        }
+    }
+
     public void onRepoClick(Repo repo) {
         viewModel.toggleAutoDownloadEnabled(repo);
     }
 
     public void onRepoButtonClick(View view, final Repo repo) {
         PopupMenu menu = new PopupMenu(this, view);
-        getMenuInflater().inflate(R.menu.menu_repo_list, menu.getMenu());
+        getMenuInflater().inflate(R.menu.menu_repo_list_item, menu.getMenu());
         menu.setOnMenuItemClickListener(menuItem -> onRepoMenuClick(menuItem, repo));
         menu.show();
     }
