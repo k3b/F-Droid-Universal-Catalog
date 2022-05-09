@@ -30,11 +30,11 @@ import java.util.Locale;
 import de.k3b.fdroid.html.util.FormatUtil;
 
 /**
- * iterates over all mustache templates *.html and executes it-s formatter.
+ * iterates over all mustache templates *.hbs and executes it-s formatter.
  * Assumed file structure
  * <p>
  * * .../FDroidUniversal/app/fdroid-html/src/test/java/de/k3b/fdroid/html/service
- * * .../FDroidUniversal/app/fdroid-html/build/resources/main/html/Repo/list_repo.html
+ * * .../FDroidUniversal/app/fdroid-html/build/resources/main/html/Repo/list_repo.hbs
  */
 @RunWith(Parameterized.class)
 public class GenericTemplateTest {

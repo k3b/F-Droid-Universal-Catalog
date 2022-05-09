@@ -25,6 +25,8 @@ import com.samskivert.mustache.Template;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
+import de.k3b.fdroid.html.domain.ValueAndTranslate;
+
 /**
  * Generate html snipptes from "Mustache Templates".
  * See http://mustache.github.io/mustache.5.html and
@@ -41,7 +43,7 @@ import java.io.Reader;
  */
 public class FormatService {
     final Template tmpl;
-    private final ValueAndString vt;
+    private final ValueAndTranslate vt;
 
     public FormatService(String templateId, Class<?> itemclass, Mustache.CustomContext resourceTranslator) {
         vt = createVt(resourceTranslator);
@@ -61,23 +63,13 @@ public class FormatService {
     }
 
 
-    private ValueAndString createVt(Mustache.CustomContext resourceTranslator) {
-        return resourceTranslator == null ? null : new ValueAndString(resourceTranslator);
+    private ValueAndTranslate<?> createVt(Mustache.CustomContext resourceTranslator) {
+        return resourceTranslator == null ? null : new ValueAndTranslate(resourceTranslator);
     }
 
     private Reader loadTemplate(String templateId, Class<?> itemclass) {
-        return new InputStreamReader(FormatService.class.getResourceAsStream("/html/" +
+        return new InputStreamReader(FormatService.class.getResourceAsStream("/templates/" +
                 itemclass.getSimpleName() + "/" +
-                templateId + ".html"));
+                templateId + ".hbs"));
     }
-
-    private class ValueAndString {
-        final Mustache.CustomContext t;
-        Object v;
-
-        public ValueAndString(Mustache.CustomContext resourceTranslator) {
-            t = resourceTranslator;
-        }
-    }
-
 }

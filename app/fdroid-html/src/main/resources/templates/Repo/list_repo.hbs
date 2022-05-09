@@ -2,5 +2,6 @@
     <h3>{{v.name}} ({{v.lastAppCount}})</h3>
     {{v.shortDescription}}<br/>
     {{#v.lastErrorMessage}}{{v.lastErrorMessage}}<br/>{{/v.lastErrorMessage}}
-    {{v.downloadTaskId}} {{v.lastUsedDownloadDateTimeUtcDate}} {{v.v1Url}}
+    {{#v.downloadTaskId}}{{v.downloadTaskId}}{{/v.downloadTaskId}}
+    {{v.lastUsedDownloadDateTimeUtcDate}} {{v.v1Url}}
 </div>

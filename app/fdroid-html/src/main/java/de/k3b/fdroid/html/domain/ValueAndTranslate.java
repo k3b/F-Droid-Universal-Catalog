@@ -16,19 +16,16 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.servingwebcontent;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+package de.k3b.fdroid.html.domain;
 
-@Controller
-public class GreetingController {
-    @GetMapping("/greeting")
-    public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
-        model.addAttribute("name", name);
-        return "greeting";
+import com.samskivert.mustache.Mustache;
+
+public class ValueAndTranslate<T> {
+    private final Mustache.CustomContext t;
+    public T v;
+
+    public ValueAndTranslate(Mustache.CustomContext resourceTranslator) {
+        t = resourceTranslator;
     }
-
 }

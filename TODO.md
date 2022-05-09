@@ -1,6 +1,7 @@
 todo
 
-* add spring-boot-webserver
+* ??? do i need a usecase layer on top of service? i.e. import-v1-usecase
+* v add spring-boot-webserver
 * add support to add a Repo to RepoListActivity
 * > Edit repo Dialog
 * ? Barcodescanner
@@ -19,6 +20,7 @@ Android-Architecture
   * provides lifecycle management and data availablity
   * requires dependency: androidx-lifecycle:lifecycle-xxx (xxx=viewmodel/livedata/runtime...)
 * Model
+  * ??? usecase ??
   * Service (aka  )
   * Repository
   * Entity
