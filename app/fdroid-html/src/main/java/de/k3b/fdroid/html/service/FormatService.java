@@ -26,10 +26,14 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 /**
- * Generate html snipptes from "Mustache Template".
- * See https://github.com/samskivert/jmustache
+ * Generate html snipptes from "Mustache Templates".
+ * See http://mustache.github.io/mustache.5.html and
+ * https://github.com/samskivert/jmustache
  * <p>
  * This is an abstraction from the JMustache implementation.
+ * <p>
+ * use de.k3b.fdroid.android.html.util.HtmlUtil#setHtml(TextView, html, ....) to to add
+ * limited css-color support to TextView
  * <p>
  * For android specific textview:
  * * https://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
@@ -64,7 +68,7 @@ public class FormatService {
     private Reader loadTemplate(String templateId, Class<?> itemclass) {
         return new InputStreamReader(FormatService.class.getResourceAsStream("/html/" +
                 itemclass.getSimpleName() + "/" +
-                templateId + ".hbs"));
+                templateId + ".html"));
     }
 
     private class ValueAndString {

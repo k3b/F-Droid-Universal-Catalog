@@ -46,8 +46,8 @@ import de.k3b.fdroid.domain.interfaces.RepoRepository;
 @ComponentScan(basePackages = {"de.k3b.fdroid"})
 @EntityScan({"de.k3b.fdroid"})
 @SpringBootApplication
-public class DemoApplication {
-	private static final Logger log = LoggerFactory.getLogger(DemoApplication.class);
+public class WebServerApplication {
+	private static final Logger log = LoggerFactory.getLogger(WebServerApplication.class);
 
 	@Value("${de.k3b.fdroid.db.dir}")
 	private String dbDir;
@@ -71,7 +71,7 @@ public class DemoApplication {
 	public static void main(String[] args) {
 		changeJdbcIfServerRunning();
 
-		SpringApplication application = new SpringApplication(DemoApplication.class);
+		SpringApplication application = new SpringApplication(WebServerApplication.class);
 		// ... customize application settings here
 		application.run(args);
 	}
@@ -100,7 +100,7 @@ public class DemoApplication {
 		if (dbName == null) {
 			Properties p = new Properties();
 			try {
-				p.load(DemoApplication.class.getResourceAsStream("/application.properties"));
+				p.load(WebServerApplication.class.getResourceAsStream("/application.properties"));
 				dbName = p.getProperty(key);
 			} catch (IOException ioException) {
 				// ignore if not found

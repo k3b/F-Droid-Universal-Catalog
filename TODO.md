@@ -43,4 +43,10 @@ fatjar: ./gradlew clean :app:demo:bootJar
 
 ./gradlew clean test connectedDebugAndroidTest bootJar
 
+cp app/fdroid-universal-cli/build/libs/fdroid-universal-cli.jar . cp
+app/fdroid-universal-web/build/libs/fdroid-universal-web.jar .
+ 
+
+
+
 
