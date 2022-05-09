@@ -19,12 +19,16 @@ java {
 
 dependencies {
 	implementation project(path: ':app:room-annotations')
-	implementation 'javax.persistence:javax.persistence-api:2.2'
 	implementation (project(path: ':app:fdroid-domain'))
 	implementation (project(path: ':app:fdroid-v1'))
+	implementation (project(path: ':app:fdroid-html'))
 	implementation (project(path: ':app:fdroid-repository-jpa'))
 
+	implementation 'com.samskivert:jmustache:1.15' // https://github.com/samskivert/jmustache to generate html
+
+	implementation 'javax.persistence:javax.persistence-api:2.2'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
 //	runtimeOnly 'org.hsqldb:hsqldb'
 	implementation 'org.hsqldb:hsqldb:2.6.1'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

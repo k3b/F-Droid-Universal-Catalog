@@ -25,9 +25,12 @@ import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.html.util.MustacheEx;
 import de.k3b.fdroid.util.TestDataGenerator;
 
 public class ResourceBundleMustacheContextTest {
@@ -36,16 +39,20 @@ public class ResourceBundleMustacheContextTest {
     @Before
     public void setup() {
         translator = new ResourceBundleMustacheContext(Locale.US);
+        MustacheEx.addFixedProperty("t", translator);
     }
 
     @Test
     public void translateContextString() {
-        String format = format("Hello '{{v}}' from {{t.app_name}}", "World");
+        Map<String, Object> value = new HashMap<>();
+        value.put("name", "World");
+        String format = format("Hello '{{name}}' from {{t.app_name}}", value);
         MatcherAssert.assertThat(format, CoreMatchers.equalTo("Hello 'World' from FDroid Universal Catalog"));
     }
 
     @Test
     public void repoText() throws Exception {
+        MustacheEx.addFixedProperty("t", translator);
         Repo repo = TestDataGenerator.fill(new Repo(), 4);
         FormatService formatService = new FormatService(
                 "list_repo", Repo.class, translator);

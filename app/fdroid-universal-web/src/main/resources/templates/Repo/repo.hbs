@@ -5,11 +5,11 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-<p>Hello, {{name}} from repo!</p>
-{{#r}}
+<p>Hello, {{name}} from {{t.app_name}}!</p>
+{{#repo}}
     <ul>
         <li>{{> Repo/list_repo}}</li>
     </ul>
-{{/r}}
+{{/repo}}
 </body>
 </html>

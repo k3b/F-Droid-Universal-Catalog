@@ -1,7 +1,7 @@
-<div {{#v.stateCode}} class='state_{{v.stateCode}}'{{/v.stateCode}}>
-    <h3>{{v.name}} ({{v.lastAppCount}})</h3>
-    {{v.shortDescription}}<br/>
-    {{#v.lastErrorMessage}}{{v.lastErrorMessage}}<br/>{{/v.lastErrorMessage}}
-    {{#v.downloadTaskId}}{{v.downloadTaskId}}{{/v.downloadTaskId}}
-    {{v.lastUsedDownloadDateTimeUtcDate}} {{v.v1Url}}
+<div {{#stateCode}} class='state_{{stateCode}}'{{/stateCode}}>
+    <h3>{{name}} ({{lastAppCount}})</h3>
+    {{shortDescription}}<br/>
+    {{#lastErrorMessage}}{{lastErrorMessage}}<br/>{{/lastErrorMessage}}
+    {{#downloadTaskId}}{{downloadTaskId}}{{/downloadTaskId}}
+    {{lastUsedDownloadDateTimeUtcDate}} {{v1Url}}
 </div>

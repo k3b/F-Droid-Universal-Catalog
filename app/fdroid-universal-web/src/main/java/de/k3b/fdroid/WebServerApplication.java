@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid;
 
+import com.samskivert.mustache.Mustache;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -32,11 +35,14 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Locale;
 import java.util.Properties;
 
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
+import de.k3b.fdroid.html.service.ResourceBundleMustacheContext;
+import de.k3b.fdroid.html.util.MustacheEx;
 
 /**
  * j2se-jpa-db implementation that reads from fdroid-v1-jar and updates a jpa database
@@ -71,9 +77,19 @@ public class WebServerApplication {
 	public static void main(String[] args) {
 		changeJdbcIfServerRunning();
 
+		MustacheEx.addFixedProperty("t", new ResourceBundleMustacheContext(Locale.US));
 		SpringApplication application = new SpringApplication(WebServerApplication.class);
 		// ... customize application settings here
 		application.run(args);
+	}
+
+	/// Override Spring MustacheAutoConfiguration to support fixed values
+	@Bean
+	public Mustache.Compiler mustacheCompiler(Mustache.TemplateLoader mustacheTemplateLoader) {
+		return MustacheEx
+				.createMustacheCompiler()
+				.withLoader(mustacheTemplateLoader)
+				;
 	}
 
 	private static void changeJdbcIfServerRunning() {

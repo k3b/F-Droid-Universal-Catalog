@@ -25,23 +25,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
-import de.k3b.fdroid.web.service.RenamingService;
 
 @Controller
 public class RepoController {
     @Autowired
     private RepoRepository repoRepository;
 
-    @Autowired
-    private RenamingService renamingService;
-
     @GetMapping("/Repo/repo")
     public String repoList(
             @RequestParam(name = "name", required = false, defaultValue = "World") String name,
             Model model) {
         model.addAttribute("name", name);
-        model.addAttribute("r", renamingService.templateValue(
-                repoRepository.findAll()));
+        model.addAttribute("repo", repoRepository.findAll());
         return "Repo/repo";
     }
 

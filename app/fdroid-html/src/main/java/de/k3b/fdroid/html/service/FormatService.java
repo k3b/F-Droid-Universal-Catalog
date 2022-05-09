@@ -25,7 +25,7 @@ import com.samskivert.mustache.Template;
 import java.io.InputStreamReader;
 import java.io.Reader;
 
-import de.k3b.fdroid.html.domain.ValueAndTranslate;
+import de.k3b.fdroid.html.util.MustacheEx;
 
 /**
  * Generate html snipptes from "Mustache Templates".
@@ -43,28 +43,20 @@ import de.k3b.fdroid.html.domain.ValueAndTranslate;
  */
 public class FormatService {
     final Template tmpl;
-    private final ValueAndTranslate vt;
-
     public FormatService(String templateId, Class<?> itemclass, Mustache.CustomContext resourceTranslator) {
-        vt = createVt(resourceTranslator);
-        tmpl = Mustache.compiler().escapeHTML(true).nullValue("").compile(loadTemplate(templateId, itemclass));
+        tmpl = MustacheEx
+                .createMustacheCompiler()
+                .compile(loadTemplate(templateId, itemclass));
     }
 
     public FormatService(String template, Mustache.CustomContext resourceTranslator) {
-        tmpl = Mustache.compiler().escapeHTML(true).nullValue("").compile(template);
-        vt = createVt(resourceTranslator);
+        tmpl = MustacheEx
+                .createMustacheCompiler()
+                .compile(template);
     }
 
     public String format(Object values) {
-        if (vt == null) return tmpl.execute(values);
-
-        vt.v = values;
-        return tmpl.execute(vt);
-    }
-
-
-    private ValueAndTranslate<?> createVt(Mustache.CustomContext resourceTranslator) {
-        return resourceTranslator == null ? null : new ValueAndTranslate(resourceTranslator);
+        return tmpl.execute(values);
     }
 
     private Reader loadTemplate(String templateId, Class<?> itemclass) {

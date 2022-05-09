@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.v1;
 
+import com.samskivert.mustache.Mustache;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +40,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
+import de.k3b.fdroid.html.service.ResourceBundleMustacheContext;
+import de.k3b.fdroid.html.util.MustacheEx;
 import de.k3b.fdroid.jpa.repository.testcase.TestEntity;
 import de.k3b.fdroid.jpa.repository.testcase.TestRepositoryJpa;
 import de.k3b.fdroid.v1.service.HttpV1JarDownloadService;
@@ -89,6 +94,14 @@ public class DemoApplication {
 		SpringApplication application = new SpringApplication(DemoApplication.class);
 		// ... customize application settings here
 		application.run(args);
+	}
+
+	@Bean
+	public Mustache.Compiler mustacheCompiler(Mustache.TemplateLoader mustacheTemplateLoader) {
+		return MustacheEx
+				.createMustacheCompiler()
+				.withLoader(mustacheTemplateLoader)
+				;
 	}
 
 	private static void changeJdbcIfServerRunning() {
@@ -139,6 +152,8 @@ public class DemoApplication {
 	}
 
 	private void demoImport(V1UpdateServiceEx importer) throws IOException {
+		MustacheEx.addFixedProperty("t", new ResourceBundleMustacheContext(Locale.US));
+
 		String inputPath;
 		inputPath = "/home/EVE/StudioProjects/FDroid/app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.jar";
 //			inputPath = "/home/EVE/StudioProjects/FDroid/app/fdroid-v1/src/test/java/de/k3b/fdroid/v1/exampledata/index-v1.small.json";
