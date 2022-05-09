@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
@@ -37,7 +38,16 @@ public class RepoController {
             Model model) {
         model.addAttribute("name", name);
         model.addAttribute("repo", repoRepository.findAll());
-        return "Repo/repo";
+        return "Repo/repo_overview";
+    }
+
+    @GetMapping("/Repo/repo/{id}")
+    public String repoList(
+            @PathVariable int id,
+            Model model) {
+        model.addAttribute("name", "world");
+        model.addAttribute("repo", repoRepository.findById(id));
+        return "Repo/repo_detail";
     }
 
 }
