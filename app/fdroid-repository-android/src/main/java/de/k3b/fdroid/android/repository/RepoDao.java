@@ -57,6 +57,15 @@ public interface RepoDao extends RepoRepository {
     @Query("SELECT * FROM Repo WHERE Repo.downloadTaskId is not null")
     List<Repo> findByBusy();
 
+    /**
+     * where the app can be downloaded from
+     */
+    @Query("SELECT r.* FROM Repo r " +
+            " WHERE EXISTS(SELECT av.repoId FROM APPVERSION av" +
+            " WHERE av.repoId = r.id and av.appId = appId) " +
+            "ORDER BY r.lastUsedDownloadDateTimeUtc desc")
+    List<Repo> findListByAppId(int appId);
+
     @Query("SELECT * FROM Repo")
     List<Repo> findAllEx();
 

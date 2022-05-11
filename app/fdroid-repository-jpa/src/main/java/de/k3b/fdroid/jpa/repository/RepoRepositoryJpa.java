@@ -36,10 +36,19 @@ import de.k3b.fdroid.domain.Repo;
 public interface RepoRepositoryJpa extends CrudRepository<Repo, Integer> {
     Repo findByAddress(String address);
 
-    @Query(value = "select r from Repo r " +
-            "where r.downloadTaskId is not null " +
-            "order by r.lastUsedDownloadDateTimeUtc asc")
+    @Query(value = "FROM Repo r " +
+            "WHERE r.downloadTaskId is not null " +
+            "ORDER BY r.lastUsedDownloadDateTimeUtc asc")
     List<Repo> findByBusy();
+
+    /**
+     * where the app can be downloaded from
+     */
+    @Query(value = "FROM Repo r " +
+            " WHERE EXISTS(FROM AppVersion av" +
+            " WHERE av.repoId = r.id and av.appId = ?1) " +
+            " ORDER BY r.lastUsedDownloadDateTimeUtc desc")
+    List<Repo> findListByAppId(int appId);
 
     Repo findByName(String name);
 }

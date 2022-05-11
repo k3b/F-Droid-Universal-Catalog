@@ -30,7 +30,9 @@ import org.springframework.util.Assert;
 
 import java.util.List;
 
+import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.domain.Version;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 @DataJpaTest
 public class RepoRepositoryTest {
@@ -60,7 +62,6 @@ public class RepoRepositoryTest {
         Assert.notNull(r, "found");
     }
 
-
     @Test
     public void findByBusy() {
         jpaTestHelper.createRepo();
@@ -70,5 +71,15 @@ public class RepoRepositoryTest {
 
         List<Repo> repoList = repo.findByBusy();
         assertThat(repoList.size(), is(1));
+    }
+
+    @Test
+    public void findByAppId() {
+        App app = jpaTestHelper.createApp();
+        Repo r = jpaTestHelper.createRepo();
+        Version version = jpaTestHelper.createVersion(app, r);
+
+        Repo found = repo.findFirstByAppId(app.getId());
+        assertThat(found, is(r));
     }
 }

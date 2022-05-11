@@ -53,4 +53,9 @@ public class RepoRepositoryAdapter extends RepositoryAdapterBase<Repo, RepoRepos
         return jpa.findByBusy();
     }
 
+    @Override
+    public List<Repo> findListByAppId(int appId) {
+        return jpa.findListByAppId(appId);
+    }
+
 }

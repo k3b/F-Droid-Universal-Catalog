@@ -28,6 +28,7 @@ import de.k3b.fdroid.domain.Category;
 import de.k3b.fdroid.domain.HardwareProfile;
 import de.k3b.fdroid.domain.Locale;
 import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.domain.Version;
 
 @Service
 public class JpaTestHelper {
@@ -52,6 +53,12 @@ public class JpaTestHelper {
         repo.setName("test-repo-" + nextNo++);
         repo.setAddress("testrepo.org." + nextNo++);
         return save(repo);
+    }
+
+    public Version createVersion(App app, Repo repo) {
+        if (repo == null) repo = createRepo();
+        if (app == null) app = createApp();
+        return save(new Version(app.getId(), repo.getId()));
     }
 
     public Locale createLocale(String code) {

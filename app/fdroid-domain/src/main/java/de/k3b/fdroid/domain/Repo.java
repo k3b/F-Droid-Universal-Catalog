@@ -159,23 +159,41 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId {
         return getAddress();
     }
 
-    public void setLastUsedDownloadMirror(String lastUsedDownloadMirror) {
-        this.lastUsedDownloadMirror = lastUsedDownloadMirror;
+    static String removeName(String url) {
+        if (url != null) {
+            int lastDir = url.lastIndexOf('/');
+            int lastDot = url.lastIndexOf('.');
+            if (lastDot > lastDir && lastDir > 0) return url.substring(0, lastDir + 1);
+        }
+        return url;
     }
 
-    public String getV1Url() {
-        String server = getLastUsedDownloadMirror();
-        return getV1Url(server);
-    }
-
-    public static String getV1Url(String server) {
-        if (server == null) return null;
+    private static String getUrl(String server, String name) {
+        if (server == null || name == null) return null;
+        server = removeName(server);
         StringBuilder url = new StringBuilder().append(server);
         if (!server.endsWith(".jar")) {
             if (!server.endsWith("/")) url.append("/");
-            url.append(V1_JAR_NAME);
+            url.append(name);
         }
         return url.toString();
+    }
+
+    public static String getV1Url(String server) {
+        return getUrl(server, V1_JAR_NAME);
+    }
+
+    public void setLastUsedDownloadMirror(String lastUsedDownloadMirror) {
+        this.lastUsedDownloadMirror = removeName(lastUsedDownloadMirror);
+    }
+
+    public String getV1Url() {
+        String server = removeName(getLastUsedDownloadMirror());
+        return getV1Url(server);
+    }
+
+    public String getAppIconUrl(String icon) {
+        return getUrl(getLastUsedDownloadMirror(), icon);
     }
 
     public long getLastUsedDownloadDateTimeUtc() {

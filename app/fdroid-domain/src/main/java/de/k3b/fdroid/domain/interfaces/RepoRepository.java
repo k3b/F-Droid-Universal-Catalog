@@ -21,6 +21,7 @@ package de.k3b.fdroid.domain.interfaces;
 import java.util.List;
 
 import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.domain.common.RepoCommon;
 
 /**
  * Android independent interfaces to use the Database.
@@ -48,11 +49,13 @@ public interface RepoRepository extends Repository {
 
     Repo findByAddress(String address);
 
+    List<Repo> findListByAppId(int appId);
+
     List<Repo> findAll();
 
     List<Repo> findByBusy();
 
-    default Repo findCorrespondigRepo(Repo repoFromImport) {
+    default Repo findCorrespondigRepo(RepoCommon repoFromImport) {
         Repo repoFromDatabase = null;
         if (repoFromDatabase == null && repoFromImport.getName() != null) {
             repoFromDatabase = findByName(repoFromImport.getName());
@@ -71,4 +74,11 @@ public interface RepoRepository extends Repository {
         }
         return null;
     }
+
+    default Repo findFirstByAppId(int appId) {
+        List<Repo> repoList = findListByAppId(appId);
+        if (repoList == null || repoList.size() == 0) return null;
+        return repoList.get(0);
+    }
+
 }
