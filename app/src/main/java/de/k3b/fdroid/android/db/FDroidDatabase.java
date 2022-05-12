@@ -24,6 +24,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import de.k3b.fdroid.android.domain.AppSearch;
 import de.k3b.fdroid.android.repository.AppDao;
 import de.k3b.fdroid.android.repository.AppRepositoryAdapter;
 import de.k3b.fdroid.android.repository.FDroidDatabaseFactory;
@@ -39,7 +40,9 @@ import de.k3b.fdroid.domain.Version;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 
 @Database(version = 1, entities = {App.class, AppCategory.class, Category.class, Locale.class,
-        Localized.class, Repo.class, Version.class, AppHardware.class, HardwareProfile.class})
+        Localized.class, Repo.class, Version.class, AppHardware.class, HardwareProfile.class},
+        views = {AppSearch.class}
+)
 public abstract class FDroidDatabase extends RoomDatabase implements FDroidDatabaseFactory {
     private static FDroidDatabaseFactory INSTANCE = null;
 

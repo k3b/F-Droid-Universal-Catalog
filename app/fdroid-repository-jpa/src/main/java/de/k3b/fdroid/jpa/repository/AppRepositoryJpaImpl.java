@@ -20,46 +20,35 @@ package de.k3b.fdroid.jpa.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.k3b.fdroid.domain.interfaces.AppRepositoryFindIdsByExpression;
+import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.interfaces.AppRepositoryFindDynamic;
+import de.k3b.fdroid.sql.AppIdSql;
 
-public class AppRepositoryJpaImpl implements AppRepositoryFindIdsByExpression {
+public class AppRepositoryJpaImpl implements AppRepositoryFindDynamic {
     @Autowired
     private EntityManager entityManager;
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Integer> findIdsByExpressionSortByScore(String searchText) {
-        StringBuilder sql = new StringBuilder().append("select id from (select\n" +
-                "    id,\n" +
-                "    packageName,\n" +
-                "    sum(score) score\n" +
-                "from AppSearch\n" +
-                "where ");
-        String[] expressions = searchText.split(" ");
-        int index = 1;
-        for (String expresson : expressions) {
-            if (index > 1) sql.append(" OR ");
-            sql.append("search like :search").append(index);
-            index++;
-        }
-        sql.append("\n group by id, packageName\n" +
-                "order by sum(score) desc, packageName\n" +
-                ")");
-
+    public List<Integer> findDynamic(AppRepository.FindDynamicParameter findDynamicParameter) {
+        Map<String, Object> params = new HashMap<>();
+        String sql = AppIdSql.getSql(findDynamicParameter, params, false);
         Query nativeQuery = entityManager
-                .createNativeQuery(sql.toString());
-        index = 1;
-        for (String expresson : expressions) {
-            nativeQuery.setParameter("search" + index, "%" + expresson + "%");
-            index++;
+                .createNativeQuery(sql);
+
+        for (Map.Entry<String, Object> param : params.entrySet()) {
+            nativeQuery.setParameter(param.getKey(), param.getValue());
         }
 
         //noinspection unchecked
         return (List<Integer>) nativeQuery.getResultList();
     }
+
 }

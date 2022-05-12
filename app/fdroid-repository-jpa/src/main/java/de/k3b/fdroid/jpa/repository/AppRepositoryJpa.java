@@ -22,7 +22,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.domain.interfaces.AppRepositoryFindIdsByExpression;
+import de.k3b.fdroid.domain.interfaces.AppRepositoryFindDynamic;
 
 /**
  * Spring-Boot-Jpa (Non-Android) specific Database-Repository implementation:
@@ -31,7 +31,7 @@ import de.k3b.fdroid.domain.interfaces.AppRepositoryFindIdsByExpression;
  * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
  */
 @Repository
-public interface AppRepositoryJpa extends CrudRepository<App, Integer>, AppRepositoryFindIdsByExpression {
+public interface AppRepositoryJpa extends CrudRepository<App, Integer>, AppRepositoryFindDynamic {
     App findByPackageName(String packageName);
 }
 

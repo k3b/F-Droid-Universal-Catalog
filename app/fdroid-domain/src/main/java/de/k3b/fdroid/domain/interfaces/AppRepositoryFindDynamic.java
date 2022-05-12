@@ -16,14 +16,26 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
+package de.k3b.fdroid.domain.interfaces;
 
-package de.k3b.fdroid;
+import java.util.List;
 
-public class Global {
-    public static final String LOG_TAG = "k3b-fdroid-";
-    public static final String LOG_TAG_APP = Global.LOG_TAG + "app";
-    public static final String LOG_TAG_IMPORT = Global.LOG_TAG + "import";
-    public static final String LOG_TAG_UTIL = Global.LOG_TAG + "util";
-    public static final String LOG_TAG_HTML = Global.LOG_TAG + "html";
-    public static final String LOG_TAG_SQL = Global.LOG_TAG + "sql";
+public interface AppRepositoryFindDynamic {
+    List<Integer> findDynamic(AppRepository.FindDynamicParameter findDynamicParameter);
+
+    class FindDynamicParameter {
+        public String search = null;
+
+        // supported by sqLite and hsqldb: SELECT ... FROM ... LIMIT 150 https://www.sqlitetutorial.net/sqlite-limit/
+        public int maxRowCount = 150;
+        public String orderBy = null;
+
+        public FindDynamicParameter() {
+        }
+
+        public FindDynamicParameter search(String search) {
+            this.search = search;
+            return this;
+        }
+    }
 }

@@ -126,11 +126,11 @@ CREATE TABLE TestEntity (
   CONSTRAINT pk_testentity PRIMARY KEY (id)
 );
 
-CREATE view AppSearch as
-(select id, packageName, packageName search, 1000 score from App) union
-(select id, packageName, searchName search, 1000 score from App) union
-(select id, packageName, searchSummary search, 100 score from App) union
-(select id, packageName, searchWhatsNew search, 10 score from App) union
-(select id, packageName, searchCategory search, 50 score from App) union
-(select id, packageName, searchDescription search, 1 score from App)
-;
+CREATE VIEW AppSearch AS
+    select id, packageName, packageName search, 1000 score from App union
+    select id, packageName, searchName search, 1000 score from App union
+    select id, packageName, searchSummary search, 100 score from App union
+    select id, packageName, searchWhatsNew search, 10 score from App union
+    select id, packageName, searchCategory search, 50 score from App union
+    select id, packageName, searchDescription search, 1 score from App
+    ;

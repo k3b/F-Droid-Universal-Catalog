@@ -105,7 +105,7 @@ public class V1CommandService {
     }
 
     private String execFind(String search) {
-        List<Integer> appIdList = appRepository.findIdsByExpressionSortByScore(search);
+        List<Integer> appIdList = appRepository.findDynamic(new AppRepository.FindDynamicParameter().search(search));
 
         AppWithDetailsPagerService details = new AppWithDetailsPagerService(
                 new AppRepositoryAdapterImpl(appRepository),

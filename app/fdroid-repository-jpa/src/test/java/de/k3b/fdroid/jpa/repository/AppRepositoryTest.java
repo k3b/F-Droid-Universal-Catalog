@@ -71,8 +71,15 @@ public class AppRepositoryTest {
 
 
     @Test
-    public void findIdsByExpression() {
-        List<Integer> apps = repo.findIdsByExpressionSortByScore("acka my");
+    public void findDynamic_search() {
+        List<Integer> apps = repo.findDynamic(new AppRepository.FindDynamicParameter().search("acka my"));
+        Assert.notNull(apps, "found");
+        Assert.isTrue(apps.size() == 1, "found 1");
+    }
+
+    @Test
+    public void findDynamic_default() {
+        List<Integer> apps = repo.findDynamic(new AppRepository.FindDynamicParameter());
         Assert.notNull(apps, "found");
         Assert.isTrue(apps.size() == 1, "found 1");
     }

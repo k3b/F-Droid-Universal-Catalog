@@ -27,7 +27,7 @@ import de.k3b.fdroid.domain.App;
  * <p>
  * Persists {@link App} (that implements {@link DatabaseEntityWithId}) in the Database.
  */
-public interface AppRepository extends Repository, AppRepositoryFindIdsByExpression {
+public interface AppRepository extends Repository, AppRepositoryFindDynamic {
     void insert(App app);
 
     void update(App app);

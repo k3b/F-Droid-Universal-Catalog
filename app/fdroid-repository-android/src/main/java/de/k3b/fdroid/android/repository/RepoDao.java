@@ -62,7 +62,7 @@ public interface RepoDao extends RepoRepository {
      */
     @Query("SELECT r.* FROM Repo r " +
             " WHERE EXISTS(SELECT av.repoId FROM APPVERSION av" +
-            " WHERE av.repoId = r.id and av.appId = appId) " +
+            " WHERE av.repoId = r.id and av.appId = :appId) " +
             "ORDER BY r.lastUsedDownloadDateTimeUtc desc")
     List<Repo> findListByAppId(int appId);
 

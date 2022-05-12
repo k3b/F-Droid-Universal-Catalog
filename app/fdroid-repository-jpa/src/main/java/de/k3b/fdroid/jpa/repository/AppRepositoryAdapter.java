@@ -44,7 +44,7 @@ public class AppRepositoryAdapter extends RepositoryAdapterBase<App, AppReposito
     }
 
     @Override
-    public List<Integer> findIdsByExpressionSortByScore(String searchText) {
-        return jpa.findIdsByExpressionSortByScore(searchText);
+    public List<Integer> findDynamic(FindDynamicParameter findDynamicParameter) {
+        return jpa.findDynamic(findDynamicParameter);
     }
 }

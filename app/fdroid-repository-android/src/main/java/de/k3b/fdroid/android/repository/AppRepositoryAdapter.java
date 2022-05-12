@@ -21,11 +21,12 @@ package de.k3b.fdroid.android.repository;
 import androidx.sqlite.db.SimpleSQLiteQuery;
 import androidx.sqlite.db.SupportSQLiteQuery;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.sql.AppIdSql;
 
 public class AppRepositoryAdapter implements AppRepository {
     private final AppDao appDao;
@@ -65,11 +66,13 @@ public class AppRepositoryAdapter implements AppRepository {
     }
 
     @Override
-    public List<Integer> findIdsByExpressionSortByScore(String searchText) {
+    public List<Integer> findDynamic(FindDynamicParameter findDynamicParameter) {
         // https://microeducate.tech/how-to-dynamically-query-the-room-database-at-runtime/
-        String queryString = "...";
-        List<Object> args = new ArrayList<>();
-        SupportSQLiteQuery query = new SimpleSQLiteQuery(queryString, args.toArray());
-        return appDao.findIdsByExpressionSortByScore(query);
+        // use TreeMap to preserve insert order.
+        TreeMap<String, Object> params = new TreeMap<String, Object>();
+        String sql = AppIdSql.getSql(findDynamicParameter, params, true);
+
+        SupportSQLiteQuery query = new SimpleSQLiteQuery(sql, params.values().toArray(new Object[0]));
+        return appDao.findDynamic(query);
     }
 }

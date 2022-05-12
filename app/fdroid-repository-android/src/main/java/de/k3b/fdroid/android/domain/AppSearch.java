@@ -16,10 +16,18 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.domain.interfaces;
+package de.k3b.fdroid.android.domain;
 
-import java.util.List;
+import de.k3b.fdroid.domain.interfaces.Enitity;
 
-public interface AppRepositoryFindIdsByExpression {
-    List<Integer> findIdsByExpressionSortByScore(String searchText);
+/**
+ * Android-Room specific pseudeo Enitity used to create a DatabaseView
+ */
+@androidx.room.DatabaseView("SELECT id, packageName, packageName search, 1000 score FROM App UNION\n" +
+        "    SELECT id, packageName, searchName search, 1000 score FROM App UNION\n" +
+        "    SELECT id, packageName, searchSummary search, 100 score FROM App UNION\n" +
+        "    SELECT id, packageName, searchWhatsNew search, 10 score FROM App UNION\n" +
+        "    SELECT id, packageName, searchCategory search, 50 score FROM App UNION\n" +
+        "    SELECT id, packageName, searchDescription search, 1 score FROM App")
+public class AppSearch implements Enitity {
 }

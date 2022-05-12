@@ -47,8 +47,7 @@ public class AppListActivity extends BaseActivity {
         mRecyclerView =  findViewById(R.id.recyclerView);
 
         AppRepository appRepository = FDroidApplication.getFdroidDatabase().appRepository();
-        String search = "k3b";
-        List<Integer> appIdList = appRepository.findIdsByExpressionSortByScore(search);
+        List<Integer> appIdList = appRepository.findDynamic(new AppRepository.FindDynamicParameter().search("k3b"));
 
         AppWithDetailsPagerService details = new AppWithDetailsPagerService(
                 new AppRepositoryAdapterImpl(appRepository),
