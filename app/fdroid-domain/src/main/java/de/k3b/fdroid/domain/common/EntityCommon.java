@@ -56,14 +56,18 @@ public class EntityCommon implements Enitity {
     }
 
     public static void createPojoFieldsFile(Class<?>[] classes) throws FileNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException, NoSuchMethodException {
-        File srcDir = null;
+        File currentDir = null;
         try {
-            srcDir = new File(".").getCanonicalFile();
+            currentDir = new File(".").getCanonicalFile();
         } catch (IOException ioException) {
             ioException.printStackTrace();
         }
+        File srcDir = currentDir;
         while (!new File(srcDir, "src").exists()) {
             srcDir = srcDir.getParentFile();
+            if (srcDir == null) {
+                throw new IllegalArgumentException("No dir 'src' found below " + currentDir);
+            }
         }
         srcDir = new File(srcDir, "test/resources");
         srcDir.mkdirs();
@@ -86,9 +90,9 @@ public class EntityCommon implements Enitity {
                         String stringPrefix = "#4-";
                         int stringOffset = -1;
                         if (f2[1].startsWith("4")) {
-                            fieldValue.append("(" + f2[1].substring(1) + ")");
+                            fieldValue.append("(").append(f2[1].substring(1)).append(")");
                         } else if ((stringOffset = f2[1].indexOf(stringPrefix)) >= 0) {
-                            fieldValue.append("(" + f2[1].substring(stringOffset + stringPrefix.length()) + ")");
+                            fieldValue.append("(").append(f2[1].substring(stringOffset + stringPrefix.length())).append(")");
                         }
                         out.println(fieldValue);
                     }
@@ -152,8 +156,9 @@ public class EntityCommon implements Enitity {
         StringBuilder sb = new StringBuilder();
         sb.append(this.getClass().getSimpleName()).append('[');
         toStringBuilder(sb);
-        if (sb.charAt((sb.length() - 1)) == ',') {
-            sb.setCharAt((sb.length() - 1), ']');
+        int last = sb.length() - 1;
+        if (sb.charAt(last) == ',') {
+            sb.setCharAt(last, ']');
         } else {
             sb.append(']');
         }

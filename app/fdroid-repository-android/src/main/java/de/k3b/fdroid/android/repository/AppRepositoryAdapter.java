@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.domain.AppSearchParameter;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.sql.AppIdSql;
 
@@ -69,7 +70,7 @@ public class AppRepositoryAdapter implements AppRepository {
     public List<Integer> findDynamic(AppSearchParameter appSearchParameter) {
         // https://microeducate.tech/how-to-dynamically-query-the-room-database-at-runtime/
         // use TreeMap to preserve insert order.
-        TreeMap<String, Object> params = new TreeMap<String, Object>();
+        TreeMap<String, Object> params = new TreeMap<>();
         String sql = AppIdSql.getSql(appSearchParameter, params, true);
 
         SupportSQLiteQuery query = new SimpleSQLiteQuery(sql, params.values().toArray(new Object[0]));

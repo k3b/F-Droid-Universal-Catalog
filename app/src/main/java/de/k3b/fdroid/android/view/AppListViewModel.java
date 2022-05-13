@@ -26,8 +26,8 @@ import androidx.lifecycle.ViewModel;
 
 import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.Global;
+import de.k3b.fdroid.domain.AppSearchParameter;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
-import de.k3b.fdroid.domain.interfaces.AppRepositoryFindDynamic.AppSearchParameter;
 import de.k3b.fdroid.service.AppWithDetailsPagerService;
 import de.k3b.fdroid.service.adapter.AppRepositoryAdapterImpl;
 
@@ -44,7 +44,7 @@ public class AppListViewModel extends ViewModel {
             null, null, null);
 
     private final MutableLiveData<AppSearchParameter> filter
-            = new MutableLiveData<>(new AppSearchParameter());
+            = new MutableLiveData<>(new AppSearchParameter().text("k3b"));
     private final MutableLiveData<AppWithDetailsPagerService> pagerData = new MutableLiveData<>();
 
     public AppListViewModel() {
@@ -53,10 +53,8 @@ public class AppListViewModel extends ViewModel {
 
     public void reload() {
         Log.i(Global.LOG_TAG_APP, "Start reload app");
-        FDroidApplication.executor.execute(() -> {
-            getPagerData().postValue(pager.init(
-                    appRepository.findDynamic(getFilter().getValue()), PAGESIZE));
-        });
+        FDroidApplication.executor.execute(() -> getPagerData().postValue(pager.init(
+                appRepository.findDynamic(getFilter().getValue()), PAGESIZE)));
     }
 
     public MutableLiveData<AppSearchParameter> getFilter() {

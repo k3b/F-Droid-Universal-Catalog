@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.domain.AppSearchParameter;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.jpa.repository.base.RepositoryAdapterBase;
 

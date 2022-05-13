@@ -39,4 +39,6 @@
     <string name="refresh">Refresh</string>
     <string name="scan_qr">Scan QR-Code</string>
 
+    <string name="status_loading">loading ...</string>
+
 </resources>

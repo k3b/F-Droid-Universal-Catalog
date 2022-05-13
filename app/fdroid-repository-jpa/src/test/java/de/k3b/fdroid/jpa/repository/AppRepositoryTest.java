@@ -24,12 +24,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.util.Assert;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.domain.AppSearchParameter;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
-import de.k3b.fdroid.domain.interfaces.AppRepositoryFindDynamic;
 
 @DataJpaTest
 public class AppRepositoryTest {
@@ -65,7 +65,7 @@ public class AppRepositoryTest {
 
     @Test
     public void findByIds() {
-        List<App> apps = repo.findByIds(Arrays.asList(appId));
+        List<App> apps = repo.findByIds(Collections.singletonList(appId));
         Assert.notNull(apps, "found");
         Assert.isTrue(apps.size() == 1, "found 1");
     }
@@ -73,14 +73,14 @@ public class AppRepositoryTest {
 
     @Test
     public void findDynamic_search() {
-        List<Integer> apps = repo.findDynamic(new AppRepositoryFindDynamic.AppSearchParameter().text("acka my"));
+        List<Integer> apps = repo.findDynamic(new AppSearchParameter().text("acka my"));
         Assert.notNull(apps, "found");
         Assert.isTrue(apps.size() == 1, "found 1");
     }
 
     @Test
     public void findDynamic_default() {
-        List<Integer> apps = repo.findDynamic(new AppRepositoryFindDynamic.AppSearchParameter());
+        List<Integer> apps = repo.findDynamic(new AppSearchParameter());
         Assert.notNull(apps, "found");
         Assert.isTrue(apps.size() == 1, "found 1");
     }

@@ -27,6 +27,7 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import de.k3b.fdroid.domain.AppSearchParameter;
 import de.k3b.fdroid.domain.interfaces.AppRepositoryFindDynamic;
 import de.k3b.fdroid.sql.AppIdSql;
 

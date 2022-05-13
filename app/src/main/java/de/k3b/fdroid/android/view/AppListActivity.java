@@ -53,6 +53,8 @@ public class AppListActivity extends BaseActivity {
 
         viewModel = new ViewModelProvider(this).get(AppListViewModel.class);
 
+        setTitle(getString(R.string.label_version_title) + " " + getString(R.string.status_loading));
+
         /*
         mRecyclerView =  findViewById(R.id.recyclerView);
 
@@ -78,6 +80,7 @@ public class AppListActivity extends BaseActivity {
         viewModel.getPagerData().observe(this, repoList -> {
             AppListAdapter repoListAdapter = new AppListAdapter(this, repoList);
             binding.recyclerView.setAdapter(repoListAdapter);
+            setTitle(getString(R.string.label_version_title) + " " + viewModel.getFilter().getValue());
         });
     }
 

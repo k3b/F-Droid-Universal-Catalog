@@ -35,8 +35,8 @@ import java.util.List;
 
 import de.k3b.fdroid.android.db.FDroidDatabase;
 import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.domain.AppSearchParameter;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
-import de.k3b.fdroid.domain.interfaces.AppRepositoryFindDynamic;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -71,7 +71,7 @@ public class AppRepositoryFindDynamicInstrumentedTest {
 
     @Test
     public void findDynamic_search() {
-        List<Integer> apps = repo.findDynamic(new AppRepositoryFindDynamic.AppSearchParameter().text("acka my"));
+        List<Integer> apps = repo.findDynamic(new AppSearchParameter().text("acka my"));
         assertThat(apps.size(), equalTo(1));
     }
 }

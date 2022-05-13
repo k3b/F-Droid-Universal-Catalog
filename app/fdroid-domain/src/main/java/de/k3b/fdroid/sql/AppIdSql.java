@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 import de.k3b.fdroid.Global;
-import de.k3b.fdroid.domain.interfaces.AppRepositoryFindDynamic;
+import de.k3b.fdroid.domain.AppSearchParameter;
 import de.k3b.fdroid.util.StringUtil;
 
 /**
@@ -34,7 +34,7 @@ public class AppIdSql {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_SQL);
 
     public static String getSql(
-            AppRepositoryFindDynamic.AppSearchParameter appSearchParameter,
+            AppSearchParameter appSearchParameter,
             Map<String, Object> params,
             boolean forAndroid) {
         StringBuilder sql = new StringBuilder();

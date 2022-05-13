@@ -20,23 +20,9 @@ package de.k3b.fdroid.domain.interfaces;
 
 import java.util.List;
 
+import de.k3b.fdroid.domain.AppSearchParameter;
+
 public interface AppRepositoryFindDynamic {
     List<Integer> findDynamic(AppSearchParameter appSearchParameter);
 
-    class AppSearchParameter {
-        // text contained in any of the text fields (summaryXXX )
-        public String text = null;
-
-        // supported by sqLite and hsqldb: SELECT ... FROM ... LIMIT 150 https://www.sqlitetutorial.net/sqlite-limit/
-        public int maxRowCount = 150;
-        public String orderBy = null;
-
-        public AppSearchParameter() {
-        }
-
-        public AppSearchParameter text(String search) {
-            this.text = search;
-            return this;
-        }
-    }
 }
