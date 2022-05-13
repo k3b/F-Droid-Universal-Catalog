@@ -29,6 +29,7 @@ import java.util.List;
 
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.interfaces.AppRepositoryFindDynamic;
 
 @DataJpaTest
 public class AppRepositoryTest {
@@ -72,14 +73,14 @@ public class AppRepositoryTest {
 
     @Test
     public void findDynamic_search() {
-        List<Integer> apps = repo.findDynamic(new AppRepository.FindDynamicParameter().search("acka my"));
+        List<Integer> apps = repo.findDynamic(new AppRepositoryFindDynamic.AppSearchParameter().text("acka my"));
         Assert.notNull(apps, "found");
         Assert.isTrue(apps.size() == 1, "found 1");
     }
 
     @Test
     public void findDynamic_default() {
-        List<Integer> apps = repo.findDynamic(new AppRepository.FindDynamicParameter());
+        List<Integer> apps = repo.findDynamic(new AppRepositoryFindDynamic.AppSearchParameter());
         Assert.notNull(apps, "found");
         Assert.isTrue(apps.size() == 1, "found 1");
     }

@@ -18,6 +18,7 @@
  */
 package de.k3b.fdroid.android.view;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,12 +30,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.android.R;
+import de.k3b.fdroid.android.html.AndroidStringResourceMustacheContext;
+import de.k3b.fdroid.android.html.util.HtmlUtil;
+import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.html.service.FormatService;
 import de.k3b.fdroid.service.AppWithDetailsPagerService;
 
 public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
     private static final String TAG = Global.LOG_TAG + "AppList";
 
-    private AppWithDetailsPagerService details;
+    private final AppWithDetailsPagerService details;
+
+    private final FormatService formatService;
+    private final int defaultBackgroundColor;
+    private final int defaultForegroundColor;
 
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
@@ -62,10 +71,14 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
 
     /**
      * Initialize the dataset of the Adapter.
-     *
      */
-    public AppListAdapter(AppWithDetailsPagerService details) {
+    public AppListAdapter(Context context, AppWithDetailsPagerService details) {
         this.details = details;
+        formatService = new FormatService("list_repo", Repo.class,
+                new AndroidStringResourceMustacheContext(context));
+
+        this.defaultBackgroundColor = HtmlUtil.getDefaultBackgroundColor(context);
+        this.defaultForegroundColor = HtmlUtil.getDefaultForegroundColor(context);
     }
 
     // Create new views (invoked by the layout manager)

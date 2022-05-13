@@ -32,6 +32,7 @@ import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.common.EntityCommon;
 import de.k3b.fdroid.domain.common.RepoCommon;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.interfaces.AppRepositoryFindDynamic;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.service.AppWithDetailsPagerService;
@@ -105,7 +106,7 @@ public class V1CommandService {
     }
 
     private String execFind(String search) {
-        List<Integer> appIdList = appRepository.findDynamic(new AppRepository.FindDynamicParameter().search(search));
+        List<Integer> appIdList = appRepository.findDynamic(new AppRepositoryFindDynamic.AppSearchParameter().text(search));
 
         AppWithDetailsPagerService details = new AppWithDetailsPagerService(
                 new AppRepositoryAdapterImpl(appRepository),

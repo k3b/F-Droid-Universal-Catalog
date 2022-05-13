@@ -66,11 +66,11 @@ public class AppRepositoryAdapter implements AppRepository {
     }
 
     @Override
-    public List<Integer> findDynamic(FindDynamicParameter findDynamicParameter) {
+    public List<Integer> findDynamic(AppSearchParameter appSearchParameter) {
         // https://microeducate.tech/how-to-dynamically-query-the-room-database-at-runtime/
         // use TreeMap to preserve insert order.
         TreeMap<String, Object> params = new TreeMap<String, Object>();
-        String sql = AppIdSql.getSql(findDynamicParameter, params, true);
+        String sql = AppIdSql.getSql(appSearchParameter, params, true);
 
         SupportSQLiteQuery query = new SimpleSQLiteQuery(sql, params.values().toArray(new Object[0]));
         return appDao.findDynamic(query);

@@ -22,6 +22,7 @@ import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.common.AppCommon;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
+import de.k3b.fdroid.util.StringUtil;
 
 /**
  * Android independent: Pojo-s with all properties that are persisted in the Database.
@@ -163,5 +164,17 @@ public class App extends AppCommon implements AppDetail {
 
     public void setSearchCategory(String searchCategory) {
         this.searchCategory = searchCategory;
+    }
+
+    public String getLocalizedName() {
+        String name = getSearchName();
+        if (StringUtil.isEmpty(name)) return getPackageName();
+        return name.split("\\|")[0];
+    }
+
+    public String getLocalizedSummary() {
+        String summary = getSearchSummary();
+        if (StringUtil.isEmpty(summary)) return "";
+        return summary.split("\\n")[0];
     }
 }

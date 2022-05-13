@@ -44,7 +44,7 @@ public class AppRepositoryAdapter extends RepositoryAdapterBase<App, AppReposito
     }
 
     @Override
-    public List<Integer> findDynamic(FindDynamicParameter findDynamicParameter) {
-        return jpa.findDynamic(findDynamicParameter);
+    public List<Integer> findDynamic(AppSearchParameter appSearchParameter) {
+        return jpa.findDynamic(appSearchParameter);
     }
 }

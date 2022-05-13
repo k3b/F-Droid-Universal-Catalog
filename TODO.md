@@ -7,6 +7,27 @@ todo
 * ? Barcodescanner
 * ? url with schema "fdroid:....." via Manifest-Intentfilter ApiActivity with dispatch to affected
   gui
+* androidApp:
+*
+  * filter by
+*
+  *
+    * v search expression
+*
+  *
+    * repo
+*
+  *
+    * Category
+*
+  *
+    * android-version
+*
+  *
+    * sorted by
+*
+  * navigate from AppList to RepoList
+* add support to download appIcons (and app descr images)
 
 Android-Architecture
 

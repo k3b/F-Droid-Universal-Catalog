@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 import de.k3b.fdroid.Global;
-import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.interfaces.AppRepositoryFindDynamic;
 import de.k3b.fdroid.util.StringUtil;
 
 /**
@@ -34,20 +34,20 @@ public class AppIdSql {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_SQL);
 
     public static String getSql(
-            AppRepository.FindDynamicParameter findDynamicParameter,
+            AppRepositoryFindDynamic.AppSearchParameter appSearchParameter,
             Map<String, Object> params,
             boolean forAndroid) {
         StringBuilder sql = new StringBuilder();
-        if (!StringUtil.isEmpty(findDynamicParameter.search)) {
+        if (!StringUtil.isEmpty(appSearchParameter.text)) {
             // android-sqLite does not support "LIMIT" in "GROUP BY" queries
-            return bySearchScore(sql, params, findDynamicParameter.search,
-                    findDynamicParameter.orderBy,
-                    (forAndroid) ? 0 : findDynamicParameter.maxRowCount).toString();
+            return bySearchScore(sql, params, appSearchParameter.text,
+                    appSearchParameter.orderBy,
+                    (forAndroid) ? 0 : appSearchParameter.maxRowCount).toString();
         }
 
         sql.append("SELECT id from App ");
-        addOrderBy(sql, findDynamicParameter.orderBy);
-        addLimit(sql, params, findDynamicParameter.maxRowCount);
+        addOrderBy(sql, appSearchParameter.orderBy);
+        addLimit(sql, params, appSearchParameter.maxRowCount);
         LOGGER.debug("SQL: {}\n\tParams: {}", sql, params);
         return sql.toString();
     }

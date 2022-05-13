@@ -42,6 +42,8 @@ public class AppWithDetailsPagerService {
     private final AppDetailRepository<Version> versionRepository;
     private final AppDetailRepository<LinkedDatabaseEntity<AppCategory, Category>> categoryRepository;
 
+    private int currentIndex;
+
     private Integer[] appIds;
     private AppWithDetails[] appWithDetailsList;
     private int pageSize;
@@ -57,88 +59,89 @@ public class AppWithDetailsPagerService {
         this.categoryRepository = categoryRepository;
     }
 
-    public void init(List<Integer> appIds, int pageSize) {
+    public AppWithDetailsPagerService init(List<Integer> appIds, int pageSize) {
         this.appIds = appIds.toArray(new Integer[0]);
         appWithDetailsList = new AppWithDetails[appIds.size()];
         this.pageSize = pageSize;
+        return this;
     }
 
-    public App getAppByOffset(int index) {
-        return getAppLocalized(index).getApp();
-    }
-
-    public List<Localized> getLocalizedListByOffset(int index) {
-        return getAppLocalized(index).getLocalizedList();
-    }
-
-    public String getName(int index) {
-        AppWithDetails appWithDetails = getAppLocalized(index);
+    public String getName(int currentIndex) {
+        AppWithDetails appWithDetails = getAppLocalized(currentIndex);
         for (Localized l : appWithDetails.getLocalizedList()) {
             if (l.getName() != null) return l.getName();
         }
         return appWithDetails.getApp().getPackageName();
     }
 
-    public String getSummary(int index) {
-        AppWithDetails appWithDetails = getAppLocalized(index);
+    public String getSummary(int currentIndex) {
+        AppWithDetails appWithDetails = getAppLocalized(currentIndex);
         for (Localized l : appWithDetails.getLocalizedList()) {
             if (l.getSummary() != null) return l.getSummary();
         }
         return "";
     }
 
-    public String getDescription(int index) {
-        AppWithDetails appWithDetails = getAppLocalized(index);
+    public String getDescription(int currentIndex) {
+        AppWithDetails appWithDetails = getAppLocalized(currentIndex);
         for (Localized l : appWithDetails.getLocalizedList()) {
             if (l.getDescription() != null) return l.getDescription();
         }
         return "";
     }
 
-    public String getIcon(int index) {
-        AppWithDetails appWithDetails = getAppLocalized(index);
+    public String getIcon(int currentIndex) {
+        AppWithDetails appWithDetails = getAppLocalized(currentIndex);
         for (Localized l : appWithDetails.getLocalizedList()) {
             if (l.getIcon() != null) return l.getIcon();
         }
         return "";
     }
 
-    public String getVideo(int index) {
-        AppWithDetails appWithDetails = getAppLocalized(index);
+    public String getVideo(int currentIndex) {
+        AppWithDetails appWithDetails = getAppLocalized(currentIndex);
         for (Localized l : appWithDetails.getLocalizedList()) {
             if (l.getVideo() != null) return l.getVideo();
         }
         return "";
     }
 
-    public String getWhatsNew(int index) {
-        AppWithDetails appWithDetails = getAppLocalized(index);
+    public String getWhatsNew(int currentIndex) {
+        AppWithDetails appWithDetails = getAppLocalized(currentIndex);
         for (Localized l : appWithDetails.getLocalizedList()) {
             if (l.getWhatsNew() != null) return l.getWhatsNew();
         }
         return "";
     }
 
-    public int getSize() {
-        return appWithDetailsList.length;
+    public App getAppByOffset(int currentIndex) {
+        return getAppLocalized(currentIndex).getApp();
     }
 
-    // get from cache. if index not loaded yet load index +-
-    private AppWithDetails getAppLocalized(int index) {
-        if (index < 0 || index >= getSize()) throw new IndexOutOfBoundsException();
-        AppWithDetails result = appWithDetailsList[index];
+    public List<Localized> getLocalizedListByOffset(int currentIndex) {
+        return getAppLocalized(currentIndex).getLocalizedList();
+    }
+
+    // get from cache. if currentIndex not loaded yet load currentIndex +-
+    private AppWithDetails getAppLocalized(int currentIndex) {
+        if (currentIndex < 0 || currentIndex >= getSize()) throw new IndexOutOfBoundsException();
+        AppWithDetails result = appWithDetailsList[currentIndex];
         if (result == null) {
-            int from = getFrom(index - 1);
-            int to = getTo(index + 1);
+            int from = getFrom(currentIndex - 1);
+            int to = getTo(currentIndex + 1);
             ArrayList<Integer> appIdList = new ArrayList<>(to - from);
             for (int i = from; i <= to; i++) {
                 appIdList.add(appIds[i]);
             }
             update(appIdList, from);
-            result = appWithDetailsList[index];
+            result = appWithDetailsList[currentIndex];
         }
 
         return result;
+    }
+
+    public int getSize() {
+        return appWithDetailsList.length;
     }
 
     private void update(ArrayList<Integer> appIdList, int from) {
@@ -187,5 +190,9 @@ public class AppWithDetailsPagerService {
 
     public int size() {
         return appIds.length;
+    }
+
+    public void setCurrentIndex(int currentIndex) {
+        this.currentIndex = currentIndex;
     }
 }

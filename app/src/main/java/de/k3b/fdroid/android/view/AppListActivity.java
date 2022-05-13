@@ -21,33 +21,32 @@ package de.k3b.fdroid.android.view;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
-
-import de.k3b.fdroid.android.FDroidApplication;
-import de.k3b.fdroid.android.R;
-import de.k3b.fdroid.domain.interfaces.AppRepository;
-import de.k3b.fdroid.service.AppWithDetailsPagerService;
-import de.k3b.fdroid.service.adapter.AppRepositoryAdapterImpl;
-
+import de.k3b.fdroid.android.databinding.ActivityAppListBinding;
 
 public class AppListActivity extends BaseActivity {
-    private static final int DATASET_COUNT = 60;
-    protected String[] mDataset;
     protected AppListAdapter mAdapter;
     protected RecyclerView mRecyclerView;
+
+    private AppListViewModel viewModel;
+    private ActivityAppListBinding binding;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_app_list);
+        binding = ActivityAppListBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
+        viewModel = new ViewModelProvider(this).get(AppListViewModel.class);
+
+        /*
         mRecyclerView =  findViewById(R.id.recyclerView);
 
         AppRepository appRepository = FDroidApplication.getFdroidDatabase().appRepository();
-        List<Integer> appIdList = appRepository.findDynamic(new AppRepository.FindDynamicParameter().search("k3b"));
+        List<Integer> appIdList = appRepository.findDynamic(new AppRepositoryFindDynamic.AppSearchParameter().text("k3b"));
 
         AppWithDetailsPagerService details = new AppWithDetailsPagerService(
                 new AppRepositoryAdapterImpl(appRepository),
@@ -59,5 +58,17 @@ public class AppListActivity extends BaseActivity {
         mAdapter = new AppListAdapter(details);
         // Set CustomAdapter as the adapter for RecyclerView.
         mRecyclerView.setAdapter(mAdapter);
+         */
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        viewModel.getPagerData().observe(this, repoList -> {
+            AppListAdapter repoListAdapter = new AppListAdapter(this, repoList);
+            binding.recyclerView.setAdapter(repoListAdapter);
+        });
+    }
+
+
 }

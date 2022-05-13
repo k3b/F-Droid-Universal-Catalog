@@ -27,7 +27,6 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.AppRepositoryFindDynamic;
 import de.k3b.fdroid.sql.AppIdSql;
 
@@ -37,9 +36,9 @@ public class AppRepositoryJpaImpl implements AppRepositoryFindDynamic {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Integer> findDynamic(AppRepository.FindDynamicParameter findDynamicParameter) {
+    public List<Integer> findDynamic(AppSearchParameter appSearchParameter) {
         Map<String, Object> params = new HashMap<>();
-        String sql = AppIdSql.getSql(findDynamicParameter, params, false);
+        String sql = AppIdSql.getSql(appSearchParameter, params, false);
         Query nativeQuery = entityManager
                 .createNativeQuery(sql);
 
