@@ -1,5 +1,9 @@
 todo
 
+AppListActivity: show "... loading" if data is not ready yet AppListActivity: add icons
+
+------
+
 * ??? do i need a usecase layer on top of service? i.e. import-v1-usecase
 * v add spring-boot-webserver
 * add support to add a Repo to RepoListActivity
@@ -8,24 +12,12 @@ todo
 * ? url with schema "fdroid:....." via Manifest-Intentfilter ApiActivity with dispatch to affected
   gui
 * androidApp:
-*
   * filter by
-*
-  *
     * v search expression
-*
-  *
     * repo
-*
-  *
     * Category
-*
-  *
     * android-version
-*
-  *
     * sorted by
-*
   * navigate from AppList to RepoList
 * add support to download appIcons (and app descr images)
 
