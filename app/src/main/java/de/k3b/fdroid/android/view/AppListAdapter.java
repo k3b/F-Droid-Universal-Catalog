@@ -32,7 +32,7 @@ import de.k3b.fdroid.Global;
 import de.k3b.fdroid.android.R;
 import de.k3b.fdroid.android.html.AndroidStringResourceMustacheContext;
 import de.k3b.fdroid.android.html.util.HtmlUtil;
-import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.html.service.FormatService;
 import de.k3b.fdroid.service.AppWithDetailsPagerService;
 
@@ -46,39 +46,27 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     private final int defaultForegroundColor;
 
     /**
-     * Provide a reference to the type of views that you are using (custom ViewHolder)
-     */
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
-
-        public ViewHolder(View v) {
-            super(v);
-            // Define click listener for the ViewHolder's View.
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "Element " + getAbsoluteAdapterPosition() + "/"
-                                    + getBindingAdapterPosition() + " clicked.");
-                }
-            });
-            textView = (TextView) v.findViewById(R.id.textView);
-        }
-
-        public TextView getTextView() {
-            return textView;
-        }
-    }
-
-    /**
      * Initialize the dataset of the Adapter.
      */
     public AppListAdapter(Context context, AppWithDetailsPagerService details) {
         this.details = details;
-        formatService = new FormatService("list_repo", Repo.class,
+        formatService = new FormatService("list_app_summary", App.class,
                 new AndroidStringResourceMustacheContext(context));
 
         this.defaultBackgroundColor = HtmlUtil.getDefaultBackgroundColor(context);
         this.defaultForegroundColor = HtmlUtil.getDefaultForegroundColor(context);
+    }
+
+    // Replace the contents of a view (invoked by the layout manager)
+    @Override
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+        Log.d(TAG, "Element " + position + " set.");
+
+        viewHolder.item = details.itemAtOffset(position);
+        TextView textView = viewHolder.getTextView();
+
+        String html = formatService.format(viewHolder.item);
+        HtmlUtil.setHtml(textView, html, defaultForegroundColor, defaultBackgroundColor);
     }
 
     // Create new views (invoked by the layout manager)
@@ -92,14 +80,29 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         return new ViewHolder(v);
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
-    @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        Log.d(TAG, "Element " + position + " set.");
+    /**
+     * Provide a reference to the type of views that you are using (custom ViewHolder)
+     */
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView textView;
+        private AppWithDetailsPagerService.ItemAtOffset item;
 
-        // Get element from your dataset at this position and replace the contents of the view
-        // with that element
-        viewHolder.getTextView().setText(details.getName(position));
+        public ViewHolder(View v) {
+            super(v);
+            // Define click listener for the ViewHolder's View.
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "Element " + getAbsoluteAdapterPosition() + "/"
+                            + getBindingAdapterPosition() + " clicked.");
+                }
+            });
+            textView = (TextView) v.findViewById(R.id.textView);
+        }
+
+        public TextView getTextView() {
+            return textView;
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)

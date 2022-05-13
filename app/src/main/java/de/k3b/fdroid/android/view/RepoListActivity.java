@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.android.view;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -43,6 +45,12 @@ public class RepoListActivity extends BaseActivity {
     private final BarcodeScanActivityResultContract barcodeScanContract = new BarcodeScanActivityResultContract();
     private final ActivityResultLauncher<Void> barcodeScanLauncher
             = registerForActivityResult(barcodeScanContract, this::onCmdBarcodeResult);
+
+    public static void showActivity(Activity context) {
+        Intent intent = new Intent(context, RepoListActivity.class);
+
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,6 +98,10 @@ public class RepoListActivity extends BaseActivity {
 
         if (id == R.id.cmd_reload_list) {
             viewModel.reload();
+            return true;
+        } else if (id == R.id.cmd_apps) {
+            AppListActivity.showActivity(this);
+            this.finish();
             return true;
         } else if (id == R.id.cmd_scan_qr) {
             return onCmdBarcode();

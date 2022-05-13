@@ -30,6 +30,8 @@
 
     <!-- repo_ -->
     <string name="label_repo_title">App sources</string>
+    <string name="label_app_title">Apps</string>
+    <string name="label_version_title">Version</string>
 
     <!-- from list demo -->
     <string name="element_text">Element</string>

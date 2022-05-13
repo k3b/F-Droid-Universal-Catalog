@@ -16,7 +16,7 @@
 -->
 
 <resources>
-    <dimen name="list_item_height">72dp</dimen>
+    <dimen name="list_item_height">140dp</dimen>
 
     <!-- Define standard dimensions to comply with Holo-style grids and rhythm. -->
 

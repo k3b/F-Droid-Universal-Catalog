@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
 /*
  * Copyright (c) 2022 by k3b.
  *
@@ -23,18 +22,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/cmd_reload_list"
-        android:title="@string/refresh"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/cmd_scan_qr"
-        android:title="@string/scan_qr"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/cmd_apps"
-        android:title="@string/label_app_title"
+        android:id="@+id/cmd_repos"
+        android:title="@string/label_repo_title"
         app:showAsAction="ifRoom" />
 
 </menu>

@@ -18,11 +18,17 @@
  */
 package de.k3b.fdroid.domain;
 
+import static de.k3b.fdroid.service.LocalizedService.SEPERATOR_DESCRIPTION;
+import static de.k3b.fdroid.service.LocalizedService.SEPERATOR_NAME;
+import static de.k3b.fdroid.service.LocalizedService.SEPERATOR_SUMMARY;
+import static de.k3b.fdroid.service.LocalizedService.SEPERATOR_WHATS_NEW;
+import static de.k3b.fdroid.service.LocalizedService.getFirst;
+
 import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.common.AppCommon;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
-import de.k3b.fdroid.util.StringUtil;
+import de.k3b.fdroid.service.VersionService;
 
 /**
  * Android independent: Pojo-s with all properties that are persisted in the Database.
@@ -167,14 +173,26 @@ public class App extends AppCommon implements AppDetail {
     }
 
     public String getLocalizedName() {
-        String name = getSearchName();
-        if (StringUtil.isEmpty(name)) return getPackageName();
-        return name.split("\\|")[0];
+        return getFirst(searchName, SEPERATOR_NAME, getPackageName());
     }
 
     public String getLocalizedSummary() {
-        String summary = getSearchSummary();
-        if (StringUtil.isEmpty(summary)) return "";
-        return summary.split("\\n")[0];
+        return getFirst(searchSummary, SEPERATOR_SUMMARY, "");
+    }
+
+    public String getLocalizedDescription() {
+        return getFirst(searchDescription, SEPERATOR_DESCRIPTION, "");
+    }
+
+    public String getLocalizedWhatsNew() {
+        return getFirst(searchWhatsNew, SEPERATOR_WHATS_NEW, "");
+    }
+
+    public String getVersion() {
+        return VersionService.getLast(searchVersion);
+    }
+
+    public String getSdk() {
+        return VersionService.getLast(searchSdk);
     }
 }

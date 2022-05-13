@@ -132,6 +132,10 @@ public class AppCommon extends EntityCommon {
         this.lastUpdated = lastUpdated;
     }
 
+    public String getLastUpdatedDate() {
+        return asDateString(lastUpdated);
+    }
+
     public String getPackageName() {
         return packageName;
     }

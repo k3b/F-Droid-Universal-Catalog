@@ -26,48 +26,30 @@ import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.Locale;
 import de.k3b.fdroid.domain.Localized;
 import de.k3b.fdroid.domain.common.EntityCommon;
+import de.k3b.fdroid.util.StringUtil;
 
 public class LocalizedService {
+    public static final String SEPERATOR_NAME = " | ";
+    public static final String SEPERATOR_SUMMARY = "\n";
+    public static final String SEPERATOR_DESCRIPTION = "\n\n------------\n\n";
+    public static final String SEPERATOR_WHATS_NEW = "\n\n------------\n\n";
     private final LanguageService languageService;
 
     public LocalizedService(LanguageService languageService) {
         this.languageService = languageService;
     }
 
-    /** App.searchXxx calculated from detail Localized-s */
-    public void recalculateSearchFields(App roomApp, List<Localized> roomLocalizedList) {
-        StringBuilder name = new StringBuilder();
-        StringBuilder summary = new StringBuilder();
-        StringBuilder description = new StringBuilder();
-        StringBuilder whatsNew = new StringBuilder();
-
-        Localized[] roomLocalizedListSortByPrio = sortByPrioDesc(roomLocalizedList);
-
-        for (Localized loc : roomLocalizedListSortByPrio) {
-
-            Locale locale = languageService.getLocaleById(loc.getLocaleId());
-            String languagePrefix = "";
-            if (languageService.getOrCreateLocaleByCode(locale.getCode()).getLanguagePriority() < 1) {
-                // only visible if it is not a prefered language
-                languagePrefix = locale.getCode() + ": ";
-            }
-
-            add(name, loc.getName(), "name", EntityCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, " | ");
-            add(summary, loc.getSummary(), "summary", EntityCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, "\n");
-            add(description, loc.getDescription(), "description", EntityCommon.MAX_LEN_AGGREGATED_DESCRIPTION, roomApp, languagePrefix, "\n\n------------\n\n");
-            add(whatsNew, loc.getWhatsNew(), "whatsNew", EntityCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, "\n\n------------\n\n");
-
-        }
-        roomApp.setSearchName(name.toString());
-        roomApp.setSearchSummary(summary.toString());
-        roomApp.setSearchDescription(description.toString());
-        roomApp.setSearchWhatsNew(whatsNew.toString());
+    public static String getFirst(String combinedValue, String seperator, String notFoundValue) {
+        if (StringUtil.isEmpty(combinedValue)) return notFoundValue;
+        int pos = combinedValue.indexOf(seperator);
+        if (pos > 0) return combinedValue.substring(0, pos);
+        return combinedValue;
     }
 
     protected Localized[] sortByPrioDesc(List<Localized> roomLocalizedList) {
         // :-( : List<>.sort() requieres android api 24. not compatible with api 14
         Localized[] result = roomLocalizedList.toArray(new Localized[0]);
-        Arrays.sort(result, (x, y) -> compareByPrio(x,y));
+        Arrays.sort(result, (x, y) -> compareByPrio(x, y));
         return result;
     }
 
@@ -115,4 +97,35 @@ public class LocalizedService {
         return (locale != null && LanguageService.isHidden(locale));
     }
 
+    /**
+     * App.searchXxx calculated from detail Localized-s
+     */
+    public void recalculateSearchFields(App roomApp, List<Localized> roomLocalizedList) {
+        StringBuilder name = new StringBuilder();
+        StringBuilder summary = new StringBuilder();
+        StringBuilder description = new StringBuilder();
+        StringBuilder whatsNew = new StringBuilder();
+
+        Localized[] roomLocalizedListSortByPrio = sortByPrioDesc(roomLocalizedList);
+
+        for (Localized loc : roomLocalizedListSortByPrio) {
+
+            Locale locale = languageService.getLocaleById(loc.getLocaleId());
+            String languagePrefix = "";
+            if (languageService.getOrCreateLocaleByCode(locale.getCode()).getLanguagePriority() < 1) {
+                // only visible if it is not a prefered language
+                languagePrefix = locale.getCode() + ": ";
+            }
+
+            add(name, loc.getName(), "name", EntityCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, SEPERATOR_NAME);
+            add(summary, loc.getSummary(), "summary", EntityCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, SEPERATOR_SUMMARY);
+            add(description, loc.getDescription(), "description", EntityCommon.MAX_LEN_AGGREGATED_DESCRIPTION, roomApp, languagePrefix, SEPERATOR_DESCRIPTION);
+            add(whatsNew, loc.getWhatsNew(), "whatsNew", EntityCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, SEPERATOR_WHATS_NEW);
+
+        }
+        roomApp.setSearchName(name.toString());
+        roomApp.setSearchSummary(summary.toString());
+        roomApp.setSearchDescription(description.toString());
+        roomApp.setSearchWhatsNew(whatsNew.toString());
+    }
 }

@@ -32,6 +32,7 @@ import de.k3b.fdroid.util.StringUtil;
 
 public class VersionService {
     private static final DecimalFormat numFormatter = new DecimalFormat("00");
+    public static final String DELIM_MIN_MAX = " - ";
 
     /**
      * if a Version has a maxSdkVersion then all previous versions get the same maxSdkVersion
@@ -79,40 +80,15 @@ public class VersionService {
                 HardwareProfileService.isCompatibleNativecode(lastFound.getNativecodeArray(), v.getNativecodeArray());
     }
 
-    /** App.searchXxx calculated from detail Version-s */
-    public void recalculateSearchFields(App app, List<Version> roomVersionList) {
-        Version minVersion = null;
-        Version maxVersion = null;
-        StringBuilder signer = new StringBuilder();
-
-        for (Version roomVersion : roomVersionList) {
-            String s = roomVersion.getSigner();
-            if (!StringUtil.isEmpty(s) && !signer.toString().contains(s)) {
-                signer.append(s).append(" ");
-            }
-            if (minVersion == null || minVersion.getVersionCode() > roomVersion.getVersionCode()) {
-                minVersion = roomVersion;
-            }
-            if (maxVersion == null || maxVersion.getVersionCode() < roomVersion.getVersionCode()) {
-                maxVersion = roomVersion;
-            }
+    public static String getLast(String combinedValue) {
+        if (StringUtil.isEmpty(combinedValue)) return "";
+        int pos = combinedValue.indexOf(DELIM_MIN_MAX);
+        if (pos >= 0) {
+            String substring = combinedValue.substring(pos + DELIM_MIN_MAX.length());
+            if (!StringUtil.isEmpty(substring)) return substring;
+            return "";
         }
-
-        StringBuilder sdk = new StringBuilder();
-        add(sdk, minVersion.getMinSdkVersion(), minVersion.getTargetSdkVersion(), minVersion.getMaxSdkVersion());
-
-        StringBuilder code = new StringBuilder();
-        add(code, minVersion.getVersionName(), minVersion.getVersionCode());
-
-        if (minVersion.getVersionCode() != maxVersion.getVersionCode()) {
-            add(sdk.append(" - "), maxVersion.getMinSdkVersion(), maxVersion.getTargetSdkVersion(), maxVersion.getMaxSdkVersion());
-            add(code.append(" - "), maxVersion.getVersionName(), maxVersion.getVersionCode());
-        }
-
-        app.setSearchVersion(code.toString());
-        app.setSearchSdk(sdk.toString());
-        app.setSearchSigner(signer.toString());
-
+        return combinedValue;
     }
 
     private void add(StringBuilder code, String versionName, int versionCode) {
@@ -182,12 +158,50 @@ public class VersionService {
 
     private String getKey(Version v) {
         return StringUtil.toCsvStringOrNull(Arrays.asList(
-                v.getNativecode(), v.getMinSdkVersion(),v.getTargetSdkVersion(),v.getMaxSdkVersion()), ";");
+                v.getNativecode(), v.getMinSdkVersion(), v.getTargetSdkVersion(), v.getMaxSdkVersion()), ";");
     }
 
     public Version[] sortedByNativeAndCodeDecending(List<Version> versionList) {
         Version[] versions = versionList.toArray(new Version[0]);
         Arrays.sort(versions, compareByNativeAndVersionCodeDescending);
         return versions;
+    }
+
+    /**
+     * App.searchXxx calculated from detail Version-s
+     */
+    public void recalculateSearchFields(App app, List<Version> roomVersionList) {
+        Version minVersion = null;
+        Version maxVersion = null;
+        StringBuilder signer = new StringBuilder();
+
+        for (Version roomVersion : roomVersionList) {
+            String s = roomVersion.getSigner();
+            if (!StringUtil.isEmpty(s) && !signer.toString().contains(s)) {
+                signer.append(s).append(" ");
+            }
+            if (minVersion == null || minVersion.getVersionCode() > roomVersion.getVersionCode()) {
+                minVersion = roomVersion;
+            }
+            if (maxVersion == null || maxVersion.getVersionCode() < roomVersion.getVersionCode()) {
+                maxVersion = roomVersion;
+            }
+        }
+
+        StringBuilder sdk = new StringBuilder();
+        add(sdk, minVersion.getMinSdkVersion(), minVersion.getTargetSdkVersion(), minVersion.getMaxSdkVersion());
+
+        StringBuilder code = new StringBuilder();
+        add(code, minVersion.getVersionName(), minVersion.getVersionCode());
+
+        if (minVersion.getVersionCode() != maxVersion.getVersionCode()) {
+            add(sdk.append(DELIM_MIN_MAX), maxVersion.getMinSdkVersion(), maxVersion.getTargetSdkVersion(), maxVersion.getMaxSdkVersion());
+            add(code.append(DELIM_MIN_MAX), maxVersion.getVersionName(), maxVersion.getVersionCode());
+        }
+
+        app.setSearchVersion(code.toString());
+        app.setSearchSdk(sdk.toString());
+        app.setSearchSigner(signer.toString());
+
     }
 }

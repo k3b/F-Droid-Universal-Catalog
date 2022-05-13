@@ -18,12 +18,17 @@
  */
 package de.k3b.fdroid.android.view;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import de.k3b.fdroid.android.R;
 import de.k3b.fdroid.android.databinding.ActivityAppListBinding;
 
 public class AppListActivity extends BaseActivity {
@@ -32,6 +37,12 @@ public class AppListActivity extends BaseActivity {
 
     private AppListViewModel viewModel;
     private ActivityAppListBinding binding;
+
+    public static void showActivity(Activity context) {
+        Intent intent = new Intent(context, AppListActivity.class);
+
+        context.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +79,29 @@ public class AppListActivity extends BaseActivity {
             AppListAdapter repoListAdapter = new AppListAdapter(this, repoList);
             binding.recyclerView.setAdapter(repoListAdapter);
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        boolean result = super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_app_list, menu);
+        return result;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        // Handle action bar menuItem clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = menuItem.getItemId();
+
+        if (id == R.id.cmd_repos) {
+            RepoListActivity.showActivity(this);
+            this.finish();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(menuItem);
+        }
     }
 
 

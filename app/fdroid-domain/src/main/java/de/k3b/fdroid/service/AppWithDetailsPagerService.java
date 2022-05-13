@@ -42,8 +42,6 @@ public class AppWithDetailsPagerService {
     private final AppDetailRepository<Version> versionRepository;
     private final AppDetailRepository<LinkedDatabaseEntity<AppCategory, Category>> categoryRepository;
 
-    private int currentIndex;
-
     private Integer[] appIds;
     private AppWithDetails[] appWithDetailsList;
     private int pageSize;
@@ -67,31 +65,39 @@ public class AppWithDetailsPagerService {
     }
 
     public String getName(int currentIndex) {
-        AppWithDetails appWithDetails = getAppLocalized(currentIndex);
+        AppWithDetails appWithDetails = getAppWithDetailsByOffset(currentIndex);
         for (Localized l : appWithDetails.getLocalizedList()) {
             if (l.getName() != null) return l.getName();
         }
-        return appWithDetails.getApp().getPackageName();
+        return appWithDetails.getApp().getLocalizedName();
     }
 
     public String getSummary(int currentIndex) {
-        AppWithDetails appWithDetails = getAppLocalized(currentIndex);
+        AppWithDetails appWithDetails = getAppWithDetailsByOffset(currentIndex);
         for (Localized l : appWithDetails.getLocalizedList()) {
             if (l.getSummary() != null) return l.getSummary();
         }
-        return "";
+        return appWithDetails.getApp().getLocalizedSummary();
     }
 
     public String getDescription(int currentIndex) {
-        AppWithDetails appWithDetails = getAppLocalized(currentIndex);
+        AppWithDetails appWithDetails = getAppWithDetailsByOffset(currentIndex);
         for (Localized l : appWithDetails.getLocalizedList()) {
             if (l.getDescription() != null) return l.getDescription();
         }
-        return "";
+        return appWithDetails.getApp().getLocalizedDescription();
+    }
+
+    public String getWhatsNew(int currentIndex) {
+        AppWithDetails appWithDetails = getAppWithDetailsByOffset(currentIndex);
+        for (Localized l : appWithDetails.getLocalizedList()) {
+            if (l.getWhatsNew() != null) return l.getWhatsNew();
+        }
+        return appWithDetails.getApp().getLocalizedWhatsNew();
     }
 
     public String getIcon(int currentIndex) {
-        AppWithDetails appWithDetails = getAppLocalized(currentIndex);
+        AppWithDetails appWithDetails = getAppWithDetailsByOffset(currentIndex);
         for (Localized l : appWithDetails.getLocalizedList()) {
             if (l.getIcon() != null) return l.getIcon();
         }
@@ -99,32 +105,24 @@ public class AppWithDetailsPagerService {
     }
 
     public String getVideo(int currentIndex) {
-        AppWithDetails appWithDetails = getAppLocalized(currentIndex);
+        AppWithDetails appWithDetails = getAppWithDetailsByOffset(currentIndex);
         for (Localized l : appWithDetails.getLocalizedList()) {
             if (l.getVideo() != null) return l.getVideo();
         }
         return "";
     }
 
-    public String getWhatsNew(int currentIndex) {
-        AppWithDetails appWithDetails = getAppLocalized(currentIndex);
-        for (Localized l : appWithDetails.getLocalizedList()) {
-            if (l.getWhatsNew() != null) return l.getWhatsNew();
-        }
-        return "";
-    }
-
     public App getAppByOffset(int currentIndex) {
-        return getAppLocalized(currentIndex).getApp();
+        return getAppWithDetailsByOffset(currentIndex).getApp();
     }
 
     public List<Localized> getLocalizedListByOffset(int currentIndex) {
-        return getAppLocalized(currentIndex).getLocalizedList();
+        return getAppWithDetailsByOffset(currentIndex).getLocalizedList();
     }
 
     // get from cache. if currentIndex not loaded yet load currentIndex +-
-    private AppWithDetails getAppLocalized(int currentIndex) {
-        if (currentIndex < 0 || currentIndex >= getSize()) throw new IndexOutOfBoundsException();
+    private AppWithDetails getAppWithDetailsByOffset(int currentIndex) {
+        if (currentIndex < 0 || currentIndex >= size()) throw new IndexOutOfBoundsException();
         AppWithDetails result = appWithDetailsList[currentIndex];
         if (result == null) {
             int from = getFrom(currentIndex - 1);
@@ -138,10 +136,6 @@ public class AppWithDetailsPagerService {
         }
 
         return result;
-    }
-
-    public int getSize() {
-        return appWithDetailsList.length;
     }
 
     private void update(ArrayList<Integer> appIdList, int from) {
@@ -192,7 +186,55 @@ public class AppWithDetailsPagerService {
         return appIds.length;
     }
 
-    public void setCurrentIndex(int currentIndex) {
-        this.currentIndex = currentIndex;
+    public ItemAtOffset itemAtOffset(int index) {
+        return new ItemAtOffset(index);
+    }
+
+    public class ItemAtOffset {
+        private final int currentIndex;
+
+        private ItemAtOffset(int currentIndex) {
+            this.currentIndex = currentIndex;
+        }
+
+        public String getName() {
+            return AppWithDetailsPagerService.this.getName(currentIndex);
+        }
+
+        public String getSummary() {
+            return AppWithDetailsPagerService.this.getSummary(currentIndex);
+        }
+
+        public String getDescription() {
+            return AppWithDetailsPagerService.this.getDescription(currentIndex);
+        }
+
+        public String getIcon() {
+            return AppWithDetailsPagerService.this.getIcon(currentIndex);
+        }
+
+        public String getVideo() {
+            return AppWithDetailsPagerService.this.getVideo(currentIndex);
+        }
+
+        public String getWhatsNew() {
+            return AppWithDetailsPagerService.this.getWhatsNew(currentIndex);
+        }
+
+        public App getApp() {
+            return getAppWithDetails().getApp();
+        }
+
+        public List<Localized> getLocalizedList() {
+            return getAppWithDetails().getLocalizedList();
+        }
+
+        public List<Version> getVersionList() {
+            return getAppWithDetails().getVersionList();
+        }
+
+        private AppWithDetails getAppWithDetails() {
+            return AppWithDetailsPagerService.this.getAppWithDetailsByOffset(currentIndex);
+        }
     }
 }
