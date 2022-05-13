@@ -19,6 +19,8 @@
 package de.k3b.fdroid.android.view;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,23 +40,28 @@ import de.k3b.fdroid.service.AppWithDetailsPagerService;
 
 public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
     private static final String TAG = Global.LOG_TAG + "AppList";
+    public static final int ICON_SIZE_DP = 40;
 
     private final AppWithDetailsPagerService details;
 
     private final FormatService formatService;
     private final int defaultBackgroundColor;
     private final int defaultForegroundColor;
+    private final ImageGetter imageGetter;
 
     /**
      * Initialize the dataset of the Adapter.
      */
     public AppListAdapter(Context context, AppWithDetailsPagerService details) {
         this.details = details;
+
         formatService = new FormatService("list_app_summary", App.class,
                 new AndroidStringResourceMustacheContext(context));
 
         this.defaultBackgroundColor = HtmlUtil.getDefaultBackgroundColor(context);
         this.defaultForegroundColor = HtmlUtil.getDefaultForegroundColor(context);
+        float iconSize = context.getResources().getDisplayMetrics().density * ICON_SIZE_DP;
+        this.imageGetter = new ImageGetter(context, iconSize);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -66,7 +73,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         TextView textView = viewHolder.getTextView();
 
         String html = formatService.format(viewHolder.item);
-        HtmlUtil.setHtml(textView, html, defaultForegroundColor, defaultBackgroundColor);
+        HtmlUtil.setHtml(textView, html, defaultForegroundColor, defaultBackgroundColor, imageGetter);
     }
 
     // Create new views (invoked by the layout manager)
@@ -80,6 +87,12 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         return new ViewHolder(v);
     }
 
+    // Return the size of your dataset (invoked by the layout manager)
+    @Override
+    public int getItemCount() {
+        return details.size();
+    }
+
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
@@ -90,14 +103,9 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         public ViewHolder(View v) {
             super(v);
             // Define click listener for the ViewHolder's View.
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "Element " + getAbsoluteAdapterPosition() + "/"
-                            + getBindingAdapterPosition() + " clicked.");
-                }
-            });
-            textView = (TextView) v.findViewById(R.id.textView);
+            v.setOnClickListener(v1 -> Log.d(TAG, "Element " + getAbsoluteAdapterPosition() + "/"
+                    + getBindingAdapterPosition() + " clicked."));
+            textView = v.findViewById(R.id.textView);
         }
 
         public TextView getTextView() {
@@ -105,9 +113,34 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         }
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
-    @Override
-    public int getItemCount() {
-        return details.size();
+    private static class ImageGetter implements Html.ImageGetter {
+        private final Context context;
+        private final int iconSize;
+
+        public ImageGetter(Context context, float iconSize) {
+
+            this.context = context;
+            this.iconSize = (int) iconSize;
+        }
+
+        public Drawable getDrawable(String source) {
+            int id = R.drawable.ic_launcher;
+/*
+            if (source.equals("stack.jpg")) {
+                id = R.drawable.stack;
+            }
+            else if (source.equals("overflow.jpg")) {
+                id = R.drawable.overflow;
+            }
+            else {
+                return null;
+            }
+*/
+
+            Drawable d = context.getResources().getDrawable(id);
+            // d.setBounds(0,0,d.getIntrinsicWidth(),d.getIntrinsicHeight());
+            d.setBounds(0, 0, iconSize, iconSize);
+            return d;
+        }
     }
 }

@@ -28,27 +28,28 @@ import android.widget.TextView;
 
 @SuppressWarnings("deprecation")
 public class HtmlUtil extends de.k3b.fdroid.html.util.HtmlUtil {
-    public static Spanned fromHtml(String html) {
+    public static Spanned fromHtml(String html, Html.ImageGetter imageGetter) {
         Spanned spanned;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            spanned = Html.fromHtml(html, Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE);
+            spanned = Html.fromHtml(html, Html.TO_HTML_PARAGRAPH_LINES_CONSECUTIVE, imageGetter, null);
         } else {
             //noinspection deprecation
-            spanned = Html.fromHtml(html);
+            spanned = Html.fromHtml(html, imageGetter, null);
         }
         return spanned;
     }
 
     public static void setHtml(TextView textView, String htmlRaw,
                                int defaultForegroundColor,
-                               int defaultBackgroundColor) {
+                               int defaultBackgroundColor,
+                               Html.ImageGetter imageGetter) {
         String html = htmlRaw
                 .replace("\r", " ")
                 .replace("\n", " ")
                 .replace("  ", " ")
                 // .replace("<br/>","\n")
                 ;
-        Spanned spanned = HtmlUtil.fromHtml(html);
+        Spanned spanned = HtmlUtil.fromHtml(html, imageGetter);
         textView.setText(spanned);
 
         // interpret html: css-class='state_xxxx' will be translated to android-resource-colors

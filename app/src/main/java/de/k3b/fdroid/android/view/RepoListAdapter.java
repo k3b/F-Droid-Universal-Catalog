@@ -68,7 +68,7 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
         TextView textView = viewHolder.getTextView();
 
         String html = formatService.format(repo);
-        HtmlUtil.setHtml(textView, html, defaultForegroundColor, defaultBackgroundColor);
+        HtmlUtil.setHtml(textView, html, defaultForegroundColor, defaultBackgroundColor, null);
     }
 
     // Create new views (invoked by the layout manager)
