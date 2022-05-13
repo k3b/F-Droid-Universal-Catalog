@@ -18,12 +18,19 @@
  */
 package de.k3b.fdroid.servingwebcontent;
 
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,24 +38,26 @@ import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.AppSearchParameter;
 import de.k3b.fdroid.domain.interfaces.AppDetailRepository;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.interfaces.RepoRepository;
+import de.k3b.fdroid.service.AppIconService;
 import de.k3b.fdroid.service.AppWithDetailsPagerService;
 import de.k3b.fdroid.service.adapter.AppRepositoryAdapterImpl;
 
 @Controller
 public class AppController {
     private static final int PAGESIZE = 5;
-    /* appRepository
-        @Autowired
-        private AppWithDetailsPagerService appWithDetailsPagerService;
-    */
     private final AppRepository appRepository;
     private final AppWithDetailsPagerService appWithDetailsPagerService;
+    private final AppIconService appIconService;
 
-    public AppController(AppRepository appRepository) {
+    public AppController(@Value("${de.k3b.fdroid.downloads.icons}") String iconsDir,
+                         RepoRepository repoRepository, AppRepository appRepository) {
         this.appRepository = appRepository;
+
         AppDetailRepository<App> appAppDetailRepository = new AppRepositoryAdapterImpl(appRepository);
         appWithDetailsPagerService = new AppWithDetailsPagerService(
                 appAppDetailRepository, null, null, null);
+        appIconService = new AppIconService(iconsDir, repoRepository, appRepository);
     }
 
     @GetMapping("/App/app")
@@ -76,6 +85,22 @@ public class AppController {
         model.addAttribute("name", "World");
         model.addAttribute("app", appWithDetailsPagerService.itemAtOffset(0, 1));
         return "App/app_detail";
+    }
+
+    // see https://www.baeldung.com/spring-controller-return-image-file
+    @GetMapping(value = "/App/app/icons/{packageName}.png", produces = MediaType.IMAGE_PNG_VALUE)
+    public @ResponseBody
+    byte[] appIcon(
+            @PathVariable String packageName) {
+        File file = appIconService.getOrDownloadLocalIconFile(packageName);
+        if (file != null) {
+            try (InputStream in = new FileInputStream(file)) {
+                return IOUtils.toByteArray(in);
+            } catch (Exception ignore) {
+                ignore.printStackTrace();
+            }
+        }
+        return null;
     }
 
 }

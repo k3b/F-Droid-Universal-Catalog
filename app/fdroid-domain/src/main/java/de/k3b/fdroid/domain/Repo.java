@@ -193,7 +193,11 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId {
     }
 
     public String getAppIconUrl(String icon) {
-        return getUrl(getLastUsedDownloadMirror(), icon);
+        String url = null;
+        if (!StringUtil.isEmpty(icon)) {
+            url = getUrl(getLastUsedDownloadMirror(), "icons/" + icon);
+        }
+        return url;
     }
 
     public long getLastUsedDownloadDateTimeUtc() {
