@@ -1,0 +1,13 @@
+<p>{{t.label_app_title}}</p>
+{{#prev}}<a href="?page={{.}}"> &lt; </a>{{/prev}}
+{{#next}}<a href="?page={{.}}"> &gt; </a>{{/next}}
+<hr/><br/>
+
+{{#app}}
+    <a href="{{app.id}}">{{> App/list_app_summary}}</a>
+    <hr/>
+{{/app}}
+
+<br/>
+{{#prev}}<a href="?page={{.}}"> &lt; </a>{{/prev}}
+{{#next}}<a href="?page={{.}}"> &gt; </a>{{/next}}

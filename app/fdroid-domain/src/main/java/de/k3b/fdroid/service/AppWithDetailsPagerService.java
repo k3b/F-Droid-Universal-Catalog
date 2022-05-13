@@ -190,6 +190,22 @@ public class AppWithDetailsPagerService {
         return new ItemAtOffset(index);
     }
 
+    public ItemAtOffset[] itemAtOffset(int from, int to) {
+        int size = size();
+
+        if (from < 0) from = 0;
+        if (to > size) to = size;
+        int resultCount = to - from;
+        if (resultCount < 0) resultCount = 0;
+
+        ItemAtOffset[] result = new ItemAtOffset[resultCount];
+        for (int i = 0; i < resultCount; i++) {
+            result[i] = itemAtOffset(i + from);
+        }
+
+        return result;
+    }
+
     public class ItemAtOffset {
         private final int currentIndex;
 
