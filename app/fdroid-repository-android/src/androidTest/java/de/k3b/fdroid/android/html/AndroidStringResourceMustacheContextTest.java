@@ -24,6 +24,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -67,7 +68,11 @@ public class AndroidStringResourceMustacheContextTest {
     @After
     public void teardown() {
         //  restore the Locale in the tear down method, to avoid running into issues
-        Locale.setDefault(Locale.Category.DISPLAY, oldDefault);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Locale.setDefault(Locale.Category.DISPLAY, oldDefault);
+        } else {
+            Locale.setDefault(oldDefault);
+        }
     }
 
     @Test
@@ -93,10 +98,15 @@ public class AndroidStringResourceMustacheContextTest {
 
     // Locale during unit test on Android see https://stackoverflow.com/questions/16760194/locale-during-unit-test-on-android/21810126
     private void setLocale(String language, String country) {
-        oldDefault = Locale.getDefault(Locale.Category.DISPLAY);
         Locale locale = new Locale(language, country);
-        // here we update locale for date formatters
-        Locale.setDefault(Locale.Category.DISPLAY, locale);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            oldDefault = Locale.getDefault(Locale.Category.DISPLAY);
+            // here we update locale for date formatters
+            Locale.setDefault(Locale.Category.DISPLAY, locale);
+        } else {
+            oldDefault = Locale.getDefault();
+            Locale.setDefault(locale);
+        }
         // update locale for app resources
         Resources res = InstrumentationRegistry.getInstrumentation().getTargetContext().getResources();
         Configuration config = res.getConfiguration();

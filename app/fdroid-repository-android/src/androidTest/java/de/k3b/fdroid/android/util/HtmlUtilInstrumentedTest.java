@@ -21,6 +21,7 @@ package de.k3b.fdroid.android.util;
 import static org.junit.Assert.assertEquals;
 
 import android.content.Context;
+import android.os.Build;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -44,7 +45,13 @@ public class HtmlUtilInstrumentedTest {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         int colorFromName = HtmlUtil.getColorByName(context, "busy", "bg_state_", 123);
-        int colorFromRes = context.getColor(R.color.bg_state_busy);
+
+        int colorFromRes;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            colorFromRes = context.getColor(R.color.bg_state_busy);
+        } else {
+            colorFromRes = context.getResources().getColor(R.color.bg_state_busy);
+        }
         assertEquals(colorFromName, colorFromRes);
     }
 }
