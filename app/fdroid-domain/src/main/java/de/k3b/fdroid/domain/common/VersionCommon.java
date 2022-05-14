@@ -51,6 +51,14 @@ public class VersionCommon extends ProfileCommon {
         dest.setSdk(src.getMinSdkVersion(), src.getTargetSdkVersion(), src.getMaxSdkVersion());
     }
 
+    public VersionCommon() {
+    }
+
+    @androidx.room.Ignore
+    public VersionCommon(VersionCommon src) {
+        if (src != null) copyCommon(this, src);
+    }
+
     public String getHash() {
         return hash;
     }

@@ -36,5 +36,11 @@ public interface VersionRepository extends Repository, AppDetailRepository<Versi
 
     List<Version> findByAppId(int appId);
 
+    /**
+     * @param sdkversion 0 means all versions
+     * @param nativeCode null means all native code. non null means: all versoins that are nativeCode
+     *                   independent or that is contained. Must include preceeding/trailing "%".
+     * @return pseuddo versions, one entry per app/repo combination populated with found min/max values
+     */
     List<Version> findBestBySdkAndNative(int sdkversion, String nativeCode);
 }

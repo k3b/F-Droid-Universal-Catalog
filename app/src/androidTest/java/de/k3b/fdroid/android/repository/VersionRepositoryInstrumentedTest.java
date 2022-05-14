@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.android.repository;
 
+import static org.junit.Assert.assertEquals;
+
 import android.content.Context;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -35,6 +37,7 @@ import de.k3b.fdroid.android.db.FDroidDatabase;
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.Version;
+import de.k3b.fdroid.domain.common.VersionCommon;
 import de.k3b.fdroid.domain.interfaces.VersionRepository;
 
 /**
@@ -84,15 +87,35 @@ public class VersionRepositoryInstrumentedTest {
 
 
     @Test
+    public void findBestBySdkVersion_noVersionAndNoNativeCode() {
+        List<Version> versions = versionRepository.findBestBySdkAndNative(0, null);
+        assertEquals(2, versions.size());
+
+        String actual = new VersionCommon(versions.get(0)).toString();
+        // all sdk-versions 7..9
+        String expected = "VersionCommon[minSdkVersion=7,targetSdkVersion=9,maxSdkVersion=7]";
+        assertEquals(expected, actual);
+    }
+
+    @Test
     public void findBestBySdkVersion_noNativeCode() {
         List<Version> versions = versionRepository.findBestBySdkAndNative(8, null);
         Assert.assertTrue(versions.size() == 2);
+
+        String actual = new VersionCommon(versions.get(0)).toString();
+
+        String expected = "VersionCommon[minSdkVersion=8,targetSdkVersion=8]";
+        assertEquals(expected, actual);
     }
 
     @Test
     public void findBestBySdkVersion_withNativeCode() {
         List<Version> versions = versionRepository.findBestBySdkAndNative(8, "%arm7%");
         Assert.assertTrue(versions.size() == 1);
+
+        String actual = new VersionCommon(versions.get(0)).toString();
+        String expected = "VersionCommon[minSdkVersion=8,targetSdkVersion=8]";
+        assertEquals(expected, actual);
     }
 
     @Test

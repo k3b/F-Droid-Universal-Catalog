@@ -33,7 +33,6 @@ import de.k3b.fdroid.domain.interfaces.VersionRepository;
 @DataJpaTest
 public class VersionRepositoryTest {
     private static final String MY_NAME = "my.name";
-    private static final String MY_PACKAGE_NAME = "my.package.name";
     private final int MY_VERSION_CODE = 2075;
     @Autowired
     JpaTestHelper jpaTestHelper;
@@ -72,6 +71,12 @@ public class VersionRepositoryTest {
     public void findByAppIds() {
         List<Version> version = versionRepository.findByAppIds(Arrays.asList(appId));
         Assert.isTrue(version.size() == 1, "found 1");
+    }
+
+    @Test
+    public void findBestBySdkVersion_noVersionAndNoNativeCode() {
+        List<Version> versions = versionRepository.findBestBySdkAndNative(0, null);
+        Assert.isTrue(versions.size() == 1);
     }
 
     @Test

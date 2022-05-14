@@ -51,10 +51,11 @@ public interface VersionRepositoryJpa extends CrudRepository<Version, Integer> {
             " max(av.nativecode) AS nativecode, " +
             " max(av.size) AS size " +
             "FROM AppVersion AS av " +
-            "WHERE av.minSdkVersion <= :sdkversion AND " +
-            "((av.maxSdkVersion IS NULL) OR (av.maxSdkVersion = 0) OR (av.maxSdkVersion >= :sdkversion)) AND " +
-            "(av.nativecode IS NULL OR :nativeCode IS NULL OR av.nativecode like :nativeCode) " +
-            "GROUP BY av.appId, av.repoId ", nativeQuery = true)
+            "WHERE ((:sdkversion = 0) OR (av.minSdkVersion <= :sdkversion AND " +
+            " ((av.maxSdkVersion IS NULL) OR (av.maxSdkVersion = 0) OR (av.maxSdkVersion >= :sdkversion)))) AND " +
+            " (av.nativecode IS NULL OR :nativeCode IS NULL OR av.nativecode like :nativeCode) " +
+            "GROUP BY av.appId, av.repoId " +
+            "ORDER BY added DESC, id desc ", nativeQuery = true)
     List<Version> findBestBySdkAndNative(int sdkversion, String nativeCode);
 }
 
