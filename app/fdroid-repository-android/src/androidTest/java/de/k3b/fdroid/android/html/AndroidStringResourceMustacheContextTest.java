@@ -34,11 +34,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.html.service.FormatService;
+import de.k3b.fdroid.html.util.MustacheEx;
 import de.k3b.fdroid.util.TestDataGenerator;
 
 /**
@@ -57,6 +60,8 @@ public class AndroidStringResourceMustacheContextTest {
         setLocale("en", "US");
         appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         translator = new AndroidStringResourceMustacheContext(appContext);
+        MustacheEx.addFixedProperty("t", translator);
+
 
     }
     @After
@@ -69,7 +74,9 @@ public class AndroidStringResourceMustacheContextTest {
     public void translateContextString() {
         FormatService formatService = new FormatService(
                 "Hello '{{v}}' from {{t.test_label}}", translator);
-        String format = formatService.format("World");
+        Map<String, Object> map = new HashMap<>();
+        map.put("v", "World");
+        String format = formatService.format(map);
 
         // R.strings.test_label=AndroidTest
         assertThat(format, equalTo("Hello 'World' from AndroidTest"));
