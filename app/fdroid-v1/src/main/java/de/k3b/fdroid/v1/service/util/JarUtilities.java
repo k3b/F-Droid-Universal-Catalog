@@ -68,7 +68,16 @@ public class JarUtilities {
      * @throws V1JarException if cert-info does not confrom to v1-fdroid-security-cert-restrictions.
      */
     public static X509Certificate getSigningCertFromJar(Repo repo, JarEntry jarEntry) throws V1JarException {
+        // https://developer.android.com/reference/java/util/jar/JarEntry#getCodeSigners() api since android-api 1
+        // always returns null on android-4.2 and android-4.4 devices, works on android-7.0 and android-10
+        //
+        // fromhttps://docs.oracle.com/javase/8/docs/api/java/util/jar/JarEntry.html#getCodeSigners--
+        //  This method can only be called once the JarEntry has been completely verified by
+        //  reading from the entry input stream until the end of the stream has been reached.
+        //
+        // https://github.com/k3b/F-Droid-Universal-Catalog/issues/4
         final CodeSigner[] codeSigners = jarEntry.getCodeSigners();
+
         if (codeSigners == null || codeSigners.length == 0) {
             return null;
         }

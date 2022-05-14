@@ -83,6 +83,9 @@ public class V1ImportIntegrationTest {
         Repo repo = new Repo();
         V1RepoVerifyJarParser verifyJarParser = new V1RepoVerifyJarParser(repo);
         verifyJarParser.readFromJar(getDemoInStream());
+
+        // connectedDebugAndroidTest fails on android-4.2 tablet and android-4.4 phone
+        // works on android-7 tablet and on android-10 phone
         assertThat(repo.getJarSigningCertificate(), is(notNullValue()));
     }
 
