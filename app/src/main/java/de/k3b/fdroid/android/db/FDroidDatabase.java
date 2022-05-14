@@ -48,13 +48,22 @@ public abstract class FDroidDatabase extends RoomDatabase implements FDroidDatab
 
     private AppRepository appRepository = null;
 
-    public static FDroidDatabaseFactory getINSTANCE(Context context) {
+    public static FDroidDatabaseFactory getINSTANCE(Context context, boolean unittest) {
+        if (unittest) {
+            // always start with a fresh empty database.
+            // do not modify non-unittest-database
+            return Room.inMemoryDatabaseBuilder(context.getApplicationContext(),
+                    FDroidDatabase.class)
+                    .allowMainThreadQueries()
+                    .fallbackToDestructiveMigration()
+                    .build();
+        }
+
         if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                     FDroidDatabase.class, "FDroidData.db")
                     .allowMainThreadQueries()
                     .build();
-
         }
         return INSTANCE;
     }

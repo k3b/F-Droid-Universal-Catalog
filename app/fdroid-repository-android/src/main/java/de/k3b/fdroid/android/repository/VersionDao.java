@@ -22,6 +22,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.RoomWarnings;
 import androidx.room.Update;
 
 import java.util.List;
@@ -52,4 +53,21 @@ public interface VersionDao extends VersionRepository {
             "where al.appId in (:appIds) " +
             "order by al.versionCode desc")
     List<Version> findByAppIds(List<Integer> appIds);
+
+    @Query("SELECT MAX(av.id) AS id, " +
+            " av.appId, av.repoId, " +
+            " min(av.minSdkVersion) AS minSdkVersion, " +
+            " max(av.maxSdkVersion) AS maxSdkVersion, " +
+            " max(av.targetSdkVersion) AS targetSdkVersion, " +
+            " max(av.versionCode) AS versionCode, " +
+            " max(av.added) AS added, " +
+            " max(av.nativecode) AS nativecode, " +
+            " max(av.size) AS size " +
+            "FROM AppVersion AS av " +
+            "WHERE av.minSdkVersion <= :sdkversion AND " +
+            "((av.maxSdkVersion IS NULL) OR (av.maxSdkVersion = 0) OR (av.maxSdkVersion >= :sdkversion)) AND " +
+            "(av.nativecode IS NULL OR :nativeCode IS NULL OR av.nativecode like :nativeCode) " +
+            "GROUP BY av.appId, av.repoId ")
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
+    List<Version> findBestBySdkAndNative(int sdkversion, String nativeCode);
 }

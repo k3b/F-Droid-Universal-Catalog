@@ -46,7 +46,7 @@ public class FDroidApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        fdroidDatabaseFactory = FDroidDatabase.getINSTANCE(this);
+        fdroidDatabaseFactory = FDroidDatabase.getINSTANCE(this, false);
         androidServiceFactory = new AndroidServiceFactory(
                 this, fdroidDatabaseFactory);
         MustacheEx.addFixedProperty("t", new AndroidStringResourceMustacheContext(this));

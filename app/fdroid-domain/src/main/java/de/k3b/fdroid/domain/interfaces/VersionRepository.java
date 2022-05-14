@@ -35,4 +35,6 @@ public interface VersionRepository extends Repository, AppDetailRepository<Versi
     void delete(Version version);
 
     List<Version> findByAppId(int appId);
+
+    List<Version> findBestBySdkAndNative(int sdkversion, String nativeCode);
 }

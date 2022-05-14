@@ -1,11 +1,10 @@
 todo
 
-AppListActivity: show "... loading" if data is not ready yet AppListActivity: add icons
+* AppListActivity: add async icon load
 
 ------
 
 * ??? do i need a usecase layer on top of service? i.e. import-v1-usecase
-* v add spring-boot-webserver
 * add support to add a Repo to RepoListActivity
 * > Edit repo Dialog
 * ? Barcodescanner
@@ -18,7 +17,6 @@ AppListActivity: show "... loading" if data is not ready yet AppListActivity: ad
     * Category
     * android-version
     * sorted by
-  * navigate from AppList to RepoList
 * add support to download appIcons (and app descr images)
 
 Android-Architecture

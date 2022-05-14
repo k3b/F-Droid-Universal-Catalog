@@ -44,6 +44,11 @@ public class VersionRepositoryAdapter extends RepositoryAdapterBase<Version, Ver
     }
 
     @Override
+    public List<Version> findBestBySdkAndNative(int sdkversion, String nativeCode) {
+        return jpa.findBestBySdkAndNative(sdkversion, nativeCode);
+    }
+
+    @Override
     public List<Version> findByAppIds(List<Integer> appIds) {
         return jpa.findByAppIds(appIds);
     }

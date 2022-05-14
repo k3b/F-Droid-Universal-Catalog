@@ -73,4 +73,16 @@ public class VersionRepositoryTest {
         List<Version> version = versionRepository.findByAppIds(Arrays.asList(appId));
         Assert.isTrue(version.size() == 1, "found 1");
     }
+
+    @Test
+    public void findBestBySdkVersion_noNativeCode() {
+        List<Version> versions = versionRepository.findBestBySdkAndNative(8, null);
+        Assert.isTrue(versions.size() == 1);
+    }
+
+    @Test
+    public void findBestBySdkVersion_withNativeCode() {
+        List<Version> versions = versionRepository.findBestBySdkAndNative(8, "%arm7%");
+        Assert.isTrue(versions.size() == 0);
+    }
 }

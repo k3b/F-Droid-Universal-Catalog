@@ -40,5 +40,21 @@ public interface VersionRepositoryJpa extends CrudRepository<Version, Integer> {
             "where al.appId in (?1) " +
             "order by al.versionCode desc")
     List<Version> findByAppIds(List<Integer> appIds);
+
+    @Query(value = "SELECT MAX(av.id) AS id, " +
+            " av.appId, av.repoId, " +
+            " min(av.minSdkVersion) AS minSdkVersion, " +
+            " max(av.maxSdkVersion) AS maxSdkVersion, " +
+            " max(av.targetSdkVersion) AS targetSdkVersion, " +
+            " max(av.versionCode) AS versionCode, " +
+            " max(av.added) AS added, " +
+            " max(av.nativecode) AS nativecode, " +
+            " max(av.size) AS size " +
+            "FROM AppVersion AS av " +
+            "WHERE av.minSdkVersion <= :sdkversion AND " +
+            "((av.maxSdkVersion IS NULL) OR (av.maxSdkVersion = 0) OR (av.maxSdkVersion >= :sdkversion)) AND " +
+            "(av.nativecode IS NULL OR :nativeCode IS NULL OR av.nativecode like :nativeCode) " +
+            "GROUP BY av.appId, av.repoId ", nativeQuery = true)
+    List<Version> findBestBySdkAndNative(int sdkversion, String nativeCode);
 }
 
