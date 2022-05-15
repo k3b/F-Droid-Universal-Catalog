@@ -32,11 +32,10 @@ import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
-import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.util.StringUtil;
 
 /**
- * get the appicon from local cache or download from repository
+ * get the appicon from local repoCache or download from repository
  */
 public class AppIconService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_HTML);
@@ -44,14 +43,14 @@ public class AppIconService {
     // iconCacheDir @Value("${de.k3b.fdroid.downloads.icons:~/.fdroid/downloads/icons}")
     private final File iconCacheDir;
 
-    private final RepoRepository repoRepository;
     private final AppRepository appRepository;
+    private final CacheService<Repo> repoCache;
 
-    public AppIconService(String iconCacheDir, RepoRepository repoRepository, AppRepository appRepository) {
+    public AppIconService(String iconCacheDir, CacheService<Repo> repoCache, AppRepository appRepository) {
+        this.repoCache = repoCache;
         if (iconCacheDir == null) throw new NullPointerException();
 
         this.appRepository = appRepository;
-        this.repoRepository = repoRepository;
         this.iconCacheDir = new File(iconCacheDir);
         this.iconCacheDir.mkdirs();
     }
@@ -63,12 +62,16 @@ public class AppIconService {
         File localIconFile = getLocalIconFile(app);
 
         if (localIconFile != null && !localIconFile.exists()) {
-            Repo repo = repoRepository.findFirstByAppId(app.getId());
-            if (repo != null) {
-                String appIconUrl = repo.getAppIconUrl(app.getIcon());
-                if (!StringUtil.isEmpty(appIconUrl)) {
-                    download(localIconFile, appIconUrl);
-                    return localIconFile;
+            Integer repoId = app.getResourceRepoId();
+            if (repoId != null) {
+                Repo repo = repoCache.getItemById(repoId);
+                if (repo != null) {
+                    String appIconUrl = repo.getAppIconUrl(app.getIcon());
+                    if (!StringUtil.isEmpty(appIconUrl)) {
+                        if (download(localIconFile, appIconUrl)) {
+                            return localIconFile;
+                        }
+                    }
                 }
             }
             return null;
@@ -88,7 +91,7 @@ public class AppIconService {
         return localIconFile;
     }
 
-    private void download(File localIconFile, String appIconUrl) {
+    private boolean download(File localIconFile, String appIconUrl) {
 
         InputStream response = null;
         FileOutputStream outputStream = null;
@@ -102,6 +105,7 @@ public class AppIconService {
                     outputStream = new FileOutputStream(localIconFile, false);
                     IOUtils.copy(response, outputStream);
                     LOGGER.debug("getLocalIconFile-Downladed('{}' <- '{}')", localIconFile, appIconUrl);
+                    return true;
                 }
             }
 
@@ -112,6 +116,7 @@ public class AppIconService {
         } finally {
             IOUtils.closeQuietly(outputStream, response);
         }
+        return false;
     }
 
     private File getLocalIconFile(App app) {

@@ -36,11 +36,13 @@ import java.util.List;
 
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.AppSearchParameter;
+import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.interfaces.AppDetailRepository;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 import de.k3b.fdroid.service.AppIconService;
 import de.k3b.fdroid.service.AppWithDetailsPagerService;
+import de.k3b.fdroid.service.CacheService;
 import de.k3b.fdroid.service.adapter.AppRepositoryAdapterImpl;
 
 @Controller
@@ -57,7 +59,8 @@ public class AppController {
         AppDetailRepository<App> appAppDetailRepository = new AppRepositoryAdapterImpl(appRepository);
         appWithDetailsPagerService = new AppWithDetailsPagerService(
                 appAppDetailRepository, null, null, null);
-        appIconService = new AppIconService(iconsDir, repoRepository, appRepository);
+        CacheService<Repo> cache = new CacheService<>(repoRepository.findAll());
+        appIconService = new AppIconService(iconsDir, cache, appRepository);
     }
 
     @GetMapping("/App/app")

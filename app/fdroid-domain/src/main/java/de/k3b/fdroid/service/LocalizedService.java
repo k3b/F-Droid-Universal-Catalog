@@ -106,7 +106,8 @@ public class LocalizedService {
         StringBuilder description = new StringBuilder();
         StringBuilder whatsNew = new StringBuilder();
         StringBuilder phoneScreenshots = new StringBuilder();
-        String icon = null;
+        String roomIcon = roomApp.getIcon();
+        String icon = roomIcon;
 
         Localized[] roomLocalizedListSortByPrio = sortByPrioDesc(roomLocalizedList);
 
@@ -127,7 +128,10 @@ public class LocalizedService {
                 add(phoneScreenshots, phoneScreenshot, "phoneScreenshot", EntityCommon.MAX_LEN_AGGREGATED, roomApp, "", ",");
             }
             if (icon == null) {
-                icon = StringUtil.emptyAsNull(loc.getIcon());
+                String locIcon = loc.getIcon();
+                if (locIcon != null && !locIcon.endsWith("=.png")) {
+                    icon = StringUtil.emptyAsNull(locIcon);
+                }
             }
         }
         roomApp.setSearchName(name.toString());
@@ -135,7 +139,7 @@ public class LocalizedService {
         roomApp.setSearchDescription(description.toString());
         roomApp.setSearchWhatsNew(whatsNew.toString());
         roomApp.setSearchPhoneScreenshots(phoneScreenshots.toString());
-        if (icon != null && repoId != 0) {
+        if (roomIcon == null && icon != null && repoId != 0) {
             roomApp.setIcon(icon);
             roomApp.setResourceRepoId(repoId);
         }

@@ -1,26 +1,10 @@
 todo
 
-app (E,M)
-
-* resourceRepoId
-* icon (from AppCommon)
-* searchPhoneScreenshots
-
-Localized (E,M)
-
-* phoneScreenshots
-
-Repo (E,M,I)
-
-* icon
-* repoTyp ('t'est, 'n'ightly, 's'table, 'h'istoric, null == unknown)
-
-entity migration initial data services (searchField-Update, localized-merge, new-resourceUpdate,
-iconservice, AppWithDetails, AppWithDetailsPager)
-
+* fix app icon size
 
 -----
 
+* repo add icon to display
 * AppListActivity: add async icon load
 
 ------

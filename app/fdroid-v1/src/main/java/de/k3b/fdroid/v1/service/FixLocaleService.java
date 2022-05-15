@@ -28,6 +28,7 @@ public class FixLocaleService extends de.k3b.fdroid.service.FixLocaleService {
     public App fix(App app) {
         Map<String, Localized> localesOld = (app == null) ? null : app.getLocalized();
         if (localesOld != null) {
+            convertIcons(app.getPackageName(), localesOld);
             Map<String, Localized> localesNew = fix(localesOld);
 
             addEnLocaleIfneccessary(localesNew, app.getSummary(), app.getDescription(), Localized.class);
@@ -35,6 +36,17 @@ public class FixLocaleService extends de.k3b.fdroid.service.FixLocaleService {
         }
 
         return app;
+    }
+
+    private void convertIcons(String packageName, Map<String, Localized> localesOld) {
+        for (Map.Entry<String, Localized> entry : localesOld.entrySet()) {
+            String locale = entry.getKey();
+            Localized localized = entry.getValue();
+            String icon = localized.getIcon();
+            if (icon != null && icon.startsWith("icon_") && icon.endsWith("=.png")) {
+                localized.setIcon("../" + packageName + "/" + locale + "/icon.png");
+            }
+        }
     }
 
 }
