@@ -1,27 +1,27 @@
 toString() - Properties of Entities
 de.k3b.fdroid.domain.App
 	added
-	changelog(14)
-	icon(3)
+	changelog(13)
+	icon(21)
 	id(01)
-	issueTracker(17)
+	issueTracker(16)
 	lastUpdated
-	license(18)
-	packageName(13)
+	license(17)
+	packageName(12)
 	resourceRepoId(02)
-	searchCategory(12)
-	searchDescription(7)
-	searchName(4)
-	searchPhoneScreenshots(6)
-	searchSdk(10)
+	searchCategory(11)
+	searchDescription(6)
+	searchName(3)
+	searchPhoneScreenshots(5)
+	searchSdk(9)
 	searchSigner
-	searchSummary(5)
-	searchVersion(9)
-	searchWhatsNew(8)
-	sourceCode(19)
-	suggestedVersionCode(16)
-	suggestedVersionName(15)
-	webSite(20)
+	searchSummary(4)
+	searchVersion(8)
+	searchWhatsNew(7)
+	sourceCode(18)
+	suggestedVersionCode(15)
+	suggestedVersionName(14)
+	webSite(19)
 de.k3b.fdroid.domain.AppCategory
 	appId(02)
 	categoryId(03)
@@ -70,7 +70,7 @@ de.k3b.fdroid.domain.Repo
 	autoDownloadEnabled
 	description(19)
 	downloadTaskId(11)
-	icon(12)
+	icon(17)
 	id(01)
 	jarSigningCertificate(3)
 	jarSigningCertificateFingerprint(4)
@@ -79,12 +79,12 @@ de.k3b.fdroid.domain.Repo
 	lastUsedDownloadDateTimeUtc
 	lastUsedDownloadMirror(5)
 	lastVersionCount(09)
-	maxage(17)
+	maxage(16)
 	mirrors(2)
-	name(14)
-	repoTyp(13)
+	name(13)
+	repoTyp(12)
 	timestamp
-	version(16)
+	version(15)
 de.k3b.fdroid.domain.Version
 	added
 	apkName(13)

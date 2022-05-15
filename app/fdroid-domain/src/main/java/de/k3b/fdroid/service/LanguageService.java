@@ -42,14 +42,16 @@ import de.k3b.fdroid.util.StringUtil;
  * Exception: chinese mainland zh-CN and taiwan zh-TW use different symbols: no canonical
  */
 
-public class LanguageService {
+public class LanguageService extends CacheService<Locale> {
     /* See {@link #getLanguagePriorityNewItem(String)} */
     public static final int LANGUAGE_PRIORITY_HIDDEN = -1;
 
     private static final Map<String, String> LANGUAGE_DEFINITIONS = defineLanguages();
 
-    /** used to guess language priority. Calculated on demand by {@link #getMyLocale()}.
-     * See {@link #getLanguagePriorityNewItem(String)} */
+    /**
+     * used to guess language priority. Calculated on demand by {@link #getMyLocale()}.
+     * See {@link #getLanguagePriorityNewItem(String)}
+     */
     private static String myLocale = null;
 
     private final LocaleRepository localeRepository;
@@ -57,8 +59,7 @@ public class LanguageService {
     /* See {@link #getLanguagePriorityNewItem(String)} */
     private final int languagePriorityNewItem = 0;
 
-    Map<Integer, de.k3b.fdroid.domain.Locale> id2Locale = null;
-    Map<String, de.k3b.fdroid.domain.Locale> code2Locale = null;
+    Map<String, Locale> code2Locale = null;
 
     public LanguageService(LocaleRepository localeRepository) {
         this.localeRepository = localeRepository;
@@ -82,7 +83,18 @@ public class LanguageService {
     }
 
     public LanguageService init() {
-        return init(localeRepository.findAll());
+        init(localeRepository.findAll());
+        return this;
+    }
+
+    protected void init(List<Locale> itemList) {
+        code2Locale = new HashMap<>();
+        super.init(itemList);
+    }
+
+    protected void init(Locale locale) {
+        super.init(locale);
+        code2Locale.put(locale.getCode(), locale);
     }
 
     public static boolean setTranslations(String localeCode, Locale locale) {
@@ -141,17 +153,6 @@ public class LanguageService {
     public static boolean isHidden(Locale locale) {
         int languagePriority = (locale == null) ? LANGUAGE_PRIORITY_HIDDEN : locale.getLanguagePriority();
         return isHidden(languagePriority);
-    }
-
-    // to allow unittesting without the need to mock localeRepository
-    protected LanguageService init(List<Locale> locales) {
-        id2Locale = new HashMap<>();
-        code2Locale = new HashMap<>();
-
-        for (Locale locale : locales) {
-            init(locale);
-        }
-        return this;
     }
 
     /**
@@ -271,11 +272,6 @@ public class LanguageService {
         return line.split("\\|");
     }
 
-    protected void init(Locale locale) {
-        id2Locale.put(locale.getId(), locale);
-        code2Locale.put(locale.getCode(), locale);
-    }
-
     public static boolean isHidden(int languagePriority) {
         return languagePriority == LANGUAGE_PRIORITY_HIDDEN;
     }
@@ -290,11 +286,6 @@ public class LanguageService {
     public String getLocaleCodeById(int localeId) {
         Locale locale = getItemById(localeId);
         return (locale == null) ? null : locale.getCode();
-    }
-
-    public Locale getItemById(int localeId) {
-        Locale locale = (localeId == 0) ? null : id2Locale.get(localeId);
-        return locale;
     }
 
     /**

@@ -3,6 +3,7 @@ de.k3b.fdroid.v1.domain.App
 	added
 	changelog(4)
 	description(2)
+	icon(12)
 	issueTracker(7)
 	lastUpdated
 	license(8)
@@ -26,8 +27,9 @@ de.k3b.fdroid.domain.common.ProfileCommon
 	versionCode(02)
 	versionName(3)
 de.k3b.fdroid.v1.domain.Repo
-	address(5)
-	description(6)
+	address(6)
+	description(7)
+	icon(5)
 	maxage(04)
 	name(1)
 	timestamp

@@ -29,36 +29,32 @@ import de.k3b.fdroid.domain.interfaces.CategoryRepository;
  * Service to cache/find/insert Category info.
  */
 
-public class CategoryService {
+public class CategoryService extends CacheService<Category> {
     private final CategoryRepository categoryRepository;
 
-    Map<Integer, Category> id2Category = null;
-    Map<String, Category> name2Category = null;
-
+    Map<String, Category> name2Category;
 
     public CategoryService(CategoryRepository categoryRepository) {
-
         this.categoryRepository = categoryRepository;
     }
 
     public CategoryService init() {
-        id2Category = new HashMap<>();
-        name2Category = new HashMap<>();
-        List<Category> categories = categoryRepository.findAll();
-
-        for (Category category : categories) {
-            init(category);
-        }
+        init(categoryRepository.findAll());
         return this;
     }
 
-    private void init(Category category) {
-        id2Category.put(category.getId(), category);
+    protected void init(List<Category> itemList) {
+        name2Category = new HashMap<>();
+        super.init(itemList);
+    }
+
+    protected void init(Category category) {
+        super.init(category);
         name2Category.put(category.getName(), category);
     }
 
     public String getCategoryName(int categoryId) {
-        Category category = (categoryId == 0) ? null : id2Category.get(categoryId);
+        Category category = (categoryId == 0) ? null : getItemById(categoryId);
         return (category == null) ? null : category.getName();
     }
 
