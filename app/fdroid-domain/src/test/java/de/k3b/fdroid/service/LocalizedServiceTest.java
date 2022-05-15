@@ -60,9 +60,9 @@ public class LocalizedServiceTest {
         App app = new App();
 
         Localized pl = createLocalized(2, "pl");
-        languageService.getLocaleById(2).setLanguagePriority(0);
+        languageService.getItemById(2).setLanguagePriority(0);
 
-        localizedService.recalculateSearchFields(app, Arrays.asList(
+        localizedService.recalculateSearchFields(0, app, Arrays.asList(
                 localizedEn, localizedDe, pl));
         assertEquals("Name-de | Name-en | pl: Name-pl", app.getSearchName());
     }

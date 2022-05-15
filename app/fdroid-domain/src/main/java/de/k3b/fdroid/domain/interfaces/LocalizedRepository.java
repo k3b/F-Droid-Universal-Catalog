@@ -32,6 +32,14 @@ public interface LocalizedRepository extends Repository {
 
     void update(Localized localized);
 
+    default void save(Localized localized) {
+        if (localized.getId() == 0) {
+            insert(localized);
+        } else {
+            update(localized);
+        }
+    }
+
     void delete(Localized localized);
 
     List<Localized> findByAppId(int appId);

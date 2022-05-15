@@ -3,7 +3,6 @@ de.k3b.fdroid.v1.domain.App
 	added
 	changelog(4)
 	description(2)
-	icon(12)
 	issueTracker(7)
 	lastUpdated
 	license(8)

@@ -36,7 +36,6 @@ public class Repo extends RepoCommon implements V1JsonEntity {
 
     private List<String> mirrors = null;
 
-
     public List<String> getMirrors() {
         return mirrors;
     }

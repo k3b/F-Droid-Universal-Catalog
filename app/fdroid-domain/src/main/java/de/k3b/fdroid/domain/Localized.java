@@ -18,8 +18,11 @@
  */
 package de.k3b.fdroid.domain;
 
+import javax.persistence.Column;
+
 import de.k3b.fdroid.domain.common.LocalizedCommon;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
+import de.k3b.fdroid.util.StringUtil;
 
 /**
  * Android independent: Pojo-s with all properties that are persisted in the Database.
@@ -46,6 +49,15 @@ public class Localized extends LocalizedCommon implements AppDetail {
     @androidx.room.ColumnInfo(index = true)
     private int localeId;
 
+    @Column(length = MAX_LEN_AGGREGATED)
+    private String phoneScreenshots;
+    /**
+     * calculated and cached from {@link #phoneScreenshots}. Not persisted in Database
+     */
+    @androidx.room.Ignore
+    @javax.persistence.Transient
+    private String[] phoneScreenshotArray;
+
     // needed by android-room and jpa
     public Localized() {
     }
@@ -61,6 +73,7 @@ public class Localized extends LocalizedCommon implements AppDetail {
         toStringBuilder(sb, "appId", this.appId);
         toStringBuilder(sb, "localeId", this.localeId);
         super.toStringBuilder(sb);
+        toStringBuilder(sb, "phoneScreenshots", phoneScreenshots, 20);
     }
 
     public int getId() {
@@ -85,5 +98,25 @@ public class Localized extends LocalizedCommon implements AppDetail {
 
     public void setLocaleId(int localeId) {
         this.localeId = localeId;
+    }
+
+    /**
+     * comma seperated list to be downloaded from
+     * {@link Repo} identified by {@link App#getResourceRepoId()}
+     */
+    public String getPhoneScreenshots() {
+        return phoneScreenshots;
+    }
+
+    public void setPhoneScreenshots(String phoneScreenshots) {
+        this.phoneScreenshots = phoneScreenshots;
+        phoneScreenshotArray = null;
+    }
+
+    public String[] getPhoneScreenshotArray() {
+        if (phoneScreenshotArray == null) {
+            phoneScreenshotArray = StringUtil.toStringArray(phoneScreenshots);
+        }
+        return phoneScreenshotArray;
     }
 }

@@ -74,14 +74,14 @@ public interface RepoDao extends RepoRepository {
         if (result.size() == 0) {
             // should be done with Room-Migratoins but the migratons-sql was never called
             // https://developer.android.com/training/data-storage/room/migrating-db-versions
-            Repo fdroid = new Repo("f-droid.org", "https://f-droid.org/repo");
+            Repo fdroid = new Repo("f-droid.org", "https://f-droid.org/repo", "s");
             fdroid.setAutoDownloadEnabled(true);
             add(result,
                     fdroid,
-                    new Repo("apt.izzysoft.de","https://apt.izzysoft.de/fdroid/repo"),
-                    new Repo("f-droid.org/archive","https://f-droid.org/archive"),
-                    new Repo("guardianproject.info","https://guardianproject.info/fdroid/repo")
-                    );
+                    new Repo("apt.izzysoft.de", "https://apt.izzysoft.de/fdroid/repo", "n"),
+                    new Repo("f-droid.org/archive", "https://f-droid.org/archive", "a"),
+                    new Repo("guardianproject.info", "https://guardianproject.info/fdroid/repo", "s")
+            );
         }
         return result;
     }

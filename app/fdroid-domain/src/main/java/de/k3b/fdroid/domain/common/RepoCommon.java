@@ -40,7 +40,7 @@ public class RepoCommon extends EntityCommon {
     @androidx.room.ColumnInfo(defaultValue = "0")
     private int maxage;
 
-    // private String icon;
+    private String icon;
     private String address;
     private String description;
 
@@ -49,7 +49,7 @@ public class RepoCommon extends EntityCommon {
         dest.setTimestamp(src.getTimestamp());
         dest.setVersion(src.getVersion());
         dest.setMaxage(src.getMaxage());
-        // dest.setIcon(src.getIcon());
+        dest.setIcon(src.getIcon());
         dest.setAddress(src.getAddress());
         String description = src.getDescription();
         if (description != null && description.length() > 255) {
@@ -108,7 +108,6 @@ public class RepoCommon extends EntityCommon {
         this.maxage = maxage;
     }
 
-    /*
     public String getIcon() {
         return icon;
     }
@@ -116,7 +115,6 @@ public class RepoCommon extends EntityCommon {
     public void setIcon(String icon) {
         this.icon = icon;
     }
-*/
 
     public String getAddress() {
         return address;
@@ -153,7 +151,7 @@ public class RepoCommon extends EntityCommon {
         toDateStringBuilder(sb, "timestamp", this.timestamp);
         toStringBuilder(sb, "version", this.version);
         toStringBuilder(sb, "maxage", this.maxage);
-        // toStringBuilder(sb, "icon", this.icon);
+        toStringBuilder(sb, "icon", this.icon);
         toStringBuilder(sb, "address", this.address);
         toStringBuilder(sb, "description", this.description, 40);
     }

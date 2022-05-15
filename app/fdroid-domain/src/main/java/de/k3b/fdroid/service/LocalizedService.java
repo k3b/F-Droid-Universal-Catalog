@@ -54,9 +54,9 @@ public class LocalizedService {
     }
 
     private int compareByPrio(Localized x, Localized y) {
-        int px = languageService.getLocaleById(x.getLocaleId()).getLanguagePriority();
-        int py = languageService.getLocaleById(y.getLocaleId()).getLanguagePriority();
-        return -Integer.compare(px,py);
+        int px = languageService.getItemById(x.getLocaleId()).getLanguagePriority();
+        int py = languageService.getItemById(y.getLocaleId()).getLanguagePriority();
+        return -Integer.compare(px, py);
     }
 
     private void add(StringBuilder dest, String src, String fieldName, int maxLen, App roomApp,
@@ -93,24 +93,26 @@ public class LocalizedService {
     public boolean isHidden(Localized roomLocalized) {
         if (roomLocalized == null) return true;
 
-        Locale locale = languageService.getLocaleById(roomLocalized.getLocaleId());
+        Locale locale = languageService.getItemById(roomLocalized.getLocaleId());
         return (locale != null && LanguageService.isHidden(locale));
     }
 
     /**
      * App.searchXxx calculated from detail Localized-s
      */
-    public void recalculateSearchFields(App roomApp, List<Localized> roomLocalizedList) {
+    public void recalculateSearchFields(int repoId, App roomApp, List<Localized> roomLocalizedList) {
         StringBuilder name = new StringBuilder();
         StringBuilder summary = new StringBuilder();
         StringBuilder description = new StringBuilder();
         StringBuilder whatsNew = new StringBuilder();
+        StringBuilder phoneScreenshots = new StringBuilder();
+        String icon = null;
 
         Localized[] roomLocalizedListSortByPrio = sortByPrioDesc(roomLocalizedList);
 
         for (Localized loc : roomLocalizedListSortByPrio) {
 
-            Locale locale = languageService.getLocaleById(loc.getLocaleId());
+            Locale locale = languageService.getItemById(loc.getLocaleId());
             String languagePrefix = "";
             if (languageService.getOrCreateLocaleByCode(locale.getCode()).getLanguagePriority() < 1) {
                 // only visible if it is not a prefered language
@@ -121,11 +123,21 @@ public class LocalizedService {
             add(summary, loc.getSummary(), "summary", EntityCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, SEPERATOR_SUMMARY);
             add(description, loc.getDescription(), "description", EntityCommon.MAX_LEN_AGGREGATED_DESCRIPTION, roomApp, languagePrefix, SEPERATOR_DESCRIPTION);
             add(whatsNew, loc.getWhatsNew(), "whatsNew", EntityCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, SEPERATOR_WHATS_NEW);
-
+            for (String phoneScreenshot : loc.getPhoneScreenshotArray()) {
+                add(phoneScreenshots, phoneScreenshot, "phoneScreenshot", EntityCommon.MAX_LEN_AGGREGATED, roomApp, "", ",");
+            }
+            if (icon == null) {
+                icon = StringUtil.emptyAsNull(loc.getIcon());
+            }
         }
         roomApp.setSearchName(name.toString());
         roomApp.setSearchSummary(summary.toString());
         roomApp.setSearchDescription(description.toString());
         roomApp.setSearchWhatsNew(whatsNew.toString());
+        roomApp.setSearchPhoneScreenshots(phoneScreenshots.toString());
+        if (icon != null && repoId != 0) {
+            roomApp.setIcon(icon);
+            roomApp.setResourceRepoId(repoId);
+        }
     }
 }

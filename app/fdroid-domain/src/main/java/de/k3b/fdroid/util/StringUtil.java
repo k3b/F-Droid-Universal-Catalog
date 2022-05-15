@@ -42,6 +42,13 @@ public class StringUtil {
         return s;
     }
 
+    public static String maxLen(String value, int maxLen, String fieldName) {
+        if (value != null && value.length() > maxLen) {
+            throw new IllegalArgumentException(fieldName + " ('" + value + "') > " + maxLen);
+        }
+        return value;
+    }
+
     public static String replaceEmpty(String newValue, String emptyValueReplacement) {
         if (StringUtil.isEmpty(newValue)) return emptyValueReplacement;
         return newValue;

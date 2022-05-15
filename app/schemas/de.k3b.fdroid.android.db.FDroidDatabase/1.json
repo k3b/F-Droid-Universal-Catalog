@@ -2,17 +2,29 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "5603e67040a12ceeac07d3282d29a207",
+    "identityHash": "fbac59f8cce84d3acfe9786df31797d4",
     "entities": [
       {
         "tableName": "App",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `searchName` TEXT, `searchSummary` TEXT, `searchDescription` TEXT, `searchWhatsNew` TEXT, `searchVersion` TEXT, `searchSdk` TEXT, `searchSigner` TEXT, `searchCategory` TEXT, `packageName` TEXT, `changelog` TEXT, `suggestedVersionName` TEXT, `suggestedVersionCode` TEXT, `issueTracker` TEXT, `license` TEXT, `sourceCode` TEXT, `webSite` TEXT, `added` INTEGER NOT NULL, `icon` TEXT, `lastUpdated` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `resourceRepoId` INTEGER, `icon` TEXT, `searchName` TEXT, `searchSummary` TEXT, `searchPhoneScreenshots` TEXT, `searchDescription` TEXT, `searchWhatsNew` TEXT, `searchVersion` TEXT, `searchSdk` TEXT, `searchSigner` TEXT, `searchCategory` TEXT, `packageName` TEXT, `changelog` TEXT, `suggestedVersionName` TEXT, `suggestedVersionCode` TEXT, `issueTracker` TEXT, `license` TEXT, `sourceCode` TEXT, `webSite` TEXT, `added` INTEGER NOT NULL, `lastUpdated` INTEGER NOT NULL, FOREIGN KEY(`resourceRepoId`) REFERENCES `Repo`(`id`) ON UPDATE NO ACTION ON DELETE SET NULL )",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "resourceRepoId",
+            "columnName": "resourceRepoId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "searchName",
@@ -23,6 +35,12 @@
           {
             "fieldPath": "searchSummary",
             "columnName": "searchSummary",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "searchPhoneScreenshots",
+            "columnName": "searchPhoneScreenshots",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -117,12 +135,6 @@
             "notNull": true
           },
           {
-            "fieldPath": "icon",
-            "columnName": "icon",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
             "fieldPath": "lastUpdated",
             "columnName": "lastUpdated",
             "affinity": "INTEGER",
@@ -153,9 +165,30 @@
             ],
             "orders": [],
             "createSql": "CREATE INDEX IF NOT EXISTS `index_App_packageName` ON `${TABLE_NAME}` (`packageName`)"
+          },
+          {
+            "name": "index_App_resourceRepoId",
+            "unique": false,
+            "columnNames": [
+              "resourceRepoId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_App_resourceRepoId` ON `${TABLE_NAME}` (`resourceRepoId`)"
           }
         ],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "Repo",
+            "onDelete": "SET NULL",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "resourceRepoId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       },
       {
         "tableName": "AppCategory",
@@ -348,7 +381,7 @@
       },
       {
         "tableName": "Localized",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `localeId` INTEGER NOT NULL, `name` TEXT, `summary` TEXT, `description` TEXT, `icon` TEXT, `video` TEXT, `whatsNew` TEXT, FOREIGN KEY(`appId`) REFERENCES `App`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`localeId`) REFERENCES `Locale`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `localeId` INTEGER NOT NULL, `phoneScreenshots` TEXT, `name` TEXT, `summary` TEXT, `description` TEXT, `icon` TEXT, `video` TEXT, `whatsNew` TEXT, FOREIGN KEY(`appId`) REFERENCES `App`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`localeId`) REFERENCES `Locale`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -367,6 +400,12 @@
             "columnName": "localeId",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "phoneScreenshots",
+            "columnName": "phoneScreenshots",
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "name",
@@ -477,7 +516,7 @@
       },
       {
         "tableName": "Repo",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `mirrors` TEXT, `jarSigningCertificate` TEXT, `jarSigningCertificateFingerprint` TEXT, `lastUsedDownloadMirror` TEXT, `lastErrorMessage` TEXT, `lastUsedDownloadDateTimeUtc` INTEGER NOT NULL DEFAULT 0, `lastAppCount` INTEGER NOT NULL DEFAULT 0, `lastVersionCount` INTEGER NOT NULL DEFAULT 0, `autoDownloadEnabled` INTEGER NOT NULL DEFAULT 0, `downloadTaskId` TEXT, `name` TEXT, `timestamp` INTEGER NOT NULL DEFAULT 0, `version` INTEGER NOT NULL DEFAULT 0, `maxage` INTEGER NOT NULL DEFAULT 0, `address` TEXT, `description` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `mirrors` TEXT, `jarSigningCertificate` TEXT, `jarSigningCertificateFingerprint` TEXT, `lastUsedDownloadMirror` TEXT, `lastErrorMessage` TEXT, `lastUsedDownloadDateTimeUtc` INTEGER NOT NULL DEFAULT 0, `lastAppCount` INTEGER NOT NULL DEFAULT 0, `lastVersionCount` INTEGER NOT NULL DEFAULT 0, `autoDownloadEnabled` INTEGER NOT NULL DEFAULT 0, `downloadTaskId` TEXT, `icon` TEXT, `repoTyp` TEXT, `name` TEXT, `timestamp` INTEGER NOT NULL DEFAULT 0, `version` INTEGER NOT NULL DEFAULT 0, `maxage` INTEGER NOT NULL DEFAULT 0, `address` TEXT, `description` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -546,6 +585,18 @@
           {
             "fieldPath": "downloadTaskId",
             "columnName": "downloadTaskId",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "icon",
+            "columnName": "icon",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "repoTyp",
+            "columnName": "repoTyp",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -974,10 +1025,15 @@
         "foreignKeys": []
       }
     ],
-    "views": [],
+    "views": [
+      {
+        "viewName": "AppSearch",
+        "createSql": "CREATE VIEW `${VIEW_NAME}` AS SELECT id, packageName, packageName search, 1000 score FROM App UNION\n    SELECT id, packageName, searchName search, 1000 score FROM App UNION\n    SELECT id, packageName, searchSummary search, 100 score FROM App UNION\n    SELECT id, packageName, searchWhatsNew search, 10 score FROM App UNION\n    SELECT id, packageName, searchCategory search, 50 score FROM App UNION\n    SELECT id, packageName, searchDescription search, 1 score FROM App"
+      }
+    ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5603e67040a12ceeac07d3282d29a207')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'fbac59f8cce84d3acfe9786df31797d4')"
     ]
   }
 }

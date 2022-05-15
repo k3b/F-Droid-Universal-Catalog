@@ -1,5 +1,26 @@
 todo
 
+app (E,M)
+
+* resourceRepoId
+* icon (from AppCommon)
+* searchPhoneScreenshots
+
+Localized (E,M)
+
+* phoneScreenshots
+
+Repo (E,M,I)
+
+* icon
+* repoTyp ('t'est, 'n'ightly, 's'table, 'h'istoric, null == unknown)
+
+entity migration initial data services (searchField-Update, localized-merge, new-resourceUpdate,
+iconservice, AppWithDetails, AppWithDetailsPager)
+
+
+-----
+
 * AppListActivity: add async icon load
 
 ------
@@ -18,6 +39,8 @@ todo
     * android-version
     * sorted by
 * add support to download appIcons (and app descr images)
+
+-----
 
 Android-Architecture
 

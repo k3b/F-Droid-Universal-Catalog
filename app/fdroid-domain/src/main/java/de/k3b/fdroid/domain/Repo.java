@@ -82,28 +82,25 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId {
     // uuid of WorkRequest used to download/import
     private String downloadTaskId;
 
+    private String repoTyp;
+
     public Repo() {
     }
 
     @androidx.room.Ignore
     public Repo(String name, String address) {
-        setName(name);
-        setAddress(address);
+        this(name, address, null);
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
-        toStringBuilder(sb, "id", this.id);
-        toStringBuilder(sb, "autoDownloadEnabled", this.autoDownloadEnabled);
-        toStringBuilder(sb, "lastErrorMessage", this.lastErrorMessage);
-        super.toStringBuilder(sb);
-        toStringBuilder(sb, "mirrors", this.mirrors);
-        toDateStringBuilder(sb, "lastUsedDownloadDateTimeUtc", this.lastUsedDownloadDateTimeUtc);
-        toStringBuilder(sb, "lastAppCount", this.lastAppCount);
-        toStringBuilder(sb, "lastVersionCount", this.lastVersionCount);
-        toStringBuilder(sb, "lastUsedDownloadMirror", this.lastUsedDownloadMirror);
-        toStringBuilder(sb, "jarSigningCertificate", this.jarSigningCertificate, 14);
-        toStringBuilder(sb, "jarSigningCertificateFingerprint", this.jarSigningCertificateFingerprint, 14);
-        toStringBuilder(sb, "downloadTaskId", this.downloadTaskId);
+    @androidx.room.Ignore
+    public Repo(String name, String address, String repoTyp) {
+        setName(name);
+        setAddress(address);
+        setRepoTyp(repoTyp);
+    }
+
+    public static String getV1Url(String server) {
+        return getUrl(server, V1_JAR_NAME);
     }
 
     public int getId() {
@@ -179,12 +176,25 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId {
         return url.toString();
     }
 
-    public static String getV1Url(String server) {
-        return getUrl(server, V1_JAR_NAME);
-    }
-
     public void setLastUsedDownloadMirror(String lastUsedDownloadMirror) {
         this.lastUsedDownloadMirror = removeName(lastUsedDownloadMirror);
+    }
+
+    protected void toStringBuilder(StringBuilder sb) {
+        toStringBuilder(sb, "id", this.id);
+        toStringBuilder(sb, "autoDownloadEnabled", this.autoDownloadEnabled);
+        toStringBuilder(sb, "lastErrorMessage", this.lastErrorMessage);
+
+        super.toStringBuilder(sb);
+        toStringBuilder(sb, "repoTyp", this.getRepoTyp());
+        toStringBuilder(sb, "mirrors", this.mirrors);
+        toDateStringBuilder(sb, "lastUsedDownloadDateTimeUtc", this.lastUsedDownloadDateTimeUtc);
+        toStringBuilder(sb, "lastAppCount", this.lastAppCount);
+        toStringBuilder(sb, "lastVersionCount", this.lastVersionCount);
+        toStringBuilder(sb, "lastUsedDownloadMirror", this.lastUsedDownloadMirror);
+        toStringBuilder(sb, "jarSigningCertificate", this.jarSigningCertificate, 14);
+        toStringBuilder(sb, "jarSigningCertificateFingerprint", this.jarSigningCertificateFingerprint, 14);
+        toStringBuilder(sb, "downloadTaskId", this.downloadTaskId);
     }
 
     public String getV1Url() {
@@ -198,6 +208,10 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId {
             url = getUrl(getLastUsedDownloadMirror(), "icons/" + icon);
         }
         return url;
+    }
+
+    public String getRepoIconUrl() {
+        return getAppIconUrl(getIcon());
     }
 
     public long getLastUsedDownloadDateTimeUtc() {
@@ -281,4 +295,14 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId {
         return null;
     }
 
+    /**
+     * ('t'est, 'n'ightly, 's'table, 'h'istoric, 'u'nknown)
+     */
+    public String getRepoTyp() {
+        return repoTyp;
+    }
+
+    public void setRepoTyp(String repoTyp) {
+        this.repoTyp = repoTyp;
+    }
 }

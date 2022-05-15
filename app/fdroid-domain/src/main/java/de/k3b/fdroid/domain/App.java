@@ -24,6 +24,8 @@ import static de.k3b.fdroid.service.LocalizedService.SEPERATOR_SUMMARY;
 import static de.k3b.fdroid.service.LocalizedService.SEPERATOR_WHATS_NEW;
 import static de.k3b.fdroid.service.LocalizedService.getFirst;
 
+import androidx.room.ForeignKey;
+
 import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.common.AppCommon;
@@ -35,7 +37,8 @@ import de.k3b.fdroid.service.VersionService;
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  * Database Entity compatible with Android-Room and non-android-j2se-jpa
  */
-@androidx.room.Entity(
+@androidx.room.Entity(foreignKeys = {@androidx.room.ForeignKey(entity = Repo.class,
+        parentColumns = "id", childColumns = "resourceRepoId", onDelete = ForeignKey.SET_NULL)},
         indices = {@androidx.room.Index("id"), @androidx.room.Index({"packageName"})}
 )
 @javax.persistence.Entity
@@ -47,6 +50,9 @@ public class App extends AppCommon implements AppDetail {
     @androidx.room.PrimaryKey(autoGenerate = true)
     private int id;
 
+    @androidx.room.ColumnInfo(index = true)
+    private Integer resourceRepoId;
+
     // public List<Localized> localisations;
     // public List<Version> versions;
 
@@ -57,6 +63,10 @@ public class App extends AppCommon implements AppDetail {
     @Column(length = MAX_LEN_AGGREGATED)
     /** all different locale summary values concatenated for faster search */
     private String searchSummary;
+
+    @Column(length = MAX_LEN_AGGREGATED)
+    /** all different locale Phone Screenshots */
+    private String searchPhoneScreenshots;
 
     @Column(length = MAX_LEN_AGGREGATED_DESCRIPTION)
     /** all different locale name description concatenated for faster search */
@@ -82,13 +92,16 @@ public class App extends AppCommon implements AppDetail {
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
+        toStringBuilder(sb, "resourceRepoId", resourceRepoId);
         super.toStringBuilder(sb);
+
         toStringBuilder(sb, "searchVersion", this.searchVersion);
         toStringBuilder(sb, "searchSdk", this.searchSdk);
         toStringBuilder(sb, "searchCategory", this.searchCategory);
 
         toStringBuilder(sb, "searchName", this.searchName, 20);
         toStringBuilder(sb, "searchSummary", this.searchSummary, 20);
+        toStringBuilder(sb, "searchPhoneScreenshots", searchPhoneScreenshots, 20);
         toStringBuilder(sb, "searchDescription", this.searchDescription, 20);
         toStringBuilder(sb, "searchWhatsNew", this.searchWhatsNew, 20);
 
@@ -194,5 +207,26 @@ public class App extends AppCommon implements AppDetail {
 
     public String getSdk() {
         return VersionService.getLast(searchSdk);
+    }
+
+    /**
+     * Database FK to {@link Repo#getId()} : Repo-Server where {@link #getIcon()},
+     * {@link #getSearchPhoneScreenshots()} , {@link Localized#getPhoneScreenshots()}
+     * can be downloaded from.
+     */
+    public Integer getResourceRepoId() {
+        return resourceRepoId;
+    }
+
+    public void setResourceRepoId(Integer resourceRepoId) {
+        this.resourceRepoId = resourceRepoId;
+    }
+
+    public String getSearchPhoneScreenshots() {
+        return searchPhoneScreenshots;
+    }
+
+    public void setSearchPhoneScreenshots(String searchPhoneScreenshots) {
+        this.searchPhoneScreenshots = searchPhoneScreenshots;
     }
 }

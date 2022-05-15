@@ -76,7 +76,7 @@ public class AppUpdateService implements UpdateService, ProgressObservable {
         if (appCategoryUpdateService != null)
             appCategoryUpdateService.update(roomApp.getId(), v1App.getCategories());
         if (localizedUpdateService != null) {
-            localizedUpdateService.update(roomApp.getId(), roomApp, v1App.getLocalized());
+            localizedUpdateService.update(repoId, roomApp.getId(), roomApp, v1App.getLocalized());
             appRepository.update(roomApp);
         }
         return roomApp;

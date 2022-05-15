@@ -35,6 +35,11 @@ import de.k3b.fdroid.domain.common.LocalizedCommon;
 public class Localized extends LocalizedCommon implements V1JsonEntity {
     private List<String> phoneScreenshots = null;
 
+    public int getPhoneScreenshotCount() {
+        if (phoneScreenshots != null) return phoneScreenshots.size();
+        return 0;
+    }
+
     public List<String> getPhoneScreenshots() {
         return phoneScreenshots;
     }

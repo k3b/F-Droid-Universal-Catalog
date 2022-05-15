@@ -23,9 +23,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
+import de.k3b.fdroid.domain.Locale;
 import de.k3b.fdroid.domain.Localized;
 import de.k3b.fdroid.domain.interfaces.LocaleRepository;
 import de.k3b.fdroid.util.StringUtil;
@@ -85,23 +85,7 @@ public class LanguageService {
         return init(localeRepository.findAll());
     }
 
-    // to allow unittesting without the need to mock localeRepository
-    protected LanguageService init(List<de.k3b.fdroid.domain.Locale> locales) {
-        id2Locale = new HashMap<>();
-        code2Locale = new HashMap<>();
-
-        for (de.k3b.fdroid.domain.Locale locale : locales) {
-            init(locale);
-        }
-        return this;
-    }
-
-    protected void init(de.k3b.fdroid.domain.Locale locale) {
-        id2Locale.put(locale.getId(), locale);
-        code2Locale.put(locale.getCode(), locale);
-    }
-
-    public static boolean setTranslations(String localeCode, de.k3b.fdroid.domain.Locale locale) {
+    public static boolean setTranslations(String localeCode, Locale locale) {
         // "de|German|Deutsch|symbol"
         String[] languageTranslation = getLanguageTranslation(localeCode);
         if (languageTranslation != null) {
@@ -122,7 +106,7 @@ public class LanguageService {
         if (normalized != null) {
             if (normalized.compareToIgnoreCase("zh") == 0) return "zh-CN";
             if (normalized.length() <= 2) {
-                return normalized.toLowerCase(Locale.ROOT);
+                return normalized.toLowerCase(java.util.Locale.ROOT);
             }
 
             if (normalized.length() == "de-rDE".length() && normalized.contains("-r")) {
@@ -133,7 +117,7 @@ public class LanguageService {
             // i.e. "de_DE" => "de-DE"
             normalized = normalized.replace("_", "-");
 
-            String normalizedLowerCase = normalized.toLowerCase(Locale.ROOT);
+            String normalizedLowerCase = normalized.toLowerCase(java.util.Locale.ROOT);
 
 
             if (normalized.charAt(2) == '-' && !normalizedLowerCase.startsWith("zh-")) {
@@ -152,6 +136,22 @@ public class LanguageService {
         }
 
         return normalized;
+    }
+
+    public static boolean isHidden(Locale locale) {
+        int languagePriority = (locale == null) ? LANGUAGE_PRIORITY_HIDDEN : locale.getLanguagePriority();
+        return isHidden(languagePriority);
+    }
+
+    // to allow unittesting without the need to mock localeRepository
+    protected LanguageService init(List<Locale> locales) {
+        id2Locale = new HashMap<>();
+        code2Locale = new HashMap<>();
+
+        for (Locale locale : locales) {
+            init(locale);
+        }
+        return this;
     }
 
     /**
@@ -271,9 +271,9 @@ public class LanguageService {
         return line.split("\\|");
     }
 
-    public static boolean isHidden(de.k3b.fdroid.domain.Locale locale) {
-        int languagePriority = (locale == null) ? LANGUAGE_PRIORITY_HIDDEN : locale.getLanguagePriority();
-        return isHidden(languagePriority);
+    protected void init(Locale locale) {
+        id2Locale.put(locale.getId(), locale);
+        code2Locale.put(locale.getCode(), locale);
     }
 
     public static boolean isHidden(int languagePriority) {
@@ -288,12 +288,12 @@ public class LanguageService {
     }
 
     public String getLocaleCodeById(int localeId) {
-        de.k3b.fdroid.domain.Locale locale = getLocaleById(localeId);
+        Locale locale = getItemById(localeId);
         return (locale == null) ? null : locale.getCode();
     }
 
-    public de.k3b.fdroid.domain.Locale getLocaleById(int localeId) {
-        de.k3b.fdroid.domain.Locale locale = (localeId == 0) ? null : id2Locale.get(localeId);
+    public Locale getItemById(int localeId) {
+        Locale locale = (localeId == 0) ? null : id2Locale.get(localeId);
         return locale;
     }
 
@@ -301,7 +301,7 @@ public class LanguageService {
      * @return LANGUAGE_PRIORITY_HIDDEN(- 1) if language is hidden
      */
     public int getOrCreateLocaleIdByCode(String localeCode) {
-        de.k3b.fdroid.domain.Locale found = getOrCreateLocaleByCode(localeCode);
+        Locale found = getOrCreateLocaleByCode(localeCode);
         if (found != null) {
             return found.getId();
         }
@@ -311,9 +311,9 @@ public class LanguageService {
     /**
      * @return null if this locale is hidden (LanguagePriority < 0)
      */
-    public de.k3b.fdroid.domain.Locale getOrCreateLocaleByCode(String localeCode) {
+    public Locale getOrCreateLocaleByCode(String localeCode) {
         if (localeCode != null) {
-            de.k3b.fdroid.domain.Locale locale = code2Locale.get(localeCode);
+            Locale locale = code2Locale.get(localeCode);
             if (locale == null) {
                 // create on demand
                 locale = createNewLocale(localeCode);
@@ -331,9 +331,9 @@ public class LanguageService {
         return null;
     }
 
-    private de.k3b.fdroid.domain.Locale createNewLocale(String localeCode) {
-        de.k3b.fdroid.domain.Locale locale;
-        locale = new de.k3b.fdroid.domain.Locale();
+    private Locale createNewLocale(String localeCode) {
+        Locale locale;
+        locale = new Locale();
         locale.setCode(localeCode);
         locale.setLanguagePriority(getLanguagePriorityNewItem(localeCode));
 
