@@ -1,9 +1,14 @@
 todo
 
-* fix app icon size
+* fix text near app icon in android
+* fix app icon size in web
 
 -----
 
+* migrations on app start:
+  * if appCount==0 and there are *.jar files in cache download:
+    * reload jars
+    * clear icon caches
 * repo add icon to display
 * AppListActivity: add async icon load
 

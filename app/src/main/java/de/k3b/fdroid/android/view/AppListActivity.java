@@ -78,7 +78,8 @@ public class AppListActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         viewModel.getPagerData().observe(this, repoList -> {
-            AppListAdapter repoListAdapter = new AppListAdapter(this, repoList);
+            AppListAdapter repoListAdapter = new AppListAdapter(
+                    this, binding.recyclerView, repoList);
             binding.recyclerView.setAdapter(repoListAdapter);
             setTitle(getString(R.string.label_version_title) + " " + viewModel.getFilter().getValue());
         });

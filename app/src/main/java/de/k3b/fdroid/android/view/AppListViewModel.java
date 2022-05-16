@@ -44,7 +44,8 @@ public class AppListViewModel extends ViewModel {
             null, null, null);
 
     private final MutableLiveData<AppSearchParameter> filter
-            = new MutableLiveData<>(new AppSearchParameter().text("k3b"));
+            // = new MutableLiveData<>(new AppSearchParameter().text("k3b"));
+            = new MutableLiveData<>(new AppSearchParameter());
     private final MutableLiveData<AppWithDetailsPagerService> pagerData = new MutableLiveData<>();
 
     public AppListViewModel() {

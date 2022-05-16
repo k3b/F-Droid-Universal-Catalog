@@ -19,7 +19,6 @@
 package de.k3b.fdroid.android.view;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,7 +30,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import de.k3b.fdroid.Global;
+import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.R;
+import de.k3b.fdroid.android.gui.CachedDownloadImageGetter;
 import de.k3b.fdroid.android.html.AndroidStringResourceMustacheContext;
 import de.k3b.fdroid.android.html.util.HtmlUtil;
 import de.k3b.fdroid.domain.App;
@@ -47,12 +48,12 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     private final FormatService formatService;
     private final int defaultBackgroundColor;
     private final int defaultForegroundColor;
-    private final ImageGetter imageGetter;
+    private final Html.ImageGetter imageGetter;
 
     /**
      * Initialize the dataset of the Adapter.
      */
-    public AppListAdapter(Context context, AppWithDetailsPagerService details) {
+    public AppListAdapter(Context context, View imageViewOwner, AppWithDetailsPagerService details) {
         this.details = details;
 
         formatService = new FormatService("list_app_summary", App.class,
@@ -61,7 +62,12 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         this.defaultBackgroundColor = HtmlUtil.getDefaultBackgroundColor(context);
         this.defaultForegroundColor = HtmlUtil.getDefaultForegroundColor(context);
         float iconSize = context.getResources().getDisplayMetrics().density * ICON_SIZE_DP;
-        this.imageGetter = new ImageGetter(context, iconSize);
+
+        this.imageGetter = new CachedDownloadImageGetter(
+                context, imageViewOwner, iconSize,
+                FDroidApplication.getAndroidServiceFactory().getAppIconService(),
+                FDroidApplication.executor
+        );
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -110,37 +116,6 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
 
         public TextView getTextView() {
             return textView;
-        }
-    }
-
-    private static class ImageGetter implements Html.ImageGetter {
-        private final Context context;
-        private final int iconSize;
-
-        public ImageGetter(Context context, float iconSize) {
-
-            this.context = context;
-            this.iconSize = (int) iconSize;
-        }
-
-        public Drawable getDrawable(String source) {
-            int id = R.drawable.ic_launcher;
-/*
-            if (source.equals("stack.jpg")) {
-                id = R.drawable.stack;
-            }
-            else if (source.equals("overflow.jpg")) {
-                id = R.drawable.overflow;
-            }
-            else {
-                return null;
-            }
-*/
-
-            Drawable d = context.getResources().getDrawable(id);
-            // d.setBounds(0,0,d.getIntrinsicWidth(),d.getIntrinsicHeight());
-            d.setBounds(0, 0, iconSize, iconSize);
-            return d;
         }
     }
 }

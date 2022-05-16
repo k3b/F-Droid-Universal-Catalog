@@ -32,13 +32,15 @@ import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.interfaces.CachedDownloadImageService;
 import de.k3b.fdroid.util.StringUtil;
 
 /**
  * get the appicon from local repoCache or download from repository
  */
-public class AppIconService {
+public class AppIconService implements CachedDownloadImageService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_HTML);
+    public static final String ICON_SUFFIX = ".png";
 
     // iconCacheDir @Value("${de.k3b.fdroid.downloads.icons:~/.fdroid/downloads/icons}")
     private final File iconCacheDir;
@@ -82,11 +84,15 @@ public class AppIconService {
     /**
      * @return null, if there is no icon or download fails
      */
+    @Override
     public File getOrDownloadLocalIconFile(String packageName) {
         File localIconFile = getLocalIconFile(packageName);
 
         if (localIconFile != null && !localIconFile.exists()) {
-            return getOrDownloadLocalIconFile(appRepository.findByPackageName(packageName));
+            String packageNameWithoutIconSuffix = packageName.endsWith(ICON_SUFFIX)
+                    ? packageName.substring(0, packageName.length() - ICON_SUFFIX.length())
+                    : packageName;
+            return getOrDownloadLocalIconFile(appRepository.findByPackageName(packageNameWithoutIconSuffix));
         }
         return localIconFile;
     }
@@ -102,8 +108,16 @@ public class AppIconService {
                 response = connection.getInputStream();
 
                 if (response != null) {
-                    outputStream = new FileOutputStream(localIconFile, false);
+
+                    File tempFile = new File(localIconFile.getParentFile(), localIconFile.getName() + ".tmp");
+                    if (tempFile.exists()) tempFile.delete();
+                    outputStream = new FileOutputStream(tempFile, false);
                     IOUtils.copy(response, outputStream);
+                    outputStream.close();
+                    outputStream = null;
+                    if (localIconFile.exists()) localIconFile.delete();
+                    tempFile.renameTo(localIconFile);
+
                     LOGGER.debug("getLocalIconFile-Downladed('{}' <- '{}')", localIconFile, appIconUrl);
                     return true;
                 }
@@ -128,10 +142,20 @@ public class AppIconService {
 
     }
 
+    @Override
+    public File getExistingLocalIconFileOrNull(String packageName) {
+        File result = getLocalIconFile(packageName);
+        if (result == null || !result.exists()) return null;
+        return result;
+    }
+
     private File getLocalIconFile(String packageName) {
         File result = null;
         if (!StringUtil.isEmpty(packageName)) {
-            result = new File(this.iconCacheDir, packageName + ".png");
+            String localFileName = (packageName.endsWith(ICON_SUFFIX))
+                    ? packageName
+                    : (packageName + ICON_SUFFIX);
+            result = new File(this.iconCacheDir, localFileName);
         }
         return result;
     }
