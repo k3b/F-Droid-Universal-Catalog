@@ -18,7 +18,6 @@
  */
 package de.k3b.fdroid.service;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +32,7 @@ import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.CachedDownloadImageService;
+import de.k3b.fdroid.util.IOUtils;
 import de.k3b.fdroid.util.StringUtil;
 
 /**
@@ -114,7 +114,6 @@ public class AppIconService implements CachedDownloadImageService {
                     outputStream = new FileOutputStream(tempFile, false);
                     IOUtils.copy(response, outputStream);
                     outputStream.close();
-                    outputStream = null;
                     if (localIconFile.exists()) localIconFile.delete();
                     tempFile.renameTo(localIconFile);
 
@@ -126,7 +125,6 @@ public class AppIconService implements CachedDownloadImageService {
         } catch (Exception e) {
             LOGGER.error("getLocalIconFile-Downladed('{}' <- '{}') exception {}", localIconFile, appIconUrl, e.getMessage());
             LOGGER.error("getLocalIconFile-Downladed", e);
-            localIconFile = null;
         } finally {
             IOUtils.closeQuietly(outputStream, response);
         }

@@ -76,7 +76,7 @@ public class CachedDownloadImageGetter implements Html.ImageGetter {
     private void updateDrawable(CachedDownloadDrawable result, File iconFile) {
         if (iconFile != null) {
             result.set(iconFile, imageSize);
-            imageViewOwner.invalidate();
+            imageViewOwner.post(imageViewOwner::invalidate);
         }
     }
 }
