@@ -39,7 +39,7 @@ import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.Version;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 
-@Database(version = 1, entities = {App.class, AppCategory.class, Category.class, Locale.class,
+@Database(version = 2, entities = {App.class, AppCategory.class, Category.class, Locale.class,
         Localized.class, Repo.class, Version.class, AppHardware.class, HardwareProfile.class},
         views = {AppSearch.class}
 )
@@ -62,6 +62,14 @@ public abstract class FDroidDatabase extends RoomDatabase implements FDroidDatab
         if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                     FDroidDatabase.class, "FDroidData.db")
+                    /*
+                    .addMigrations(new Migration(1,2) {
+                        @Override
+                        public void migrate(@NonNull SupportSQLiteDatabase database) {
+                        }
+                    })
+                     */
+                    .fallbackToDestructiveMigration()
                     .allowMainThreadQueries()
                     .build();
         }
