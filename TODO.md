@@ -6,6 +6,8 @@ todo
   * ?? try to replace TextView with WebView ??
 * fix app icon size in web
 
+
+
 -----
 
 * migrations on app start:
