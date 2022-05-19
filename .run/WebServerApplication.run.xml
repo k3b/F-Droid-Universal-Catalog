@@ -1,16 +1,15 @@
 <component name="ProjectRunConfigurationManager">
-    <configuration name="WebServerApplication" default="false" factoryName="Application"
-        nameIsGenerated="true" type="Application">
-        <extension name="coverage">
-            <pattern>
-                <option name="PATTERN" value="de.k3b.fdroid.*" />
-                <option name="ENABLED" value="true" />
-            </pattern>
-        </extension>
-        <method v="2">
-            <option name="Make" enabled="true" />
-        </method>
-        <module name="F-Droid_Universal_Catalog.app.fdroid-universal-web" />
-        <option name="MAIN_CLASS_NAME" value="de.k3b.fdroid.WebServerApplication" />
-    </configuration>
+  <configuration default="false" name="WebServerApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+    <option name="MAIN_CLASS_NAME" value="de.k3b.fdroid.WebServerApplication" />
+    <module name="F-Droid_Universal_Catalog.app.fdroid-universal-web.main" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="de.k3b.fdroid.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
 </component>
