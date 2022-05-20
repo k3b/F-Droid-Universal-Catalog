@@ -70,7 +70,7 @@ public class RepoListActivity extends BaseActivity {
             RepoListAdapter repoListAdapter = new RepoListAdapter(this, repoList);
             binding.recyclerView.setAdapter(repoListAdapter);
         });
-        viewModel.getDownloadStatus().observe(this, s -> binding.status.setText(s));
+        viewModel.getStatus().observe(this, s -> binding.status.setText(s));
     }
 
     @Override

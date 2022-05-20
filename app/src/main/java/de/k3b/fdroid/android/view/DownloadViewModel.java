@@ -23,7 +23,6 @@ import android.content.Context;
 
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -35,9 +34,8 @@ import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
 
-public class DownloadViewModel extends ViewModel {
+public class DownloadViewModel extends StatusViewModel {
     protected final RepoRepository repoRepository = FDroidApplication.getFdroidDatabase().repoRepository();
-    private final MutableLiveData<String> downloadStatus = new MutableLiveData<>();
     private final MutableLiveData<Repo> currentRepo = new MutableLiveData<>();
 
     public void onCmdDownload(Context context, Repo repo) {
@@ -50,24 +48,15 @@ public class DownloadViewModel extends ViewModel {
 
 
         WorkManager.getInstance(context).getWorkInfoByIdLiveData(uuid).observe(
-                (LifecycleOwner) context, wi -> onDownloadStatusChange(wi));
+                (LifecycleOwner) context, wi -> onStatusChange(wi));
     }
 
-    private void onDownloadStatusChange(WorkInfo workInfo) {
-        String progress = null;
-        if (workInfo != null) {
-            progress = workInfo.getProgress().getString(ImportV1AndroidWorker.KEY_PROGRESS);
-
-            if (workInfo.getState().isFinished()) {
-                setCurrentRepoInstance(null); // memorized value is probably outdated
-                reload();
-            }
+    protected void onStatusChange(WorkInfo workInfo) {
+        super.onStatusChange(workInfo);
+        if (workInfo != null && workInfo.getState().isFinished()) {
+            setCurrentRepoInstance(null); // memorized value is probably outdated
+            reload();
         }
-        getDownloadStatus().setValue(progress == null ? "" : progress);
-    }
-
-    public MutableLiveData<String> getDownloadStatus() {
-        return downloadStatus;
     }
 
     protected void saveChanges(Repo repo) {

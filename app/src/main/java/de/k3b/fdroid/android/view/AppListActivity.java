@@ -86,6 +86,7 @@ public class AppListActivity extends BaseActivity {
             binding.recyclerView.setAdapter(repoListAdapter);
             setTitle(getString(R.string.label_version_title) + " " + viewModel.getFilter().getValue());
         });
+        viewModel.getStatus().observe(this, s -> binding.status.setText(s));
     }
 
     @Override

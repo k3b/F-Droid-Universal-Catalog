@@ -19,6 +19,7 @@
 package de.k3b.fdroid.android.view;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +35,6 @@ import java.util.concurrent.Executor;
 
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.android.R;
-import de.k3b.fdroid.android.gui.CachedDownloadDrawable;
 import de.k3b.fdroid.android.html.AndroidStringResourceMustacheContext;
 import de.k3b.fdroid.android.html.util.HtmlUtil;
 import de.k3b.fdroid.domain.App;
@@ -82,7 +82,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.app_row_item_separate_icon, viewGroup, false);
 
-        return new ViewHolder(v);
+        return new ViewHolder(v, this.defaultBackgroundColor, this.defaultForegroundColor);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -105,18 +105,29 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         // 1=no icon defined, 2=icon not downloaded yet, 3=icon downloaded
         if (iconFile == null || iconFile.exists()) {
             // 1,3
-            viewHolder.getIconDrawable().set(iconFile, iconSize);
-            viewHolder.getIcon().invalidate();
+            setIcon(viewHolder, iconFile);
         } else {
-            viewHolder.getIconDrawable().set(null, iconSize);
+            setIcon(viewHolder, null);
             threadExecutor.execute(() -> {
                 File localIconFile = iconService.getOrDownloadLocalIconFile(app);
                 if (localIconFile != null) {
-                    viewHolder.getIconDrawable().set(localIconFile, iconSize);
-                    viewHolder.getIcon().post(() -> viewHolder.getIcon().invalidate());
+                    viewHolder.getIcon().post(() -> {
+                                setIcon(viewHolder, localIconFile);
+                            }
+                    );
                 }
             });
         }
+    }
+
+    private void setIcon(ViewHolder viewHolder, File iconFile) {
+        ImageView icon = viewHolder.getIcon();
+        if (iconFile != null) {
+            icon.setImageURI(Uri.fromFile(iconFile));
+        } else {
+            icon.setImageURI(null);
+        }
+        icon.invalidate();
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -130,29 +141,23 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView icon;
-        private final CachedDownloadDrawable iconDrawable;
         private final TextView title;
         private final TextView descrtiption;
         private AppWithDetailsPagerService.ItemAtOffset item;
 
-        public ViewHolder(View v) {
+        public ViewHolder(View v, int defaultBackgroundColor, int defaultForegroundColor) {
             super(v);
             // Define click listener for the ViewHolder's View.
             v.setOnClickListener(v1 -> Log.d(TAG, "Element " + getAbsoluteAdapterPosition() + "/"
                     + getBindingAdapterPosition() + " clicked."));
             icon = v.findViewById(R.id.icon);
             title = v.findViewById(R.id.title);
+            title.setBackgroundColor(defaultBackgroundColor);
             descrtiption = v.findViewById(R.id.description);
-            iconDrawable = new CachedDownloadDrawable(title.getResources());
-            icon.setImageDrawable(iconDrawable);
         }
 
         public ImageView getIcon() {
             return icon;
-        }
-
-        public CachedDownloadDrawable getIconDrawable() {
-            return iconDrawable;
         }
 
         public TextView getTitle() {

@@ -22,7 +22,6 @@ package de.k3b.fdroid.android.view;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.Global;
@@ -35,7 +34,7 @@ import de.k3b.fdroid.service.adapter.AppRepositoryAdapterImpl;
  * Android-Gui calls {@link #setFilter(AppSearchParameter)} and gets updated
  * if registered to {@link #getPagerData()}
  */
-public class AppListViewModel extends ViewModel {
+public class AppListViewModel extends StatusViewModel {
     private static final int PAGESIZE = 10;
     private final AppRepository appRepository = FDroidApplication.getFdroidDatabase().appRepository();
 

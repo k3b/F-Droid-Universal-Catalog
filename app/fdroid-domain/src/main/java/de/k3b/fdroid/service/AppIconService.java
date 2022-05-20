@@ -117,14 +117,16 @@ public class AppIconService implements CachedDownloadImageService {
                     if (localIconFile.exists()) localIconFile.delete();
                     tempFile.renameTo(localIconFile);
 
-                    LOGGER.debug("getLocalIconFile-Downladed('{}' <- '{}')", localIconFile, appIconUrl);
+                    LOGGER.info("downladed-icon('{}' <- '{}')", localIconFile, appIconUrl);
                     return true;
                 }
             }
 
+            LOGGER.warn("downladed-icon('{}' <- '{}') : {} - {}", localIconFile, appIconUrl,
+                    connection.getResponseCode(), connection.getResponseMessage());
         } catch (Exception e) {
-            LOGGER.error("getLocalIconFile-Downladed('{}' <- '{}') exception {}", localIconFile, appIconUrl, e.getMessage());
-            LOGGER.error("getLocalIconFile-Downladed", e);
+            LOGGER.error("downladed-icon('{}' <- '{}') exception {}", localIconFile, appIconUrl, e.getMessage());
+            LOGGER.error("downladed-icon", e);
         } finally {
             IOUtils.closeQuietly(outputStream, response);
         }
