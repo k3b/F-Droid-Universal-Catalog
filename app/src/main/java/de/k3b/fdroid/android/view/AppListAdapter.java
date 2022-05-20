@@ -19,41 +19,48 @@
 package de.k3b.fdroid.android.view;
 
 import android.content.Context;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
+import java.util.concurrent.Executor;
+
 import de.k3b.fdroid.Global;
-import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.R;
-import de.k3b.fdroid.android.gui.CachedDownloadImageGetter;
+import de.k3b.fdroid.android.gui.CachedDownloadDrawable;
 import de.k3b.fdroid.android.html.AndroidStringResourceMustacheContext;
 import de.k3b.fdroid.android.html.util.HtmlUtil;
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.html.service.FormatService;
+import de.k3b.fdroid.service.AppIconService;
 import de.k3b.fdroid.service.AppWithDetailsPagerService;
 
 public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
     private static final String TAG = Global.LOG_TAG + "AppList";
-    public static final int ICON_SIZE_DP = 40;
+    public static final int ICON_SIZE_DP = 80;
 
     private final AppWithDetailsPagerService details;
 
     private final FormatService formatService;
     private final int defaultBackgroundColor;
     private final int defaultForegroundColor;
-    private final Html.ImageGetter imageGetter;
+    private final AppIconService iconService;
+    private final Executor threadExecutor;
+    private final int iconSize;
 
     /**
      * Initialize the dataset of the Adapter.
      */
-    public AppListAdapter(Context context, View imageViewOwner, AppWithDetailsPagerService details) {
+    public AppListAdapter(
+            Context context, AppWithDetailsPagerService details,
+            AppIconService iconService, Executor threadExecutor) {
         this.details = details;
 
         formatService = new FormatService("list_app_summary", App.class,
@@ -61,25 +68,10 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
 
         this.defaultBackgroundColor = HtmlUtil.getDefaultBackgroundColor(context);
         this.defaultForegroundColor = HtmlUtil.getDefaultForegroundColor(context);
-        float iconSize = context.getResources().getDisplayMetrics().density * ICON_SIZE_DP;
+        this.iconService = iconService;
+        this.threadExecutor = threadExecutor;
 
-        this.imageGetter = new CachedDownloadImageGetter(
-                context, imageViewOwner, iconSize,
-                FDroidApplication.getAndroidServiceFactory().getAppIconService(),
-                FDroidApplication.executor
-        );
-    }
-
-    // Replace the contents of a view (invoked by the layout manager)
-    @Override
-    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        Log.d(TAG, "Element " + position + " set.");
-
-        viewHolder.item = details.itemAtOffset(position);
-        TextView textView = viewHolder.getTextView();
-
-        String html = formatService.format(viewHolder.item);
-        HtmlUtil.setHtml(textView, html, defaultForegroundColor, defaultBackgroundColor, imageGetter);
+        iconSize = (int) context.getResources().getDisplayMetrics().density * ICON_SIZE_DP;
     }
 
     // Create new views (invoked by the layout manager)
@@ -88,9 +80,43 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view.
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.app_row_item, viewGroup, false);
+                .inflate(R.layout.app_row_item_separate_icon, viewGroup, false);
 
         return new ViewHolder(v);
+    }
+
+    // Replace the contents of a view (invoked by the layout manager)
+    @Override
+    public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+        Log.d(TAG, "Element " + position + " set.");
+
+        viewHolder.item = details.itemAtOffset(position);
+        viewHolder.getTitle().setText(viewHolder.item.getName());
+
+        String html = formatService.format(viewHolder.item);
+        HtmlUtil.setHtml(viewHolder.getDescrtiption(), html, defaultForegroundColor, defaultBackgroundColor, null);
+
+        bindIcon(viewHolder, viewHolder.item.getApp());
+    }
+
+    private void bindIcon(ViewHolder viewHolder, App app) {
+        File iconFile = iconService.getLocalIconFile(app);
+
+        // 1=no icon defined, 2=icon not downloaded yet, 3=icon downloaded
+        if (iconFile == null || iconFile.exists()) {
+            // 1,3
+            viewHolder.getIconDrawable().set(iconFile, iconSize);
+            viewHolder.getIcon().invalidate();
+        } else {
+            viewHolder.getIconDrawable().set(null, iconSize);
+            threadExecutor.execute(() -> {
+                File localIconFile = iconService.getOrDownloadLocalIconFile(app);
+                if (localIconFile != null) {
+                    viewHolder.getIconDrawable().set(localIconFile, iconSize);
+                    viewHolder.getIcon().post(() -> viewHolder.getIcon().invalidate());
+                }
+            });
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -103,7 +129,10 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
+        private final ImageView icon;
+        private final CachedDownloadDrawable iconDrawable;
+        private final TextView title;
+        private final TextView descrtiption;
         private AppWithDetailsPagerService.ItemAtOffset item;
 
         public ViewHolder(View v) {
@@ -111,11 +140,27 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
             // Define click listener for the ViewHolder's View.
             v.setOnClickListener(v1 -> Log.d(TAG, "Element " + getAbsoluteAdapterPosition() + "/"
                     + getBindingAdapterPosition() + " clicked."));
-            textView = v.findViewById(R.id.textView);
+            icon = v.findViewById(R.id.icon);
+            title = v.findViewById(R.id.title);
+            descrtiption = v.findViewById(R.id.description);
+            iconDrawable = new CachedDownloadDrawable(title.getResources());
+            icon.setImageDrawable(iconDrawable);
         }
 
-        public TextView getTextView() {
-            return textView;
+        public ImageView getIcon() {
+            return icon;
+        }
+
+        public CachedDownloadDrawable getIconDrawable() {
+            return iconDrawable;
+        }
+
+        public TextView getTitle() {
+            return title;
+        }
+
+        public TextView getDescrtiption() {
+            return descrtiption;
         }
     }
 }

@@ -27,4 +27,6 @@ public interface CachedDownloadImageService {
     File getOrDownloadLocalIconFile(String packageName);
 
     File getExistingLocalIconFileOrNull(String packageName);
+
+    File getLocalIconFile(String packageName);
 }

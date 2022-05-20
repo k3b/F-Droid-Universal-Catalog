@@ -26,6 +26,10 @@
     <dimen name="margin_large">32dp</dimen>
     <dimen name="margin_huge">64dp</dimen>
 
+    <dimen name="icon_in_list">48dp</dimen>
+    <dimen name="header_in_list">24sp</dimen>
+
+
     <!-- Semantic definitions -->
 
     <dimen name="horizontal_page_margin">@dimen/margin_medium</dimen>

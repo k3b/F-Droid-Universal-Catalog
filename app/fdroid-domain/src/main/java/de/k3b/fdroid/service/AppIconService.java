@@ -131,7 +131,7 @@ public class AppIconService implements CachedDownloadImageService {
         return false;
     }
 
-    private File getLocalIconFile(App app) {
+    public File getLocalIconFile(App app) {
         File result = null;
         if (app != null && !StringUtil.isEmpty(app.getIcon())) {
             result = getLocalIconFile(app.getPackageName());
@@ -147,7 +147,8 @@ public class AppIconService implements CachedDownloadImageService {
         return result;
     }
 
-    private File getLocalIconFile(String packageName) {
+    @Override
+    public File getLocalIconFile(String packageName) {
         File result = null;
         if (!StringUtil.isEmpty(packageName)) {
             String localFileName = (packageName.endsWith(ICON_SUFFIX))

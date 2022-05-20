@@ -28,6 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.R;
 import de.k3b.fdroid.android.databinding.ActivityAppListBinding;
 
@@ -79,7 +80,9 @@ public class AppListActivity extends BaseActivity {
         super.onResume();
         viewModel.getPagerData().observe(this, repoList -> {
             AppListAdapter repoListAdapter = new AppListAdapter(
-                    this, binding.recyclerView, repoList);
+                    this, repoList,
+                    FDroidApplication.getAndroidServiceFactory().getAppIconService(),
+                    FDroidApplication.executor);
             binding.recyclerView.setAdapter(repoListAdapter);
             setTitle(getString(R.string.label_version_title) + " " + viewModel.getFilter().getValue());
         });

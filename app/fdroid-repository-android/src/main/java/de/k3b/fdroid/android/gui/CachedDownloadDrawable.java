@@ -18,6 +18,7 @@
  */
 package de.k3b.fdroid.android.gui;
 
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -32,6 +33,10 @@ public class CachedDownloadDrawable extends BitmapDrawable {
     protected int iconSize;
     protected File iconFile;
 
+    public CachedDownloadDrawable(Resources resources) {
+        super(resources);
+    }
+
     public void set(File iconFile, int iconSize) {
         this.iconFile = iconFile;
         this.iconSize = iconSize;
@@ -41,7 +46,11 @@ public class CachedDownloadDrawable extends BitmapDrawable {
     public void draw(Canvas canvas) {
         if (iconFile != null) {
             Drawable iconDrawable = BitmapDrawable.createFromPath(iconFile.getAbsolutePath());
-            iconDrawable.setBounds(0, 0, iconSize, iconSize);
+            if (iconSize != 0) {
+                iconDrawable.setBounds(0, 0, iconSize, iconSize);
+            } else {
+                iconDrawable.setBounds(0, 0, getIntrinsicWidth(), getIntrinsicHeight());
+            }
             iconDrawable.draw(canvas);
         }
     }
