@@ -13,3 +13,7 @@ captures
 /demo.jar
 /fdroid-universal-cli.jar
 /fdroid-universal-web.jar
+/fdroid.lck
+/fdroid.log
+/fdroid.properties
+/fdroid.script

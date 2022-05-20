@@ -4,14 +4,13 @@
 <hr/><br/>
 
 {{#app}}
-    <a href="{{app.id}}">
+    <a href="app/{{app.id}}">
     <h3>
-        {{#app.icon}}<img src="app/icons/{{app.packageName}}.png">{{/app.icon}}
+        {{#app.icon}}<img src="app/icons/{{app.packageName}}.png" width="48" height="48">{{/app.icon}}
         {{name}}
     </h3>
     {{> App/list_app_summary}}
     </a>
-    <hr/>
 {{/app}}
 
 <br/>
