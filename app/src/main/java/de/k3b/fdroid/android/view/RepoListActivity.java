@@ -32,6 +32,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import de.k3b.android.util.BarcodeScanActivityResultContract;
+import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.android.R;
 import de.k3b.fdroid.android.databinding.ActivityRepoListBinding;
@@ -67,7 +68,9 @@ public class RepoListActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         viewModel.getRepoList().observe(this, repoList -> {
-            RepoListAdapter repoListAdapter = new RepoListAdapter(this, repoList);
+            RepoListAdapter repoListAdapter = new RepoListAdapter(this, repoList,
+                    FDroidApplication.getAndroidServiceFactory().getRepoIconService(),
+                    FDroidApplication.executor);
             binding.recyclerView.setAdapter(repoListAdapter);
         });
         viewModel.getStatus().observe(this, s -> binding.status.setText(s));

@@ -1,5 +1,9 @@
 <p>{{t.label_repo_title}}</p>
 {{#repo}}
+    <h3>
+        {{#icon}}<img src="icons/repo_{{id}}.png" width="48" height="48">{{/icon}}
+        {{name}} ({{lastAppCount}})
+    </h3>
     {{> Repo/list_repo}}
     <hr/>
     <a href="/Repo/repo">Back</a>

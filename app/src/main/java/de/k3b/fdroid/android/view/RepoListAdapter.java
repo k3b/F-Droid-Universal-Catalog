@@ -19,17 +19,21 @@
 package de.k3b.fdroid.android.view;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.android.R;
@@ -37,6 +41,7 @@ import de.k3b.fdroid.android.html.AndroidStringResourceMustacheContext;
 import de.k3b.fdroid.android.html.util.HtmlUtil;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.html.service.FormatService;
+import de.k3b.fdroid.service.RepoIconService;
 
 public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHolder> {
     private static final String TAG = Global.LOG_TAG + "RepoList";
@@ -45,17 +50,33 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
     private final List<Repo> details;
     private final int defaultBackgroundColor;
     private final int defaultForegroundColor;
+    private final RepoIconService iconService;
+    private final Executor threadExecutor;
 
     /**
      * Initialize the dataset of the Adapter.
      */
-    public RepoListAdapter(Context context, List<Repo> details) {
+    public RepoListAdapter(Context context, List<Repo> details,
+                           RepoIconService iconService, Executor threadExecutor) {
         this.details = details;
         formatService = new FormatService("list_repo", Repo.class,
                 new AndroidStringResourceMustacheContext(context));
 
         this.defaultBackgroundColor = HtmlUtil.getDefaultBackgroundColor(context);
         this.defaultForegroundColor = HtmlUtil.getDefaultForegroundColor(context);
+        this.iconService = iconService;
+        this.threadExecutor = threadExecutor;
+    }
+
+    // Create new views (invoked by the layout manager)
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        // Create a new view.
+        View v = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.repo_row_item_separate_icon, viewGroup, false);
+
+        return new ViewHolder(v, defaultBackgroundColor, defaultForegroundColor);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -65,36 +86,64 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
 
         Repo repo = details.get(position);
         viewHolder.repo = repo;
-        TextView textView = viewHolder.getTextView();
+        viewHolder.getTitle().setText(repo.getName() + "(" +
+                repo.getLastAppCount() + ")");
 
         String html = formatService.format(repo);
-        HtmlUtil.setHtml(textView, html, defaultForegroundColor, defaultBackgroundColor, null);
+        HtmlUtil.setHtml(viewHolder.getDescrtiption(), html, defaultForegroundColor, defaultBackgroundColor, null);
+
+
+        bindIcon(viewHolder, viewHolder.repo);
     }
 
-    // Create new views (invoked by the layout manager)
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-        // Create a new view.
-        View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.repo_row_item, viewGroup, false);
+    private void bindIcon(ViewHolder viewHolder, Repo repo) {
+        File iconFile = iconService.getLocalImageFile(repo);
 
-        return new ViewHolder(v);
+        // 1=no icon defined, 2=icon not downloaded yet, 3=icon downloaded
+        if (iconFile == null || iconFile.exists()) {
+            // 1,3
+            setIcon(viewHolder, iconFile);
+        } else {
+            setIcon(viewHolder, null);
+            threadExecutor.execute(() -> {
+                File localIconFile = iconService.getOrDownloadLocalImageFile(repo);
+                if (localIconFile != null) {
+                    viewHolder.getIcon().post(() -> setIcon(viewHolder, localIconFile)
+                    );
+                }
+            });
+        }
     }
+
+    private void setIcon(ViewHolder viewHolder, File iconFile) {
+        ImageView icon = viewHolder.getIcon();
+        if (iconFile != null) {
+            icon.setImageURI(Uri.fromFile(iconFile));
+        } else {
+            icon.setImageURI(null);
+        }
+        icon.invalidate();
+    }
+
 
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView textView;
+        private final ImageView icon;
+        private final TextView title;
+        private final TextView descrtiption;
         private final Button button;
         Repo repo;
 
-        public ViewHolder(View v) {
+        public ViewHolder(View v, int defaultBackgroundColor, int defaultForegroundColor) {
             super(v);
             // Define click listener for the ViewHolder's View.
             v.setOnClickListener(v1 -> getActivity(v1).onRepoClick(repo));
-            textView = v.findViewById(R.id.textView);
+            icon = v.findViewById(R.id.icon);
+            title = v.findViewById(R.id.title);
+            title.setBackgroundColor(defaultBackgroundColor);
+            descrtiption = v.findViewById(R.id.description);
             button = v.findViewById(R.id.button);
             button.setOnClickListener(v1 -> getActivity(v1).onRepoButtonClick(button, repo));
         }
@@ -103,8 +152,16 @@ public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHo
             return (RepoListActivity) v1.getContext();
         }
 
-        public TextView getTextView() {
-            return textView;
+        public ImageView getIcon() {
+            return icon;
+        }
+
+        public TextView getTitle() {
+            return title;
+        }
+
+        public TextView getDescrtiption() {
+            return descrtiption;
         }
     }
 

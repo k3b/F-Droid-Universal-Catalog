@@ -1,7 +1,4 @@
-<div {{#stateCode}} class='state_{{stateCode}}'{{/stateCode}}>
-    <h3>{{name}} ({{lastAppCount}})</h3>
-    {{shortDescription}}<br/>
-    {{#lastErrorMessage}}{{lastErrorMessage}}<br/>{{/lastErrorMessage}}
-    {{#downloadTaskId}}{{downloadTaskId}}{{/downloadTaskId}}
-    {{lastUsedDownloadDateTimeUtcDate}} {{v1Url}}
-</div>
+{{shortDescription}}<br/>
+{{#lastErrorMessage}}{{lastErrorMessage}}<br/>{{/lastErrorMessage}}
+{{#downloadTaskId}}{{downloadTaskId}}{{/downloadTaskId}}
+{{lastUsedDownloadDateTimeUtcDate}} {{v1Url}}

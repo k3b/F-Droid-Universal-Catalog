@@ -18,19 +18,33 @@
  */
 package de.k3b.fdroid.servingwebcontent;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 import de.k3b.fdroid.domain.interfaces.RepoRepository;
+import de.k3b.fdroid.service.RepoIconService;
 
 @Controller
 public class RepoController {
-    @Autowired
-    private RepoRepository repoRepository;
+    private final RepoIconService iconService;
+    private final RepoRepository repoRepository;
+
+    public RepoController(@Value("${de.k3b.fdroid.downloads.icons}") String iconsDir,
+                          RepoRepository repoRepository) {
+        this.repoRepository = repoRepository;
+        iconService = new RepoIconService(iconsDir);
+    }
 
     @GetMapping("/Repo/repo")
     public String repoList(
@@ -48,6 +62,21 @@ public class RepoController {
         model.addAttribute("name", "world");
         model.addAttribute("repo", repoRepository.findById(id));
         return "Repo/repo_detail";
+    }
+
+
+    @GetMapping(value = "/Repo/repo/icons/repo_{id}.png", produces = MediaType.IMAGE_PNG_VALUE)
+    public @ResponseBody
+    byte[] appIcon(@PathVariable int id) {
+        File file = iconService.getOrDownloadLocalImageFile(repoRepository.findById(id));
+        if (file != null) {
+            try (InputStream in = new FileInputStream(file)) {
+                return IOUtils.toByteArray(in);
+            } catch (Exception ignore) {
+                ignore.printStackTrace();
+            }
+        }
+        return null;
     }
 
 }

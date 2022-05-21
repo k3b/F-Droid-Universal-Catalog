@@ -50,7 +50,7 @@ public class AppController {
     private static final int PAGESIZE = 5;
     private final AppRepository appRepository;
     private final AppWithDetailsPagerService appWithDetailsPagerService;
-    private final AppIconService appIconService;
+    private final AppIconService iconService;
 
     public AppController(@Value("${de.k3b.fdroid.downloads.icons}") String iconsDir,
                          RepoRepository repoRepository, AppRepository appRepository) {
@@ -60,7 +60,7 @@ public class AppController {
         appWithDetailsPagerService = new AppWithDetailsPagerService(
                 appAppDetailRepository, null, null, null);
         CacheService<Repo> cache = new CacheService<>(repoRepository.findAll());
-        appIconService = new AppIconService(iconsDir, cache, appRepository);
+        iconService = new AppIconService(iconsDir, cache, appRepository);
     }
 
     @GetMapping("/App/app")
@@ -90,12 +90,10 @@ public class AppController {
         return "App/app_detail";
     }
 
-    // see https://www.baeldung.com/spring-controller-return-image-file
     @GetMapping(value = "/App/app/icons/{packageName}.png", produces = MediaType.IMAGE_PNG_VALUE)
     public @ResponseBody
-    byte[] appIcon(
-            @PathVariable String packageName) {
-        File file = appIconService.getOrDownloadLocalIconFile(packageName);
+    byte[] appIcon(@PathVariable String packageName) {
+        File file = iconService.getOrDownloadLocalImageFile(packageName);
         if (file != null) {
             try (InputStream in = new FileInputStream(file)) {
                 return IOUtils.toByteArray(in);

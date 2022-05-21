@@ -26,9 +26,9 @@ import java.io.File;
 import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.android.repository.FDroidDatabaseFactory;
 import de.k3b.fdroid.android.repository.RepoDao;
-import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.service.AppIconService;
 import de.k3b.fdroid.service.CacheService;
+import de.k3b.fdroid.service.RepoIconService;
 import de.k3b.fdroid.v1.service.HttpV1JarDownloadService;
 import de.k3b.fdroid.v1.service.HttpV1JarImportService;
 import de.k3b.fdroid.v1.service.V1DownloadAndImportService;
@@ -42,6 +42,7 @@ public class AndroidServiceFactory {
     private V1DownloadAndImportServiceInterface v1DownloadAndImportService = null;
     private final File myRoot;
     private AppIconService appIconService = null;
+    private RepoIconService repoIconService = null;
 
     public AndroidServiceFactory(Application context, FDroidDatabaseFactory database) {
         this.context = context;
@@ -54,6 +55,7 @@ public class AndroidServiceFactory {
      */
     public void clearCache() {
         appIconService = null;
+        repoIconService = null;
     }
 
     private File getTempDir(String subDirName) {
@@ -83,9 +85,16 @@ public class AndroidServiceFactory {
     public AppIconService getAppIconService() {
         if (appIconService == null) {
             appIconService = new AppIconService(new File(myRoot, "icons").getAbsolutePath(),
-                    new CacheService<Repo>(getRepoRepository().findAll()), database.appRepository());
+                    new CacheService<>(getRepoRepository().findAll()), database.appRepository());
         }
         return appIconService;
+    }
+
+    public RepoIconService getRepoIconService() {
+        if (repoIconService == null) {
+            repoIconService = new RepoIconService(new File(myRoot, "icons").getAbsolutePath());
+        }
+        return repoIconService;
     }
 
     private V1UpdateService getV1UpdateService() {

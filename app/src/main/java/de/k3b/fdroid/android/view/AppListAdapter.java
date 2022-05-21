@@ -53,7 +53,6 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     private final int defaultForegroundColor;
     private final AppIconService iconService;
     private final Executor threadExecutor;
-    private final int iconSize;
 
     /**
      * Initialize the dataset of the Adapter.
@@ -70,8 +69,6 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         this.defaultForegroundColor = HtmlUtil.getDefaultForegroundColor(context);
         this.iconService = iconService;
         this.threadExecutor = threadExecutor;
-
-        iconSize = (int) context.getResources().getDisplayMetrics().density * ICON_SIZE_DP;
     }
 
     // Create new views (invoked by the layout manager)
@@ -100,7 +97,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     }
 
     private void bindIcon(ViewHolder viewHolder, App app) {
-        File iconFile = iconService.getLocalIconFile(app);
+        File iconFile = iconService.getLocalImageFile(app);
 
         // 1=no icon defined, 2=icon not downloaded yet, 3=icon downloaded
         if (iconFile == null || iconFile.exists()) {
@@ -109,11 +106,9 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         } else {
             setIcon(viewHolder, null);
             threadExecutor.execute(() -> {
-                File localIconFile = iconService.getOrDownloadLocalIconFile(app);
+                File localIconFile = iconService.getOrDownloadLocalImageFile(app);
                 if (localIconFile != null) {
-                    viewHolder.getIcon().post(() -> {
-                                setIcon(viewHolder, localIconFile);
-                            }
+                    viewHolder.getIcon().post(() -> setIcon(viewHolder, localIconFile)
                     );
                 }
             });
