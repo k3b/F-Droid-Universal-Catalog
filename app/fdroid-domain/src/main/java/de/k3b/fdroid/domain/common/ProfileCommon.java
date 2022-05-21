@@ -27,6 +27,8 @@ package de.k3b.fdroid.domain.common;
  */
 @javax.persistence.MappedSuperclass
 public class ProfileCommon extends EntityCommon {
+    private static final double MEGA_BYTE = 1024 * 1024;
+
     private String apkName;
     private int versionCode;
     private String versionName;
@@ -53,12 +55,23 @@ public class ProfileCommon extends EntityCommon {
         this.added = added;
     }
 
+    public String getAddedDate() {
+        return asDateString(added);
+    }
+
     public String getApkName() {
         return apkName;
     }
 
     public void setApkName(String apkName) {
         this.apkName = apkName;
+    }
+
+    public String getSizeMB() {
+        double megabyte = size / MEGA_BYTE;
+        int m = (int) (megabyte * 10);
+
+        return "" + (m / 10.0) + " MB";
     }
 
     public int getSize() {

@@ -165,6 +165,10 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId {
         return url;
     }
 
+    public String getUrl(String name) {
+        return getUrl(getLastUsedDownloadMirror(), name);
+    }
+
     private static String getUrl(String server, String name) {
         if (server == null || name == null) return null;
         server = removeName(server);
@@ -205,7 +209,7 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId {
     public String getAppIconUrl(String icon) {
         String url = null;
         if (!StringUtil.isEmpty(icon)) {
-            url = getUrl(getLastUsedDownloadMirror(), "icons/" + icon);
+            url = getUrl("icons/" + icon);
         }
         return url;
     }

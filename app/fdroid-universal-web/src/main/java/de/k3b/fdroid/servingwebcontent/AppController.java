@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.List;
 
 import de.k3b.fdroid.domain.App;
@@ -65,29 +64,19 @@ public class AppController {
 
     @GetMapping("/App/app")
     public String appList(
-            @RequestParam(name = "name", required = false, defaultValue = "World") String name,
+            @RequestParam(name = "q", required = false, defaultValue = "") String query,
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             Model model) {
         int from = Math.max(page, 0) * PAGESIZE;
-        List<Integer> appIdList = appRepository.findDynamic(new AppSearchParameter());
+        List<Integer> appIdList = appRepository.findDynamic(new AppSearchParameter().text(query));
         appWithDetailsPagerService.init(appIdList, PAGESIZE);
         int maxPage = appIdList.size() / PAGESIZE;
-        model.addAttribute("name", name);
         model.addAttribute("app", appWithDetailsPagerService.itemAtOffset(from, from + PAGESIZE - 1));
+        model.addAttribute("query", query);
         if (page > 0) model.addAttribute("prev", page - 1);
         if (page + 1 < maxPage) model.addAttribute("next", page + 1);
         return "App/app_overview";
         // return "greeting";
-    }
-
-    @GetMapping("/App/app/{id}")
-    public String appList(
-            @PathVariable int id,
-            Model model) {
-        appWithDetailsPagerService.init(Collections.singletonList(id), 1);
-        model.addAttribute("name", "World");
-        model.addAttribute("app", appWithDetailsPagerService.itemAtOffset(0, 1));
-        return "App/app_detail";
     }
 
     @GetMapping(value = "/App/app/icons/{packageName}.png", produces = MediaType.IMAGE_PNG_VALUE)

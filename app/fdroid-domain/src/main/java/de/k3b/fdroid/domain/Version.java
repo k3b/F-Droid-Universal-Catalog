@@ -20,6 +20,7 @@ package de.k3b.fdroid.domain;
 
 import de.k3b.fdroid.domain.common.VersionCommon;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
+import de.k3b.fdroid.util.AndroidVersionName;
 import de.k3b.fdroid.util.StringUtil;
 
 /**
@@ -119,4 +120,9 @@ public class Version extends VersionCommon implements AppDetail {
         }
         return nativecodeArray;
     }
+
+    public String getSdkInfo() {
+        return AndroidVersionName.getName(getMinSdkVersion(), getNativecode());
+    }
+
 }

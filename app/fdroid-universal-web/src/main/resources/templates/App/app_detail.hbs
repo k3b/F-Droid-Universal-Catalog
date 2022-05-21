@@ -5,5 +5,13 @@
         {{name}}
     </h3>
     {{> App/list_app_summary}}
+    {{#whatsNew}}{{t.label_app_whats_new}}<pre>{{{.}}}</pre></br>{{/whatsNew}}
+    <pre>{{{description}}}</pre></br>
+    {{#LocalizedList}}
+        {{> App/localized_detail}}
+    {{/LocalizedList}}
+    {{#VersionList}}
+        {{> App/version_detail}}
+    {{/VersionList}}
 {{/app}}
     <a href="/App/app">Back</a>
