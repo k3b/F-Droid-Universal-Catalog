@@ -27,6 +27,7 @@ import java.io.Writer;
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.Version;
+import de.k3b.fdroid.service.AppWithDetailsPagerService;
 import de.k3b.fdroid.service.CacheService;
 
 /**
@@ -56,6 +57,8 @@ public class GetUrlMustacheLamdaService implements Mustache.Lambda {
             repoId = ((App) context).getResourceRepoId();
         } else if (context instanceof Repo) {
             repoId = ((Repo) context).getId();
+        } else if (context instanceof AppWithDetailsPagerService.ItemAtOffset) {
+            repoId = ((AppWithDetailsPagerService.ItemAtOffset) context).getApp().getResourceRepoId();
         }
         Repo repo = repoCacheService.getItemById(repoId);
         if (repo != null) return repo.getUrl(parameter);

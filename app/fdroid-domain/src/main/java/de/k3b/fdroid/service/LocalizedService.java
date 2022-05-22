@@ -49,7 +49,7 @@ public class LocalizedService {
     protected Localized[] sortByPrioDesc(List<Localized> roomLocalizedList) {
         // :-( : List<>.sort() requieres android api 24. not compatible with api 14
         Localized[] result = roomLocalizedList.toArray(new Localized[0]);
-        Arrays.sort(result, (x, y) -> compareByPrio(x, y));
+        Arrays.sort(result, this::compareByPrio);
         return result;
     }
 
@@ -105,7 +105,6 @@ public class LocalizedService {
         StringBuilder summary = new StringBuilder();
         StringBuilder description = new StringBuilder();
         StringBuilder whatsNew = new StringBuilder();
-        StringBuilder phoneScreenshots = new StringBuilder();
         String roomIcon = roomApp.getIcon();
         String icon = roomIcon;
 
@@ -124,9 +123,6 @@ public class LocalizedService {
             add(summary, loc.getSummary(), "summary", EntityCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, SEPERATOR_SUMMARY);
             add(description, loc.getDescription(), "description", EntityCommon.MAX_LEN_AGGREGATED_DESCRIPTION, roomApp, languagePrefix, SEPERATOR_DESCRIPTION);
             add(whatsNew, loc.getWhatsNew(), "whatsNew", EntityCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, SEPERATOR_WHATS_NEW);
-            for (String phoneScreenshot : loc.getPhoneScreenshotArray()) {
-                add(phoneScreenshots, phoneScreenshot, "phoneScreenshot", EntityCommon.MAX_LEN_AGGREGATED, roomApp, "", ",");
-            }
             if (icon == null) {
                 String locIcon = loc.getIcon();
                 if (locIcon != null && !locIcon.endsWith("=.png")) {
@@ -138,7 +134,6 @@ public class LocalizedService {
         roomApp.setSearchSummary(summary.toString());
         roomApp.setSearchDescription(description.toString());
         roomApp.setSearchWhatsNew(whatsNew.toString());
-        roomApp.setSearchPhoneScreenshots(phoneScreenshots.toString());
         if (roomIcon == null && icon != null && repoId != 0) {
             roomApp.setIcon(icon);
             roomApp.setResourceRepoId(repoId);

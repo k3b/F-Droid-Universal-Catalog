@@ -75,7 +75,6 @@ public class LocalizedUpdateService implements UpdateService {
                 copy(roomLocalized, v1Localized);
 
                 localizedRepository.save(roomLocalized);
-
             } // if not hidden
         } // for each v1 language
 
@@ -95,6 +94,7 @@ public class LocalizedUpdateService implements UpdateService {
         String phoneScreenshots = StringUtil.toCsvStringOrNull(v1Src.getPhoneScreenshots());
         if (!StringUtil.isEmpty(phoneScreenshots)) {
             roomDest.setPhoneScreenshots(StringUtil.maxLen(phoneScreenshots, EntityCommon.MAX_LEN_AGGREGATED, "phoneScreenshots"));
+            roomDest.setPhoneScreenshotDir(v1Src.getPhoneScreenshotDir());
         }
     }
 

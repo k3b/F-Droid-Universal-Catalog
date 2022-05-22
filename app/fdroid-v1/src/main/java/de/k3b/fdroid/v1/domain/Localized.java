@@ -33,6 +33,7 @@ import de.k3b.fdroid.domain.common.LocalizedCommon;
  */
 @Generated("jsonschema2pojo")
 public class Localized extends LocalizedCommon implements V1JsonEntity {
+    private String phoneScreenshotDir;
     private List<String> phoneScreenshots = null;
 
     public int getPhoneScreenshotCount() {
@@ -50,6 +51,18 @@ public class Localized extends LocalizedCommon implements V1JsonEntity {
 
     protected void toStringBuilder(StringBuilder sb) {
         super.toStringBuilder(sb);
+        toStringBuilder(sb, "phoneScreenshotDir", phoneScreenshotDir);
         toStringBuilder(sb, "phoneScreenshots", this.phoneScreenshots);
+    }
+
+    /**
+     * ie dev.lonami.klooni/en-US/phoneScreenshots/
+     */
+    public String getPhoneScreenshotDir() {
+        return phoneScreenshotDir;
+    }
+
+    public void setPhoneScreenshotDir(String phoneScreenshotDir) {
+        this.phoneScreenshotDir = phoneScreenshotDir;
     }
 }

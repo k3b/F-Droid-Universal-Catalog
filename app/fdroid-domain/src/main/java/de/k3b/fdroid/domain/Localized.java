@@ -58,6 +58,8 @@ public class Localized extends LocalizedCommon implements AppDetail {
     @javax.persistence.Transient
     private String[] phoneScreenshotArray;
 
+    private String phoneScreenshotDir;
+
     // needed by android-room and jpa
     public Localized() {
     }
@@ -73,6 +75,7 @@ public class Localized extends LocalizedCommon implements AppDetail {
         toStringBuilder(sb, "appId", this.appId);
         toStringBuilder(sb, "localeId", this.localeId);
         super.toStringBuilder(sb);
+        toStringBuilder(sb, "phoneScreenshotDir", phoneScreenshotDir);
         toStringBuilder(sb, "phoneScreenshots", phoneScreenshots, 20);
     }
 
@@ -103,6 +106,9 @@ public class Localized extends LocalizedCommon implements AppDetail {
     /**
      * comma seperated list to be downloaded from
      * {@link Repo} identified by {@link App#getResourceRepoId()}
+     * <p>
+     * Example phoneScreenshot "1-game.jpg" can be downloaded from
+     * https://f-droid.org/repo/dev.lonami.klooni/en-US/phoneScreenshots/1-game.jpg
      */
     public String getPhoneScreenshots() {
         return phoneScreenshots;
@@ -118,5 +124,16 @@ public class Localized extends LocalizedCommon implements AppDetail {
             phoneScreenshotArray = StringUtil.toStringArray(phoneScreenshots);
         }
         return phoneScreenshotArray;
+    }
+
+    /**
+     * ie dev.lonami.klooni/en-US/phoneScreenshots/
+     */
+    public String getPhoneScreenshotDir() {
+        return phoneScreenshotDir;
+    }
+
+    public void setPhoneScreenshotDir(String phoneScreenshotDir) {
+        this.phoneScreenshotDir = phoneScreenshotDir;
     }
 }

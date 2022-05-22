@@ -46,6 +46,10 @@ public class FixLocaleService extends de.k3b.fdroid.service.FixLocaleService {
             if (icon != null && icon.startsWith("icon_") && icon.endsWith("=.png")) {
                 localized.setIcon("../" + packageName + "/" + locale + "/icon.png");
             }
+
+            if (localized.getPhoneScreenshotCount() > 0) {
+                localized.setPhoneScreenshotDir(packageName + "/" + locale + "/phoneScreenshots/");
+            }
         }
     }
 

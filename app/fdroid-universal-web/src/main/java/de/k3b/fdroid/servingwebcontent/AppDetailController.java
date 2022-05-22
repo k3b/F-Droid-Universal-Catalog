@@ -20,15 +20,22 @@ package de.k3b.fdroid.servingwebcontent;
 
 import com.samskivert.mustache.Mustache;
 
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Collections;
 
 import de.k3b.fdroid.domain.App;
 import de.k3b.fdroid.domain.Localized;
+import de.k3b.fdroid.domain.Repo;
 import de.k3b.fdroid.domain.interfaces.AppDetailRepository;
 import de.k3b.fdroid.domain.interfaces.AppRepository;
 import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
@@ -37,6 +44,7 @@ import de.k3b.fdroid.domain.interfaces.VersionRepository;
 import de.k3b.fdroid.html.service.GetUrlMustacheLamdaService;
 import de.k3b.fdroid.service.AppWithDetailsPagerService;
 import de.k3b.fdroid.service.CacheService;
+import de.k3b.fdroid.service.LocalizedImageService;
 import de.k3b.fdroid.service.adapter.AppRepositoryAdapterImpl;
 import de.k3b.fdroid.service.adapter.LocalizedRepositoryAdapterImpl;
 
@@ -45,10 +53,13 @@ public class AppDetailController {
     private final AppWithDetailsPagerService appWithDetailsPagerService;
     private final Mustache.Lambda getUrl;
     private final AppRepository appRepository;
+    private final LocalizedImageService localizedImageService;
 
-    public AppDetailController(RepoRepository repoRepository, AppRepository appRepository,
-                               LocalizedRepository localizedRepository,
-                               VersionRepository versionRepository) {
+    public AppDetailController(
+            @Value("${de.k3b.fdroid.downloads.images}") String imageDir,
+            RepoRepository repoRepository, AppRepository appRepository,
+            LocalizedRepository localizedRepository,
+            VersionRepository versionRepository) {
         this.appRepository = appRepository;
         AppDetailRepository<App> appAppDetailRepository = new AppRepositoryAdapterImpl(appRepository);
         AppDetailRepository<Localized> localizedRepositoryAdapter = new LocalizedRepositoryAdapterImpl(localizedRepository);
@@ -56,7 +67,10 @@ public class AppDetailController {
         appWithDetailsPagerService = new AppWithDetailsPagerService(
                 appAppDetailRepository, localizedRepositoryAdapter, versionRepository, null);
 
-        getUrl = new GetUrlMustacheLamdaService(new CacheService<>(repoRepository.findAll()));
+        CacheService<Repo> repoCacheService = new CacheService<>(repoRepository.findAll());
+        getUrl = new GetUrlMustacheLamdaService(repoCacheService);
+
+        localizedImageService = new LocalizedImageService(imageDir, repoCacheService, appRepository);
     }
 
     @GetMapping("/App/app/{idOrPackageName}")
@@ -76,4 +90,20 @@ public class AppDetailController {
         model.addAttribute("getUrl", getUrl);
         return "App/app_detail";
     }
+
+    @GetMapping(value = "/App/app/{packageName}/{locale}/phoneScreenshots/{name}", produces = "image/*")
+    public @ResponseBody
+    byte[] localizedPhoneScreenshots(@PathVariable String packageName, @PathVariable String locale, @PathVariable String name) {
+        String path = packageName + "/" + locale + "/phoneScreenshots/" + name;
+        File file = localizedImageService.getOrDownloadLocalImageFile(packageName, path);
+        if (file != null) {
+            try (InputStream in = new FileInputStream(file)) {
+                return IOUtils.toByteArray(in);
+            } catch (Exception ignore) {
+                ignore.printStackTrace();
+            }
+        }
+        return null;
+    }
+
 }

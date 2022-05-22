@@ -64,10 +64,6 @@ public class App extends AppCommon implements AppDetail {
     /** all different locale summary values concatenated for faster search */
     private String searchSummary;
 
-    @Column(length = MAX_LEN_AGGREGATED)
-    /** all different locale Phone Screenshots */
-    private String searchPhoneScreenshots;
-
     @Column(length = MAX_LEN_AGGREGATED_DESCRIPTION)
     /** all different locale name description concatenated for faster search */
     private String searchDescription;
@@ -101,7 +97,6 @@ public class App extends AppCommon implements AppDetail {
 
         toStringBuilder(sb, "searchName", this.searchName, 20);
         toStringBuilder(sb, "searchSummary", this.searchSummary, 20);
-        toStringBuilder(sb, "searchPhoneScreenshots", searchPhoneScreenshots, 20);
         toStringBuilder(sb, "searchDescription", this.searchDescription, 20);
         toStringBuilder(sb, "searchWhatsNew", this.searchWhatsNew, 20);
 
@@ -211,7 +206,7 @@ public class App extends AppCommon implements AppDetail {
 
     /**
      * Database FK to {@link Repo#getId()} : Repo-Server where {@link #getIcon()},
-     * {@link #getSearchPhoneScreenshots()} , {@link Localized#getPhoneScreenshots()}
+     * {@link Localized#getPhoneScreenshots()}
      * can be downloaded from.
      */
     public Integer getResourceRepoId() {
@@ -220,13 +215,5 @@ public class App extends AppCommon implements AppDetail {
 
     public void setResourceRepoId(Integer resourceRepoId) {
         this.resourceRepoId = resourceRepoId;
-    }
-
-    public String getSearchPhoneScreenshots() {
-        return searchPhoneScreenshots;
-    }
-
-    public void setSearchPhoneScreenshots(String searchPhoneScreenshots) {
-        this.searchPhoneScreenshots = searchPhoneScreenshots;
     }
 }

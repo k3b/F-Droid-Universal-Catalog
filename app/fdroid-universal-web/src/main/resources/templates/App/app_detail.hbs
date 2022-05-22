@@ -1,7 +1,9 @@
 <p>{{t.label_app_title}}</p>
 {{#app}}
     <h3>
-        {{#app.icon}}<img src="icons/{{app.packageName}}.png" width="48" height="48">{{/app.icon}}
+        {{#app.icon}}
+            <img src="icons/{{app.packageName}}.png" width="48" height="48" />
+        {{/app.icon}}
         {{name}}
     </h3>
     {{> App/list_app_summary}}
