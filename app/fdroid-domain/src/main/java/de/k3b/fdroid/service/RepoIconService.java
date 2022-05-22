@@ -41,18 +41,24 @@ public class RepoIconService extends ImageService {
      * @return null, if there is no icon or download fails
      */
     public File getOrDownloadLocalImageFile(Repo repo) {
-        File localIconFile = getLocalImageFile(repo);
+        File iconFile = getLocalImageFile(repo);
 
-        if (localIconFile != null && !localIconFile.exists()) {
-            String repoIconUrl = repo.getRepoIconUrl();
-            if (!StringUtil.isEmpty(repoIconUrl)) {
-                if (download(localIconFile, repoIconUrl)) {
-                    return localIconFile;
-                }
-            }
+        if (!error(iconFile)) {
+            // (icon download ok) -> nothing to do
+            return iconFile;
+        }
+        if (iconFile == null || iconFile.exists()) {
+            // (no icon defined) || (error download) -> nothing to do
             return null;
         }
-        return localIconFile;
+
+        String repoIconUrl = repo.getRepoIconUrl();
+        if (!StringUtil.isEmpty(repoIconUrl)) {
+            if (download(iconFile, repoIconUrl)) {
+                return iconFile;
+            }
+        }
+        return null;
     }
 
     public File getLocalImageFile(Repo repo) {

@@ -99,11 +99,14 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
     private void bindIcon(ViewHolder viewHolder, App app) {
         File iconFile = iconService.getLocalImageFile(app);
 
-        // 1=no icon defined, 2=icon not downloaded yet, 3=icon downloaded
-        if (iconFile == null || iconFile.exists()) {
-            // 1,3
+        if (!iconService.error(iconFile)) {
+            // (icon download ok) -> nothing to do
             setIcon(viewHolder, iconFile);
+        } else if (iconFile == null || iconFile.exists()) {
+            // (no icon defined) || (error download) -> nothing to do
+            setIcon(viewHolder, null);
         } else {
+            // (icon not downloaded yet) || (download error >= 24h)
             setIcon(viewHolder, null);
             threadExecutor.execute(() -> {
                 File localIconFile = iconService.getOrDownloadLocalImageFile(app);

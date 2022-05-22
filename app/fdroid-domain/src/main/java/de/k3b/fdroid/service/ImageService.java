@@ -34,8 +34,15 @@ import de.k3b.fdroid.util.StringUtil;
 /**
  * get the appicon from local repoCache or download from repository
  */
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public abstract class ImageService {
     protected static final String IMAGE_SUFFIX = ".png";
+
+    /**
+     * One day measured in Milliseconds
+     */
+    private static final long DAY_IN_MILLISECS = 1000 * 60 * 60 * 24;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_HTML);
     protected final File imageCacheDir;
 
@@ -45,7 +52,7 @@ public abstract class ImageService {
         this.imageCacheDir.mkdirs();
     }
 
-    protected boolean download(File localIconFile, String appIconUrl) {
+    protected boolean download(File iconFile, String appIconUrl) {
         InputStream response = null;
         FileOutputStream outputStream = null;
         try {
@@ -55,24 +62,30 @@ public abstract class ImageService {
                 response = connection.getInputStream();
 
                 if (response != null) {
-
-                    File tempFile = new File(localIconFile.getParentFile(), localIconFile.getName() + ".tmp");
+                    File tempFile = new File(iconFile.getParentFile(), iconFile.getName() + ".tmp");
                     if (tempFile.exists()) tempFile.delete();
                     outputStream = new FileOutputStream(tempFile, false);
                     IOUtils.copy(response, outputStream);
                     outputStream.close();
-                    if (localIconFile.exists()) localIconFile.delete();
-                    tempFile.renameTo(localIconFile);
+                    if (iconFile.exists()) iconFile.delete();
+                    tempFile.renameTo(iconFile);
 
-                    LOGGER.info("downladed-icon('{}' <- '{}')", localIconFile, appIconUrl);
+                    LOGGER.info("downladed-icon('{}' <- '{}')", iconFile, appIconUrl);
                     return true;
                 }
             }
 
-            LOGGER.warn("downladed-icon('{}' <- '{}') : {} - {}", localIconFile, appIconUrl,
+            LOGGER.warn("downladed-icon('{}' <- '{}') : {} - {}", iconFile, appIconUrl,
                     connection.getResponseCode(), connection.getResponseMessage());
+
+            // create 1 byte file as error marker
+            outputStream = new FileOutputStream(iconFile, false);
+            outputStream.write(1);
+            outputStream.flush();
+            outputStream.close();
+
         } catch (Exception e) {
-            LOGGER.error("downladed-icon('{}' <- '{}') exception {}", localIconFile, appIconUrl, e.getMessage());
+            LOGGER.error("downladed-icon('{}' <- '{}') exception {}", iconFile, appIconUrl, e.getMessage());
             LOGGER.error("downladed-icon", e);
         } finally {
             IOUtils.closeQuietly(outputStream, response);
@@ -80,17 +93,26 @@ public abstract class ImageService {
         return false;
     }
 
+    public boolean error(File file) {
+        if (file == null || !file.exists()) return true;
+        if (file.length() > 10) return false;
+        if (System.currentTimeMillis() - file.lastModified() > DAY_IN_MILLISECS) {
+            // Download-Error-File older than 1 Day. Delete to trigger re-Download.
+            file.delete();
+        }
+        return true;
+    }
 
     public File getExistingLocalImageFileOrNull(String packageName) {
         File result = getLocalImageFile(packageName);
-        if (result == null || !result.exists()) return null;
-        return result;
+        if (!error(result)) return result;
+        return null;
     }
 
     public File getLocalImageFile(String packageName) {
         File result = null;
         if (!StringUtil.isEmpty(packageName)) {
-            String localFileName = (packageName.contains("."))
+            String localFileName = (packageName.endsWith(IMAGE_SUFFIX))
                     ? packageName
                     : (packageName + IMAGE_SUFFIX);
             result = new File(this.imageCacheDir, localFileName);

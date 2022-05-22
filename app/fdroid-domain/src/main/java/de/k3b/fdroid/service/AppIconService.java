@@ -49,39 +49,54 @@ public class AppIconService extends ImageService {
      * @return null, if there is no icon or download fails
      */
     public File getOrDownloadLocalImageFile(App app) {
-        File localIconFile = getLocalImageFile(app);
+        File iconFile = getLocalImageFile(app);
 
-        if (localIconFile != null && !localIconFile.exists()) {
-            Integer repoId = app.getResourceRepoId();
-            if (repoId != null) {
-                Repo repo = repoCache.getItemById(repoId);
-                if (repo != null) {
-                    String appIconUrl = repo.getAppIconUrl(app.getIcon());
-                    if (!StringUtil.isEmpty(appIconUrl)) {
-                        if (download(localIconFile, appIconUrl)) {
-                            return localIconFile;
-                        }
+        if (!error(iconFile)) {
+            // (icon download ok) -> nothing to do
+            return iconFile;
+        }
+        if (iconFile == null || iconFile.exists()) {
+            // (no icon defined) || (error download) -> nothing to do
+            return null;
+        }
+
+        // for download need repo to calculate url
+        Integer repoId = app.getResourceRepoId();
+        if (repoId != null) {
+            Repo repo = repoCache.getItemById(repoId);
+            if (repo != null) {
+                String appIconUrl = repo.getAppIconUrl(app.getIcon());
+                if (!StringUtil.isEmpty(appIconUrl)) {
+                    if (download(iconFile, appIconUrl)) {
+                        return iconFile;
                     }
                 }
             }
-            return null;
         }
-        return localIconFile;
+        return null;
     }
 
     /**
      * @return null, if there is no icon or download fails
      */
     public File getOrDownloadLocalImageFile(String packageName) {
-        File localIconFile = getLocalImageFile(packageName);
+        File iconFile = getLocalImageFile(packageName);
 
-        if (localIconFile != null && !localIconFile.exists()) {
-            String packageNameWithoutIconSuffix = packageName.endsWith(IMAGE_SUFFIX)
-                    ? packageName.substring(0, packageName.length() - IMAGE_SUFFIX.length())
-                    : packageName;
-            return getOrDownloadLocalImageFile(appRepository.findByPackageName(packageNameWithoutIconSuffix));
+        if (!error(iconFile)) {
+            // (icon download ok) -> nothing to do
+            return iconFile;
         }
-        return localIconFile;
+        if (iconFile == null || iconFile.exists()) {
+            // (no icon defined) || (error download) -> nothing to do
+            return null;
+        }
+
+        // for download need app to calculate url
+        String packageNameWithoutIconSuffix = packageName.endsWith(IMAGE_SUFFIX)
+                ? packageName.substring(0, packageName.length() - IMAGE_SUFFIX.length())
+                : packageName;
+        return getOrDownloadLocalImageFile(appRepository.findByPackageName(packageNameWithoutIconSuffix));
+
     }
 
     public File getLocalImageFile(App app) {
