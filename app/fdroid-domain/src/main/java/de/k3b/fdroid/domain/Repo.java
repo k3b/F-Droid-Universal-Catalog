@@ -209,7 +209,10 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId {
     public String getAppIconUrl(String icon) {
         String url = null;
         if (!StringUtil.isEmpty(icon)) {
-            url = getUrl("icons/" + icon);
+            String relPath = "icons/" + icon;
+            // For security reasons: web server does not allow paths that contain ".."
+            // "icons/../" is a legit usecase when icon comes from localized outside the icons dir
+            url = getUrl(relPath.replace("icons/../", ""));
         }
         return url;
     }
