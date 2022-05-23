@@ -41,7 +41,7 @@ public class AppIdSql {
         if (!StringUtil.isEmpty(appSearchParameter.text)) {
             // android-sqLite does not support "LIMIT" in "GROUP BY" queries
             return bySearchScore(sql, params, appSearchParameter.text,
-                    appSearchParameter.orderBy,
+                    appSearchParameter.minimumScore, appSearchParameter.orderBy,
                     (forAndroid) ? 0 : appSearchParameter.maxRowCount).toString();
         }
 
@@ -52,10 +52,12 @@ public class AppIdSql {
         return sql.toString();
     }
 
-    private static StringBuilder bySearchScore(StringBuilder sql, Map<String, Object> params, String search, String orderBy, int maxRowCount) {
+    private static StringBuilder bySearchScore(
+            StringBuilder sql, Map<String, Object> params,
+            String search, Integer minimumScore, String orderBy, int maxRowCount) {
         if (orderBy == null) {
             // sql.append("SELECT id from ("); // valid for hsqldb but not for sqLite
-            bySearchScoreImpl(sql, params, search, maxRowCount);
+            bySearchScoreImpl(sql, params, search, minimumScore, maxRowCount);
             // sql.append(")");
         } else {
             throw new UnsupportedOperationException("SQL search with order by");
@@ -64,7 +66,9 @@ public class AppIdSql {
         return sql;
     }
 
-    private static StringBuilder bySearchScoreImpl(StringBuilder sql, Map<String, Object> params, String search, int maxRowCount) {
+    private static StringBuilder bySearchScoreImpl(
+            StringBuilder sql, Map<String, Object> params,
+            String search, Integer minimumScore, int maxRowCount) {
         if (StringUtil.isEmpty(search)) throw new NullPointerException();
 
         sql.append("select\n" +
@@ -76,13 +80,18 @@ public class AppIdSql {
         String[] expressions = search.split(" ");
         int index = 1;
         for (String expresson : expressions) {
-            if (index > 1) sql.append(" OR ");
+            if (index > 1) sql.append(" AND ");
             sql.append("search like :search").append(index);
             params.put("search" + index, "%" + expresson + "%");
 
             index++;
         }
-        sql.append(")\n group by id, packageName\n" +
+        sql.append(")");
+        if (minimumScore != null) {
+            sql.append(" AND score >= :minimumScore ");
+            params.put("minimumScore", minimumScore);
+        }
+        sql.append("\n group by id, packageName\n" +
                 " order by score_sum desc, packageName ");
         addLimit(sql, params, maxRowCount);
         return sql;

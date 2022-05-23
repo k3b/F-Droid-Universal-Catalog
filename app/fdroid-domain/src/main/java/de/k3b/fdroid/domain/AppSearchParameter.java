@@ -28,6 +28,14 @@ public class AppSearchParameter extends EntityCommon {
     // text contained in any of the text fields (summaryXXX )
     public String text = null;
 
+    /**
+     * For {@link #text} search: minimal required search-score required (or null)
+     * null mean search everywhere
+     * 10 means exclude Describtion.
+     * for details see sql-sourcecode of "CREATE VIEW AppSearch AS ..."
+     */
+    public Integer minimumScore = null;
+
     public String orderBy = null;
 
     // supported by sqLite and hsqldb: SELECT ... FROM ... LIMIT 150 https://www.sqlitetutorial.net/sqlite-limit/
