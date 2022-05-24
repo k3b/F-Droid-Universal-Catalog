@@ -21,7 +21,7 @@ Glossar:
     * Example: "https://f-droid.org/repo"
     * Internet URL of a [Repo] or [Mirror] where [Repo-Catalog] or [APK-File](#APK-File) can be downloaded
       from.
-* [APK-File]{#APK-File}
+* <a name='APK-File'>[APK-File]</a>
     * An Android application file that can be installed on an Android device
     * An [APK-File] corresponds to a [Version] of an [App] in a [Repo].
 * [App]
@@ -183,3 +183,6 @@ f-droid         https://gitlab.com/fdroid/fdroidclient
 fdroidclassic   https://git.bubu1.eu/Bubu/fdroidclassic
 
 fdroid-html android generic test (lib zum ermitteln der templates)
+  
+test a link [APK-File](#APK-File)
+  
