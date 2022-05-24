@@ -19,9 +19,9 @@ Glossar:
 
 * [Address]
     * Example: "https://f-droid.org/repo"
-    * Internet URL of a [Repo] or [Mirror] where [Repo-Catalog] or [APK-File] can be downloaded
+    * Internet URL of a [Repo] or [Mirror] where [Repo-Catalog] or [APK-File](#APK-File) can be downloaded
       from.
-* [APK-File]
+* [APK-File]{#APK-File}
     * An Android application file that can be installed on an Android device
     * An [APK-File] corresponds to a [Version] of an [App] in a [Repo].
 * [App]
