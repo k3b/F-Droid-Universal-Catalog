@@ -2,11 +2,11 @@ https://github.com/k3b/F-Droid-Universal-Catalog/README.md
 
 # F-Droid-Universal-Catalog
 
-Goal: Create a crossplatform library to transfer a [fdroid] [Repo-Catalog] (= FDroid Json Catalog
-data) to Database
+Goal: Create a crossplatform library to transfer a [fdroid](Glossar#fdroid)(
+Glossar#fdroid) [Repo-Catalog](Glossar#Repo-Catalog) (= FDroid Json Catalog data) to Database
 
-* Datasource (platform neutral): java jar data file [index-v1.jar] that contains zip-compressed data
-  in fdroid-v1-json format
+* Datasource (platform neutral): java jar data file [index-v1.jar](Glossar#index-v1.jar) that
+  contains zip-compressed data in fdroid-v1-json format
 * Destination Database (platform specific):
     * Platfrom neutral Java Repository Interface with pojo-entities to be persisted in database
     * Anrdoid-Room Database Repository interface dao-implementation
@@ -15,74 +15,30 @@ data) to Database
 
 ---
 
-Glossar:
-
-* [Address]
-    * Example: "https://f-droid.org/repo"
-    * Internet URL of a [Repo] or [Mirror] where [Repo-Catalog] or [APK-File](#APK-File) can be downloaded
-      from.
-* <a name='APK-File'>[APK-File]</a>
-    * An Android application file that can be installed on an Android device
-    * An [APK-File] corresponds to a [Version] of an [App] in a [Repo].
-* [App]
-    * Information about an Android App that is available in a [Repo] or [Mirror]
-    * Each app has a [Repo] independent unique [Packagename]
-    * An [App] can have one or more [Version]s
-* [Category]
-    * An [App] can belong to one or more [Category]s
-    * Example: Games, Internet, Connectivity, Graphics, Multimedia
-* [fdroid]
-    * A Server Software that manages one [Repo-Catalog] with android [App]s and [APK-File]s
-    * https://f-droid.org is the most popular [fdroid] server instance or [Repo].
-* [fdroid-v1] short for [Fdroid] [JSON] catalog format "v1"
-* [index-v1.jar] (alias for [zip]ed [Repo-Catalog] in fileformat [fdroid-v1] )
-    * Zipped-file containing the [Repo-Catalog]. The zip contains [index-v1.json]
-        * See https://en.wikipedia.org/wiki/ZIP_(file_format)
-    * Can be downloaded from a [Repo] or [Mirror]
-    * Example: [Repo].[Address] = "https://f-droid.org/repo" can be downloded from "https://f-droid.org/repo/index-v1.jar"
-* [index-v1.json]  (alias for [Repo-Catalog] in fileformat [fdroid-v1] )
-    * contains the [fdroid-v1] [Repo]-Catalog in [JSON] format.
-* JSON (JavaScript Object Notation)
-    * Is a technical open standard file format and data interchange format that uses human-readable.
-    * See https://en.wikipedia.org/wiki/JSON
-* [Localized]
-    * Language specific Translation of infos about an [App]
-    * Example: en(=englisch) [App] summary: "Large digital clock in 24 hour format"
-    * Example: de(=german or "deutsch") [App] summary: "Große Digitaluhr im 24-Stunden-Format"
-* [Mirror] of a [REPO]
-    * A duplicate of a [Ropo] that allows to download under a different [Adress] or url used for
-      Load balancing.
-    * see https://en.wikipedia.org/wiki/Load_balancing_(computing) for details
-* [Package] or [Packagename]
-    * A unique Name for an Android [App]
-* [Repo]
-    * An Android [App] Repository that contains a catalogue of Android apps
-    * Each Repo has a content-catalogfile "index-v1.jar", a ziped-file that contains "index-v1.json"
-    * A [Repo] allows to download [APK-File] in one or more  [Version]s
-* [Repo-Catalog]
-    * contains a list off all [App]s available in a [Repo]
-    * [fdroid] uses [index-v1.jar] and [index-v1.json] as catalog data.
-
----
-
-[fdroid-v1] - [JSON] format of one [index-v1.jar] / [index-v1.json] [Repo-Catalog] file
+[fdroid-v1](Glossar#fdroid-v1) - [JSON](Glossar#JSON) format of
+one [index-v1.jar](Glossar#index-v1.jar)
+/ [index-v1.json](Glossar#index-v1.json) [Repo-Catalog](Glossar#Repo-Catalog) file
 
 * Catalog
-    * [Repo] (Example: address="https://f-droid.org/repo")
-        * [Mirror]s (Example "https://ftp.fau.de/fdroid/repo")
-    * [App]s (Example [packageName]="com.chancehorizon.just24hoursplus")
-        * [Category]s (Example "Games")
-        * [Localized] (Example: "en-US" -> summary="Large digital clock in 24 hour format")
-    * [Package]s (Example packageName="com.chancehorizon.just24hoursplus")
-        * [Version]s (Example versionName="1.4.1")
+    * [Repo](Glossar#Repo) (Example: address="https://f-droid.org/repo")
+        * [Mirror](Glossar#Mirror)s (Example "https://ftp.fau.de/fdroid/repo")
+    * [App](Glossar#App)s (Example [packageName](Glossar#packageName)="
+      com.chancehorizon.just24hoursplus")
+        * [Category](Glossar#Category)s (Example "Games")
+        * [Localized](Glossar#Localized) (Example: "en-US" -> summary="Large digital clock in 24
+          hour format")
+    * [Package](Glossar#Package)s (Example packageName="com.chancehorizon.just24hoursplus")
+        * [Version](Glossar#Version)s (Example versionName="1.4.1")
+
+todo links
 
 Database format
 
-* [Repo]
-    * [App]s
-        * [Category]s
-        * [Localized]
-        * [Version]s
+* [Repo](Glossar#)
+    * [App](Glossar#)s
+        * [Category](Glossar#)s
+        * [Localized](Glossar#)
+        * [Version](Glossar#)s
 
 -----
 
@@ -105,28 +61,29 @@ Architecture (detailed)
 * Userinterface out of scope: This work tries to esablish a platform independant service
   architecture in the fdroid ecosystem.
 * Services (non-Android Code that uses other Services und Repository-Interfaces)
-    * V1UpdateService Reads reads Android Catalog json data [fdroid-v1] and updates the Database via
-      XxxxxxRepositories
+    * V1UpdateService Reads reads Android Catalog json data [fdroid-v1](Glossar#) and updates the
+      Database via XxxxxxRepositories
 
-> > * FDroidCatalogJsonStreamParserXxxx : reads Android Catalog json data [fdroid-v1] as a Stream of Events: on[Repo], on[App], on[Version]
-          * XxxxUpdateService : translates [fdroid-v1] to database updates via XxxxRepository: [Repo]UpdateService, [App]UpdateService, [App]UpdateService, ...
-      !!  * CanonicalLocale: Merges [Localized] to non-locale-languages: i.e. en, en-AU, en-GB, en-US, en-rUS, en-us and en_US will all be mapped to "en"
-      ??  * LocaleImportFilter : Filter out languages that the user does not understand and that is not stored in the local database to save memory.       * Example: I can read de, en, nds, nl but not ja, cn, ar, ...... ??  * [Repo]SecurityService: Make shure that catalogdata [index-v1.jar] is not tampered with (checksum and signature is ok)
+> > * FDroidCatalogJsonStreamParserXxxx : reads Android Catalog json data [fdroid-v1](Glossar#) as a Stream of Events: on[Repo](Glossar#), on[App](Glossar#), on[Version](Glossar#)
+                * XxxxUpdateService : translates [fdroid-v1](Glossar#) to database updates via XxxxRepository: [Repo](Glossar#)UpdateService, [App](Glossar#)UpdateService, [App](Glossar#)UpdateService, ...
+      !!  * CanonicalLocale: Merges [Localized](Glossar#) to non-locale-languages: i.e. en, en-AU, en-GB, en-US, en-rUS, en-us and en_US will all be mapped to "en"
+      ??  * LocaleImportFilter : Filter out languages that the user does not understand and that is not stored in the local database to save memory.       * Example: I can read de, en, nds, nl but not ja, cn, ar, ...... ??  * [Repo](Glossar#)SecurityService: Make shure that catalogdata [index-v1.jar](Glossar#) is not tampered with (checksum and signature is ok)
       ??* DeviceCompatibilitySearchFilter:
-          * If i have a Android-5 device and the software requires Android-6 or later     * If i have installed an [App] from [Repo] f-droid.org i cannot install an update[Version] from [Repo] f-droid.org because the [App]-[Version]-signature does not match. ??* [App]-[Category]-SearchFilter/Sorter:
-          * show [App]s that match one or more [Category]s: Example I want to see [App]s of [Category] "games"
-      ??* FulltextSearchFilter over [Packagename] and [Localized]- name, summary, description, whatIsNew of all languages the user understands. ??* RelevanceSorter: Relevance in app-title is higher than app-summay than app-description.     * Example when i search for "FDroid" i want to see the FDroid-Client-app before apps that contain "Available for download in FDroid. ??* LastUpdateSorter/Filter: Which app was updated in the last 90 days? ??* LanguageFilter:
-          * app that has a translated catalog summary/description in one or more languages.     * the app-userinterface has been translated in one or more languages. ??* App-Rating/App-Comments (FDroid.org independant)
+                * If i have a Android-5 device and the software requires Android-6 or later     * If i have installed an [App](Glossar#) from [Repo](Glossar#) f-droid.org i cannot install an update[Version](Glossar#) from [Repo](Glossar#) f-droid.org because the [App](Glossar#)-[Version](Glossar#)-signature does not match. ??* [App](Glossar#)-[Category](Glossar#)-SearchFilter/Sorter:
+                * show [App](Glossar#)s that match one or more [Category](Glossar#)s: Example I want to see [App](Glossar#)s of [Category](Glossar#) "games"
+      ??* FulltextSearchFilter over [Packagename](Glossar#) and [Localized](Glossar#)- name, summary, description, whatIsNew of all languages the user understands. ??* RelevanceSorter: Relevance in app-title is higher than app-summay than app-description.     * Example when i search for "FDroid" i want to see the FDroid-Client-app before apps that contain "Available for download in FDroid. ??* LastUpdateSorter/Filter: Which app was updated in the last 90 days? ??* LanguageFilter:
+                * app that has a translated catalog summary/description in one or more languages.     * the app-userinterface has been translated in one or more languages. ??* App-Rating/App-Comments (FDroid.org independant)
       ??* Userdefined Software collection and Software-Categories (FDroid.org independant)
       ??* Android-Specific app-Installation/Update/Deinstallation-Service
 
 * Repository-Interface (database abstraction) with implementatino in Android-Room (XxxxxDao) and
   Spring-Boot-JPA XxxxRepositoryJpa + XxxxRepositoryAdapter
-    * [Repo]Repository with [Repo]Dao and Spring-Boot-JPA [Repo]RepositoryJpa + [Repo]
+    * [Repo](Glossar#)Repository with [Repo](Glossar#)Dao and Spring-Boot-JPA [Repo](Glossar#)
+      RepositoryJpa + [Repo](Glossar#)
       RepositoryAdapter,
-    * [App]Repository with ...
-    * [Localized]Repository with ...
-    * [Version]Repository with ...
+    * [App](Glossar#)Repository with ...
+    * [Localized](Glossar#)Repository with ...
+    * [Version](Glossar#)Repository with ...
 
 > > =current work in progress
 !!=todo ??=not implemented yet
@@ -159,8 +116,8 @@ Database Differences between Android-Room and j2se-jpa
       use repository methods
 * room-annotations are inside android-modules that cannot be used inside non-android-libs
     * workaround create a non-android-lib with code duplicates of the room-annotations
-* room-dao findAll (T[] or List<T>) and jpa findAll (Iterable<T>) are not compatible: different
-  return types
+* room-dao findAll (T[](Glossar#) or List<T>) and jpa findAll (Iterable<T>) are not compatible:
+  different return types
 * room-dao uses insert(T) or update(T); JPA uses save(T)
 * annotation namespace: androidx.room.* vs javax.persistence.*
 
@@ -183,6 +140,6 @@ f-droid         https://gitlab.com/fdroid/fdroidclient
 fdroidclassic   https://git.bubu1.eu/Bubu/fdroidclassic
 
 fdroid-html android generic test (lib zum ermitteln der templates)
-  
-test a link [APK-File](#APK-File)
+
+test a link [APK-File](Glossar#)(#APK-File)
   

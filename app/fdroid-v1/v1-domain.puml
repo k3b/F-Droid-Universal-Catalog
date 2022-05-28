@@ -1,0 +1,53 @@
+@startuml
+note "Like a Supermarket\nwhere app-s can be\ndownloaded from" as v1.NoteRepo
+class v1.Repo <<AggregatRoot>><<JsonEntity>> {
+  mirrors[]
+  name
+  description
+  icon
+  address
+  timestamp
+}
+class v1.App <<JsonEntity>> {
+  packageName
+  added
+  lastUpdated
+  icon
+  categories[]
+}
+
+note "Compatibility Info\n+ APK Download" as NoteVersion
+class v1.Version <<JsonEntity>> {
+  packageName
+  apkName
+  versionCode
+  versionName
+  added
+  size
+
+  nativecode
+  minSdkVersion
+  targetSdkVersion
+  maxSdkVersion
+}
+
+note "App Translation" as v1.NoteLocalized
+class v1.Localized <<JsonEntity>> {
+  whatsNew
+  name
+  summary
+  description
+  icon
+  phoneScreenshots[]
+
+}
+
+v1.Repo *-- v1.App
+v1.App *-- v1.Localized : Language
+v1.Repo *-- v1.Version
+v1.App o-- v1.Version
+
+v1.Repo . v1.NoteRepo
+v1.NoteLocalized .. v1.Localized
+v1.Version - NoteVersion
+@enduml

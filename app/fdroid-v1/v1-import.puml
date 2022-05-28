@@ -1,0 +1,21 @@
+@startuml
+class v1.V1DownloadAndImportService
+
+class v1.Domain <<JsonEntity>>
+class v1.Service
+
+v1.Service --> v1.Domain : uses
+
+v1.V1DownloadAndImportService --> v1.Service : uses
+v1.V1DownloadAndImportService --> v1.Domain : uses
+
+v1.V1DownloadAndImportService --> de.k3b.fdroid.model : uses
+
+class de.k3b.fdroid.Repository <<interface>>
+class de.k3b.fdroid.Domain <<Entity>>
+class de.k3b.fdroid.Service
+
+de.k3b.fdroid.Service --> de.k3b.fdroid.Domain : uses
+de.k3b.fdroid.Service -> de.k3b.fdroid.Repository : uses
+de.k3b.fdroid.Repository --> de.k3b.fdroid.Domain : uses
+@enduml

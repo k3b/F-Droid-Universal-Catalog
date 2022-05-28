@@ -1,0 +1,107 @@
+@startuml
+
+package de.k3b.fdroid.service [
+  RepoIconService
+  AppIconService
+  LocalizedImageService
+  CacheService
+  VersionService
+  FixLocaleService
+]
+
+class AppWithDetailsPagerService <<AggregateRoot>> {
+  getXxxx(int currentIndex)
+}
+class AppWithDetails <<AggregateRoot>>
+
+package de.k3b.fdroid.domain [
+    Repo <<Entity>>
+    AppRepository <<Entity>>
+    VersionRepository <<Entity>>
+    LocalizedRepository <<Entity>>
+    LocaleRepository <<Entity>>
+    CategoryRepository <<Entity>>
+    AppCategoryRepository <<Entity>>
+]
+
+
+interface Repository <<interface>> {
+    RepoRepository
+    AppRepository
+    VersionRepository
+    LocalizedRepository
+    LocaleRepository
+    CategoryRepository
+    AppCategoryRepository
+}
+
+class FDroidDatabase <<Android>> {
+    RepoDao
+    AppDao
+    VersionDao
+    LocalizedDao
+    LocaleDao
+    CategoryDao
+    AppCategoryDao
+}
+
+database AndroidDB [
+    Database <b>sqLite</b>
+    Android Room
+    ====
+    Repo
+    App
+    Version
+    Localized
+    Locale
+    Category
+    AppCategory
+]
+
+package de.k3b.fdroid.jpa.repository [
+    RepoRepositoryJpa/Adapter
+    AppRepositoryJpa/Adapter
+    VersionRepositoryJpa/Adapter
+    LocalizedRepositoryJpa/Adapter
+    LocaleRepositoryJpa/Adapter
+    CategoryRepositoryJpa/Adapter
+    AppCategoryRepositoryJpa/Adapter
+]
+database JpaDB [
+    Database <b>HsqlDB</b>
+    JPA/Springboot
+    ====
+    Repo
+    App
+    Version
+    Localized
+    Locale
+    Category
+    AppCategory
+]
+
+note "Platform independent core domain model 'FDroid' with\nEntities, Services and Repository-Interfaces" as caption
+note "App-ids of last search" as noteAppWithDetailsPagerService
+note "Data about one App" as noteAppWithDetails
+
+
+caption --> AppWithDetailsPagerService
+AppWithDetailsPagerService <- noteAppWithDetailsPagerService
+noteAppWithDetails --> AppWithDetails
+de.k3b.fdroid.service --> Repository : uses
+de.k3b.fdroid.service --> de.k3b.fdroid.domain : uses
+Repository -> de.k3b.fdroid.domain : uses
+
+Repository <|--> FDroidDatabase : implemented\nby
+FDroidDatabase --> AndroidDB : stored\nin\ntable
+
+Repository <|--> de.k3b.fdroid.jpa.repository : implemented\nby
+de.k3b.fdroid.jpa.repository --> JpaDB : stored\nin\ntable
+
+AppWithDetailsPagerService o-- AppWithDetails : contains
+AppWithDetails *--> de.k3b.fdroid.domain : contains
+
+AppWithDetailsPagerService --> Repository : uses
+
+
+@enduml

@@ -1,0 +1,66 @@
+@startuml
+
+note "FDrdoid Domain Model" as FDroid
+
+
+note "Like a Supermarket\nwhere app-s can be\ndownloaded from" as NoteRepo
+
+class Repo <<Entity>> {
+  mirrors[]
+  name
+  description
+  icon
+  address
+  timestamp
+  getUrl()
+}
+
+class App <<Entity>> {
+  packageName
+  added
+  lastUpdated
+  icon
+  searchInfos
+}
+
+class Version <<Entity>> {
+  apkName
+  versionCode
+  versionName
+  added
+  size
+
+  nativecode
+  minSdkVersion
+  targetSdkVersion
+  maxSdkVersion
+}
+
+class Localized <<Entity>> {
+  whatsNew
+  name
+  summary
+  description
+  icon
+  phoneScreenshots[]
+}
+
+class AppWithDetails <<AggregatRoot>>
+class Locale <<Entity>>
+class AppCategory <<Entity>>
+class Category <<Entity>>
+
+AppWithDetails..> Repo
+AppWithDetails -> App
+AppWithDetails *--> Localized : Translation
+AppWithDetails o--> Version : Compatibility Info\n+ APK Download
+Repo o--> Version
+Locale <..o Localized : "Language"
+
+AppWithDetails *--> AppCategory
+AppCategory o-> Category
+
+
+NoteRepo .. Repo
+FDroid .. AppWithDetails
+@enduml
