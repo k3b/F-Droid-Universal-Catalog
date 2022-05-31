@@ -15,13 +15,13 @@ class AppWithDetailsPagerService <<AggregateRoot>> {
 class AppWithDetails <<AggregateRoot>>
 
 package de.k3b.fdroid.domain [
-    Repo <<Entity>>
-    AppRepository <<Entity>>
-    VersionRepository <<Entity>>
-    LocalizedRepository <<Entity>>
-    LocaleRepository <<Entity>>
-    CategoryRepository <<Entity>>
-    AppCategoryRepository <<Entity>>
+    Repo <<DatabaseEntity>>
+    AppRepository <<DatabaseEntity>>
+    VersionRepository <<DatabaseEntity>>
+    LocalizedRepository <<DatabaseEntity>>
+    LocaleRepository <<DatabaseEntity>>
+    CategoryRepository <<DatabaseEntity>>
+    AppCategoryRepository <<DatabaseEntity>>
 ]
 
 

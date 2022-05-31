@@ -17,17 +17,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-package de.k3b.fdroid.v1.domain;
-
-import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
-import de.k3b.fdroid.domain.interfaces.Enitity;
+package de.k3b.fdroid;
 
 /**
- * A FDroid-Catalog-v1-Json format {@link Enitity} used to import
- * F-Drdoid Catalog Data in the "V1" json format.
- * <p>
- * Each Xxx{@link V1JsonEntity} has a corresponding Xxx{@link DatabaseEntityWithId}
- * and there is a Xxx{@link UpdateService} that transfers Xxx{@link V1JsonEntity} to Xxx{@link DatabaseEntityWithId}
+ * The "fdroid-root" module contains only Android independent code used by all apps.
  */
-public interface V1JsonEntity extends Enitity {
-}

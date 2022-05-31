@@ -19,17 +19,20 @@
 package de.k3b.fdroid.domain.interfaces;
 
 /**
- * Database-Entity : can be persisted to database-table through java-{@link Repository} -interface.
+ * Database-Entity : An {@link Enitity} that can be persisted to database-table through
+ * java-{@link Repository}-interface.
  * <p>
- * * There are android/jpa specific implementaions for the java-repository-interfaces.
+ * * There are android/jpa specific implementaions for the java-{@link Repository}-interfaces.
  * * Restrictions imposed by android-room, K3b-Architecture specific:
  * * * Database-Entities can not contain relation specific informations (like master-detail,
- * one-to-many) except foreign keys
- * * * The DDD-Root-Aggregate contains master-detail-infos and therefore is not a Database-Entity.
- * Instead there is a domain specific java class "AppWithDetails" that combines
- * DDD-Root-Aggregate with pager (for lists)
+ * one-to-many) except foreign keys.
+ * * * The DDD- {@link AggregateRoot} contains master-detail-infos and therefore is not a Database-Entity.
+ * Instead there is a domain specific java class {@link de.k3b.fdroid.domain.AppWithDetails} that
+ * holds the master-Detail-Relations for one {@link de.k3b.fdroid.domain.App} as {@link AggregateRoot}.
+ * There is also a {@link de.k3b.fdroid.service.AppWithDetailsPagerService} that implements paging with
+ * load-on-demand.
  */
-public interface DatabaseEntityWithId {
+public interface DatabaseEntityWithId extends Enitity {
     int getId();
 
     static <T extends DatabaseEntityWithId> boolean sameId(T lhs, T rhs) {

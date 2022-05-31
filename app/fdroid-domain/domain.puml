@@ -5,7 +5,7 @@ note "FDrdoid Domain Model" as FDroid
 
 note "Like a Supermarket\nwhere app-s can be\ndownloaded from" as NoteRepo
 
-class Repo <<Entity>> {
+class Repo <<DatabaseEntity>> {
   mirrors[]
   name
   description
@@ -15,7 +15,7 @@ class Repo <<Entity>> {
   getUrl()
 }
 
-class App <<Entity>> {
+class App <<DatabaseEntity>> {
   packageName
   added
   lastUpdated
@@ -23,7 +23,7 @@ class App <<Entity>> {
   searchInfos
 }
 
-class Version <<Entity>> {
+class Version <<DatabaseEntity>> {
   apkName
   versionCode
   versionName
@@ -36,7 +36,7 @@ class Version <<Entity>> {
   maxSdkVersion
 }
 
-class Localized <<Entity>> {
+class Localized <<DatabaseEntity>> {
   whatsNew
   name
   summary
@@ -46,9 +46,9 @@ class Localized <<Entity>> {
 }
 
 class AppWithDetails <<AggregatRoot>>
-class Locale <<Entity>>
-class AppCategory <<Entity>>
-class Category <<Entity>>
+class Locale <<DatabaseEntity>>
+class AppCategory <<DatabaseEntity>>
+class Category <<DatabaseEntity>>
 
 AppWithDetails..> Repo
 AppWithDetails -> App

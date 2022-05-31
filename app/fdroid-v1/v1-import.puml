@@ -12,7 +12,7 @@ v1.V1DownloadAndImportService --> v1.Domain : uses
 v1.V1DownloadAndImportService --> de.k3b.fdroid.model : uses
 
 class de.k3b.fdroid.Repository <<interface>>
-class de.k3b.fdroid.Domain <<Entity>>
+class de.k3b.fdroid.Domain <<DatabaseEntity>>
 class de.k3b.fdroid.Service
 
 de.k3b.fdroid.Service --> de.k3b.fdroid.Domain : uses
