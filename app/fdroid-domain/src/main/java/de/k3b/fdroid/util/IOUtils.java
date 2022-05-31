@@ -21,8 +21,13 @@ package de.k3b.fdroid.util;
 import java.io.Closeable;
 import java.io.IOException;
 
-// Some Methods cannot use org.apache.commons.io.IOUtils#closeQuietly
-// because Android-4.2 does not support java-Consumer interface that is used by IOUtils
+/**
+ * AppCampatibility workaround:
+ * Android-4.2 does not support java-Consumer interface that is used by org.apache.commons.io.IOUtils.
+ * <p>
+ * These Method implementatoins are indepedent from "java-Consumer interface"
+ * and therefore can be used by android-4.2
+ */
 public class IOUtils extends org.apache.commons.io.IOUtils {
     public static void closeQuietly(final Closeable... closeables) {
         if (closeables == null) {

@@ -32,7 +32,7 @@ import de.k3b.fdroid.util.StringUtil;
 
 public class VersionService {
     private static final DecimalFormat numFormatter = new DecimalFormat("00");
-    public static final String DELIM_MIN_MAX = " - ";
+    public static final String SEPERATOR_MIN_MAX = " - ";
 
     /**
      * if a Version has a maxSdkVersion then all previous versions get the same maxSdkVersion
@@ -78,17 +78,6 @@ public class VersionService {
         return lastFound != null &&
                 v.getMinSdkVersion() <= lastFound.getMaxSdkVersion() &&
                 HardwareProfileService.isCompatibleNativecode(lastFound.getNativecodeArray(), v.getNativecodeArray());
-    }
-
-    public static String getLast(String combinedValue) {
-        if (StringUtil.isEmpty(combinedValue)) return "";
-        int pos = combinedValue.indexOf(DELIM_MIN_MAX);
-        if (pos >= 0) {
-            String substring = combinedValue.substring(pos + DELIM_MIN_MAX.length());
-            if (!StringUtil.isEmpty(substring)) return substring;
-            return "";
-        }
-        return combinedValue;
     }
 
     private void add(StringBuilder code, String versionName, int versionCode) {
@@ -195,8 +184,8 @@ public class VersionService {
         add(code, minVersion.getVersionName(), minVersion.getVersionCode());
 
         if (minVersion.getVersionCode() != maxVersion.getVersionCode()) {
-            add(sdk.append(DELIM_MIN_MAX), maxVersion.getMinSdkVersion(), maxVersion.getTargetSdkVersion(), maxVersion.getMaxSdkVersion());
-            add(code.append(DELIM_MIN_MAX), maxVersion.getVersionName(), maxVersion.getVersionCode());
+            add(sdk.append(SEPERATOR_MIN_MAX), maxVersion.getMinSdkVersion(), maxVersion.getTargetSdkVersion(), maxVersion.getMaxSdkVersion());
+            add(code.append(SEPERATOR_MIN_MAX), maxVersion.getVersionName(), maxVersion.getVersionCode());
         }
 
         app.setSearchVersion(code.toString());

@@ -39,13 +39,6 @@ public class LocalizedService {
         this.languageService = languageService;
     }
 
-    public static String getFirst(String combinedValue, String seperator, String notFoundValue) {
-        if (StringUtil.isEmpty(combinedValue)) return notFoundValue;
-        int pos = combinedValue.indexOf(seperator);
-        if (pos > 0) return combinedValue.substring(0, pos);
-        return combinedValue;
-    }
-
     protected Localized[] sortByPrioDesc(List<Localized> roomLocalizedList) {
         // :-( : List<>.sort() requieres android api 24. not compatible with api 14
         Localized[] result = roomLocalizedList.toArray(new Localized[0]);

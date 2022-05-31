@@ -22,7 +22,9 @@ import static de.k3b.fdroid.service.LocalizedService.SEPERATOR_DESCRIPTION;
 import static de.k3b.fdroid.service.LocalizedService.SEPERATOR_NAME;
 import static de.k3b.fdroid.service.LocalizedService.SEPERATOR_SUMMARY;
 import static de.k3b.fdroid.service.LocalizedService.SEPERATOR_WHATS_NEW;
-import static de.k3b.fdroid.service.LocalizedService.getFirst;
+import static de.k3b.fdroid.service.VersionService.SEPERATOR_MIN_MAX;
+import static de.k3b.fdroid.util.StringUtil.getFirst;
+import static de.k3b.fdroid.util.StringUtil.getLast;
 
 import androidx.room.ForeignKey;
 
@@ -30,9 +32,10 @@ import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.common.AppCommon;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
-import de.k3b.fdroid.service.VersionService;
 
 /**
+ * Information about an Android App.
+ * <p>
  * Android independent: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  * Database Entity compatible with Android-Room and non-android-j2se-jpa
@@ -45,6 +48,8 @@ import de.k3b.fdroid.service.VersionService;
 @javax.persistence.Table(name = "App")
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 public class App extends AppCommon implements AppDetail {
+    public static final String NOT_FOUND_VALUE = "";
+
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @androidx.room.PrimaryKey(autoGenerate = true)
@@ -185,23 +190,23 @@ public class App extends AppCommon implements AppDetail {
     }
 
     public String getLocalizedSummary() {
-        return getFirst(searchSummary, SEPERATOR_SUMMARY, "");
+        return getFirst(searchSummary, SEPERATOR_SUMMARY, NOT_FOUND_VALUE);
     }
 
     public String getLocalizedDescription() {
-        return getFirst(searchDescription, SEPERATOR_DESCRIPTION, "");
+        return getFirst(searchDescription, SEPERATOR_DESCRIPTION, NOT_FOUND_VALUE);
     }
 
     public String getLocalizedWhatsNew() {
-        return getFirst(searchWhatsNew, SEPERATOR_WHATS_NEW, "");
+        return getFirst(searchWhatsNew, SEPERATOR_WHATS_NEW, NOT_FOUND_VALUE);
     }
 
     public String getVersion() {
-        return VersionService.getLast(searchVersion);
+        return getLast(searchVersion, SEPERATOR_MIN_MAX, NOT_FOUND_VALUE);
     }
 
     public String getSdk() {
-        return VersionService.getLast(searchSdk);
+        return getLast(searchSdk, SEPERATOR_MIN_MAX, NOT_FOUND_VALUE);
     }
 
     /**

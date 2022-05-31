@@ -22,6 +22,8 @@ import de.k3b.fdroid.domain.common.EntityCommon;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
 
 /**
+ * {@link AppCategory}: An {@link App} can belong to zero or more {@link Category}s.
+ * <p>
  * Android independent: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  */

@@ -38,7 +38,8 @@ public class TestDataGenerator {
     // ?? char,Character,
 
     /**
-     * @param fieldPositonDependentValue if true numbers and strings get position dependant values to make shure that there are no duplicate values
+     * @param fieldPositonDependentValue if true numbers and strings get position dependant
+     *                                   values to make shure that there are no duplicate values
      */
     public static <T> T fill(T instance, int baseValue, boolean fieldPositonDependentValue) {
 
@@ -85,7 +86,7 @@ public class TestDataGenerator {
             if (type.getSimpleName().startsWith("b")) {
                 return (byte) baseValue; // byte or boolean
             } else {
-                return (int) getIntValueForField(baseValue, fieldNumber);
+                return getIntValueForField(baseValue, fieldNumber);
             }
         } else if (type.equals(Boolean.TYPE) || type.equals(Boolean.class)) {
             return (baseValue % 2 == 0);

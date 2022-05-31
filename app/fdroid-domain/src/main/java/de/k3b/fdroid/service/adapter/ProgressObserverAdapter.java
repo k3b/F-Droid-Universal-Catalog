@@ -16,15 +16,30 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
+package de.k3b.fdroid.service.adapter;
 
-package de.k3b.fdroid.domain;
+import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 
-/**
- * Entities (from DDD) are java data classes where the data is persistable.
- * The "fdroid.domain" contains the Android independent Database-{@link de.k3b.fdroid.domain.interfaces.Enitity}s
- * ({@link de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId})
- * that contain properties that are persisted in the Database through a {@link de.k3b.fdroid.domain.interfaces.Enitity}
- * specific {@link de.k3b.fdroid.domain.interfaces.Repository} .
- * A {@link de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId} may only contain primitive types, primaryKeys and foreignKeys.
- * Relations or Objects or lists are not allowed.
- */
+public class ProgressObserverAdapter implements ProgressObserver {
+    private final ProgressObserver child;
+
+    public ProgressObserverAdapter(ProgressObserver child) {
+
+        this.child = child;
+    }
+
+    @Override
+    public void onProgress(int counter, String progressChar, String progressContext) {
+        child.onProgress(counter, progressChar, progressContext);
+    }
+
+    @Override
+    public ProgressObserver setProgressContext(String progressPrefix, String progressSuffix) {
+        return child.setProgressContext(progressPrefix, progressSuffix);
+    }
+
+    @Override
+    public void log(String message) {
+        child.log(message);
+    }
+}

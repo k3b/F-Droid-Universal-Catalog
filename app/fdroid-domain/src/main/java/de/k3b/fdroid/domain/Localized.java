@@ -25,6 +25,8 @@ import de.k3b.fdroid.domain.interfaces.AppDetail;
 import de.k3b.fdroid.util.StringUtil;
 
 /**
+ * Translated infos about an {@link App}.
+ * <p>
  * Android independent: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  * Database Entity compatible with Android-Room and non-android-j2se-jpa

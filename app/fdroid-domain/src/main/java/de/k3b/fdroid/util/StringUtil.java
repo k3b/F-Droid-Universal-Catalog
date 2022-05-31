@@ -99,4 +99,24 @@ public class StringUtil {
         }
     }
 
+    /**
+     * @return getFirst(" a, b, c ", ", ", null) returns "a"
+     */
+    public static String getFirst(String combinedValue, String seperator, String notFoundValue) {
+        if (isEmpty(combinedValue)) return notFoundValue;
+        int pos = combinedValue.indexOf(seperator);
+        if (pos > 0) return combinedValue.substring(0, pos);
+        return combinedValue;
+    }
+
+    public static String getLast(String combinedValue, String seperator, String notFoundValue) {
+        if (StringUtil.isEmpty(combinedValue)) return notFoundValue;
+        int pos = combinedValue.indexOf(seperator);
+        if (pos >= 0) {
+            String substring = combinedValue.substring(pos + seperator.length());
+            if (!StringUtil.isEmpty(substring)) return substring;
+            return notFoundValue;
+        }
+        return combinedValue;
+    }
 }

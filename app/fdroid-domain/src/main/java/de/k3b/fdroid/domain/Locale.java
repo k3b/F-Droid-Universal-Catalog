@@ -22,6 +22,8 @@ import de.k3b.fdroid.domain.common.EntityCommon;
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 
 /**
+ * {@link Locale}: Language of a {@link Localized}.
+ * <p>
  * Android independent: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  * Database Entity compatible with Android-Room and non-android-j2se-jpa
