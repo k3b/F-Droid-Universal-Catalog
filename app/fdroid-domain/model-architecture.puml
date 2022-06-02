@@ -95,8 +95,20 @@ Repository -> de.k3b.fdroid.domain : uses
 Repository <|--> FDroidDatabase : implemented\nby
 FDroidDatabase --> AndroidDB : stored\nin\ntable
 
+class androidx.room<<Android>>
+androidx.room <|- FDroidDatabase : implemented\nby
+
+class room_migrations<<Android>>
+AndroidDB <-- room_migrations : Schema\nupdate by
+
 Repository <|--> de.k3b.fdroid.jpa.repository : implemented\nby
 de.k3b.fdroid.jpa.repository --> JpaDB : stored\nin\ntable
+
+class FlyWay<<JPA>>
+JpaDB <-- FlyWay : Schema\nupdate by
+
+class javax.persistence <<JPA>>
+javax.persistence <|-- de.k3b.fdroid.jpa.repository : implemented\nby
 
 AppWithDetailsPagerService o-- AppWithDetails : contains
 AppWithDetails *--> de.k3b.fdroid.domain : contains

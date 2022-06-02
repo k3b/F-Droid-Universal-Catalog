@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
 import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.io.IOException;
 import java.security.cert.X509Certificate;
@@ -30,6 +31,8 @@ import java.util.jar.JarEntry;
 
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
+import de.k3b.fdroid.domain.interfaces.ProgressObservable;
+import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.v1domain.entity.App;
 import de.k3b.fdroid.v1domain.entity.Version;
 import de.k3b.fdroid.v1domain.util.JarUtilities;
@@ -38,18 +41,23 @@ import de.k3b.fdroid.v1domain.util.JarUtilities;
  * Reads and verfies the jar.
  * throws {@link V1JarException} if something goes wrong.
  */
-public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase {
+public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase implements ProgressObservable {
     @NonNull
     private final Repo repoInDatabase;
     private de.k3b.fdroid.v1domain.entity.Repo repoInJar = null;
     private int lastAppCount = 0;
     private int lastVersionCount = 0;
+    private ProgressObserver progressObserver;
 
 
     public V1RepoVerifyJarParser(@NonNull Repo repoInDatabase) {
         if (repoInDatabase == null) throw new NullPointerException();
 
         this.repoInDatabase = repoInDatabase;
+    }
+
+    public void setProgressObserver(@Nullable ProgressObserver progressObserver) {
+        this.progressObserver = progressObserver;
     }
 
     @Override
@@ -74,6 +82,9 @@ public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase {
         repoInDatabase.setLastAppCount(lastAppCount);
         repoInDatabase.setLastVersionCount(lastVersionCount);
         RepoCommon.copyCommon(repoInDatabase, repoInJar);
+        if (certificate == null && progressObserver != null) {
+            progressObserver.log("Warning: " + repoInDatabase.getLastUsedDownloadMirror() + ": Jar is not signed.");
+        }
         JarUtilities.verifyAndUpdateSigningCertificate(repoInDatabase, certificate);
     }
 

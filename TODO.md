@@ -2,9 +2,6 @@ todo
 
 * android: when version-import completed clear caches => recreate AppList-adapter
 * android: icon download complete => logcat
-* fix app icon: text overlap in android
-  * ?? try to replace TextView with WebView ??
-* fix app icon size in web
 
 -----
 

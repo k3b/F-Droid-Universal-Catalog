@@ -178,6 +178,9 @@ public abstract class V1UpdateService implements UpdateService, ProgressObservab
             roomRepo.setLastAppCount(lastAppCount);
             roomRepo.setLastVersionCount(lastVersionCount);
             X509Certificate certificate = JarUtilities.getSigningCertFromJar(roomRepo, jarEntry);
+            if (certificate == null && progressObserver != null) {
+                progressObserver.log("Warning: " + roomRepo.getLastUsedDownloadMirror() + ": Jar is not signed.");
+            }
             JarUtilities.verifyAndUpdateSigningCertificate(roomRepo, certificate);
             roomRepo.setDownloadTaskId(null);
             save(roomRepo);

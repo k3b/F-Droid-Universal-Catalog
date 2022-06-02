@@ -132,6 +132,10 @@ public class JarUtilities {
 
         String certFromDb = StringUtil.emptyAsNull(repo.getJarSigningCertificate());
         if (certFromDb != null && (certFromJar == null || !certFromDb.equalsIgnoreCase(certFromJar))) {
+            LOGGER.error("Cerificate mismatch in " + repo.getV1Url() +
+                    "\n\tcertFromDb  : " + certFromDb +
+                    "\n\tcertFromJar : " + certFromJar);
+
             throwError(repo, ERR_CERTIFICATE_MISMATCH);
             return;
         }
@@ -142,6 +146,9 @@ public class JarUtilities {
                 : StringUtil.emptyAsNull(calcFingerprint(repo, rawCertFromJar));
 
         if (fingerprintFromDb != null && (fingerprintFromJar == null || !fingerprintFromDb.equalsIgnoreCase(fingerprintFromJar))) {
+            LOGGER.error("Fingerprint mismatch in " + repo.getV1Url() +
+                    "\n\tfingerprintFromDb  : " + fingerprintFromDb +
+                    "\n\tfingerprintFromJar : " + fingerprintFromJar);
             throwError(repo, ERR_CERTIFICATE_FINGERPRINT_MISMATCH);
         }
 

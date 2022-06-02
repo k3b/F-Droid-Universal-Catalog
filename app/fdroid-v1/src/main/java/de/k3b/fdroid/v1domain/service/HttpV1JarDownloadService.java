@@ -146,7 +146,9 @@ public class HttpV1JarDownloadService implements ProgressObservable {
     }
 
     protected FDroidCatalogJsonStreamParserBase createParser() {
-        return new V1RepoVerifyJarParser(repoInDatabase);
+        V1RepoVerifyJarParser result = new V1RepoVerifyJarParser(repoInDatabase);
+        result.setProgressObserver(this.progressObserver);
+        return result;
     }
 
     public File getJarfile(String name) {
