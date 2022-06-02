@@ -25,8 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.util.Assert;
 
-import de.k3b.fdroid.domain.HardwareProfile;
-import de.k3b.fdroid.domain.interfaces.HardwareProfileRepository;
+import de.k3b.fdroid.domain.entity.HardwareProfile;
+import de.k3b.fdroid.domain.repository.HardwareProfileRepository;
 
 @DataJpaTest
 public class HardwareProfileRepositoryTest {

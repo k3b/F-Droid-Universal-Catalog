@@ -20,8 +20,8 @@ package de.k3b.fdroid.jpa.repository;
 
 import org.springframework.stereotype.Service;
 
-import de.k3b.fdroid.domain.HardwareProfile;
-import de.k3b.fdroid.domain.interfaces.HardwareProfileRepository;
+import de.k3b.fdroid.domain.entity.HardwareProfile;
+import de.k3b.fdroid.domain.repository.HardwareProfileRepository;
 import de.k3b.fdroid.jpa.repository.base.RepositoryAdapterBase;
 
 /**

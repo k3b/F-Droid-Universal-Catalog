@@ -24,10 +24,10 @@ import androidx.sqlite.db.SupportSQLiteQuery;
 import java.util.List;
 import java.util.TreeMap;
 
-import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.domain.AppSearchParameter;
-import de.k3b.fdroid.domain.interfaces.AppRepository;
-import de.k3b.fdroid.sql.AppIdSql;
+import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.entity.AppSearchParameter;
+import de.k3b.fdroid.domain.repository.AppRepository;
+import de.k3b.fdroid.domain.sql.AppIdSql;
 
 public class AppRepositoryAdapter implements AppRepository {
     private final AppDao appDao;

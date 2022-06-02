@@ -23,8 +23,8 @@ import com.samskivert.mustache.Mustache;
 
 import junit.framework.TestCase;
 
-import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.util.TestDataGenerator;
+import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.util.TestDataGenerator;
 
 public class FormatServiceTest extends TestCase {
 

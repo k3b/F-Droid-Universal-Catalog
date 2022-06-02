@@ -28,7 +28,7 @@ import androidx.sqlite.db.SupportSQLiteQuery;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.domain.entity.App;
 
 // NOTE: AppDao cannot be Generic, AppDao<App> is not possible :-(
 @Dao

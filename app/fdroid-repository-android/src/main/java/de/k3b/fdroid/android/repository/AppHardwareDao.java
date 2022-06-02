@@ -26,8 +26,8 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.AppHardware;
-import de.k3b.fdroid.domain.interfaces.AppHardwareRepository;
+import de.k3b.fdroid.domain.entity.AppHardware;
+import de.k3b.fdroid.domain.repository.AppHardwareRepository;
 
 @Dao
 public interface AppHardwareDao extends AppHardwareRepository {

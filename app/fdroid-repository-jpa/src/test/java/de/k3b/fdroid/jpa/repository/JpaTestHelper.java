@@ -23,13 +23,13 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 
-import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.domain.AppCategory;
-import de.k3b.fdroid.domain.Category;
-import de.k3b.fdroid.domain.HardwareProfile;
-import de.k3b.fdroid.domain.Locale;
-import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.domain.Version;
+import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.entity.AppCategory;
+import de.k3b.fdroid.domain.entity.Category;
+import de.k3b.fdroid.domain.entity.HardwareProfile;
+import de.k3b.fdroid.domain.entity.Locale;
+import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.entity.Version;
 
 @Service
 public class JpaTestHelper {

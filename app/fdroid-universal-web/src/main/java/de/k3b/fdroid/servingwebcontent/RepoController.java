@@ -32,8 +32,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-import de.k3b.fdroid.domain.interfaces.RepoRepository;
-import de.k3b.fdroid.service.RepoIconService;
+import de.k3b.fdroid.domain.repository.RepoRepository;
+import de.k3b.fdroid.domain.service.RepoIconService;
 
 @Controller
 public class RepoController {

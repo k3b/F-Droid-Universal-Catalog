@@ -26,7 +26,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,11 +33,11 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 import de.k3b.fdroid.android.db.FDroidDatabase;
-import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.domain.Version;
-import de.k3b.fdroid.domain.common.VersionCommon;
-import de.k3b.fdroid.domain.interfaces.VersionRepository;
+import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.entity.Version;
+import de.k3b.fdroid.domain.entity.common.VersionCommon;
+import de.k3b.fdroid.domain.repository.VersionRepository;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -100,7 +99,7 @@ public class VersionRepositoryInstrumentedTest {
     @Test
     public void findBestBySdkVersion_noNativeCode() {
         List<Version> versions = versionRepository.findBestBySdkAndNative(8, null);
-        Assert.assertTrue(versions.size() == 2);
+        assertEquals(2, versions.size());
 
         String actual = new VersionCommon(versions.get(0)).toString();
 
@@ -111,7 +110,7 @@ public class VersionRepositoryInstrumentedTest {
     @Test
     public void findBestBySdkVersion_withNativeCode() {
         List<Version> versions = versionRepository.findBestBySdkAndNative(8, "%arm7%");
-        Assert.assertTrue(versions.size() == 1);
+        assertEquals(1, versions.size());
 
         String actual = new VersionCommon(versions.get(0)).toString();
         String expected = "VersionCommon[minSdkVersion=8,targetSdkVersion=8]";
@@ -121,7 +120,7 @@ public class VersionRepositoryInstrumentedTest {
     @Test
     public void findByAppId() {
         List<Version> versions = versionRepository.findByAppId(app.getId());
-        Assert.assertTrue(versions.size() == 4);
+        assertEquals(4, versions.size());
     }
 
 }

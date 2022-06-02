@@ -40,10 +40,10 @@ import java.util.Locale;
 import java.util.Map;
 
 import de.k3b.fdroid.android.Global;
-import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.util.TestDataGenerator;
 import de.k3b.fdroid.html.service.FormatService;
 import de.k3b.fdroid.html.util.MustacheEx;
-import de.k3b.fdroid.util.TestDataGenerator;
 
 /**
  * Instrumented test, which will execute on an Android device.

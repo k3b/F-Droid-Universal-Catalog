@@ -1,6 +1,6 @@
 @startuml
-note "Like a Supermarket\nwhere app-s can be\ndownloaded from" as v1.NoteRepo
-class v1.Repo <<AggregatRoot>><<JsonEntity>> {
+note "Like a Supermarket\nwhere app-s can be\ndownloaded from" as NoteRepo
+class fdroid_v1.Repo <<AggregatRoot>><<JsonEntity>> {
   mirrors[]
   name
   description
@@ -8,7 +8,7 @@ class v1.Repo <<AggregatRoot>><<JsonEntity>> {
   address
   timestamp
 }
-class v1.App <<JsonEntity>> {
+class fdroid_v1.App <<JsonEntity>> {
   packageName
   added
   lastUpdated
@@ -17,7 +17,7 @@ class v1.App <<JsonEntity>> {
 }
 
 note "Compatibility Info\n+ APK Download" as NoteVersion
-class v1.Version <<JsonEntity>> {
+class fdroid_v1.Version <<JsonEntity>> {
   packageName
   apkName
   versionCode
@@ -31,8 +31,8 @@ class v1.Version <<JsonEntity>> {
   maxSdkVersion
 }
 
-note "App Translation" as v1.NoteLocalized
-class v1.Localized <<JsonEntity>> {
+note "App Translation" as fdroid_v1.NoteLocalized
+class fdroid_v1.Localized <<JsonEntity>> {
   whatsNew
   name
   summary
@@ -42,12 +42,12 @@ class v1.Localized <<JsonEntity>> {
 
 }
 
-v1.Repo *-- v1.App
-v1.App *-- v1.Localized : Language
-v1.Repo *-- v1.Version
-v1.App o-- v1.Version
+fdroid_v1.Repo *-- fdroid_v1.App
+fdroid_v1.App *-- fdroid_v1.Localized : Language
+fdroid_v1.Repo *-- fdroid_v1.Version
+fdroid_v1.App o-- fdroid_v1.Version
 
-v1.Repo . v1.NoteRepo
-v1.NoteLocalized .. v1.Localized
-v1.Version - NoteVersion
+fdroid_v1.Repo . NoteRepo
+fdroid_v1.NoteLocalized .. fdroid_v1.Localized
+fdroid_v1.Version - NoteVersion
 @enduml

@@ -34,9 +34,9 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 import de.k3b.fdroid.android.db.FDroidDatabase;
-import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.domain.AppSearchParameter;
-import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.entity.AppSearchParameter;
+import de.k3b.fdroid.domain.repository.AppRepository;
 
 /**
  * Instrumented test, which will execute on an Android device.

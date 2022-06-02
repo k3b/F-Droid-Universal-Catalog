@@ -18,6 +18,9 @@
  */
 package de.k3b.fdroid.domain.interfaces;
 
+import de.k3b.fdroid.domain.entity.AppWithDetails;
+import de.k3b.fdroid.domain.repository.Repository;
+
 /**
  * Database-Entity : An {@link Enitity} that can be persisted to database-table through
  * java-{@link Repository}-interface.
@@ -27,9 +30,9 @@ package de.k3b.fdroid.domain.interfaces;
  * * * Database-Entities can not contain relation specific informations (like master-detail,
  * one-to-many) except foreign keys.
  * * * The DDD- {@link AggregateRoot} contains master-detail-infos and therefore is not a Database-Entity.
- * Instead there is a domain specific java class {@link de.k3b.fdroid.domain.AppWithDetails} that
- * holds the master-Detail-Relations for one {@link de.k3b.fdroid.domain.App} as {@link AggregateRoot}.
- * There is also a {@link de.k3b.fdroid.service.AppWithDetailsPagerService} that implements paging with
+ * Instead there is a domain specific java class {@link AppWithDetails} that
+ * holds the master-Detail-Relations for one {@link de.k3b.fdroid.domain.entity.App} as {@link AggregateRoot}.
+ * There is also a {@link de.k3b.fdroid.domain.service.AppWithDetailsPagerService} that implements paging with
  * load-on-demand.
  */
 public interface DatabaseEntityWithId extends Enitity {

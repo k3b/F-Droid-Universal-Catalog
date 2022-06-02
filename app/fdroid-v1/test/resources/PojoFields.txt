@@ -1,5 +1,5 @@
 toString() - Properties of Entities
-de.k3b.fdroid.v1.domain.App
+de.k3b.fdroid.v1domain.entity.App
 	added
 	changelog(4)
 	description(2)
@@ -13,20 +13,21 @@ de.k3b.fdroid.v1.domain.App
 	suggestedVersionName(5)
 	summary(1)
 	webSite(10)
-de.k3b.fdroid.v1.domain.Localized
-	description(3)
-	icon(4)
-	name(1)
-	summary(2)
-	video(5)
-	whatsNew(6)
-de.k3b.fdroid.domain.common.ProfileCommon
+de.k3b.fdroid.v1domain.entity.Localized
+	description(4)
+	icon(5)
+	name(2)
+	phoneScreenshotDir(1)
+	summary(3)
+	video(6)
+	whatsNew(7)
+de.k3b.fdroid.domain.entity.common.ProfileCommon
 	added
 	apkName(1)
 	size(05)
 	versionCode(02)
 	versionName(3)
-de.k3b.fdroid.v1.domain.Repo
+de.k3b.fdroid.v1domain.entity.Repo
 	address(6)
 	description(7)
 	icon(5)
@@ -34,7 +35,7 @@ de.k3b.fdroid.v1.domain.Repo
 	name(1)
 	timestamp
 	version(03)
-de.k3b.fdroid.v1.domain.Version
+de.k3b.fdroid.v1domain.entity.Version
 	added
 	apkName(9)
 	hash(4)

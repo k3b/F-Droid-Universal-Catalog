@@ -27,8 +27,8 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.Version;
-import de.k3b.fdroid.domain.interfaces.VersionRepository;
+import de.k3b.fdroid.domain.entity.Version;
+import de.k3b.fdroid.domain.repository.VersionRepository;
 
 @Dao
 public interface VersionDao extends VersionRepository {

@@ -30,9 +30,9 @@ import java.util.UUID;
 
 import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.service.ImportV1AndroidWorker;
-import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
-import de.k3b.fdroid.domain.interfaces.RepoRepository;
+import de.k3b.fdroid.domain.repository.RepoRepository;
 
 public class DownloadViewModel extends StatusViewModel {
     protected final RepoRepository repoRepository = FDroidApplication.getFdroidDatabase().repoRepository();
@@ -48,7 +48,7 @@ public class DownloadViewModel extends StatusViewModel {
 
 
         WorkManager.getInstance(context).getWorkInfoByIdLiveData(uuid).observe(
-                (LifecycleOwner) context, wi -> onStatusChange(wi));
+                (LifecycleOwner) context, this::onStatusChange);
     }
 
     protected void onStatusChange(WorkInfo workInfo) {

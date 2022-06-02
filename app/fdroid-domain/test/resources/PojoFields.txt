@@ -1,71 +1,71 @@
 toString() - Properties of Entities
-de.k3b.fdroid.domain.App
+de.k3b.fdroid.domain.entity.App
 	added
-	changelog(13)
-	icon(21)
+	changelog(12)
+	icon(20)
 	id(01)
-	issueTracker(16)
+	issueTracker(15)
 	lastUpdated
-	license(17)
-	packageName(12)
+	license(16)
+	packageName(11)
 	resourceRepoId(02)
-	searchCategory(11)
-	searchDescription(6)
+	searchCategory(10)
+	searchDescription(5)
 	searchName(3)
-	searchPhoneScreenshots(5)
-	searchSdk(9)
-	searchSigner
+	searchSdk(8)
+	searchSigner(9)
 	searchSummary(4)
-	searchVersion(8)
-	searchWhatsNew(7)
-	sourceCode(18)
-	suggestedVersionCode(15)
-	suggestedVersionName(14)
-	webSite(19)
-de.k3b.fdroid.domain.AppCategory
+	searchVersion(7)
+	searchWhatsNew(6)
+	sourceCode(17)
+	suggestedVersionCode(14)
+	suggestedVersionName(13)
+	webSite(18)
+de.k3b.fdroid.domain.entity.AppCategory
 	appId(02)
 	categoryId(03)
 	id(01)
-de.k3b.fdroid.domain.AppHardware
+de.k3b.fdroid.domain.entity.AppHardware
 	appId(02)
 	hardwareProfileId(03)
 	id(01)
 	max
 	min
-de.k3b.fdroid.domain.Category
+de.k3b.fdroid.domain.entity.Category
 	id(01)
 	name(2)
-de.k3b.fdroid.domain.HardwareProfile
+de.k3b.fdroid.domain.entity.HardwareProfile
 	SdkVersion(03)
 	deleteIfNotCompatible
 	id(01)
 	name(2)
 	nativecode(4)
-de.k3b.fdroid.domain.Locale
+de.k3b.fdroid.domain.entity.Locale
 	code(2)
 	id(01)
 	languagePriority(06)
 	nameEnglish(5)
 	nameNative(4)
 	symbol(3)
-de.k3b.fdroid.domain.Localized
+de.k3b.fdroid.domain.entity.Localized
 	appId(02)
-	description(7)
-	icon(8)
+	description(8)
+	icon(9)
 	id(01)
 	localeId(03)
-	name(5)
+	name(6)
+	phoneScreenshotDir(5)
 	phoneScreenshots(4)
-	summary(6)
-	video(9)
-	whatsNew(10)
-de.k3b.fdroid.domain.common.ProfileCommon
+	summary(7)
+	video(10)
+	whatsNew(11)
+de.k3b.fdroid.domain.entity.common.ProfileCommon
 	added
 	apkName(1)
 	size(05)
 	versionCode(02)
 	versionName(3)
-de.k3b.fdroid.domain.Repo
+de.k3b.fdroid.domain.entity.Repo
 	address(18)
 	autoDownloadEnabled
 	description(19)
@@ -85,7 +85,7 @@ de.k3b.fdroid.domain.Repo
 	repoTyp(12)
 	timestamp
 	version(15)
-de.k3b.fdroid.domain.Version
+de.k3b.fdroid.domain.entity.Version
 	added
 	apkName(13)
 	appId(02)

@@ -28,16 +28,16 @@ import de.k3b.fdroid.android.domain.AppSearch;
 import de.k3b.fdroid.android.repository.AppDao;
 import de.k3b.fdroid.android.repository.AppRepositoryAdapter;
 import de.k3b.fdroid.android.repository.FDroidDatabaseFactory;
-import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.domain.AppCategory;
-import de.k3b.fdroid.domain.AppHardware;
-import de.k3b.fdroid.domain.Category;
-import de.k3b.fdroid.domain.HardwareProfile;
-import de.k3b.fdroid.domain.Locale;
-import de.k3b.fdroid.domain.Localized;
-import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.domain.Version;
-import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.entity.AppCategory;
+import de.k3b.fdroid.domain.entity.AppHardware;
+import de.k3b.fdroid.domain.entity.Category;
+import de.k3b.fdroid.domain.entity.HardwareProfile;
+import de.k3b.fdroid.domain.entity.Locale;
+import de.k3b.fdroid.domain.entity.Localized;
+import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.entity.Version;
+import de.k3b.fdroid.domain.repository.AppRepository;
 
 @Database(version = 1, entities = {App.class, AppCategory.class, Category.class, Locale.class,
         Localized.class, Repo.class, Version.class, AppHardware.class, HardwareProfile.class},

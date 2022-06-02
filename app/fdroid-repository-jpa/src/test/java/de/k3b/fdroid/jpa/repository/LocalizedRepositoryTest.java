@@ -25,12 +25,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.util.Assert;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import de.k3b.fdroid.domain.Locale;
-import de.k3b.fdroid.domain.Localized;
-import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
-import de.k3b.fdroid.service.LanguageService;
+import de.k3b.fdroid.domain.entity.Locale;
+import de.k3b.fdroid.domain.entity.Localized;
+import de.k3b.fdroid.domain.repository.LocalizedRepository;
+import de.k3b.fdroid.domain.service.LanguageService;
 
 @DataJpaTest
 public class LocalizedRepositoryTest {
@@ -74,13 +75,13 @@ public class LocalizedRepositoryTest {
 
     @Test
     public void findByAppIdAndLocaleIds_found() {
-        List<Localized> localized = repo.findByAppIdAndLocaleIds(appId, Arrays.asList(localeId));
+        List<Localized> localized = repo.findByAppIdAndLocaleIds(appId, Collections.singletonList(localeId));
         Assert.isTrue(localized.size() == 1, "found 1");
     }
 
     @Test
     public void findByAppIdAndLocaleIds_notfound() {
-        List<Localized> localized = repo.findByAppIdAndLocaleIds(appId, Arrays.asList(localeId - 1000));
+        List<Localized> localized = repo.findByAppIdAndLocaleIds(appId, Collections.singletonList(localeId - 1000));
         Assert.isTrue(localized.size() == 0, "found 0");
     }
 

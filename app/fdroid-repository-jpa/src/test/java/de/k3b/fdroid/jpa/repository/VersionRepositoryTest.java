@@ -24,11 +24,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.util.Assert;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-import de.k3b.fdroid.domain.Version;
-import de.k3b.fdroid.domain.interfaces.VersionRepository;
+import de.k3b.fdroid.domain.entity.Version;
+import de.k3b.fdroid.domain.repository.VersionRepository;
 
 @DataJpaTest
 public class VersionRepositoryTest {
@@ -69,7 +69,7 @@ public class VersionRepositoryTest {
 
     @Test
     public void findByAppIds() {
-        List<Version> version = versionRepository.findByAppIds(Arrays.asList(appId));
+        List<Version> version = versionRepository.findByAppIds(Collections.singletonList(appId));
         Assert.isTrue(version.size() == 1, "found 1");
     }
 

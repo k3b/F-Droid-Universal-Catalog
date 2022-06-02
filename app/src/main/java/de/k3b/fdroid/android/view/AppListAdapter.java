@@ -37,10 +37,10 @@ import de.k3b.fdroid.Global;
 import de.k3b.fdroid.android.R;
 import de.k3b.fdroid.android.html.AndroidStringResourceMustacheContext;
 import de.k3b.fdroid.android.html.util.HtmlUtil;
-import de.k3b.fdroid.domain.App;
+import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.service.AppIconService;
+import de.k3b.fdroid.domain.service.AppWithDetailsPagerService;
 import de.k3b.fdroid.html.service.FormatService;
-import de.k3b.fdroid.service.AppIconService;
-import de.k3b.fdroid.service.AppWithDetailsPagerService;
 
 public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHolder> {
     private static final String TAG = Global.LOG_TAG + "AppList";

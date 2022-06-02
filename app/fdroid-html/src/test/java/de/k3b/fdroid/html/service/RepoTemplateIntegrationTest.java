@@ -24,7 +24,7 @@ import com.samskivert.mustache.Mustache;
 
 import org.junit.Test;
 
-import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.html.util.HtmlUtil;
 
 public class RepoTemplateIntegrationTest {

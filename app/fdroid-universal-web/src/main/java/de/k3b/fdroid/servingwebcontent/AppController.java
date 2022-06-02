@@ -33,16 +33,16 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.List;
 
-import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.domain.AppSearchParameter;
-import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.domain.interfaces.AppDetailRepository;
-import de.k3b.fdroid.domain.interfaces.AppRepository;
-import de.k3b.fdroid.domain.interfaces.RepoRepository;
-import de.k3b.fdroid.service.AppIconService;
-import de.k3b.fdroid.service.AppWithDetailsPagerService;
-import de.k3b.fdroid.service.CacheService;
-import de.k3b.fdroid.service.adapter.AppRepositoryAdapterImpl;
+import de.k3b.fdroid.domain.adapter.AppRepositoryAdapterImpl;
+import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.entity.AppSearchParameter;
+import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.repository.AppDetailRepository;
+import de.k3b.fdroid.domain.repository.AppRepository;
+import de.k3b.fdroid.domain.repository.RepoRepository;
+import de.k3b.fdroid.domain.service.AppIconService;
+import de.k3b.fdroid.domain.service.AppWithDetailsPagerService;
+import de.k3b.fdroid.domain.service.CacheService;
 
 @Controller
 public class AppController {

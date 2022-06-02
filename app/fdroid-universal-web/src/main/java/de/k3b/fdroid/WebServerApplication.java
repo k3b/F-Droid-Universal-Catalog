@@ -38,9 +38,9 @@ import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Properties;
 
-import de.k3b.fdroid.domain.interfaces.AppRepository;
-import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
-import de.k3b.fdroid.domain.interfaces.RepoRepository;
+import de.k3b.fdroid.domain.repository.AppRepository;
+import de.k3b.fdroid.domain.repository.LocalizedRepository;
+import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.html.service.ResourceBundleMustacheContext;
 import de.k3b.fdroid.html.util.MustacheEx;
 

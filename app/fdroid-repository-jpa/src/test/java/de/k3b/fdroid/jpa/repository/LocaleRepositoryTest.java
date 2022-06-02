@@ -25,8 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.util.Assert;
 
-import de.k3b.fdroid.domain.Locale;
-import de.k3b.fdroid.domain.interfaces.LocaleRepository;
+import de.k3b.fdroid.domain.entity.Locale;
+import de.k3b.fdroid.domain.repository.LocaleRepository;
 
 @DataJpaTest
 public class LocaleRepositoryTest {

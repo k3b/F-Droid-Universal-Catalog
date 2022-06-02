@@ -33,20 +33,20 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Collections;
 
-import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.domain.Localized;
-import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.domain.interfaces.AppDetailRepository;
-import de.k3b.fdroid.domain.interfaces.AppRepository;
-import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
-import de.k3b.fdroid.domain.interfaces.RepoRepository;
-import de.k3b.fdroid.domain.interfaces.VersionRepository;
+import de.k3b.fdroid.domain.adapter.AppRepositoryAdapterImpl;
+import de.k3b.fdroid.domain.adapter.LocalizedRepositoryAdapterImpl;
+import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.entity.Localized;
+import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.repository.AppDetailRepository;
+import de.k3b.fdroid.domain.repository.AppRepository;
+import de.k3b.fdroid.domain.repository.LocalizedRepository;
+import de.k3b.fdroid.domain.repository.RepoRepository;
+import de.k3b.fdroid.domain.repository.VersionRepository;
+import de.k3b.fdroid.domain.service.AppWithDetailsPagerService;
+import de.k3b.fdroid.domain.service.CacheService;
+import de.k3b.fdroid.domain.service.LocalizedImageService;
 import de.k3b.fdroid.html.service.GetUrlMustacheLamdaService;
-import de.k3b.fdroid.service.AppWithDetailsPagerService;
-import de.k3b.fdroid.service.CacheService;
-import de.k3b.fdroid.service.LocalizedImageService;
-import de.k3b.fdroid.service.adapter.AppRepositoryAdapterImpl;
-import de.k3b.fdroid.service.adapter.LocalizedRepositoryAdapterImpl;
 
 @Controller
 public class AppDetailController {

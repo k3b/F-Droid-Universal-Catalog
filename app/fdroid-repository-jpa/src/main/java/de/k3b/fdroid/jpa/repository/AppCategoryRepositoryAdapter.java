@@ -22,8 +22,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.AppCategory;
-import de.k3b.fdroid.domain.interfaces.AppCategoryRepository;
+import de.k3b.fdroid.domain.entity.AppCategory;
+import de.k3b.fdroid.domain.repository.AppCategoryRepository;
 import de.k3b.fdroid.jpa.repository.base.RepositoryAdapterBase;
 
 /**

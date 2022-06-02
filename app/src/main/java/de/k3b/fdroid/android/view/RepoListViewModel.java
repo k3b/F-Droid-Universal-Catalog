@@ -27,7 +27,7 @@ import java.util.List;
 
 import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.Global;
-import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.domain.entity.Repo;
 
 public class RepoListViewModel extends DownloadViewModel {
     private final MutableLiveData<List<Repo>> repoList = new MutableLiveData<>();
@@ -41,9 +41,7 @@ public class RepoListViewModel extends DownloadViewModel {
     public void reload() {
         Log.i(Global.LOG_TAG_APP, "Start reload repo");
         setCurrentRepo(null);
-        FDroidApplication.executor.execute(() -> {
-            getRepoList().postValue(repoRepository.findAll());
-        });
+        FDroidApplication.executor.execute(() -> getRepoList().postValue(repoRepository.findAll()));
     }
 
     public MutableLiveData<List<Repo>> getRepoList() {

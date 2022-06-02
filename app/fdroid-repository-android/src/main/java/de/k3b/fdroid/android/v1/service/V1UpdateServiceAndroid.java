@@ -22,17 +22,17 @@ import android.util.Log;
 
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.android.repository.FDroidDatabaseFactory;
-import de.k3b.fdroid.domain.interfaces.AppCategoryRepository;
-import de.k3b.fdroid.domain.interfaces.AppHardwareRepository;
-import de.k3b.fdroid.domain.interfaces.AppRepository;
-import de.k3b.fdroid.domain.interfaces.HardwareProfileRepository;
-import de.k3b.fdroid.domain.interfaces.LocaleRepository;
-import de.k3b.fdroid.domain.interfaces.LocalizedRepository;
-import de.k3b.fdroid.domain.interfaces.RepoRepository;
-import de.k3b.fdroid.domain.interfaces.VersionRepository;
-import de.k3b.fdroid.service.CategoryService;
-import de.k3b.fdroid.service.LanguageService;
-import de.k3b.fdroid.v1.service.V1UpdateService;
+import de.k3b.fdroid.domain.repository.AppCategoryRepository;
+import de.k3b.fdroid.domain.repository.AppHardwareRepository;
+import de.k3b.fdroid.domain.repository.AppRepository;
+import de.k3b.fdroid.domain.repository.HardwareProfileRepository;
+import de.k3b.fdroid.domain.repository.LocaleRepository;
+import de.k3b.fdroid.domain.repository.LocalizedRepository;
+import de.k3b.fdroid.domain.repository.RepoRepository;
+import de.k3b.fdroid.domain.repository.VersionRepository;
+import de.k3b.fdroid.domain.service.CategoryService;
+import de.k3b.fdroid.domain.service.LanguageService;
+import de.k3b.fdroid.v1domain.service.V1UpdateService;
 
 public class V1UpdateServiceAndroid extends V1UpdateService {
 

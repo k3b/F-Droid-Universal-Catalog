@@ -18,7 +18,7 @@
  */
 package de.k3b.fdroid.android.repository;
 
-import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.repository.AppRepository;
 
 public interface FDroidDatabaseFactory {
     AppRepository appRepository();

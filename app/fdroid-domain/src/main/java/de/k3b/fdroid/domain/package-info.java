@@ -20,11 +20,5 @@
 package de.k3b.fdroid.domain;
 
 /**
- * Entities (from DDD) are java data classes where the data is persistable.
- * The "fdroid.domain" contains the Android independent Database-{@link de.k3b.fdroid.domain.interfaces.Enitity}s
- * ({@link de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId})
- * that contain properties that are persisted in the Database through a {@link de.k3b.fdroid.domain.interfaces.Enitity}
- * specific {@link de.k3b.fdroid.domain.interfaces.Repository} .
- * A {@link de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId} may only contain primitive types, primaryKeys and foreignKeys.
- * Relations or Objects or lists are not allowed.
+ * The "fdroid-root" module contains only Android independent code used by all apps.
  */

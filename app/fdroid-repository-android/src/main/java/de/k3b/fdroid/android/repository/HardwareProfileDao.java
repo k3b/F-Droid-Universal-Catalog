@@ -26,8 +26,8 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.HardwareProfile;
-import de.k3b.fdroid.domain.interfaces.HardwareProfileRepository;
+import de.k3b.fdroid.domain.entity.HardwareProfile;
+import de.k3b.fdroid.domain.repository.HardwareProfileRepository;
 
 @Dao
 public interface HardwareProfileDao extends HardwareProfileRepository {

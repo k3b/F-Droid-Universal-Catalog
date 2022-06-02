@@ -27,9 +27,9 @@ import org.springframework.util.Assert;
 import java.util.Collections;
 import java.util.List;
 
-import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.domain.AppSearchParameter;
-import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.entity.AppSearchParameter;
+import de.k3b.fdroid.domain.repository.AppRepository;
 
 @DataJpaTest
 public class AppRepositoryTest {

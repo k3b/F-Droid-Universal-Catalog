@@ -40,9 +40,9 @@ import de.k3b.fdroid.Global;
 import de.k3b.fdroid.android.R;
 import de.k3b.fdroid.android.html.AndroidStringResourceMustacheContext;
 import de.k3b.fdroid.android.html.util.HtmlUtil;
-import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.service.RepoIconService;
 import de.k3b.fdroid.html.service.FormatService;
-import de.k3b.fdroid.service.RepoIconService;
 
 public class RepoListAdapter extends RecyclerView.Adapter<RepoListAdapter.ViewHolder> {
     private static final String TAG = Global.LOG_TAG + "RepoList";

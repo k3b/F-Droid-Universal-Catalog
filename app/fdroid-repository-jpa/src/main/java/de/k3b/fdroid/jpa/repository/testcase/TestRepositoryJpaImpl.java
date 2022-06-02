@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import de.k3b.fdroid.domain.interfaces.AppRepository;
+import de.k3b.fdroid.domain.repository.AppRepository;
 
 /**
  * custom repository method taken from tutorial

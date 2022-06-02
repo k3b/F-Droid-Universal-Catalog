@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.util.TestDataGenerator;
+import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.util.TestDataGenerator;
 
 public class FormatUtil {
     public static File[] getResourceFolderFiles(String folder) {
@@ -50,7 +50,7 @@ public class FormatUtil {
      */
     public static Collection<Object[]> getTestCases() throws Exception {
         List<Object[]> result = new ArrayList<>();
-        String namespace = namespace = getNamespace(Repo.class);
+        String namespace = getNamespace(Repo.class);
         for (File dir : getResourceFolderFiles("html")) {
             if (!dir.getName().startsWith(".") && dir.isDirectory()) {
                 Class<?> itemClass = Class.forName(namespace + dir.getName());

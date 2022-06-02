@@ -19,8 +19,8 @@
 
 package de.k3b.test;
 
-import de.k3b.fdroid.v1.service.FDroidCatalogJsonStreamParserBase;
-import de.k3b.fdroid.v1.service.FDroidCatalogJsonStreamParserDemo;
+import de.k3b.fdroid.v1domain.service.FDroidCatalogJsonStreamParserBase;
+import de.k3b.fdroid.v1domain.service.FDroidCatalogJsonStreamParserDemo;
 
 import java.io.FileInputStream;
 import java.io.InputStream;

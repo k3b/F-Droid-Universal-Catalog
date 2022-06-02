@@ -35,12 +35,12 @@ import java.util.UUID;
 
 import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.Global;
-import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.interfaces.ProgressObserver;
-import de.k3b.fdroid.domain.interfaces.RepoRepository;
-import de.k3b.fdroid.util.StringUtil;
-import de.k3b.fdroid.v1.service.V1DownloadAndImportServiceInterface;
-import de.k3b.fdroid.v1.service.V1JarException;
+import de.k3b.fdroid.domain.repository.RepoRepository;
+import de.k3b.fdroid.domain.util.StringUtil;
+import de.k3b.fdroid.v1domain.service.V1DownloadAndImportServiceInterface;
+import de.k3b.fdroid.v1domain.service.V1JarException;
 
 // see https://developer.android.com/topic/libraries/architecture/workmanager/basics
 public class ImportV1AndroidWorker extends Worker {

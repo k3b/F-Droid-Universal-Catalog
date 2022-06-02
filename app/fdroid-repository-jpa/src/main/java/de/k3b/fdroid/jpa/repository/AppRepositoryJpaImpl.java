@@ -27,9 +27,9 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import de.k3b.fdroid.domain.AppSearchParameter;
-import de.k3b.fdroid.domain.interfaces.AppRepositoryFindDynamic;
-import de.k3b.fdroid.sql.AppIdSql;
+import de.k3b.fdroid.domain.entity.AppSearchParameter;
+import de.k3b.fdroid.domain.repository.AppRepositoryFindDynamic;
+import de.k3b.fdroid.domain.sql.AppIdSql;
 
 public class AppRepositoryJpaImpl implements AppRepositoryFindDynamic {
     @Autowired

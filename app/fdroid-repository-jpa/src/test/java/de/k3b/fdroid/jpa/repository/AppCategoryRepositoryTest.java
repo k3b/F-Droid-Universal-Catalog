@@ -26,8 +26,8 @@ import org.springframework.util.Assert;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.AppCategory;
-import de.k3b.fdroid.domain.interfaces.AppCategoryRepository;
+import de.k3b.fdroid.domain.entity.AppCategory;
+import de.k3b.fdroid.domain.repository.AppCategoryRepository;
 
 
 @DataJpaTest

@@ -26,8 +26,8 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.Category;
-import de.k3b.fdroid.domain.interfaces.CategoryRepository;
+import de.k3b.fdroid.domain.entity.Category;
+import de.k3b.fdroid.domain.repository.CategoryRepository;
 
 @Dao
 public interface CategoryDao extends CategoryRepository {

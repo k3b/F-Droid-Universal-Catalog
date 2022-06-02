@@ -21,8 +21,8 @@ package de.k3b.fdroid.jpa.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.domain.interfaces.AppRepositoryFindDynamic;
+import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.repository.AppRepositoryFindDynamic;
 
 /**
  * Spring-Boot-Jpa (Non-Android) specific Database-Repository implementation:

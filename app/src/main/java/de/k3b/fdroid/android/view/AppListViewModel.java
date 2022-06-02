@@ -25,10 +25,10 @@ import androidx.lifecycle.MutableLiveData;
 
 import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.Global;
-import de.k3b.fdroid.domain.AppSearchParameter;
-import de.k3b.fdroid.domain.interfaces.AppRepository;
-import de.k3b.fdroid.service.AppWithDetailsPagerService;
-import de.k3b.fdroid.service.adapter.AppRepositoryAdapterImpl;
+import de.k3b.fdroid.domain.adapter.AppRepositoryAdapterImpl;
+import de.k3b.fdroid.domain.entity.AppSearchParameter;
+import de.k3b.fdroid.domain.repository.AppRepository;
+import de.k3b.fdroid.domain.service.AppWithDetailsPagerService;
 
 /**
  * Android-Gui calls {@link #setFilter(AppSearchParameter)} and gets updated

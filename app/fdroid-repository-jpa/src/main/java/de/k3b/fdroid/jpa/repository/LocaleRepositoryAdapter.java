@@ -20,8 +20,8 @@ package de.k3b.fdroid.jpa.repository;
 
 import org.springframework.stereotype.Service;
 
-import de.k3b.fdroid.domain.Locale;
-import de.k3b.fdroid.domain.interfaces.LocaleRepository;
+import de.k3b.fdroid.domain.entity.Locale;
+import de.k3b.fdroid.domain.repository.LocaleRepository;
 import de.k3b.fdroid.jpa.repository.base.RepositoryAdapterBase;
 
 /**

@@ -36,7 +36,7 @@ import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.android.R;
 import de.k3b.fdroid.android.databinding.ActivityRepoListBinding;
-import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.domain.entity.Repo;
 
 // AppCompatActivity:1,4,1 requires minsdk 17
 public class RepoListActivity extends BaseActivity {

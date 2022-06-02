@@ -29,9 +29,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import de.k3b.fdroid.domain.Repo;
+import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.util.TestDataGenerator;
 import de.k3b.fdroid.html.util.MustacheEx;
-import de.k3b.fdroid.util.TestDataGenerator;
 
 public class ResourceBundleMustacheContextTest {
     Mustache.CustomContext translator;

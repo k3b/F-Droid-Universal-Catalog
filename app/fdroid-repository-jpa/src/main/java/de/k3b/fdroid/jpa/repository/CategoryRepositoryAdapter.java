@@ -20,8 +20,8 @@ package de.k3b.fdroid.jpa.repository;
 
 import org.springframework.stereotype.Service;
 
-import de.k3b.fdroid.domain.Category;
-import de.k3b.fdroid.domain.interfaces.CategoryRepository;
+import de.k3b.fdroid.domain.entity.Category;
+import de.k3b.fdroid.domain.repository.CategoryRepository;
 import de.k3b.fdroid.jpa.repository.base.RepositoryAdapterBase;
 
 /**

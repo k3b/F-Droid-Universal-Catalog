@@ -26,14 +26,14 @@ import java.io.File;
 import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.android.repository.FDroidDatabaseFactory;
 import de.k3b.fdroid.android.repository.RepoDao;
-import de.k3b.fdroid.service.AppIconService;
-import de.k3b.fdroid.service.CacheService;
-import de.k3b.fdroid.service.RepoIconService;
-import de.k3b.fdroid.v1.service.HttpV1JarDownloadService;
-import de.k3b.fdroid.v1.service.HttpV1JarImportService;
-import de.k3b.fdroid.v1.service.V1DownloadAndImportService;
-import de.k3b.fdroid.v1.service.V1DownloadAndImportServiceInterface;
-import de.k3b.fdroid.v1.service.V1UpdateService;
+import de.k3b.fdroid.domain.service.AppIconService;
+import de.k3b.fdroid.domain.service.CacheService;
+import de.k3b.fdroid.domain.service.RepoIconService;
+import de.k3b.fdroid.v1domain.service.HttpV1JarDownloadService;
+import de.k3b.fdroid.v1domain.service.HttpV1JarImportService;
+import de.k3b.fdroid.v1domain.service.V1DownloadAndImportService;
+import de.k3b.fdroid.v1domain.service.V1DownloadAndImportServiceInterface;
+import de.k3b.fdroid.v1domain.service.V1UpdateService;
 
 public class AndroidServiceFactory {
     private final Application context;

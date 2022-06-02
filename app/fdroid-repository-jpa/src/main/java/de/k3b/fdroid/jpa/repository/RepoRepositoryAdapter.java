@@ -22,8 +22,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.domain.interfaces.RepoRepository;
+import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.jpa.repository.base.RepositoryAdapterBase;
 
 /**

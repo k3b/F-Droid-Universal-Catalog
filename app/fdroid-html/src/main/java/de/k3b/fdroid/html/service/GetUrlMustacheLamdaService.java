@@ -24,11 +24,11 @@ import com.samskivert.mustache.Template;
 import java.io.IOException;
 import java.io.Writer;
 
-import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.domain.Version;
-import de.k3b.fdroid.service.AppWithDetailsPagerService;
-import de.k3b.fdroid.service.CacheService;
+import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.entity.Version;
+import de.k3b.fdroid.domain.service.AppWithDetailsPagerService;
+import de.k3b.fdroid.domain.service.CacheService;
 
 /**
  * Translates local url to repo relative url.

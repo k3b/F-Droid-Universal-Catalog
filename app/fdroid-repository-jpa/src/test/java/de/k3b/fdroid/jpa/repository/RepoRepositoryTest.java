@@ -30,10 +30,10 @@ import org.springframework.util.Assert;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.App;
-import de.k3b.fdroid.domain.Repo;
-import de.k3b.fdroid.domain.Version;
-import de.k3b.fdroid.domain.interfaces.RepoRepository;
+import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.entity.Version;
+import de.k3b.fdroid.domain.repository.RepoRepository;
 @DataJpaTest
 public class RepoRepositoryTest {
     private static String myAddress = "my.package.name";
