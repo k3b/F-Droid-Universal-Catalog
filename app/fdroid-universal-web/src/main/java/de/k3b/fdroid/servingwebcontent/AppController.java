@@ -71,7 +71,7 @@ public class AppController {
         List<Integer> appIdList = appRepository.findDynamic(new AppSearchParameter().text(query));
         appWithDetailsPagerService.init(appIdList, PAGESIZE);
         int maxPage = appIdList.size() / PAGESIZE;
-        model.addAttribute("app", appWithDetailsPagerService.itemAtOffset(from, from + PAGESIZE - 1));
+        model.addAttribute("app", appWithDetailsPagerService.itemAtOffset(from, from + PAGESIZE));
         model.addAttribute("query", query);
         if (page > 0) model.addAttribute("prev", page - 1);
         if (page + 1 < maxPage) model.addAttribute("next", page + 1);

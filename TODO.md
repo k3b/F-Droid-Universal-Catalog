@@ -1,5 +1,7 @@
 todo
 
+* download before delete&rename must check if signature is ok
+
 * android: when version-import completed clear caches => recreate AppList-adapter
 * android: icon download complete => logcat
 
