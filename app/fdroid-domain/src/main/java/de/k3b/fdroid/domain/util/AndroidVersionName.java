@@ -64,8 +64,9 @@ public class AndroidVersionName {
     }
 
     private static void register(int version, String versionName, String codeName, String releaseDate) {
-        StringBuilder name = new StringBuilder().append(versionName);
-        if (codeName != null) name.append(" - ").append(codeName);
+        StringBuilder name = new StringBuilder();
+        if (codeName != null) name.append(codeName);
+        if (versionName != null) name.append(" - ").append(versionName);
         name.append(" - SDK").append(version);
         if (releaseDate != null) name.append(" - ").append(releaseDate);
 
@@ -79,5 +80,9 @@ public class AndroidVersionName {
             return result;
         }
         return nativeCode + " " + result;
+    }
+
+    public static Map<Integer, String> getMap() {
+        return ID_TO_NAME;
     }
 }

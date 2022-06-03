@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.android.repository;
 
+import androidx.annotation.NonNull;
+
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.AppCategory;
 import de.k3b.fdroid.domain.entity.Category;
@@ -38,8 +40,15 @@ public class RoomTestHelper {
     }
 
     public App createApp() {
+        return createApp("test.app." + nextNo++, null);
+    }
+
+    @NonNull
+    public App createApp(String packageName, String icon) {
         App app = new App();
-        app.setPackageName("test.app." + nextNo++);
+        app.setPackageName(packageName);
+        app.setIcon(icon);
+
         db.appRepository().insert(app);
         return app;
     }

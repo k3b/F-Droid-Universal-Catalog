@@ -119,4 +119,13 @@ public class StringUtil {
         }
         return combinedValue;
     }
+
+    public static int parseInt(String numberText, int defaultValue) {
+        if (StringUtil.isEmpty(numberText)) return defaultValue;
+        try {
+            return Integer.parseInt(numberText);
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
 }

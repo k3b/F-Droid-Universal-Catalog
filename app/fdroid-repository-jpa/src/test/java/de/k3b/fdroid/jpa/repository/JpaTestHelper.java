@@ -39,8 +39,13 @@ public class JpaTestHelper {
     private int nextNo = 1;
 
     public App createApp() {
+        return createApp("test.app." + nextNo++, null);
+    }
+
+    public App createApp(String packageName, String icon) {
         App app = new App();
-        app.setPackageName("test.app." + nextNo++);
+        app.setPackageName(packageName);
+        app.setIcon(icon);
         return save(app);
     }
 

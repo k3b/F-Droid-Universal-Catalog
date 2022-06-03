@@ -43,6 +43,8 @@ import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.service.AppIconService;
 import de.k3b.fdroid.domain.service.AppWithDetailsPagerService;
 import de.k3b.fdroid.domain.service.CacheService;
+import de.k3b.fdroid.domain.util.AndroidVersionName;
+import de.k3b.fdroid.domain.util.StringUtil;
 
 @Controller
 public class AppController {
@@ -65,16 +67,37 @@ public class AppController {
     @GetMapping("/App/app")
     public String appList(
             @RequestParam(name = "q", required = false, defaultValue = "") String query,
-            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "v", required = false, defaultValue = "0") String versionSdkText,
+            @RequestParam(name = "s", required = false, defaultValue = "") String sort,
+            @RequestParam(name = "page", required = false, defaultValue = "0") String pageText,
             Model model) {
-        int from = Math.max(page, 0) * PAGESIZE;
-        List<Integer> appIdList = appRepository.findDynamic(new AppSearchParameter().text(query));
+        int versionSdk = StringUtil.parseInt(versionSdkText, 0);
+        int page = StringUtil.parseInt(pageText, 0);
+
+        List<Integer> appIdList = appRepository.findDynamic(new AppSearchParameter().searchText(query).orderBy(sort).versionSdk(versionSdk));
         appWithDetailsPagerService.init(appIdList, PAGESIZE);
+
         int maxPage = appIdList.size() / PAGESIZE;
+        if (page >= maxPage) {
+            page = maxPage - 1;
+        }
+        int from = Math.max(page, 0) * PAGESIZE;
+
+        StringBuilder params = new StringBuilder();
+        if (!StringUtil.isEmpty(query)) params.append("&q=").append(query);
+        if (versionSdk > 0) params.append("&v=").append(versionSdk);
+        if (!StringUtil.isEmpty(sort)) params.append("&s=").append(sort);
+
         model.addAttribute("app", appWithDetailsPagerService.itemAtOffset(from, from + PAGESIZE));
         model.addAttribute("query", query);
+        model.addAttribute("minSdk", versionSdk);
+        model.addAttribute("minSdkName", AndroidVersionName.getName(versionSdk, null));
+        model.addAttribute("sort", sort);
+        model.addAttribute("androidVersion", AndroidVersionName.getMap().entrySet());
+        model.addAttribute("params", params.toString());
         if (page > 0) model.addAttribute("prev", page - 1);
         if (page + 1 < maxPage) model.addAttribute("next", page + 1);
+
         return "App/app_overview";
         // return "greeting";
     }

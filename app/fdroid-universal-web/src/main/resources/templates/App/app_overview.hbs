@@ -1,6 +1,39 @@
-<p>{{t.label_app_title}}</p>
-{{#prev}}<a href="?page={{.}}&q={{query}}"> &lt; </a>{{/prev}}
-{{#next}}<a href="?page={{.}}&q={{query}}"> &gt; </a>{{/next}}
+<h1>{{t.label_app_title}}</h1>
+
+<form action="/App/app" method="get">
+    <table border="1">
+        <tr>
+            <td>
+                <label for="q">Search text:</label>
+            </td>
+            <td>
+                <input type="text" name="q" value="{{query}}" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label for="v">Android Version:</label>
+            </td>
+            <td>
+                <select name="v">
+                    {{#androidVersion}}
+                        <option value="{{key}}" >{{value}}</option>
+                    {{/androidVersion}}
+                    {{#minSdkName}}
+                        <option value="{{minSdk}}" selected="selected">{{minSdkName}}</option>
+                    {{/minSdkName}}
+                </select>
+            </td>
+        </tr>
+    </table>
+
+    <div>
+       <input type="submit" value="{{t.label_search}}" >
+    </div>
+</form>
+
+{{#prev}}<a href="?page={{prev}}{{params}}"> &lt; </a>{{/prev}}
+{{#next}}<a href="?page={{next}}{{params}}"> &gt; </a>{{/next}}
 <hr/><br/>
 
 {{#app}}
@@ -14,5 +47,5 @@
 {{/app}}
 
 <br/>
-{{#prev}}<a href="?page={{.}}&q={{query}}"> &lt; </a>{{/prev}}
-{{#next}}<a href="?page={{.}}&q={{query}}"> &gt; </a>{{/next}}
+{{#prev}}<a href="?page={{prev}}{{params}}"> &lt; </a>{{/prev}}
+{{#next}}<a href="?page={{next}}{{params}}"> &gt; </a>{{/next}}

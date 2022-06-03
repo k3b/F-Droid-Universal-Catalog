@@ -27,10 +27,13 @@ import de.k3b.fdroid.domain.repository.AppRepository;
  */
 public class AppSearchParameter extends EntityCommon {
     // text contained in any of the text fields (summaryXXX )
-    public String text = null;
+    public String searchText = null;
+
+    // only if there is at least on version that matches this value
+    public int versionSdk;
 
     /**
-     * For {@link #text} search: minimal required search-score required (or null)
+     * For {@link #searchText} search: minimal required search-score required (or null)
      * null mean search everywhere
      * 10 means exclude Describtion.
      * for details see sql-sourcecode of "CREATE VIEW AppSearch AS ..."
@@ -45,15 +48,27 @@ public class AppSearchParameter extends EntityCommon {
     public AppSearchParameter() {
     }
 
-    public AppSearchParameter text(String search) {
-        this.text = search;
+    public AppSearchParameter searchText(String searchText) {
+        this.searchText = searchText;
+        return this;
+    }
+
+
+    public AppSearchParameter orderBy(String orderBy) {
+        this.orderBy = orderBy;
+        return this;
+    }
+
+    public AppSearchParameter versionSdk(int versionSdk) {
+        this.versionSdk = versionSdk;
         return this;
     }
 
     @Override
     protected void toStringBuilder(StringBuilder sb) {
         super.toStringBuilder(sb);
-        toStringBuilder(sb, "text", this.text);
+        toStringBuilder(sb, "searchText", this.searchText);
+        toStringBuilder(sb, "versionSdk", this.versionSdk);
         toStringBuilder(sb, "orderBy", this.orderBy);
         // toStringBuilder(sb, "maxRowCount", this.maxRowCount);
     }

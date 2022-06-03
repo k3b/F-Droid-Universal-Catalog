@@ -36,7 +36,9 @@ import java.util.List;
 import de.k3b.fdroid.android.db.FDroidDatabase;
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.AppSearchParameter;
+import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.repository.AppRepository;
+import de.k3b.fdroid.domain.repository.RepoRepository;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -47,32 +49,38 @@ import de.k3b.fdroid.domain.repository.AppRepository;
 public class AppRepositoryFindDynamicInstrumentedTest {
     private static final String MY_PACKAGE_NAME = "my.package.name";
     private static final String MY_ICON = "myIcon.ico";
+    public static final int SDK = 8;
+    Repo repo = null;
+    private AppRepository appRepository;
 
-    private AppRepository repo;
     private App app = null;
+    private RepoRepository repoRepository;
 
     @Before
     public void setUp() {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         FDroidDatabaseFactory factory = FDroidDatabase.getINSTANCE(context, true);
-        repo = factory.appRepository();
+        appRepository = factory.appRepository();
+        repoRepository = factory.repoRepository();
 
-        app = new App(MY_PACKAGE_NAME);
-        app.setIcon(MY_ICON);
-
-        repo.insert(app);
+        RoomTestHelper h = new RoomTestHelper(factory);
+        app = h.createApp(MY_PACKAGE_NAME, MY_ICON);
+        repo = h.createRepo();
+        h.createVersion(app, repo, SDK, SDK, 0, null);
     }
 
     @After
     public void finish() {
-        repo.delete(app);
+        appRepository.delete(app);
+        repoRepository.delete(repo);
     }
 
     @Test
     public void findDynamic_search() {
-        List<Integer> appIdList = repo.findDynamic(new AppSearchParameter().text("acka my"));
-        List<App> appList = repo.findByIds(appIdList);
+        List<Integer> appIdList = appRepository.findDynamic(new AppSearchParameter()
+                .searchText("acka my").versionSdk(SDK));
+        List<App> appList = appRepository.findByIds(appIdList);
         assertThat(appIdList.size(), equalTo(1));
     }
 }

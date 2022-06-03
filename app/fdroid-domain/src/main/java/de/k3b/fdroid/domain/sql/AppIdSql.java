@@ -38,26 +38,49 @@ public class AppIdSql {
             Map<String, Object> params,
             boolean forAndroid) {
         StringBuilder sql = new StringBuilder();
-        if (!StringUtil.isEmpty(appSearchParameter.text)) {
+        if (!StringUtil.isEmpty(appSearchParameter.searchText)) {
             // android-sqLite does not support "LIMIT" in "GROUP BY" queries
-            return bySearchScore(sql, params, appSearchParameter.text,
-                    appSearchParameter.minimumScore, appSearchParameter.orderBy,
+            return bySearchScore(sql, params, appSearchParameter.searchText,
+                    appSearchParameter.minimumScore, appSearchParameter.versionSdk,
+                    appSearchParameter.orderBy,
                     (forAndroid) ? 0 : appSearchParameter.maxRowCount).toString();
         }
 
         sql.append("SELECT id from App ");
+
+        addWhere(sql, params, appSearchParameter);
+
         addOrderBy(sql, appSearchParameter.orderBy);
         addLimit(sql, params, appSearchParameter.maxRowCount);
-        LOGGER.debug("SQL: {}\n\tParams: {}", sql, params);
+        LOGGER.info("SQL: {}\n\tParams: {}", sql, params);
         return sql.toString();
+    }
+
+    private static void addWhere(StringBuilder sql, Map<String, Object> params, AppSearchParameter appSearchParameter) {
+        boolean needsWhere = true;
+        if (appSearchParameter.versionSdk > 0) {
+            if (needsWhere) {
+                sql.append(" WHERE ");
+                needsWhere = false;
+            } else {
+                sql.append(" AND ");
+            }
+            sql.append(" id in ("
+                    + ("SELECT distinct av.id " +
+                    "FROM AppVersion AS av " +
+                    "WHERE ((av.minSdkVersion <= :sdkversion AND " +
+                    " ((av.maxSdkVersion IS NULL) OR (av.maxSdkVersion = 0) OR (av.maxSdkVersion >= :sdkversion)))) ")
+                    + ")");
+            params.put("sdkversion", appSearchParameter.versionSdk);
+        }
     }
 
     private static StringBuilder bySearchScore(
             StringBuilder sql, Map<String, Object> params,
-            String search, Integer minimumScore, String orderBy, int maxRowCount) {
-        if (orderBy == null) {
+            String search, Integer minimumScore, int versionSdk, String orderBy, int maxRowCount) {
+        if (StringUtil.isEmpty(orderBy)) {
             // sql.append("SELECT id from ("); // valid for hsqldb but not for sqLite
-            bySearchScoreImpl(sql, params, search, minimumScore, maxRowCount);
+            bySearchScoreImpl(sql, params, search, minimumScore, versionSdk, maxRowCount);
             // sql.append(")");
         } else {
             throw new UnsupportedOperationException("SQL search with order by");
@@ -68,7 +91,7 @@ public class AppIdSql {
 
     private static StringBuilder bySearchScoreImpl(
             StringBuilder sql, Map<String, Object> params,
-            String search, Integer minimumScore, int maxRowCount) {
+            String search, Integer minimumScore, int versionSdk, int maxRowCount) {
         if (StringUtil.isEmpty(search)) throw new NullPointerException();
 
         sql.append("select\n" +
@@ -87,9 +110,20 @@ public class AppIdSql {
             index++;
         }
         sql.append(")");
+
         if (minimumScore != null) {
             sql.append(" AND score >= :minimumScore ");
             params.put("minimumScore", minimumScore);
+        }
+
+        if (versionSdk > 0) {
+            sql.append(" AND id in (\n" +
+                    "    SELECT DISTINCT av.id\n" +
+                    "    FROM AppVersion AS av\n" +
+                    "    WHERE ((av.minSdkVersion <= :sdkversion AND\n" +
+                    "            ((av.maxSdkVersion IS NULL) OR (av.maxSdkVersion = 0) OR (av.maxSdkVersion >= :sdkversion))))\n" +
+                    ")");
+            params.put("sdkversion", versionSdk);
         }
         sql.append("\n group by id, packageName\n" +
                 " order by score_sum desc, packageName ");
@@ -98,7 +132,7 @@ public class AppIdSql {
     }
 
     private static void addOrderBy(StringBuilder sql, String orderBy) {
-        if (orderBy == null) orderBy = "lastUpdated desc";
+        if (StringUtil.isEmpty(orderBy)) orderBy = "lastUpdated desc";
         sql.append(" ORDER BY ").append(orderBy);
     }
 

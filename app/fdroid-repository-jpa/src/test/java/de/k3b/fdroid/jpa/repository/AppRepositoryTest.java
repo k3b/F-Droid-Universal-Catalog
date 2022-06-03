@@ -29,43 +29,52 @@ import java.util.List;
 
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.AppSearchParameter;
+import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.repository.AppRepository;
+import de.k3b.fdroid.domain.repository.VersionRepository;
 
 @DataJpaTest
 public class AppRepositoryTest {
     private static final String MY_PACKAGE_NAME = "my.package.name";
     private static final String MY_ICON = "myIcon.ico";
-    @Autowired
-    JpaTestHelper jpaTestHelper;
-    private int repoId;
-    private int appId;
+    public static final int SDK = 8;
 
     @Autowired
-    private AppRepository repo;
+    JpaTestHelper jpaTestHelper;
+
+    @Autowired
+    private AppRepository appRepository;
+
+    @Autowired
+    private VersionRepository versionRepository;
+
+    private int appId;
 
     @BeforeEach
     public void init() {
-        App app = new App(MY_PACKAGE_NAME);
-        app.setIcon(MY_ICON);
-        repo.insert(app);
+        App app = jpaTestHelper.createApp(MY_PACKAGE_NAME, MY_ICON);
         appId = app.getId();
+
+        Repo repo = jpaTestHelper.createRepo();
+        jpaTestHelper.createVersion(
+                app, repo, SDK, SDK, 0, null);
     }
 
     @Test
     public void injectedComponentsAreNotNull() {
-        Assert.notNull(repo, "repo");
+        Assert.notNull(appRepository, "repo");
         Assert.notNull(jpaTestHelper, "jpaTestHelper");
     }
 
     @Test
     public void findByRepoIdAndPackageName() {
-        App app = repo.findByPackageName(MY_PACKAGE_NAME);
+        App app = appRepository.findByPackageName(MY_PACKAGE_NAME);
         Assert.notNull(app, "found");
     }
 
     @Test
     public void findByIds() {
-        List<App> apps = repo.findByIds(Collections.singletonList(appId));
+        List<App> apps = appRepository.findByIds(Collections.singletonList(appId));
         Assert.notNull(apps, "found");
         Assert.isTrue(apps.size() == 1, "found 1");
     }
@@ -73,14 +82,16 @@ public class AppRepositoryTest {
 
     @Test
     public void findDynamic_search() {
-        List<Integer> apps = repo.findDynamic(new AppSearchParameter().text("acka my"));
+        List<Integer> apps = appRepository.findDynamic(new AppSearchParameter()
+                .searchText("acka my")
+                .versionSdk(SDK));
         Assert.notNull(apps, "found");
         Assert.isTrue(apps.size() == 1, "found 1");
     }
 
     @Test
     public void findDynamic_default() {
-        List<Integer> apps = repo.findDynamic(new AppSearchParameter());
+        List<Integer> apps = appRepository.findDynamic(new AppSearchParameter());
         Assert.notNull(apps, "found");
         Assert.isTrue(apps.size() == 1, "found 1");
     }
