@@ -40,7 +40,7 @@ public class AppRepositoryTest {
     public static final int SDK = 8;
 
     @Autowired
-    JpaTestHelper jpaTestHelper;
+    JpaTestHelper testHelper;
 
     @Autowired
     private AppRepository appRepository;
@@ -52,18 +52,18 @@ public class AppRepositoryTest {
 
     @BeforeEach
     public void init() {
-        App app = jpaTestHelper.createApp(MY_PACKAGE_NAME, MY_ICON);
+        App app = testHelper.createApp(MY_PACKAGE_NAME, MY_ICON);
         appId = app.getId();
 
-        Repo repo = jpaTestHelper.createRepo();
-        jpaTestHelper.createVersion(
+        Repo repo = testHelper.createRepo();
+        testHelper.createVersion(
                 app, repo, SDK, SDK, 0, null);
     }
 
     @Test
     public void injectedComponentsAreNotNull() {
         Assert.notNull(appRepository, "repo");
-        Assert.notNull(jpaTestHelper, "jpaTestHelper");
+        Assert.notNull(testHelper, "jpaTestHelper");
     }
 
     @Test
@@ -79,12 +79,38 @@ public class AppRepositoryTest {
         Assert.isTrue(apps.size() == 1, "found 1");
     }
 
-
     @Test
     public void findDynamic_search() {
-        List<Integer> apps = appRepository.findDynamic(new AppSearchParameter()
+        AppSearchParameter searchParameter = new AppSearchParameter()
+                .searchText("acka my");
+        List<Integer> apps = appRepository.findDynamic(searchParameter);
+        Assert.notNull(apps, "found");
+        Assert.isTrue(apps.size() == 1, "found 1");
+    }
+
+    @Test
+    public void findDynamic_version() {
+        // additional version not found
+        testHelper.createVersion(
+                null, null, SDK - 1, SDK - 1, SDK - 1, null);
+
+        AppSearchParameter searchParameter = new AppSearchParameter()
+                .versionSdk(SDK);
+        List<Integer> apps = appRepository.findDynamic(searchParameter);
+        Assert.notNull(apps, "found");
+        Assert.isTrue(apps.size() == 1, "found 1");
+    }
+
+    @Test
+    public void findDynamic_searchPlusVersion() {
+        // additional version not found
+        testHelper.createVersion(
+                null, null, SDK - 1, SDK - 1, SDK - 1, null);
+
+        AppSearchParameter searchParameter = new AppSearchParameter()
                 .searchText("acka my")
-                .versionSdk(SDK));
+                .versionSdk(SDK);
+        List<Integer> apps = appRepository.findDynamic(searchParameter);
         Assert.notNull(apps, "found");
         Assert.isTrue(apps.size() == 1, "found 1");
     }

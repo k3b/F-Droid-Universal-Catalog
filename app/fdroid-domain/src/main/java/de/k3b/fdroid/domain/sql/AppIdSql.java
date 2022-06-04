@@ -37,105 +37,84 @@ public class AppIdSql {
             AppSearchParameter appSearchParameter,
             Map<String, Object> params,
             boolean forAndroid) {
+        boolean withSearchText = !StringUtil.isEmpty(appSearchParameter.searchText);
+
         StringBuilder sql = new StringBuilder();
-        if (!StringUtil.isEmpty(appSearchParameter.searchText)) {
-            // android-sqLite does not support "LIMIT" in "GROUP BY" queries
-            bySearchScore(sql, params, appSearchParameter.searchText,
-                    appSearchParameter.minimumScore, appSearchParameter.versionSdk,
-                    appSearchParameter.orderBy,
-                    (forAndroid) ? 0 : appSearchParameter.maxRowCount, forAndroid).toString();
+        if (withSearchText) {
+            sql.append("SELECT\n" +
+                    "    s.id,\n" +
+                    "    s.packageName,\n" +
+                    "    sum(s.score) AS score_sum\n" +
+                    "FROM AppSearch AS s\n");
         } else {
-
-            sql.append("SELECT s.id from App as s");
-
-            addWhere(sql, params, appSearchParameter);
-
-            addOrderBy(sql, appSearchParameter.orderBy);
-            addLimit(sql, params, appSearchParameter.maxRowCount);
+            sql.append("SELECT s.id FROM App AS s\n");
         }
+
+        int versionSdk = appSearchParameter.versionSdk;
+        if (versionSdk > 0) {
+            sql.append("INNER JOIN AppVersion AS av ON s.id=av.appId\n");
+        }
+
+        sql.append("WHERE ");
+        boolean noCondition = true;
+        if (withSearchText) {
+            noCondition = false;
+            addWhereSearchText(sql, appSearchParameter, params);
+        }
+
+        if (versionSdk > 0) {
+            if (!noCondition) {
+                sql.append(" AND ");
+            }
+            if (withSearchText && forAndroid) {
+                // parameter replacement does not work for complex sql statements on my android-10 :-(
+                sql.append(" ((av.minSdkVersion <= " + versionSdk + " AND\n" +
+                        "    ((av.maxSdkVersion = 0) OR (av.maxSdkVersion >= " + versionSdk + ")))) ");
+            } else {
+                addParam(sql, params,
+                        " ((av.minSdkVersion <= :sdkversion AND\n" +
+                                "    ((av.maxSdkVersion = 0) OR (av.maxSdkVersion >= :sdkversion)))) ",
+                        "sdkversion", versionSdk);
+            }
+            noCondition = false;
+        }
+
+        if (noCondition) {
+            sql.append("1=1");
+        }
+
+        String orderBy = appSearchParameter.orderBy;
+        if (withSearchText) {
+            sql.append("\n GROUP BY s.id, s.packageName ");
+            if (StringUtil.isEmpty(orderBy)) {
+                orderBy = "score_sum desc, s.packageName ";
+            }
+        }
+        addOrderBy(sql, orderBy);
+        addLimit(sql, params, appSearchParameter.maxRowCount, forAndroid);
+
         LOGGER.info("SQL: {}\n\tParams: {}", sql, params);
         return sql.toString();
     }
 
-    private static void addWhere(StringBuilder sql, Map<String, Object> params, AppSearchParameter appSearchParameter) {
-        boolean needsWhere = true;
-        if (appSearchParameter.versionSdk > 0) {
-            if (needsWhere) {
-                sql.append(" WHERE ");
-                needsWhere = false;
-            } else {
-                sql.append(" AND ");
-            }
-            sql.append(" id in ("
-                    + ("SELECT distinct av.id " +
-                    "FROM AppVersion AS av " +
-                    "WHERE ((av.minSdkVersion <= :sdkversion AND " +
-                    " ((av.maxSdkVersion = 0) OR (av.maxSdkVersion >= :sdkversion)))) ")
-                    + ")");
-            params.put("sdkversion", appSearchParameter.versionSdk);
-        }
-    }
-
-    private static StringBuilder bySearchScore(
-            StringBuilder sql, Map<String, Object> params,
-            String search, Integer minimumScore, int versionSdk, String orderBy, int maxRowCount, boolean forAndroid) {
-        if (StringUtil.isEmpty(orderBy)) {
-            // sql.append("SELECT id from ("); // valid for hsqldb but not for sqLite
-            bySearchScoreImpl(sql, params, search, minimumScore, versionSdk, maxRowCount, forAndroid);
-            // sql.append(")");
-        } else {
-            throw new UnsupportedOperationException("SQL search with order by");
-        }
-        LOGGER.debug("SQL: {}\n\tParams: {}", sql, params);
-        return sql;
-    }
-
-    private static StringBuilder bySearchScoreImpl(
-            StringBuilder sql, Map<String, Object> params,
-            String search, Integer minimumScore, int versionSdk, int maxRowCount, boolean forAndroid) {
-        if (StringUtil.isEmpty(search)) throw new NullPointerException();
-
-        sql.append("select\n" +
-                "    s.id,\n" +
-                "    s.packageName,\n" +
-                "    sum(s.score) AS score_sum\n" +
-                "from AppSearch as s\n");
-        if (versionSdk > 0) {
-            sql.append("inner join AppVersion as av on s.id=av.appId\n");
-        }
-
-        sql.append("where (");
-        String[] expressions = search.split(" ");
+    private static void addWhereSearchText(StringBuilder sql, AppSearchParameter appSearchParameter, Map<String, Object> params) {
+        sql.append(" (");
+        String[] expressions = appSearchParameter.searchText.split(" ");
         int index = 1;
         for (String expresson : expressions) {
             if (index > 1) sql.append(" AND ");
-            sql.append("s.search like :search").append(index);
+            sql.append("s.search LIKE :search").append(index);
             params.put("search" + index, "%" + expresson + "%");
 
             index++;
         }
         sql.append(")");
 
+        Integer minimumScore = appSearchParameter.minimumScore;
         if (minimumScore != null) {
             sql.append(" AND s.score >= :minimumScore ");
             params.put("minimumScore", minimumScore);
         }
-
-        if (versionSdk > 0) {
-            if (forAndroid) {
-                // parameter replacement does not work for complex sql statements under android :-(
-                sql.append(" AND ((av.minSdkVersion <= " + versionSdk + " AND\n" +
-                        "    ((av.maxSdkVersion = 0) OR (av.maxSdkVersion >= " + versionSdk + ")))) ");
-            } else {
-                sql.append(" AND ((av.minSdkVersion <= :sdkversion AND\n" +
-                        "    ((av.maxSdkVersion = 0) OR (av.maxSdkVersion >= :sdkversion)))) ");
-                params.put("sdkversion", versionSdk);
-            }
-        }
-        sql.append("\n group by s.id, s.packageName ");
-        sql.append("\n order by score_sum desc, s.packageName ");
-        addLimit(sql, params, maxRowCount);
-        return sql;
     }
 
     private static void addOrderBy(StringBuilder sql, String orderBy) {
@@ -143,9 +122,14 @@ public class AppIdSql {
         sql.append(" ORDER BY ").append(orderBy);
     }
 
-    private static void addLimit(StringBuilder sql, Map<String, Object> params, int maxRowCount) {
+    private static void addLimit(StringBuilder sql, Map<String, Object> params, int maxRowCount, boolean forAndroid) {
         if (maxRowCount != 0) {
-            addParam(sql, params, " LIMIT :maxRowCount ", "maxRowCount", maxRowCount);
+            if (forAndroid) {
+                // parameter replacement does not work for complex sql statements on my android-10 :-(
+                sql.append(" LIMIT " + maxRowCount + " ");
+            } else {
+                addParam(sql, params, " LIMIT :maxRowCount ", "maxRowCount", maxRowCount);
+            }
         }
     }
 

@@ -55,6 +55,7 @@ public class AppRepositoryFindDynamicInstrumentedTest {
 
     private App app = null;
     private RepoRepository repoRepository;
+    private RoomTestHelper testHelper;
 
     @Before
     public void setUp() {
@@ -64,10 +65,10 @@ public class AppRepositoryFindDynamicInstrumentedTest {
         appRepository = factory.appRepository();
         repoRepository = factory.repoRepository();
 
-        RoomTestHelper h = new RoomTestHelper(factory);
-        app = h.createApp(MY_PACKAGE_NAME, MY_ICON);
-        repo = h.createRepo();
-        h.createVersion(app, repo, SDK, SDK, 0, null);
+        testHelper = new RoomTestHelper(factory);
+        app = testHelper.createApp(MY_PACKAGE_NAME, MY_ICON);
+        repo = testHelper.createRepo();
+        testHelper.createVersion(app, repo, SDK, SDK, 0, null);
     }
 
     @After
@@ -78,32 +79,42 @@ public class AppRepositoryFindDynamicInstrumentedTest {
 
     @Test
     public void findDynamic_text() {
-        List<Integer> appIdList = appRepository.findDynamic(new AppSearchParameter()
-                        .searchText("acka my")
-                //        .versionSdk(SDK)
-        );
-        List<App> appList = appRepository.findByIds(appIdList);
+        AppSearchParameter searchParameter = new AppSearchParameter()
+                .searchText("acka my");
+        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
         assertThat(appIdList.size(), equalTo(1));
     }
 
     @Test
     public void findDynamic_version() {
-        List<Integer> appIdList = appRepository.findDynamic(new AppSearchParameter()
-                //        .searchText("acka my")
-                .versionSdk(SDK)
-        );
-        List<App> appList = appRepository.findByIds(appIdList);
+        // additional version not found
+        testHelper.createVersion(
+                null, null, SDK - 1, SDK - 1, SDK - 1, null);
+
+        AppSearchParameter searchParameter = new AppSearchParameter()
+                .versionSdk(SDK);
+        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
         assertThat(appIdList.size(), equalTo(1));
     }
 
 
     @Test
     public void findDynamic_textPlusVersion() {
+        // additional version not found
+        testHelper.createVersion(
+                null, null, SDK - 1, SDK - 1, SDK - 1, null);
+
         AppSearchParameter searchParameter = new AppSearchParameter()
                 .searchText("acka my")
                 .versionSdk(SDK);
         List<Integer> appIdList = appRepository.findDynamic(searchParameter);
-        List<App> appList = appRepository.findByIds(appIdList);
+        assertThat(appIdList.size(), equalTo(1));
+    }
+
+    @Test
+    public void findDynamic_noCondition() {
+        AppSearchParameter searchParameter = new AppSearchParameter();
+        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
         assertThat(appIdList.size(), equalTo(1));
     }
 }
