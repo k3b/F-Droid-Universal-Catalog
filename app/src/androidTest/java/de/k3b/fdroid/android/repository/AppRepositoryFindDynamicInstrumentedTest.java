@@ -77,9 +77,32 @@ public class AppRepositoryFindDynamicInstrumentedTest {
     }
 
     @Test
-    public void findDynamic_search() {
+    public void findDynamic_text() {
         List<Integer> appIdList = appRepository.findDynamic(new AppSearchParameter()
-                .searchText("acka my").versionSdk(SDK));
+                        .searchText("acka my")
+                //        .versionSdk(SDK)
+        );
+        List<App> appList = appRepository.findByIds(appIdList);
+        assertThat(appIdList.size(), equalTo(1));
+    }
+
+    @Test
+    public void findDynamic_version() {
+        List<Integer> appIdList = appRepository.findDynamic(new AppSearchParameter()
+                //        .searchText("acka my")
+                .versionSdk(SDK)
+        );
+        List<App> appList = appRepository.findByIds(appIdList);
+        assertThat(appIdList.size(), equalTo(1));
+    }
+
+
+    @Test
+    public void findDynamic_textPlusVersion() {
+        AppSearchParameter searchParameter = new AppSearchParameter()
+                .searchText("acka my")
+                .versionSdk(SDK);
+        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
         List<App> appList = appRepository.findByIds(appIdList);
         assertThat(appIdList.size(), equalTo(1));
     }

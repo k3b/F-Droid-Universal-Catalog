@@ -1,5 +1,32 @@
 todo
 
+BUG android search by sdk does not workt
+
+select id, packageName, sum(score) AS score_sum from AppSearch where (search like :search1 AND
+search like :search2) AND id in (
+SELECT DISTINCT av.id FROM AppVersion AS av WHERE ((av.minSdkVersion <= :sdkversion AND
+((av.maxSdkVersion IS NULL) OR (av.maxSdkVersion = 0) OR (av.maxSdkVersion >= :sdkversion))))
+)
+group by id, packageName order by score_sum desc, packageName
+
+params = {TreeMap@10090} size = 3
+"sdkversion" -> {Integer@10123} 8
+"search1" -> "%acka%"
+"search2" -> "%my%"
+ 
+---------------------
+
+select id, packageName, sum(score) AS score_sum from AppSearch where (search like '%k3b%') AND id
+in (
+SELECT DISTINCT av.id FROM AppVersion AS av WHERE ((av.minSdkVersion <= 8 AND
+((av.maxSdkVersion IS NULL) OR (av.maxSdkVersion = 0) OR (av.maxSdkVersion >= 8))))
+)
+group by id, packageName order by score_sum desc, packageName
+
+
+
+--------------------------------
+
 * download before delete&rename must check if signature is ok
 
 * android: when version-import completed clear caches => recreate AppList-adapter
