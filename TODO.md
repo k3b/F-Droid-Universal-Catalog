@@ -1,31 +1,6 @@
 todo
 
-BUG android search by sdk does not workt
-
-select id, packageName, sum(score) AS score_sum from AppSearch where (search like :search1 AND
-search like :search2) AND id in (
-SELECT DISTINCT av.id FROM AppVersion AS av WHERE ((av.minSdkVersion <= :sdkversion AND
-((av.maxSdkVersion IS NULL) OR (av.maxSdkVersion = 0) OR (av.maxSdkVersion >= :sdkversion))))
-)
-group by id, packageName order by score_sum desc, packageName
-
-params = {TreeMap@10090} size = 3
-"sdkversion" -> {Integer@10123} 8
-"search1" -> "%acka%"
-"search2" -> "%my%"
- 
----------------------
-
-select id, packageName, sum(score) AS score_sum from AppSearch where (search like '%k3b%') AND id
-in (
-SELECT DISTINCT av.id FROM AppVersion AS av WHERE ((av.minSdkVersion <= 8 AND
-((av.maxSdkVersion IS NULL) OR (av.maxSdkVersion = 0) OR (av.maxSdkVersion >= 8))))
-)
-group by id, packageName order by score_sum desc, packageName
-
-
-
---------------------------------
+* web-detail rendering either with or without <pre>
 
 * download before delete&rename must check if signature is ok
 
@@ -38,8 +13,6 @@ group by id, packageName order by score_sum desc, packageName
   * if appCount==0 and there are *.jar files in cache download:
     * reload jars
     * clear icon caches
-* repo add icon to display
-* AppListActivity: add async icon load
 
 ------
 
@@ -56,7 +29,6 @@ group by id, packageName order by score_sum desc, packageName
     * Category
     * android-version
     * sorted by
-* add support to download appIcons (and app descr images)
 
 -----
 

@@ -141,16 +141,25 @@ public class AppWithDetailsPagerService {
     private void update(ArrayList<Integer> appIdList, int from) {
         Map<Integer, AppWithDetails> id2AppLocalizedList = new HashMap<>();
         List<App> apps = appRepository.findByAppIds(appIdList);
-        for (App app : apps) {
-            AppWithDetails appWithDetails = new AppWithDetails(app);
+
+        for(Integer appId : appIdList) {
+            // apps order might not match appIdList order
+            AppWithDetails appWithDetails = new AppWithDetails(findByAppId(apps, appId));
             appWithDetailsList[from] = appWithDetails;
-            id2AppLocalizedList.put(app.getId(), appWithDetails);
+            id2AppLocalizedList.put(appId, appWithDetails);
             from++;
         }
 
         load(Localized.class, appIdList, localizedRepository, id2AppLocalizedList);
         load(Version.class, appIdList, versionRepository, id2AppLocalizedList);
         load(Category.class, appIdList, categoryRepository, id2AppLocalizedList);
+    }
+
+    private App findByAppId(List<App> apps, Integer appId) {
+        for (App app : apps) {
+            if (app.getId() == appId) return app;
+        }
+        return null;
     }
 
     private <T extends AppDetail> void load(
