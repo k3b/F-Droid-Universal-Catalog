@@ -68,7 +68,7 @@ public class V1CommandService {
         s.append("-r(eload reload database from downloaded jars)\n");
         s.append("-d(ir show downloaded jars)\n");
 
-        s.append("http(s)://url download repository from url\n");
+        s.append("http(s)://url download and import repository from url\n");
 
         return s;
     }
