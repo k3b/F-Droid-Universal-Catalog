@@ -33,6 +33,15 @@ import de.k3b.fdroid.domain.util.StringUtil;
 public class AppIdSql {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_SQL);
 
+    /**
+     * Creates sql for {@link de.k3b.fdroid.domain.repository.AppRepository#findDynamic(AppSearchParameter)}
+     * sql prefixes:
+     * * s=search (AppSearch or App)
+     * * v=AppVersion (if versionSdk > 0)
+     * * c=AppCategory (if categoryId > 0)
+     *
+     * @return sql plus updeated parameters
+     */
     public static String getSql(
             AppSearchParameter appSearchParameter,
             Map<String, Object> params,
@@ -55,6 +64,11 @@ public class AppIdSql {
             sql.append("INNER JOIN AppVersion AS av ON s.id=av.appId\n");
         }
 
+        int categoryId = appSearchParameter.categoryId;
+        if (categoryId > 0) {
+            sql.append("INNER JOIN AppCategory AS c ON s.id=c.appId\n");
+        }
+
         sql.append("WHERE ");
         boolean noCondition = true;
         if (withSearchText) {
@@ -75,6 +89,19 @@ public class AppIdSql {
                         " ((av.minSdkVersion <= :sdkversion AND\n" +
                                 "    ((av.maxSdkVersion = 0) OR (av.maxSdkVersion >= :sdkversion)))) ",
                         "sdkversion", versionSdk);
+            }
+            noCondition = false;
+        }
+
+        if (categoryId > 0) {
+            if (!noCondition) {
+                sql.append(" AND ");
+            }
+            if (forAndroid) {
+                // parameter replacement does not work for complex sql statements on my android-10 :-(
+                sql.append(" (c.categoryId = " + categoryId + ") ");
+            } else {
+                addParam(sql, params, " (c.categoryId = :categoryId) ", "categoryId", categoryId);
             }
             noCondition = false;
         }

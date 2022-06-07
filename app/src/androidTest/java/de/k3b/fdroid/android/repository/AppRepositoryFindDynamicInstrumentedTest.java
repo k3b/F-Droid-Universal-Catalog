@@ -35,6 +35,7 @@ import java.util.List;
 
 import de.k3b.fdroid.android.db.FDroidDatabase;
 import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.entity.AppCategory;
 import de.k3b.fdroid.domain.entity.AppSearchParameter;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.repository.AppRepository;
@@ -56,6 +57,7 @@ public class AppRepositoryFindDynamicInstrumentedTest {
     private App app = null;
     private RepoRepository repoRepository;
     private RoomTestHelper testHelper;
+    private int categoryId;
 
     @Before
     public void setUp() {
@@ -69,6 +71,9 @@ public class AppRepositoryFindDynamicInstrumentedTest {
         app = testHelper.createApp(MY_PACKAGE_NAME, MY_ICON);
         repo = testHelper.createRepo();
         testHelper.createVersion(app, repo, SDK, SDK, 0, null);
+        AppCategory appCategory = testHelper.createAppCategory(app, null);
+        categoryId = appCategory.getCategoryId();
+
     }
 
     @After
@@ -97,16 +102,27 @@ public class AppRepositoryFindDynamicInstrumentedTest {
         assertThat(appIdList.size(), equalTo(1));
     }
 
+    @Test
+    public void findDynamic_category() {
+        // additional app/category not found
+        testHelper.createAppCategory(null, null);
+
+        AppSearchParameter searchParameter = new AppSearchParameter()
+                .categoryId(categoryId);
+        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
+        assertThat(appIdList.size(), equalTo(1));
+    }
 
     @Test
-    public void findDynamic_textPlusVersion() {
+    public void findDynamic_textPlusVersionPlusCategory() {
         // additional version not found
         testHelper.createVersion(
                 null, null, SDK - 1, SDK - 1, SDK - 1, null);
 
         AppSearchParameter searchParameter = new AppSearchParameter()
                 .searchText("acka my")
-                .versionSdk(SDK);
+                .versionSdk(SDK)
+                .categoryId(categoryId);
         List<Integer> appIdList = appRepository.findDynamic(searchParameter);
         assertThat(appIdList.size(), equalTo(1));
     }

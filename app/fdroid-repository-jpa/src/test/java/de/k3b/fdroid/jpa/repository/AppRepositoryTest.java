@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.entity.AppCategory;
 import de.k3b.fdroid.domain.entity.AppSearchParameter;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.repository.AppRepository;
@@ -49,6 +50,7 @@ public class AppRepositoryTest {
     private VersionRepository versionRepository;
 
     private int appId;
+    private int categoryId;
 
     @BeforeEach
     public void init() {
@@ -58,6 +60,9 @@ public class AppRepositoryTest {
         Repo repo = testHelper.createRepo();
         testHelper.createVersion(
                 app, repo, SDK, SDK, 0, null);
+
+        AppCategory appCategory = testHelper.createAppCategory(app, null);
+        categoryId = appCategory.getCategoryId();
     }
 
     @Test
@@ -74,18 +79,18 @@ public class AppRepositoryTest {
 
     @Test
     public void findByIds() {
-        List<App> apps = appRepository.findByIds(Collections.singletonList(appId));
-        Assert.notNull(apps, "found");
-        Assert.isTrue(apps.size() == 1, "found 1");
+        List<App> appIdList = appRepository.findByIds(Collections.singletonList(appId));
+        Assert.notNull(appIdList, "found");
+        Assert.isTrue(appIdList.size() == 1, "found 1");
     }
 
     @Test
     public void findDynamic_search() {
         AppSearchParameter searchParameter = new AppSearchParameter()
                 .searchText("acka my");
-        List<Integer> apps = appRepository.findDynamic(searchParameter);
-        Assert.notNull(apps, "found");
-        Assert.isTrue(apps.size() == 1, "found 1");
+        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
+        Assert.notNull(appIdList, "found");
+        Assert.isTrue(appIdList.size() == 1, "found 1");
     }
 
     @Test
@@ -96,29 +101,42 @@ public class AppRepositoryTest {
 
         AppSearchParameter searchParameter = new AppSearchParameter()
                 .versionSdk(SDK);
-        List<Integer> apps = appRepository.findDynamic(searchParameter);
-        Assert.notNull(apps, "found");
-        Assert.isTrue(apps.size() == 1, "found 1");
+        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
+        Assert.notNull(appIdList, "found");
+        Assert.isTrue(appIdList.size() == 1, "found 1");
     }
 
     @Test
-    public void findDynamic_searchPlusVersion() {
+    public void findDynamic_category() {
+        // additional app/category not found
+        testHelper.createAppCategory(null, null);
+
+        AppSearchParameter searchParameter = new AppSearchParameter()
+                .categoryId(categoryId);
+        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
+        Assert.notNull(appIdList, "found");
+        Assert.isTrue(appIdList.size() == 1, "found 1");
+    }
+
+    @Test
+    public void findDynamic_searchPlusVersionPlusCategory() {
         // additional version not found
         testHelper.createVersion(
                 null, null, SDK - 1, SDK - 1, SDK - 1, null);
 
         AppSearchParameter searchParameter = new AppSearchParameter()
                 .searchText("acka my")
+                .categoryId(categoryId)
                 .versionSdk(SDK);
-        List<Integer> apps = appRepository.findDynamic(searchParameter);
-        Assert.notNull(apps, "found");
-        Assert.isTrue(apps.size() == 1, "found 1");
+        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
+        Assert.notNull(appIdList, "found");
+        Assert.isTrue(appIdList.size() == 1, "found 1");
     }
 
     @Test
     public void findDynamic_default() {
-        List<Integer> apps = appRepository.findDynamic(new AppSearchParameter());
-        Assert.notNull(apps, "found");
-        Assert.isTrue(apps.size() == 1, "found 1");
+        List<Integer> appIdList = appRepository.findDynamic(new AppSearchParameter());
+        Assert.notNull(appIdList, "found");
+        Assert.isTrue(appIdList.size() == 1, "found 1");
     }
 }
