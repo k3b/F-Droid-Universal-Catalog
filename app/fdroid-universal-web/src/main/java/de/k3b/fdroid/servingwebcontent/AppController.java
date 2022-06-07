@@ -31,14 +31,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.k3b.fdroid.domain.adapter.AppRepositoryAdapterImpl;
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.AppSearchParameter;
+import de.k3b.fdroid.domain.entity.Category;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.repository.AppDetailRepository;
 import de.k3b.fdroid.domain.repository.AppRepository;
+import de.k3b.fdroid.domain.repository.CategoryRepository;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.service.AppIconService;
 import de.k3b.fdroid.domain.service.AppWithDetailsPagerService;
@@ -52,9 +55,12 @@ public class AppController {
     private final AppRepository appRepository;
     private final AppWithDetailsPagerService appWithDetailsPagerService;
     private final AppIconService iconService;
+    private final ArrayList<Category> categoryList;
+    private final CacheService<Category> categoryCache;
 
     public AppController(@Value("${de.k3b.fdroid.downloads.icons}") String iconsDir,
-                         RepoRepository repoRepository, AppRepository appRepository) {
+                         RepoRepository repoRepository, AppRepository appRepository,
+                         CategoryRepository categoryRepository) {
         this.appRepository = appRepository;
 
         AppDetailRepository<App> appAppDetailRepository = new AppRepositoryAdapterImpl(appRepository);
@@ -62,19 +68,33 @@ public class AppController {
                 appAppDetailRepository, null, null, null);
         CacheService<Repo> cache = new CacheService<>(repoRepository.findAll());
         iconService = new AppIconService(iconsDir, cache, appRepository);
+
+        ArrayList<Category> categoryList = new ArrayList<>(categoryRepository.findAll());
+        categoryList.add(new Category(0,""));
+        categoryList.sort(Category.COMPARE_BY_NAME);
+        categoryCache = new CacheService<Category>(categoryList);
+        this.categoryList = categoryList;
     }
 
     @GetMapping("/App/app")
     public String appList(
             @RequestParam(name = "q", required = false, defaultValue = "") String query,
             @RequestParam(name = "v", required = false, defaultValue = "0") String versionSdkText,
+            @RequestParam(name = "c", required = false, defaultValue = "0") String categoryIdText,
             @RequestParam(name = "s", required = false, defaultValue = "") String sort,
             @RequestParam(name = "page", required = false, defaultValue = "0") String pageText,
             Model model) {
         int versionSdk = StringUtil.parseInt(versionSdkText, 0);
         int page = StringUtil.parseInt(pageText, 0);
+        int categoryId = StringUtil.parseInt(categoryIdText, 0);
 
-        List<Integer> appIdList = appRepository.findDynamic(new AppSearchParameter().searchText(query).orderBy(sort).versionSdk(versionSdk));
+        AppSearchParameter appSearchParameter = new AppSearchParameter()
+                .searchText(query)
+                .versionSdk(versionSdk)
+                .categoryId(categoryId)
+                .orderBy(sort)
+                ;
+        List<Integer> appIdList = appRepository.findDynamic(appSearchParameter);
         appWithDetailsPagerService.init(appIdList, PAGESIZE);
 
         int maxPage = appIdList.size() / PAGESIZE;
@@ -86,6 +106,7 @@ public class AppController {
         StringBuilder params = new StringBuilder();
         if (!StringUtil.isEmpty(query)) params.append("&q=").append(query);
         if (versionSdk > 0) params.append("&v=").append(versionSdk);
+        if (categoryId > 0) params.append("&c=").append(categoryId);
         if (!StringUtil.isEmpty(sort)) params.append("&s=").append(sort);
 
         model.addAttribute("app", appWithDetailsPagerService.itemAtOffset(from, from + PAGESIZE));
@@ -95,6 +116,9 @@ public class AppController {
         model.addAttribute("sort", sort);
         model.addAttribute("androidVersion", AndroidVersionName.getMap().entrySet());
         model.addAttribute("params", params.toString());
+        model.addAttribute("categories", categoryList);
+        model.addAttribute("category", categoryCache.getItemById(categoryId));
+
         if (page > 0) model.addAttribute("prev", page - 1);
         if (page + 1 < maxPage) model.addAttribute("next", page + 1);
 

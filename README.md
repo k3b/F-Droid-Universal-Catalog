@@ -4,7 +4,7 @@ https://github.com/k3b/F-Droid-Universal-Catalog/README.md
 
 TODO
 
-For Details see [F-Droid-Universal-Catalog Project](/k3b/F-Droid-Universal-Catalog/wiki/)
+For Details see [F-Droid-Universal-Catalog Project](https://github.com//k3b/F-Droid-Universal-Catalog/wiki/)
 
 ----
 

@@ -39,7 +39,7 @@ public class AppSearchParameter extends EntityCommon {
      * for details see sql-sourcecode of "CREATE VIEW AppSearch AS ..."
      */
     public Integer minimumScore = null;
-
+    public int categoryId = 0;
     public String orderBy = null;
 
     // supported by sqLite and hsqldb: SELECT ... FROM ... LIMIT 150 https://www.sqlitetutorial.net/sqlite-limit/
@@ -53,22 +53,26 @@ public class AppSearchParameter extends EntityCommon {
         return this;
     }
 
-
-    public AppSearchParameter orderBy(String orderBy) {
-        this.orderBy = orderBy;
-        return this;
-    }
-
     public AppSearchParameter versionSdk(int versionSdk) {
         this.versionSdk = versionSdk;
         return this;
     }
 
+    public AppSearchParameter categoryId(int categoryId) {
+        this.categoryId = categoryId;
+        return this;
+    }
+
+    public AppSearchParameter orderBy(String orderBy) {
+        this.orderBy = orderBy;
+        return this;
+    }
     @Override
     protected void toStringBuilder(StringBuilder sb) {
         super.toStringBuilder(sb);
         toStringBuilder(sb, "searchText", this.searchText);
         toStringBuilder(sb, "versionSdk", this.versionSdk);
+        toStringBuilder(sb, "categoryId", this.categoryId);
         toStringBuilder(sb, "orderBy", this.orderBy);
         // toStringBuilder(sb, "maxRowCount", this.maxRowCount);
     }

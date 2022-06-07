@@ -19,6 +19,8 @@
 package de.k3b.fdroid.domain.entity;
 
 
+import java.util.Comparator;
+
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 
@@ -39,6 +41,16 @@ public class Category extends EntityCommon implements DatabaseEntityWithId {
     private int id;
 
     private String name;
+
+    // needed by android-room and jpa
+    public Category() {
+    }
+
+    @androidx.room.Ignore
+    public Category(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
@@ -61,4 +73,6 @@ public class Category extends EntityCommon implements DatabaseEntityWithId {
     public void setName(String name) {
         this.name = name;
     }
+
+    public static final Comparator<Category> COMPARE_BY_NAME =  (o1, o2) -> o1.getName().compareTo(o2.getName());
 }
