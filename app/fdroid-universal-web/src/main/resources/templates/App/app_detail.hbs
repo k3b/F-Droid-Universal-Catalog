@@ -1,5 +1,6 @@
 <p>{{t.label_app_title}}</p>
-{{#app}}
+<a href="/App/app{{back}}">Back</a>
+{{#item}}
     <h3>
         {{#app.icon}}
             <img src="icons/{{app.packageName}}.png" width="48" height="48" />
@@ -15,5 +16,5 @@
     {{#VersionList}}
         {{> App/version_detail}}
     {{/VersionList}}
-{{/app}}
-    <a href="/App/app">Back</a>
+{{/item}}
+<a href="/App/app{{back}}">Back</a>

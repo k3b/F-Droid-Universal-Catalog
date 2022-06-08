@@ -44,4 +44,6 @@ public interface VersionRepository extends Repository, AppDetailRepository<Versi
      * @return pseuddo versions, one entry per app/repo combination populated with found min/max values
      */
     List<Version> findBestBySdkAndNative(int sdkversion, String nativeCode);
+
+    List<Version> findByMinSdkAndAppIds(int minSdk, List<Integer> appIds);
 }

@@ -36,25 +36,32 @@ import de.k3b.fdroid.domain.entity.Version;
 public interface VersionRepositoryJpa extends CrudRepository<Version, Integer> {
     List<Version> findByAppId(int appId);
 
-    @Query(value = "select al from AppVersion al " +
-            "where al.appId in (?1) " +
-            "order by al.versionCode desc")
+    @Query(value = "SELECT v FROM AppVersion v " +
+            "WHERE v.appId IN (?1) " +
+            "ORDER BY v.versionCode desc")
     List<Version> findByAppIds(List<Integer> appIds);
 
-    @Query(value = "SELECT MAX(av.id) AS id, " +
-            " av.appId, av.repoId, " +
-            " min(av.minSdkVersion) AS minSdkVersion, " +
-            " max(av.maxSdkVersion) AS maxSdkVersion, " +
-            " max(av.targetSdkVersion) AS targetSdkVersion, " +
-            " max(av.versionCode) AS versionCode, " +
-            " max(av.added) AS added, " +
-            " max(av.nativecode) AS nativecode, " +
-            " max(av.size) AS size " +
-            "FROM AppVersion AS av " +
-            "WHERE ((:sdkversion = 0) OR (av.minSdkVersion <= :sdkversion AND " +
-            " ((av.maxSdkVersion IS NULL) OR (av.maxSdkVersion = 0) OR (av.maxSdkVersion >= :sdkversion)))) AND " +
-            " (av.nativecode IS NULL OR :nativeCode IS NULL OR av.nativecode like :nativeCode) " +
-            "GROUP BY av.appId, av.repoId " +
+    @Query(value = "SELECT v FROM AppVersion v " +
+            "WHERE" +
+            " ?1 >= v.minSdkVersion AND (v.maxSdkVersion = 0 OR v.maxSdkVersion >= ?1) " +
+            " AND v.appId IN (?2) " +
+            "ORDER BY v.versionCode desc")
+    List<Version> findByMinSdkAndAppIds(int sdk, List<Integer> appIds);
+
+    @Query(value = "SELECT MAX(v.id) AS id, " +
+            " v.appId, v.repoId, " +
+            " min(v.minSdkVersion) AS minSdkVersion, " +
+            " max(v.maxSdkVersion) AS maxSdkVersion, " +
+            " max(v.targetSdkVersion) AS targetSdkVersion, " +
+            " max(v.versionCode) AS versionCode, " +
+            " max(v.added) AS added, " +
+            " max(v.nativecode) AS nativecode, " +
+            " max(v.size) AS size " +
+            "FROM AppVersion AS v " +
+            "WHERE ((:sdkversion = 0) OR (v.minSdkVersion <= :sdkversion AND " +
+            " ((v.maxSdkVersion IS NULL) OR (v.maxSdkVersion = 0) OR (v.maxSdkVersion >= :sdkversion)))) AND " +
+            " (v.nativecode IS NULL OR :nativeCode IS NULL OR v.nativecode like :nativeCode) " +
+            "GROUP BY v.appId, v.repoId " +
             "ORDER BY added DESC, id desc ", nativeQuery = true)
     List<Version> findBestBySdkAndNative(int sdkversion, String nativeCode);
 }

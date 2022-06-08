@@ -26,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.File;
@@ -43,13 +44,16 @@ import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.repository.LocalizedRepository;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.repository.VersionRepository;
+import de.k3b.fdroid.domain.repository.VersionRepositoryWithMinSdkFilter;
 import de.k3b.fdroid.domain.service.AppWithDetailsPagerService;
 import de.k3b.fdroid.domain.service.CacheService;
 import de.k3b.fdroid.domain.service.LocalizedImageService;
+import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.html.service.GetUrlMustacheLamdaService;
 
 @Controller
 public class AppDetailController {
+    private final VersionRepositoryWithMinSdkFilter versionRepositoryWithMinSdkFilter;
     private final AppWithDetailsPagerService appWithDetailsPagerService;
     private final Mustache.Lambda getUrl;
     private final AppRepository appRepository;
@@ -63,9 +67,11 @@ public class AppDetailController {
         this.appRepository = appRepository;
         AppDetailRepository<App> appAppDetailRepository = new AppRepositoryAdapterImpl(appRepository);
         AppDetailRepository<Localized> localizedRepositoryAdapter = new LocalizedRepositoryAdapterImpl(localizedRepository);
+        versionRepositoryWithMinSdkFilter = new VersionRepositoryWithMinSdkFilter(versionRepository);
 
         appWithDetailsPagerService = new AppWithDetailsPagerService(
-                appAppDetailRepository, localizedRepositoryAdapter, versionRepository, null);
+                appAppDetailRepository, localizedRepositoryAdapter, versionRepositoryWithMinSdkFilter,
+                null);
 
         CacheService<Repo> repoCacheService = new CacheService<>(repoRepository.findAll());
         getUrl = new GetUrlMustacheLamdaService(repoCacheService);
@@ -74,9 +80,12 @@ public class AppDetailController {
     }
 
     @GetMapping("/App/app/{idOrPackageName}")
-    public String appList(
+    public String appDetail(
             @PathVariable String idOrPackageName,
+            @RequestParam(name = "v", required = false, defaultValue = "0") String versionSdkText,
+            @RequestParam(name = "back", required = false, defaultValue = "") String back,
             Model model) {
+        int versionSdk = StringUtil.parseInt(versionSdkText, 0);
         int id = 0;
         try {
             id = Integer.parseInt(idOrPackageName);
@@ -84,10 +93,14 @@ public class AppDetailController {
             App app = appRepository.findByPackageName(idOrPackageName);
             if (app != null) id = app.getId();
         }
+        versionRepositoryWithMinSdkFilter.setMinSdk(versionSdk);
         appWithDetailsPagerService.init(Collections.singletonList(id), 1);
+
         AppWithDetailsPagerService.ItemAtOffset[] item = appWithDetailsPagerService.itemAtOffset(0, 1);
-        model.addAttribute("app", item);
+
+        model.addAttribute("item", item);
         model.addAttribute("getUrl", getUrl);
+        model.addAttribute("back", back);
         return "App/app_detail";
     }
 
@@ -99,8 +112,8 @@ public class AppDetailController {
         if (file != null) {
             try (InputStream in = new FileInputStream(file)) {
                 return IOUtils.toByteArray(in);
-            } catch (Exception ignore) {
-                ignore.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return null;

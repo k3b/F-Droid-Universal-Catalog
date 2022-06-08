@@ -30,6 +30,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collections;
 import java.util.List;
 
 import de.k3b.fdroid.android.db.FDroidDatabase;
@@ -87,21 +88,21 @@ public class VersionRepositoryInstrumentedTest {
 
     @Test
     public void findBestBySdkVersion_noVersionAndNoNativeCode() {
-        List<Version> versions = versionRepository.findBestBySdkAndNative(0, null);
-        assertEquals(2, versions.size());
+        List<Version> versionList = versionRepository.findBestBySdkAndNative(0, null);
+        assertEquals(2, versionList.size());
 
-        String actual = new VersionCommon(versions.get(0)).toString();
-        // all sdk-versions 7..9
+        String actual = new VersionCommon(versionList.get(0)).toString();
+        // all sdk-versionList 7..9
         String expected = "VersionCommon[minSdkVersion=7,targetSdkVersion=9,maxSdkVersion=7]";
         assertEquals(expected, actual);
     }
 
     @Test
     public void findBestBySdkVersion_noNativeCode() {
-        List<Version> versions = versionRepository.findBestBySdkAndNative(8, null);
-        assertEquals(2, versions.size());
+        List<Version> versionList = versionRepository.findBestBySdkAndNative(8, null);
+        assertEquals(2, versionList.size());
 
-        String actual = new VersionCommon(versions.get(0)).toString();
+        String actual = new VersionCommon(versionList.get(0)).toString();
 
         String expected = "VersionCommon[minSdkVersion=8,targetSdkVersion=8]";
         assertEquals(expected, actual);
@@ -109,18 +110,23 @@ public class VersionRepositoryInstrumentedTest {
 
     @Test
     public void findBestBySdkVersion_withNativeCode() {
-        List<Version> versions = versionRepository.findBestBySdkAndNative(8, "%arm7%");
-        assertEquals(1, versions.size());
+        List<Version> versionList = versionRepository.findBestBySdkAndNative(8, "%arm7%");
+        assertEquals(1, versionList.size());
 
-        String actual = new VersionCommon(versions.get(0)).toString();
+        String actual = new VersionCommon(versionList.get(0)).toString();
         String expected = "VersionCommon[minSdkVersion=8,targetSdkVersion=8]";
         assertEquals(expected, actual);
     }
 
     @Test
     public void findByAppId() {
-        List<Version> versions = versionRepository.findByAppId(app.getId());
-        assertEquals(4, versions.size());
+        List<Version> versionList = versionRepository.findByAppId(app.getId());
+        assertEquals(4, versionList.size());
     }
 
+    @Test
+    public void findByMinSdkAndAppIds() {
+        List<Version> versionList = versionRepository.findByMinSdkAndAppIds(8, Collections.singletonList(app.getId()));
+        assertEquals(2, versionList.size());
+    }
 }

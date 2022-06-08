@@ -52,4 +52,9 @@ public class VersionRepositoryAdapter extends RepositoryAdapterBase<Version, Ver
     public List<Version> findByAppIds(List<Integer> appIds) {
         return jpa.findByAppIds(appIds);
     }
+
+    @Override
+    public List<Version> findByMinSdkAndAppIds(int minSdk, List<Integer> appIds) {
+        return jpa.findByMinSdkAndAppIds(minSdk, appIds);
+    }
 }

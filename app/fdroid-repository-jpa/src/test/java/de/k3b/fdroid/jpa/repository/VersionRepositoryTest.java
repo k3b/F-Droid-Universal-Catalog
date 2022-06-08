@@ -18,11 +18,13 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.util.Assert;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,6 +36,7 @@ import de.k3b.fdroid.domain.repository.VersionRepository;
 public class VersionRepositoryTest {
     private static final String MY_NAME = "my.name";
     private final int MY_VERSION_CODE = 2075;
+    private final int MY_SDK = 8;
     @Autowired
     JpaTestHelper jpaTestHelper;
     private int appId;
@@ -52,42 +55,48 @@ public class VersionRepositoryTest {
         version.setApkName(MY_NAME);
         version.setSrcname("my source name");
         version.setNativecode("helloWorldCpu");
+        version.setSdk(MY_SDK, MY_SDK, MY_SDK);
         this.versionRepository.insert(version);
     }
 
     @Test
     public void injectedComponentsAreNotNull() {
-        Assert.notNull(versionRepository, "repo");
-        Assert.notNull(jpaTestHelper, "jpaTestHelper");
+        assertNotNull(versionRepository, "repo");
     }
 
     @Test
     public void findByAppId() {
-        List<Version> version = versionRepository.findByAppId(appId);
-        Assert.isTrue(version.size() == 1, "found 1");
+        List<Version> versionList = versionRepository.findByAppId(appId);
+        assertEquals(1, versionList.size(), "found 1");
     }
 
     @Test
     public void findByAppIds() {
-        List<Version> version = versionRepository.findByAppIds(Collections.singletonList(appId));
-        Assert.isTrue(version.size() == 1, "found 1");
+        List<Version> versionList = versionRepository.findByAppIds(Collections.singletonList(appId));
+        assertEquals(1, versionList.size(), "found 1");
+    }
+
+    @Test
+    public void findByMinSdkAndAppIds() {
+        List<Version> versionList = versionRepository.findByMinSdkAndAppIds(MY_SDK, Collections.singletonList(appId));
+        assertEquals(1, versionList.size(), "found 1");
     }
 
     @Test
     public void findBestBySdkVersion_noVersionAndNoNativeCode() {
-        List<Version> versions = versionRepository.findBestBySdkAndNative(0, null);
-        Assert.isTrue(versions.size() == 1);
+        List<Version> versionList = versionRepository.findBestBySdkAndNative(0, null);
+        assertEquals(1, versionList.size());
     }
 
     @Test
     public void findBestBySdkVersion_noNativeCode() {
-        List<Version> versions = versionRepository.findBestBySdkAndNative(8, null);
-        Assert.isTrue(versions.size() == 1);
+        List<Version> versionList = versionRepository.findBestBySdkAndNative(8, null);
+        assertEquals(versionList.size(), 1);
     }
 
     @Test
     public void findBestBySdkVersion_withNativeCode() {
-        List<Version> versions = versionRepository.findBestBySdkAndNative(8, "%arm7%");
-        Assert.isTrue(versions.size() == 0);
+        List<Version> versionList = versionRepository.findBestBySdkAndNative(8, "%arm7%");
+        assertEquals(versionList.size(), 0);
     }
 }

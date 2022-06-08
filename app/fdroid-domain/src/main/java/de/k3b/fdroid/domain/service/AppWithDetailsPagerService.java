@@ -125,6 +125,7 @@ public class AppWithDetailsPagerService {
         if (currentIndex < 0 || currentIndex >= size()) throw new IndexOutOfBoundsException();
         AppWithDetails result = appWithDetailsList[currentIndex];
         if (result == null) {
+            // implement load on demand
             int from = getFrom(currentIndex - 1);
             int to = getTo(currentIndex + 1);
             ArrayList<Integer> appIdList = new ArrayList<>(to - from);
@@ -215,6 +216,19 @@ public class AppWithDetailsPagerService {
         return result;
     }
 
+    /**
+     * Aggregate root display representing an {@link App} with all it-s details.
+     * Available Properties:
+     * * name
+     * * summary
+     * * description
+     * * icon
+     * * video
+     * * whatsNew
+     * * app
+     * * localizedList
+     * * versionList
+     */
     public class ItemAtOffset {
         private final int currentIndex;
 

@@ -51,15 +51,15 @@
 {{#next}}<a href="?page={{next}}{{params}}"> &gt; </a>{{/next}}
 <hr/><br/>
 
-{{#app}}
-    <a href="app/{{app.id}}">
+{{#item}}
+    <a href="app/{{app.id}}?v={{minSdk}}&back={{back}}">
     <h3>
         {{#app.icon}}<img src="app/icons/{{app.packageName}}.png" width="48" height="48">{{/app.icon}}
         {{name}}
     </h3>
     {{> App/list_app_summary}}
     </a>
-{{/app}}
+{{/item}}
 
 <br/>
 {{#prev}}<a href="?page={{prev}}{{params}}"> &lt; </a>{{/prev}}

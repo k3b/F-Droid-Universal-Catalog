@@ -31,6 +31,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +74,7 @@ public class AppController {
         ArrayList<Category> categoryList = new ArrayList<>(categoryRepository.findAll());
         categoryList.add(new Category(0,""));
         categoryList.sort(Category.COMPARE_BY_NAME);
-        categoryCache = new CacheService<Category>(categoryList);
+        categoryCache = new CacheService<>(categoryList);
         this.categoryList = categoryList;
     }
 
@@ -109,13 +111,14 @@ public class AppController {
         if (categoryId > 0) params.append("&c=").append(categoryId);
         if (!StringUtil.isEmpty(sort)) params.append("&s=").append(sort);
 
-        model.addAttribute("app", appWithDetailsPagerService.itemAtOffset(from, from + PAGESIZE));
+        model.addAttribute("item", appWithDetailsPagerService.itemAtOffset(from, from + PAGESIZE));
         model.addAttribute("query", query);
         model.addAttribute("minSdk", versionSdk);
         model.addAttribute("minSdkName", AndroidVersionName.getName(versionSdk, null));
         model.addAttribute("sort", sort);
         model.addAttribute("androidVersion", AndroidVersionName.getMap().entrySet());
         model.addAttribute("params", params.toString());
+        model.addAttribute("back", urlencode("?page=" + page + params));
         model.addAttribute("categories", categoryList);
         model.addAttribute("category", categoryCache.getItemById(categoryId));
 
@@ -126,6 +129,10 @@ public class AppController {
         // return "greeting";
     }
 
+    private String urlencode(String q) {
+        return URLEncoder.encode(q, StandardCharsets.UTF_8);
+    }
+
     @GetMapping(value = "/App/app/icons/{packageName}.png", produces = MediaType.IMAGE_PNG_VALUE)
     public @ResponseBody
     byte[] appIcon(@PathVariable String packageName) {
@@ -133,8 +140,8 @@ public class AppController {
         if (file != null) {
             try (InputStream in = new FileInputStream(file)) {
                 return IOUtils.toByteArray(in);
-            } catch (Exception ignore) {
-                ignore.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return null;
