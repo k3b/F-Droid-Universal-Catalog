@@ -45,19 +45,27 @@ public class RepoIconService extends ImageService {
 
         if (!error(iconFile)) {
             // (icon download ok) -> nothing to do
+            LOGGER.debug("getOrDownloadLocalImageFile(repo='{}') returned cached file '{}'",
+                    repo, iconFile);
             return iconFile;
         }
         if (iconFile == null || iconFile.exists()) {
             // (no icon defined) || (error download) -> nothing to do
+            LOGGER.debug("getOrDownloadLocalImageFile(repo='{}') returned null: No icon or error download ",
+                    repo);
             return null;
         }
 
         String repoIconUrl = repo.getRepoIconUrl();
         if (!StringUtil.isEmpty(repoIconUrl)) {
             if (download(iconFile, repoIconUrl)) {
+                LOGGER.debug("getOrDownloadLocalImageFile(repo='{}') returned cached file '{}'",
+                        repo, iconFile);
                 return iconFile;
             }
         }
+        LOGGER.debug("getOrDownloadLocalImageFile(repo='{}') returned null: No icon or error download ",
+                repo);
         return null;
     }
 

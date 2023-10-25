@@ -22,8 +22,8 @@ package de.k3b.fdroid.domain.service;
 import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 
 public class ConsoleProgressUpdateObserver implements ProgressObserver {
-    private String progressPrefix = "";
-    private String progressSuffix = "";
+//  private String progressPrefix = "";
+//  private String progressSuffix = "";
 
     @Override
     public void onProgress(int count, String progressChar, String packageName) {
@@ -32,8 +32,8 @@ public class ConsoleProgressUpdateObserver implements ProgressObserver {
 
     @Override
     public ProgressObserver setProgressContext(String progressPrefix, String progressSuffix) {
-        if (progressPrefix != null) this.progressPrefix = progressPrefix;
-        if (progressSuffix != null) this.progressSuffix = progressSuffix;
+//      if (progressPrefix != null) this.progressPrefix = progressPrefix;
+//      if (progressSuffix != null) this.progressSuffix = progressSuffix;
         return this;
     }
 

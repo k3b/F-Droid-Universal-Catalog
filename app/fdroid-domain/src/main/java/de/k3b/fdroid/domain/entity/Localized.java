@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.entity.common.LocalizedCommon;
@@ -58,6 +60,7 @@ public class Localized extends LocalizedCommon implements AppDetail {
      */
     @androidx.room.Ignore
     @javax.persistence.Transient
+    @JsonIgnore
     private String[] phoneScreenshotArray;
 
     private String phoneScreenshotDir;

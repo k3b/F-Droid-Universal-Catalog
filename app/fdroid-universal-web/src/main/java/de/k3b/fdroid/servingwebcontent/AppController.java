@@ -78,7 +78,7 @@ public class AppController {
         this.categoryList = categoryList;
     }
 
-    @GetMapping("/App/app")
+    @GetMapping(WebConfig.HTML_APP_ROOT)
     public String appList(
             @RequestParam(name = "q", required = false, defaultValue = "") String query,
             @RequestParam(name = "v", required = false, defaultValue = "0") String versionSdkText,
@@ -133,7 +133,7 @@ public class AppController {
         return URLEncoder.encode(q, StandardCharsets.UTF_8);
     }
 
-    @GetMapping(value = "/App/app/icons/{packageName}.png", produces = MediaType.IMAGE_PNG_VALUE)
+    @GetMapping(value = WebConfig.HTML_APP_ROOT + "/icons/{packageName}.png", produces = MediaType.IMAGE_PNG_VALUE)
     public @ResponseBody
     byte[] appIcon(@PathVariable String packageName) {
         File file = iconService.getOrDownloadLocalImageFile(packageName);

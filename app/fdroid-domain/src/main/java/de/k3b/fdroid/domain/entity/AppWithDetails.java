@@ -18,6 +18,9 @@
  */
 package de.k3b.fdroid.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +31,7 @@ import de.k3b.fdroid.domain.interfaces.AppDetail;
 /**
  * DDD {@link AggregateRoot} for {@link App}
  */
+@JsonInclude(Include.NON_NULL)
 @SuppressWarnings({"unchecked", "unsafe"})
 public class AppWithDetails extends EntityCommon implements AppDetail, AggregateRoot {
     private final App app;

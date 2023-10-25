@@ -1,5 +1,19 @@
 todo
 
+* Rename existing url-parameter "-v(ersion)" to "-s(dk-version)"
+
+> webservice api to allow angular or reduce web client
+> v category (to get mapping/combobox categoryId to categoryName)
+> appDetail
+> v appDetail
+* filter returned locales
+
+* locale (to get mapping/checkboxex localeId to localeCode)
+
+> demo json data for angular or react web client
+
+------
+
 * web-detail rendering either with or without <pre>
 
 * download before delete&rename must check if signature is ok
@@ -32,23 +46,141 @@ todo
 
 -----
 
-Android-Architecture
 
-* Android-View (Activity/Fragment)
-  * connects to ViewModel and observes ViewModel-changes
-* Android-ViewModel containing Android-ViewModel with Android-LiveData (MutableLiveData)
-  * Connection between View and Service (in android a service is called a "Model" )
-  * does not know the view
-  * is observable (i.e. by the view)
-    * Android-LiveData (MutableLiveData) notifies observers
-  * provides lifecycle management and data availablity
-  * requires dependency: androidx-lifecycle:lifecycle-xxx (xxx=viewmodel/livedata/runtime...)
-* Model
-  * ??? usecase ??
-  * Service (aka  )
-  * Repository
-  * Entity
-  * Android-Room-Dao (can provide Android-LiveData)
+??? use gdroid-bot data ??
+https://gitlab.com/gdroid/gdroiddata/-/blob/master/metadata/tags.yaml
+
+			file_browser:
+			  - com.amaze.filemanager
+			  - com.dnielfe.manager
+
+			gallery:
+			  - com.simplemobiletools.gallery
+			  - com.simplemobiletools.gallery.pro
+			  - de.k3b.android.androFotoFinder
+			  - org.horaapps.leafpic
+			  - us.koller.cameraroll
+		
+
+		https://gitlab.com/gdroid/gdroiddata/raw/master/metadata/gdroid.jar
+
+		C:\Users\eve\Downloads\gdroid.jar/metadata/gdroid.json
+
+
+		{
+		 "com.simplemobiletools.gallery.pro": {
+		  "localized": {
+		   "en-US": {
+			"phoneScreenshots": [
+			 "https://raw.githubusercontent.com/SimpleMobileTools/Simple-Gallery/master/fastlane/metadata/android/en-US/images/phoneScreenshots/app_5.jpg", 
+			 "https://raw.githubusercontent.com/SimpleMobileTools/Simple-Gallery/master/fastlane/metadata/android/en-US/images/phoneScreenshots/app.jpg", 
+			 "https://raw.githubusercontent.com/SimpleMobileTools/Simple-Gallery/master/fastlane/metadata/android/en-US/images/phoneScreenshots/app_2.jpg", 
+			 "https://raw.githubusercontent.com/SimpleMobileTools/Simple-Gallery/master/fastlane/metadata/android/en-US/images/phoneScreenshots/app_3.jpg", 
+			 "https://raw.githubusercontent.com/SimpleMobileTools/Simple-Gallery/master/fastlane/metadata/android/en-US/images/phoneScreenshots/app_6.jpg", 
+			 "https://raw.githubusercontent.com/SimpleMobileTools/Simple-Gallery/master/fastlane/metadata/android/en-US/images/phoneScreenshots/app_4.jpg", 
+			 "https://raw.githubusercontent.com/SimpleMobileTools/Simple-Gallery/master/fastlane/metadata/android/en-US/images/tenInchScreenshots/tablet-10.jpg", 
+			 "https://raw.githubusercontent.com/SimpleMobileTools/Simple-Gallery/master/fastlane/metadata/android/en-US/images/sevenInchScreenshots/tablet-7.jpg"
+			]
+		   }
+		  }, 
+		  "metrics": {
+		   "added_on_day": 17851, 
+		   "age_in_days": 1309, 
+		   "age_last_v_12": 0.9917, 
+		   "age_last_v_24": 0.9958, 
+		   "age_last_v_3": 0.9667, 
+		   "age_last_v_6": 0.9833, 
+		   "avg_update_frequency": 2.5961, 
+		   "avg_update_frequency_normalised": 1, 
+		   "m_github_stars": 2325, 
+		   "m_github_stars_normalised": 1, 
+		   "m_github_stars_per_day": 1.7762, 
+		   "m_github_stars_per_day_normalised": 1, 
+		   "updated_on_day": 19157, 
+		   "uptodatesince": 3
+		  }, 
+		  "neighbours": {
+		   "a": [
+			"us.koller.cameraroll", 
+			"com.simplemobiletools.calendar.pro", 
+			"com.simplemobiletools.keyboard", 
+			"com.simplemobiletools.voicerecorder", 
+			"site.leos.apps.lespas", 
+			"com.gtp.showapicturetoyourfriend", 
+			"com.simplemobiletools.smsmessenger", 
+			"de.baumann.browser", 
+			"org.piwigo.android"
+		   ]
+		  }, 
+		  "tags": [
+		   "gallery"
+		  ]
+		 }, 
+		 "An.stop": {
+		  "metrics": {
+		   "added_on_day": 15159, 
+		   "age_in_days": 4001, 
+		   "age_last_v_12": 0.0000, 
+		   "age_last_v_24": 0.0000, 
+		   "age_last_v_3": 0.0000, 
+		   "age_last_v_6": 0.0000, 
+		   "m_github_stars": 4, 
+		   "m_github_stars_normalised": 0, 
+		   "m_github_stars_per_day": 0.0010, 
+		   "m_github_stars_per_day_normalised": 0.0063, 
+		   "updated_on_day": 15562, 
+		   "uptodatesince": 3598
+		  }, 
+		  "neighbours": {
+		   "a": [
+			"com.willianveiga.countdowntimer", 
+			"edu.killerud.kitchentimer", 
+			"org.dpadgett.timer", 
+			"org.mattvchandler.progressbars", 
+			"com.simplemobiletools.clock", 
+			"com.best.deskclock", 
+			"omegacentauri.mobi.simplestopwatch", 
+			"com.kodarkooperativet.notificationstopwatch", 
+			"com.philliphsu.clock2"
+		   ]
+		  }
+		 }, ....
+		 
+		 "de.k3b.android.calef": {
+		  "metrics": {
+		   "added_on_day": 19013, 
+		   "age_in_days": 147, 
+		   "age_last_v_12": 0.7417, 
+		   "age_last_v_24": 0.8708, 
+		   "age_last_v_3": 0.0000, 
+		   "age_last_v_6": 0.4833, 
+		   "avg_update_frequency": 19.1373, 
+		   "avg_update_frequency_normalised": 1, 
+		   "m_github_stars": 5, 
+		   "m_github_stars_normalised": 0, 
+		   "m_github_stars_per_day": 0.0340, 
+		   "m_github_stars_per_day_normalised": 0.2154, 
+		   "updated_on_day": 19067, 
+		   "uptodatesince": 93
+		  }, 
+		  "neighbours": {
+		   "a": [
+			"ws.xsoh.etar", 
+			"de.k3b.android.calendar.ics.adapter", 
+			"org.sufficientlysecure.standalonecalendar", 
+			"com.simplemobiletools.calendar.pro", 
+			"org.billthefarmer.diary", 
+			"com.forrestguice.suntimescalendars", 
+			"de.k3b.android.toGoZip", 
+			"com.sweetiepiggy.everylocale", 
+			"org.sufficientlysecure.localcalendar"
+		   ]
+		  }
+		 }, 
+		 .... 
+		}
+
+-----
 
 html:
 

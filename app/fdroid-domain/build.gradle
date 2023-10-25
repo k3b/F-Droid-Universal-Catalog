@@ -14,13 +14,18 @@ java {
 }
 
 dependencies {
-    api (project(path: ':app:room-annotations'))
+    api(project(path: ':app:room-annotations'))
     implementation 'javax.persistence:javax.persistence-api:2.2'
-    implementation 'org.jetbrains:annotations:13.0' // for android independant Nullable license Apache 2.0
+    implementation 'org.jetbrains:annotations:13.0'
+    // for android independant Nullable license Apache 2.0
     implementation 'com.google.code.gson:gson:2.9.0'
-    implementation 'com.samskivert:jmustache:1.15' // https://github.com/samskivert/jmustache to generate html from template
+    implementation 'com.samskivert:jmustache:1.15'
+    // https://github.com/samskivert/jmustache to generate html from template
 
     implementation 'commons-io:commons-io:2.8.0'
+
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.0'
 
     def SLF4J_VERSION = rootProject.ext.SLF4J_VERSION
     implementation "org.slf4j:slf4j-api:$SLF4J_VERSION"

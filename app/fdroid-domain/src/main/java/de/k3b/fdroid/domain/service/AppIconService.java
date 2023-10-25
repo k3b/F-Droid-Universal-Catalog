@@ -53,10 +53,14 @@ public class AppIconService extends ImageService {
 
         if (!error(iconFile)) {
             // (icon download ok) -> nothing to do
+            LOGGER.debug("getOrDownloadLocalImageFile(app='{}') returned cached file '{}'",
+                    app, iconFile);
             return iconFile;
         }
         if (iconFile == null || iconFile.exists()) {
             // (no icon defined) || (error download) -> nothing to do
+            LOGGER.debug("getOrDownloadLocalImageFile(app='{}') returned null: No icon or error download ",
+                    app);
             return null;
         }
 
@@ -68,11 +72,15 @@ public class AppIconService extends ImageService {
                 String appIconUrl = repo.getAppIconUrl(app.getIcon());
                 if (!StringUtil.isEmpty(appIconUrl)) {
                     if (download(iconFile, appIconUrl)) {
+                        LOGGER.debug("getOrDownloadLocalImageFile(app='{}') returned downloaded file '{}'",
+                                app, iconFile);
                         return iconFile;
                     }
                 }
             }
         }
+        LOGGER.debug("getOrDownloadLocalImageFile(app='{}') returned null: No icon or error download ",
+                app);
         return null;
     }
 

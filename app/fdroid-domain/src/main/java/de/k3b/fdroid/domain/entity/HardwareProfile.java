@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 import de.k3b.fdroid.domain.util.StringUtil;
@@ -54,6 +56,7 @@ public class HardwareProfile extends EntityCommon implements DatabaseEntityWithI
      */
     @androidx.room.Ignore
     @javax.persistence.Transient
+    @JsonIgnore
     private String[] nativecodeArray;
 
     private boolean deleteIfNotCompatible = false;

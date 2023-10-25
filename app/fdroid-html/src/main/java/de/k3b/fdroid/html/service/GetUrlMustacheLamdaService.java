@@ -57,8 +57,8 @@ public class GetUrlMustacheLamdaService implements Mustache.Lambda {
             repoId = ((App) context).getResourceRepoId();
         } else if (context instanceof Repo) {
             repoId = ((Repo) context).getId();
-        } else if (context instanceof AppWithDetailsPagerService.ItemAtOffset) {
-            repoId = ((AppWithDetailsPagerService.ItemAtOffset) context).getApp().getResourceRepoId();
+        } else if (context instanceof AppWithDetailsPagerService.AppItemAtOffset) {
+            repoId = ((AppWithDetailsPagerService.AppItemAtOffset) context).getApp().getResourceRepoId();
         }
         Repo repo = repoCacheService.getItemById(repoId);
         if (repo != null) return repo.getUrl(parameter);

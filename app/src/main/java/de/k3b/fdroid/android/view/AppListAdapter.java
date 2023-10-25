@@ -141,7 +141,7 @@ public class AppListAdapter extends RecyclerView.Adapter<AppListAdapter.ViewHold
         private final ImageView icon;
         private final TextView title;
         private final TextView descrtiption;
-        private AppWithDetailsPagerService.ItemAtOffset item;
+        private AppWithDetailsPagerService.AppItemAtOffset item;
 
         public ViewHolder(View v, int defaultBackgroundColor, int defaultForegroundColor) {
             super(v);

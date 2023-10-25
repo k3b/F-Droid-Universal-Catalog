@@ -119,8 +119,9 @@ public class EntityCommon implements Enitity {
     }
 
     protected void toStringBuilder(StringBuilder sb, String name, Object value) {
-        if (value != null)
+        if (value != null) {
             sb.append(name).append('=').append(value).append(',');
+        }
     }
 
     protected void toStringBuilder(StringBuilder sb, String name, EntityCommon value) {
@@ -135,13 +136,15 @@ public class EntityCommon implements Enitity {
     }
 
     protected void toStringBuilder(StringBuilder sb, String name, boolean value) {
-        if (value)
+        if (value) {
             sb.append(name).append('=').append(value).append(',');
+        }
     }
 
     public void toDateStringBuilder(StringBuilder sb, String name, long value) {
-        if (value != 0)
+        if (value != 0) {
             sb.append(name).append('=').append(asDateString(value)).append(',');
+        }
     }
 
     public static long ifNotNull(long val, long defaultValue) {

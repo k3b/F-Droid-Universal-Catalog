@@ -66,5 +66,6 @@ public class TestEntityRepositoryTest {
     @Test
     public void findByAVeryComplicatedQuery() {
         List<Integer> result = jpa.findByAVeryComplicatedQuery("ame");
+        Assert.notEmpty(result, "found");
     }
 }

@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.domain.entity;
 
+import java.io.Serializable;
+
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.domain.repository.AppRepository;
 
@@ -25,12 +27,12 @@ import de.k3b.fdroid.domain.repository.AppRepository;
  * Pseudo entity used by {@link AppRepository} as Filter/Sorter
  * to find matching apps
  */
-public class AppSearchParameter extends EntityCommon {
+public class AppSearchParameter extends EntityCommon implements Serializable {
     // text contained in any of the text fields (summaryXXX )
     public String searchText = null;
 
     // only if there is at least on version that matches this value
-    public int versionSdk;
+    public int versionSdk = 0;
 
     /**
      * For {@link #searchText} search: minimal required search-score required (or null)

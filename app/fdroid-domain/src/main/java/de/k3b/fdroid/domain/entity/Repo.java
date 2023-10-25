@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 import de.k3b.fdroid.domain.util.StringUtil;
@@ -34,7 +36,7 @@ import de.k3b.fdroid.domain.util.StringUtil;
  * https://f-droid.org/repo/index-v1.jar
  * https://f-droid.org/archive/index-v1.jar
  * <p>
- * https://fdroid.cgeo.org/
+ * https://fdroid.cgeo.org/repo/index-v1.jar
  * https://fdroid.cgeo.org/nightly/index-v1.jar with wrong repo.address
  */
 @androidx.room.Entity(indices = {@androidx.room.Index("id")})
@@ -57,6 +59,7 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId {
      */
     @androidx.room.Ignore
     @javax.persistence.Transient
+    @JsonIgnore
     private String[] mirrorsArray;
 
     private String jarSigningCertificate;

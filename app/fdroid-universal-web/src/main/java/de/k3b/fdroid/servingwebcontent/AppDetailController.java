@@ -18,10 +18,15 @@
  */
 package de.k3b.fdroid.servingwebcontent;
 
+import static de.k3b.fdroid.servingwebcontent.WebConfig.HTML_APP_ROOT;
+
 import com.samskivert.mustache.Mustache;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,9 +39,11 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Collections;
 
+import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.adapter.AppRepositoryAdapterImpl;
 import de.k3b.fdroid.domain.adapter.LocalizedRepositoryAdapterImpl;
 import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.entity.AppWithDetails;
 import de.k3b.fdroid.domain.entity.Localized;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.repository.AppDetailRepository;
@@ -53,6 +60,8 @@ import de.k3b.fdroid.html.service.GetUrlMustacheLamdaService;
 
 @Controller
 public class AppDetailController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_HTML);
+
     private final VersionRepositoryWithMinSdkFilter versionRepositoryWithMinSdkFilter;
     private final AppWithDetailsPagerService appWithDetailsPagerService;
     private final Mustache.Lambda getUrl;
@@ -79,12 +88,35 @@ public class AppDetailController {
         localizedImageService = new LocalizedImageService(imageDir, repoCacheService, appRepository);
     }
 
-    @GetMapping("/App/app/{idOrPackageName}")
-    public String appDetail(
+    @GetMapping(HTML_APP_ROOT + "/{idOrPackageName}")
+    public String appDetailHtml(
             @PathVariable String idOrPackageName,
             @RequestParam(name = "v", required = false, defaultValue = "0") String versionSdkText,
             @RequestParam(name = "back", required = false, defaultValue = "") String back,
             Model model) {
+        AppWithDetailsPagerService.AppItemAtOffset[] item = appDetail(idOrPackageName, versionSdkText);
+
+        model.addAttribute("item", item);
+        model.addAttribute("getUrl", getUrl);
+        model.addAttribute("back", back);
+        return "App/app_detail";
+    }
+
+    @ResponseBody
+    @GetMapping(value = WebConfig.API_ROOT + "/app/{idOrPackageName}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public AppWithDetails appDetailRest(
+            @PathVariable String idOrPackageName,
+            @RequestParam(name = "v", required = false, defaultValue = "0") String versionSdkText) {
+        AppWithDetails appWithDetails = appDetail(idOrPackageName, versionSdkText)[0].getAppWithDetails();
+        if (appWithDetails.getVersionList().isEmpty()) {
+            LOGGER.info("appDetailRest(idOrPackageName='{}', v(ersion)='{}') : no Version found for {}",
+                    idOrPackageName, versionSdkText, appWithDetails);
+            return null;
+        }
+        return appWithDetails;
+    }
+
+    private AppWithDetailsPagerService.AppItemAtOffset[] appDetail(String idOrPackageName, String versionSdkText) {
         int versionSdk = StringUtil.parseInt(versionSdkText, 0);
         int id = 0;
         try {
@@ -96,15 +128,11 @@ public class AppDetailController {
         versionRepositoryWithMinSdkFilter.setMinSdk(versionSdk);
         appWithDetailsPagerService.init(Collections.singletonList(id), 1);
 
-        AppWithDetailsPagerService.ItemAtOffset[] item = appWithDetailsPagerService.itemAtOffset(0, 1);
-
-        model.addAttribute("item", item);
-        model.addAttribute("getUrl", getUrl);
-        model.addAttribute("back", back);
-        return "App/app_detail";
+        AppWithDetailsPagerService.AppItemAtOffset[] item = appWithDetailsPagerService.itemAtOffset(0, 1);
+        return item;
     }
 
-    @GetMapping(value = "/App/app/{packageName}/{locale}/phoneScreenshots/{name}", produces = "image/*")
+    @GetMapping(value = HTML_APP_ROOT + "/{packageName}/{locale}/phoneScreenshots/{name}", produces = "image/*")
     public @ResponseBody
     byte[] localizedPhoneScreenshots(@PathVariable String packageName, @PathVariable String locale, @PathVariable String name) {
         String path = packageName + "/" + locale + "/phoneScreenshots/" + name;

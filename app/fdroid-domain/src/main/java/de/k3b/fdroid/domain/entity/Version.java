@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import de.k3b.fdroid.domain.entity.common.VersionCommon;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
 import de.k3b.fdroid.domain.util.AndroidVersionName;
@@ -55,6 +57,7 @@ public class Version extends VersionCommon implements AppDetail {
      */
     @androidx.room.Ignore
     @javax.persistence.Transient
+    @JsonIgnore
     private String[] nativecodeArray;
 
     // needed by android-room and jpa

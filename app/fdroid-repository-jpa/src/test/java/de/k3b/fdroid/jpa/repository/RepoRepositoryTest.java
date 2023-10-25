@@ -32,7 +32,6 @@ import java.util.List;
 
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.Repo;
-import de.k3b.fdroid.domain.entity.Version;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 @DataJpaTest
 public class RepoRepositoryTest {
@@ -77,7 +76,7 @@ public class RepoRepositoryTest {
     public void findByAppId() {
         App app = jpaTestHelper.createApp();
         Repo r = jpaTestHelper.createRepo();
-        Version version = jpaTestHelper.createVersion(app, r);
+        jpaTestHelper.createVersion(app, r);
 
         Repo found = repo.findFirstByAppId(app.getId());
         assertThat(found, is(r));

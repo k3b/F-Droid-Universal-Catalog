@@ -32,7 +32,6 @@ import de.k3b.fdroid.domain.entity.AppCategory;
 import de.k3b.fdroid.domain.entity.AppSearchParameter;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.repository.AppRepository;
-import de.k3b.fdroid.domain.repository.VersionRepository;
 
 @DataJpaTest
 public class AppRepositoryTest {
@@ -45,9 +44,6 @@ public class AppRepositoryTest {
 
     @Autowired
     private AppRepository appRepository;
-
-    @Autowired
-    private VersionRepository versionRepository;
 
     private int appId;
     private int categoryId;

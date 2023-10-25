@@ -1,0 +1,98 @@
+[
+  {
+    "id": 100,
+    "name": "Entertainment"
+  },
+  {
+    "id": 101,
+    "name": "Games"
+  },
+  {
+    "id": 102,
+    "name": "Time"
+  },
+  {
+    "id": 103,
+    "name": "Internet"
+  },
+  {
+    "id": 104,
+    "name": "Connectivity"
+  },
+  {
+    "id": 105,
+    "name": "Sports & Health"
+  },
+  {
+    "id": 106,
+    "name": "Science & Education"
+  },
+  {
+    "id": 107,
+    "name": "System"
+  },
+  {
+    "id": 108,
+    "name": "Theming"
+  },
+  {
+    "id": 109,
+    "name": "Graphics"
+  },
+  {
+    "id": 110,
+    "name": "Multimedia"
+  },
+  {
+    "id": 111,
+    "name": "Development"
+  },
+  {
+    "id": 112,
+    "name": "Navigation"
+  },
+  {
+    "id": 113,
+    "name": "Reading"
+  },
+  {
+    "id": 114,
+    "name": "Money"
+  },
+  {
+    "id": 115,
+    "name": "Writing"
+  },
+  {
+    "id": 116,
+    "name": "Security"
+  },
+  {
+    "id": 117,
+    "name": "Phone & SMS"
+  },
+  {
+    "id": 118,
+    "name": "Guardian Project"
+  },
+  {
+    "id": 119,
+    "name": "Office"
+  },
+  {
+    "id": 120,
+    "name": "Religion"
+  },
+  {
+    "id": 121,
+    "name": "Food"
+  },
+  {
+    "id": 122,
+    "name": "Messaging"
+  },
+  {
+    "id": 123,
+    "name": "Automation"
+  }
+]

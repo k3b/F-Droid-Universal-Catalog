@@ -19,6 +19,7 @@
 package de.k3b.fdroid.domain.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,9 +130,7 @@ public class AppWithDetailsPagerService {
             int from = getFrom(currentIndex - 1);
             int to = getTo(currentIndex + 1);
             ArrayList<Integer> appIdList = new ArrayList<>(to - from);
-            for (int i = from; i <= to; i++) {
-                appIdList.add(appIds[i]);
-            }
+            appIdList.addAll(Arrays.asList(appIds).subList(from, to + 1));
             update(appIdList, from);
             result = appWithDetailsList[currentIndex];
         }
@@ -196,11 +195,11 @@ public class AppWithDetailsPagerService {
         return appIds.length;
     }
 
-    public ItemAtOffset itemAtOffset(int index) {
-        return new ItemAtOffset(index);
+    public AppItemAtOffset itemAtOffset(int index) {
+        return new AppItemAtOffset(index);
     }
 
-    public ItemAtOffset[] itemAtOffset(int from, int to) {
+    public AppItemAtOffset[] itemAtOffset(int from, int to) {
         int size = size();
 
         if (from < 0) from = 0;
@@ -208,7 +207,7 @@ public class AppWithDetailsPagerService {
         int resultCount = to - from;
         if (resultCount < 0) resultCount = 0;
 
-        ItemAtOffset[] result = new ItemAtOffset[resultCount];
+        AppItemAtOffset[] result = new AppItemAtOffset[resultCount];
         for (int i = 0; i < resultCount; i++) {
             result[i] = itemAtOffset(i + from);
         }
@@ -229,10 +228,10 @@ public class AppWithDetailsPagerService {
      * * localizedList
      * * versionList
      */
-    public class ItemAtOffset {
+    public class AppItemAtOffset {
         private final int currentIndex;
 
-        private ItemAtOffset(int currentIndex) {
+        private AppItemAtOffset(int currentIndex) {
             this.currentIndex = currentIndex;
         }
 
@@ -272,7 +271,7 @@ public class AppWithDetailsPagerService {
             return getAppWithDetails().getVersionList();
         }
 
-        private AppWithDetails getAppWithDetails() {
+        public AppWithDetails getAppWithDetails() {
             return AppWithDetailsPagerService.this.getAppWithDetailsByOffset(currentIndex);
         }
     }

@@ -58,15 +58,10 @@ public class FormatServiceTest extends TestCase {
 
     public void testFormatCustom() {
 
-        class CustomType {
-            final String a = "hello";
-            final CustomTypeMitContext s = new CustomTypeMitContext();
-
-            class CustomTypeMitContext implements Mustache.CustomContext {
-                @Override
-                public Object get(String name) throws Exception {
-                    return name;
-                }
+        class CustomType implements Mustache.CustomContext {
+            @Override
+            public Object get(String name) throws Exception {
+                return name;
             }
         }
 

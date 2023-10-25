@@ -22,7 +22,6 @@ import com.samskivert.mustache.Mustache;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -38,9 +37,6 @@ import java.sql.SQLException;
 import java.util.Locale;
 import java.util.Properties;
 
-import de.k3b.fdroid.domain.repository.AppRepository;
-import de.k3b.fdroid.domain.repository.LocalizedRepository;
-import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.html.service.ResourceBundleMustacheContext;
 import de.k3b.fdroid.html.util.MustacheEx;
 
@@ -63,13 +59,6 @@ public class WebServerApplication {
 
 	@Value("${spring.datasource.url}")
 	private String jdbc;
-
-	@Autowired
-	private RepoRepository repoRepository;
-	@Autowired
-	private AppRepository appRepository;
-	@Autowired
-	private LocalizedRepository localizedRepository;
 
 	// example commandline parameters
 	// F-Droid_Archive-index-v1.jar reload archive
@@ -102,9 +91,11 @@ public class WebServerApplication {
 			System.out.println(c.toString());
 			c.close();
 			System.out.println("Connecting to running server " + serverConnect);
+			log.debug("Connecting to running server " + serverConnect);
 			System.setProperty("spring.datasource.url", serverConnect);
 		} catch (SQLException throwables) {
 			System.out.println("No running server " + serverConnect + " found. Using local file instead");
+			log.warn("No running server " + serverConnect + " found. Using local file instead");
 		}
 	}
 

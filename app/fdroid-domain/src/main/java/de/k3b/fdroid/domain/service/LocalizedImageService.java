@@ -51,14 +51,21 @@ public class LocalizedImageService extends ImageService {
 
         if (!error(iconFile)) {
             // (icon download ok) -> nothing to do
+            LOGGER.debug("getOrDownloadLocalImageFile(packageName='{}', path='{}') returned cached file '{}'",
+                    packageName, path, iconFile);
             return iconFile;
         }
         if (iconFile == null || iconFile.exists()) {
             // (no icon defined) || (error download) -> nothing to do
+            LOGGER.debug("getOrDownloadLocalImageFile(packageName='{}', path='{}') returned null: No icon or error download ",
+                    packageName, path);
             return null;
         }
 
-        return getOrDownloadLocalImageFile(appRepository.findByPackageName(packageName), path);
+        iconFile = getOrDownloadLocalImageFile(appRepository.findByPackageName(packageName), path);
+        LOGGER.debug("getOrDownloadLocalImageFile(packageName='{}', path='{}') returned downloaded file '{}'",
+                packageName, path, iconFile);
+        return iconFile;
     }
 
     /**
@@ -69,10 +76,14 @@ public class LocalizedImageService extends ImageService {
 
         if (!error(iconFile)) {
             // (icon download ok) -> nothing to do
+            LOGGER.debug("getOrDownloadLocalImageFile(app='{}', path='{}') returned cached file '{}'",
+                    app, path, iconFile);
             return iconFile;
         }
         if (iconFile == null || iconFile.exists() || app == null) {
             // (no icon defined) || (error download) -> nothing to do
+            LOGGER.debug("getOrDownloadLocalImageFile(app='{}', path='{}') returned null: No icon or error download ",
+                    app, path);
             return null;
         }
 
@@ -85,11 +96,15 @@ public class LocalizedImageService extends ImageService {
                 if (!StringUtil.isEmpty(appIconUrl)) {
                     iconFile.getParentFile().mkdirs();
                     if (download(iconFile, appIconUrl)) {
+                        LOGGER.debug("getOrDownloadLocalImageFile(app='{}', path='{}') returned downloaded file '{}'",
+                                app, path, iconFile);
                         return iconFile;
                     }
                 }
             }
         }
+        LOGGER.debug("getOrDownloadLocalImageFile(app='{}', path='{}') returned null: No icon or error download ",
+                app, path);
         return null;
     }
 

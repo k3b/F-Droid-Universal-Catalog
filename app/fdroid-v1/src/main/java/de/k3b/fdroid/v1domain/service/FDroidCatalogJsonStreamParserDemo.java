@@ -65,7 +65,7 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
     protected void onApp(App app) {
         if (app != null) {
             numberOfApps++;
-            Map<String, Localized> oldLocales = app.getLocalized();
+            // Map<String, Localized> oldLocales = app.getLocalized();
             fixLocaleService.fix(app);
             StringBuilder nameWithLocales = new StringBuilder();
             String lastUpdated = EntityCommon.asDateString(app.getLastUpdated());

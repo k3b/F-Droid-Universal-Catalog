@@ -28,6 +28,8 @@ import static de.k3b.fdroid.domain.util.StringUtil.getLast;
 
 import androidx.room.ForeignKey;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.entity.common.AppCommon;
@@ -58,28 +60,31 @@ public class App extends AppCommon implements AppDetail {
     @androidx.room.ColumnInfo(index = true)
     private Integer resourceRepoId;
 
-    // public List<Localized> localisations;
-    // public List<Version> versions;
-
     @Column(length = MAX_LEN_AGGREGATED)
+    @JsonIgnore
     /** all different locale name values concatenated for faster search */
     private String searchName;
 
     @Column(length = MAX_LEN_AGGREGATED)
+    @JsonIgnore
     /** all different locale summary values concatenated for faster search */
     private String searchSummary;
 
     @Column(length = MAX_LEN_AGGREGATED_DESCRIPTION)
+    @JsonIgnore
     /** all different locale name description concatenated for faster search */
     private String searchDescription;
 
     @Column(length = MAX_LEN_AGGREGATED)
+    @JsonIgnore
     /** all different locale whatsNew values concatenated for faster search */
     private String searchWhatsNew;
 
     private String searchVersion;
     private String searchSdk;
     private String searchSigner;
+
+    @JsonIgnore
     private String searchCategory;
 
     // needed by android-room and jpa

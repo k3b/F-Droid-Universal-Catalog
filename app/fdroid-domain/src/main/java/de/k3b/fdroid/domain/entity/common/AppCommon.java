@@ -116,6 +116,10 @@ public class AppCommon extends EntityCommon {
         this.added = added;
     }
 
+    public String getAddedDate() {
+        return EntityCommon.asDateString(added);
+    }
+
     public String getIcon() {
         return icon;
     }
