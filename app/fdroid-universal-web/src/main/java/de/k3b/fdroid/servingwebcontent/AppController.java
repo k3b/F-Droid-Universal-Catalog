@@ -81,18 +81,18 @@ public class AppController {
     @GetMapping(WebConfig.HTML_APP_ROOT)
     public String appList(
             @RequestParam(name = "q", required = false, defaultValue = "") String query,
-            @RequestParam(name = "v", required = false, defaultValue = "0") String versionSdkText,
+            @RequestParam(name = "minSdk", required = false, defaultValue = "0") String minVersionSdkText,
             @RequestParam(name = "c", required = false, defaultValue = "0") String categoryIdText,
             @RequestParam(name = "s", required = false, defaultValue = "") String sort,
             @RequestParam(name = "page", required = false, defaultValue = "0") String pageText,
             Model model) {
-        int versionSdk = StringUtil.parseInt(versionSdkText, 0);
+        int minVersionSdk = StringUtil.parseInt(minVersionSdkText, 0);
         int page = StringUtil.parseInt(pageText, 0);
         int categoryId = StringUtil.parseInt(categoryIdText, 0);
 
         AppSearchParameter appSearchParameter = new AppSearchParameter()
                 .searchText(query)
-                .versionSdk(versionSdk)
+                .versionSdk(minVersionSdk)
                 .categoryId(categoryId)
                 .orderBy(sort)
                 ;
@@ -107,14 +107,14 @@ public class AppController {
 
         StringBuilder params = new StringBuilder();
         if (!StringUtil.isEmpty(query)) params.append("&q=").append(query);
-        if (versionSdk > 0) params.append("&v=").append(versionSdk);
+        if (minVersionSdk > 0) params.append("&minSdk=").append(minVersionSdk);
         if (categoryId > 0) params.append("&c=").append(categoryId);
         if (!StringUtil.isEmpty(sort)) params.append("&s=").append(sort);
 
         model.addAttribute("item", appWithDetailsPagerService.itemAtOffset(from, from + PAGESIZE));
         model.addAttribute("query", query);
-        model.addAttribute("minSdk", versionSdk);
-        model.addAttribute("minSdkName", AndroidVersionName.getName(versionSdk, null));
+        model.addAttribute("minSdk", minVersionSdk);
+        model.addAttribute("minSdkName", AndroidVersionName.getName(minVersionSdk, null));
         model.addAttribute("sort", sort);
         model.addAttribute("androidVersion", AndroidVersionName.getMap().entrySet());
         model.addAttribute("params", params.toString());

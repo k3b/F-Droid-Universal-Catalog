@@ -12,10 +12,10 @@
         </tr>
         <tr>
             <td>
-                <label for="v">{{t.label_version_title}}:</label>
+                <label for="minSdk">{{t.label_version_title}}:</label>
             </td>
             <td>
-                <select name="v">
+                <select name="minSdk">
                     {{#androidVersion}}
                         <option value="{{key}}" >{{value}}</option>
                     {{/androidVersion}}
@@ -52,7 +52,7 @@
 <hr/><br/>
 
 {{#item}}
-    <a href="app/{{app.id}}?v={{minSdk}}&back={{back}}">
+    <a href="app/{{app.id}}?minSdk={{minSdk}}&back={{back}}">
     <h3>
         {{#app.icon}}<img src="app/icons/{{app.packageName}}.png" width="48" height="48">{{/app.icon}}
         {{name}}

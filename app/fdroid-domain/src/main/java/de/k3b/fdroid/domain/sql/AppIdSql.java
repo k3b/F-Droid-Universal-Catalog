@@ -37,7 +37,7 @@ public class AppIdSql {
      * Creates sql for {@link de.k3b.fdroid.domain.repository.AppRepository#findDynamic(AppSearchParameter)}
      * sql prefixes:
      * * s=search (AppSearch or App)
-     * * v=AppVersion (if versionSdk > 0)
+     * * av=AppVersion (if versionSdk > 0)
      * * c=AppCategory (if categoryId > 0)
      *
      * @return sql plus updeated parameters

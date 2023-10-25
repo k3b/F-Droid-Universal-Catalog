@@ -91,10 +91,10 @@ public class AppDetailController {
     @GetMapping(HTML_APP_ROOT + "/{idOrPackageName}")
     public String appDetailHtml(
             @PathVariable String idOrPackageName,
-            @RequestParam(name = "v", required = false, defaultValue = "0") String versionSdkText,
+            @RequestParam(name = "minSdk", required = false, defaultValue = "0") String minVersionSdkText,
             @RequestParam(name = "back", required = false, defaultValue = "") String back,
             Model model) {
-        AppWithDetailsPagerService.AppItemAtOffset[] item = appDetail(idOrPackageName, versionSdkText);
+        AppWithDetailsPagerService.AppItemAtOffset[] item = appDetail(idOrPackageName, minVersionSdkText);
 
         model.addAttribute("item", item);
         model.addAttribute("getUrl", getUrl);
@@ -106,18 +106,18 @@ public class AppDetailController {
     @GetMapping(value = WebConfig.API_ROOT + "/app/{idOrPackageName}", produces = MediaType.APPLICATION_JSON_VALUE)
     public AppWithDetails appDetailRest(
             @PathVariable String idOrPackageName,
-            @RequestParam(name = "v", required = false, defaultValue = "0") String versionSdkText) {
-        AppWithDetails appWithDetails = appDetail(idOrPackageName, versionSdkText)[0].getAppWithDetails();
+            @RequestParam(name = "minSdk", required = false, defaultValue = "0") String minVersionSdkText) {
+        AppWithDetails appWithDetails = appDetail(idOrPackageName, minVersionSdkText)[0].getAppWithDetails();
         if (appWithDetails.getVersionList().isEmpty()) {
-            LOGGER.info("appDetailRest(idOrPackageName='{}', v(ersion)='{}') : no Version found for {}",
-                    idOrPackageName, versionSdkText, appWithDetails);
+            LOGGER.info("appDetailRest(idOrPackageName='{}', minSdk='{}') : no Version found for {}",
+                    idOrPackageName, minVersionSdkText, appWithDetails);
             return null;
         }
         return appWithDetails;
     }
 
-    private AppWithDetailsPagerService.AppItemAtOffset[] appDetail(String idOrPackageName, String versionSdkText) {
-        int versionSdk = StringUtil.parseInt(versionSdkText, 0);
+    private AppWithDetailsPagerService.AppItemAtOffset[] appDetail(String idOrPackageName, String minVersionSdkText) {
+        int minVersionSdk = StringUtil.parseInt(minVersionSdkText, 0);
         int id = 0;
         try {
             id = Integer.parseInt(idOrPackageName);
@@ -125,7 +125,7 @@ public class AppDetailController {
             App app = appRepository.findByPackageName(idOrPackageName);
             if (app != null) id = app.getId();
         }
-        versionRepositoryWithMinSdkFilter.setMinSdk(versionSdk);
+        versionRepositoryWithMinSdkFilter.setMinSdk(minVersionSdk);
         appWithDetailsPagerService.init(Collections.singletonList(id), 1);
 
         AppWithDetailsPagerService.AppItemAtOffset[] item = appWithDetailsPagerService.itemAtOffset(0, 1);
