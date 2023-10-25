@@ -54,7 +54,7 @@ public class AppListActivity extends BaseActivity {
 
         viewModel = new ViewModelProvider(this).get(AppListViewModel.class);
 
-        setTitle(getString(R.string.label_version_title) + " " + getString(R.string.status_loading));
+        setTitle(getString(R.string.label_app_title) + " " + getString(R.string.status_loading));
 
         /*
         mRecyclerView =  findViewById(R.id.recyclerView);
@@ -107,9 +107,15 @@ public class AppListActivity extends BaseActivity {
             RepoListActivity.showActivity(this);
             this.finish();
             return true;
+        } else if (id == R.id.cmd_find) {
+            return showFindDialog();
         } else {
             return super.onOptionsItemSelected(menuItem);
         }
+    }
+
+    private boolean showFindDialog() {
+        return true; // TODO use show for AppFindDialogFragment
     }
 
 

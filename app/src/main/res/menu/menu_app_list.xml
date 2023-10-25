@@ -22,6 +22,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/cmd_find"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/label_search"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/cmd_repos"
         android:title="@string/label_repo_title"
         app:showAsAction="ifRoom" />

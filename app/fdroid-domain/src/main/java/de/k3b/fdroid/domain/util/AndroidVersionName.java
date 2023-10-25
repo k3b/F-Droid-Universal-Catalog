@@ -22,10 +22,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AndroidVersionName {
-    private static final Map<Integer, String> ID_TO_NAME = new HashMap<>();
+    private static final Map<Integer, Item> ID_TO_NAME = new HashMap<>();
 
     static {
-        ID_TO_NAME.put(0, "");
+        ID_TO_NAME.put(0, new Item(0, ""));
         // from android.os.Build.VERSION_CODES
         // see also https://apilevels.com/
         register(1, "Android 1.0", null, "September 2008");
@@ -70,19 +70,43 @@ public class AndroidVersionName {
         name.append(" - SDK").append(version);
         if (releaseDate != null) name.append(" - ").append(releaseDate);
 
-        ID_TO_NAME.put(version, name.toString());
+        ID_TO_NAME.put(version, new Item(version, name.toString()));
     }
 
     public static String getName(int verionNumber, String nativeCode) {
-        String result = ID_TO_NAME.get(Math.max(0, verionNumber));
+        Object result = ID_TO_NAME.get(Math.max(0, verionNumber));
         if (result == null) result = "Android ??? Api " + verionNumber;
         if (nativeCode == null) {
-            return result;
+            return result.toString();
         }
         return nativeCode + " " + result;
     }
 
-    public static Map<Integer, String> getMap() {
+    public static int getVersion(String name) {
+        for (Map.Entry<Integer, Item> entry : ID_TO_NAME.entrySet()) {
+            if (entry.getValue().name.equals(name)) {
+                return entry.getKey();
+            }
+        }
+        return 0;
+    }
+
+    public static Map<Integer, Item> getMap() {
         return ID_TO_NAME;
+    }
+
+    public static class Item {
+        public final int versionId;
+        public final String name;
+
+        public Item(int versionId, String name) {
+            this.versionId = versionId;
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 }
