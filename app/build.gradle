@@ -60,12 +60,13 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    lintOptions {
-        disable 'IconLocation' // 'density-independent launcher icon'
-    }
 
     buildFeatures {
         viewBinding = true
+    }
+    namespace 'de.k3b.fdroid.android'
+    lint {
+        disable 'IconLocation' // 'density-independent launcher icon'
     }
 }
 
