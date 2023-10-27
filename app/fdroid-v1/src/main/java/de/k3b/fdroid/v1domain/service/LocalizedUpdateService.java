@@ -60,8 +60,8 @@ public class LocalizedUpdateService implements UpdateService {
 
         int phoneScreenshotCount = 0;
         for (Map.Entry<String, de.k3b.fdroid.v1domain.entity.Localized> v1Entry : v1LocalizedMap.entrySet()) {
-            String language = v1Entry.getKey();
-            String localeId = languageService.getOrCreateLocaleIdByCode(language);
+            String localeId = v1Entry.getKey();
+            languageService.getOrCreateLocaleByCode(localeId);
 
             if (!languageService.isHidden(localeId)) {
                 de.k3b.fdroid.v1domain.entity.Localized v1Localized = v1Entry.getValue();
@@ -108,6 +108,6 @@ public class LocalizedUpdateService implements UpdateService {
     }
 
     private String getLocaleCodeByLocalized(Localized roomLocalized) {
-        return roomLocalized == null ? null : languageService.getLocaleCodeById(roomLocalized.getLocaleId());
+        return roomLocalized == null ? null : roomLocalized.getLocaleId();
     }
 }

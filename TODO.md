@@ -1,6 +1,7 @@
 todo
 
-* Rename existing url-parameter "-v(ersion)" to "-s(dk-version)"
+v Rename existing url-parameter "-v(ersion)" to "-minSdk"
+v LocaleId is iso-code (i.e. "de")
 
 > webservice api to allow angular or reduce web client
 > v category (to get mapping/combobox categoryId to categoryName)

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -31,7 +31,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.List;
 
+import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.service.RepoIconService;
 
@@ -53,6 +55,13 @@ public class RepoController {
         model.addAttribute("name", name);
         model.addAttribute("repo", repoRepository.findAll());
         return "Repo/repo_overview";
+    }
+
+
+    @ResponseBody
+    @GetMapping(value = WebConfig.API_ROOT + "/repo", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Repo> repoList() {
+        return repoRepository.findAll();
     }
 
     @GetMapping("/Repo/repo/{id}")

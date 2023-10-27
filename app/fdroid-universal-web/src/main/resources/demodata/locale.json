@@ -1,0 +1,779 @@
+[
+  {
+    "id": "af",
+    "symbol": null,
+    "nameNative": "Afrikaans",
+    "nameEnglish": "Afrikaans",
+    "languagePriority": 0
+  },
+  {
+    "id": "am",
+    "symbol": null,
+    "nameNative": "Amharic",
+    "nameEnglish": "Amharic",
+    "languagePriority": 0
+  },
+  {
+    "id": "ar",
+    "symbol": "🇸🇦",
+    "nameNative": "العربية",
+    "nameEnglish": "Arabic",
+    "languagePriority": 0
+  },
+  {
+    "id": "as",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "az",
+    "symbol": null,
+    "nameNative": "Azerbaijani",
+    "nameEnglish": "Azerbaijani",
+    "languagePriority": 0
+  },
+  {
+    "id": "ba",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "be",
+    "symbol": null,
+    "nameNative": "Беларуская",
+    "nameEnglish": "Belarusian",
+    "languagePriority": 0
+  },
+  {
+    "id": "bg",
+    "symbol": null,
+    "nameNative": "Български",
+    "nameEnglish": "Bulgarian",
+    "languagePriority": 0
+  },
+  {
+    "id": "bn",
+    "symbol": null,
+    "nameNative": "বাংলা",
+    "nameEnglish": "Bengali",
+    "languagePriority": 0
+  },
+  {
+    "id": "bo",
+    "symbol": null,
+    "nameNative": "Tibetan",
+    "nameEnglish": "Tibetan",
+    "languagePriority": 0
+  },
+  {
+    "id": "br",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "bs",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "ca",
+    "symbol": null,
+    "nameNative": "Català",
+    "nameEnglish": "Catalan",
+    "languagePriority": 0
+  },
+  {
+    "id": "cs",
+    "symbol": null,
+    "nameNative": "Čeština",
+    "nameEnglish": "Čeština",
+    "languagePriority": 0
+  },
+  {
+    "id": "cy",
+    "symbol": null,
+    "nameNative": "Cymraeg",
+    "nameEnglish": "Welsh",
+    "languagePriority": 0
+  },
+  {
+    "id": "da",
+    "symbol": "🇩🇰",
+    "nameNative": "Dansk",
+    "nameEnglish": "Danish",
+    "languagePriority": 0
+  },
+  {
+    "id": "de",
+    "symbol": "🇩🇪",
+    "nameNative": "Deutsch",
+    "nameEnglish": "German",
+    "languagePriority": 99
+  },
+  {
+    "id": "dv",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "el",
+    "symbol": null,
+    "nameNative": "Ελληνικά",
+    "nameEnglish": "Greek",
+    "languagePriority": 0
+  },
+  {
+    "id": "en",
+    "symbol": "🇺🇸 🇬🇧",
+    "nameNative": "English",
+    "nameEnglish": "English",
+    "languagePriority": 1
+  },
+  {
+    "id": "eo",
+    "symbol": "🗺",
+    "nameNative": "Esperanto",
+    "nameEnglish": "Esperanto",
+    "languagePriority": 0
+  },
+  {
+    "id": "es",
+    "symbol": "🇪🇸",
+    "nameNative": "Español",
+    "nameEnglish": "Spanish",
+    "languagePriority": 0
+  },
+  {
+    "id": "et",
+    "symbol": null,
+    "nameNative": "Eesti",
+    "nameEnglish": "Estonian",
+    "languagePriority": 0
+  },
+  {
+    "id": "eu",
+    "symbol": null,
+    "nameNative": "Euskara",
+    "nameEnglish": "Basque",
+    "languagePriority": 0
+  },
+  {
+    "id": "fa",
+    "symbol": "🇮🇷",
+    "nameNative": "فارسی",
+    "nameEnglish": "Persian",
+    "languagePriority": 0
+  },
+  {
+    "id": "fi",
+    "symbol": null,
+    "nameNative": "Suomi",
+    "nameEnglish": "Finland",
+    "languagePriority": 0
+  },
+  {
+    "id": "fr",
+    "symbol": "🇫🇷",
+    "nameNative": "Français",
+    "nameEnglish": "French",
+    "languagePriority": 0
+  },
+  {
+    "id": "fy",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "ga",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "gd",
+    "symbol": null,
+    "nameNative": "Gaelic",
+    "nameEnglish": "Scottish Gaelic",
+    "languagePriority": 0
+  },
+  {
+    "id": "gl",
+    "symbol": null,
+    "nameNative": "Galego",
+    "nameEnglish": "Galipe",
+    "languagePriority": 0
+  },
+  {
+    "id": "gn",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "gu",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "ha",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "he",
+    "symbol": null,
+    "nameNative": "עברית",
+    "nameEnglish": "Abrit",
+    "languagePriority": 0
+  },
+  {
+    "id": "hi",
+    "symbol": null,
+    "nameNative": "हिन्दी",
+    "nameEnglish": "Hindi",
+    "languagePriority": 0
+  },
+  {
+    "id": "hr",
+    "symbol": null,
+    "nameNative": "Hrvatski",
+    "nameEnglish": "Croatian",
+    "languagePriority": 0
+  },
+  {
+    "id": "ht",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "hu",
+    "symbol": "🇭🇺",
+    "nameNative": "Magya",
+    "nameEnglish": "Hungarian",
+    "languagePriority": 0
+  },
+  {
+    "id": "hy",
+    "symbol": null,
+    "nameNative": "Հայերեն",
+    "nameEnglish": "Armenian",
+    "languagePriority": 0
+  },
+  {
+    "id": "ia",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "id",
+    "symbol": "🇮🇩",
+    "nameNative": "Bahasa Indonesia",
+    "nameEnglish": "Indonesian",
+    "languagePriority": 0
+  },
+  {
+    "id": "in",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "is",
+    "symbol": null,
+    "nameNative": "Icelandic",
+    "nameEnglish": "Icelandic",
+    "languagePriority": 0
+  },
+  {
+    "id": "it",
+    "symbol": "🇮🇹",
+    "nameNative": "Italiano",
+    "nameEnglish": "Italian",
+    "languagePriority": 0
+  },
+  {
+    "id": "iw",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "ja",
+    "symbol": "🇯🇵",
+    "nameNative": "日本語",
+    "nameEnglish": "Japanese",
+    "languagePriority": 0
+  },
+  {
+    "id": "jv",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "ka",
+    "symbol": null,
+    "nameNative": "ქართული",
+    "nameEnglish": "Georgian",
+    "languagePriority": 0
+  },
+  {
+    "id": "kk",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "km",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "kn",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "ko",
+    "symbol": null,
+    "nameNative": "한국어",
+    "nameEnglish": "korean",
+    "languagePriority": 0
+  },
+  {
+    "id": "kr",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "ku",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "ky",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "lb",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "lg",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "lo",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "lt",
+    "symbol": null,
+    "nameNative": "Lietuvių",
+    "nameEnglish": "Lithuanian",
+    "languagePriority": 0
+  },
+  {
+    "id": "lv",
+    "symbol": null,
+    "nameNative": "Latviešu",
+    "nameEnglish": "Latvian",
+    "languagePriority": 0
+  },
+  {
+    "id": "mk",
+    "symbol": null,
+    "nameNative": "Македонски",
+    "nameEnglish": "Macedonian",
+    "languagePriority": 0
+  },
+  {
+    "id": "ml",
+    "symbol": null,
+    "nameNative": "Malayalam",
+    "nameEnglish": "Malayalam",
+    "languagePriority": 0
+  },
+  {
+    "id": "mn",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "mr",
+    "symbol": null,
+    "nameNative": "Marathi",
+    "nameEnglish": "Marathi",
+    "languagePriority": 0
+  },
+  {
+    "id": "ms",
+    "symbol": null,
+    "nameNative": "Bahasa Melayu",
+    "nameEnglish": "Malay",
+    "languagePriority": 0
+  },
+  {
+    "id": "mt",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "my",
+    "symbol": null,
+    "nameNative": "မြန်မာဘာသာ",
+    "nameEnglish": "Myanmarian",
+    "languagePriority": 0
+  },
+  {
+    "id": "nb",
+    "symbol": null,
+    "nameNative": "Bokmål",
+    "nameEnglish": "Norwegian Bokmål",
+    "languagePriority": 0
+  },
+  {
+    "id": "ne",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "nl",
+    "symbol": "🇳🇱",
+    "nameNative": "Nederlands",
+    "nameEnglish": "Dutch",
+    "languagePriority": 0
+  },
+  {
+    "id": "nn",
+    "symbol": null,
+    "nameNative": "Nynorsk",
+    "nameEnglish": "Norwegian",
+    "languagePriority": 0
+  },
+  {
+    "id": "no",
+    "symbol": "🇳🇴",
+    "nameNative": "Norsk (bokmål)",
+    "nameEnglish": "Norwegian",
+    "languagePriority": 0
+  },
+  {
+    "id": "oc",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "or",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "pa",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "pl",
+    "symbol": "🇵🇱",
+    "nameNative": "Polski",
+    "nameEnglish": "Polish",
+    "languagePriority": 0
+  },
+  {
+    "id": "ps",
+    "symbol": null,
+    "nameNative": "پښتو",
+    "nameEnglish": "Pashto",
+    "languagePriority": 0
+  },
+  {
+    "id": "pt",
+    "symbol": "🇵🇹 🇧🇷",
+    "nameNative": "Português",
+    "nameEnglish": "Portuguese",
+    "languagePriority": 0
+  },
+  {
+    "id": "qu",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "ro",
+    "symbol": "🇷🇴",
+    "nameNative": "Română",
+    "nameEnglish": "Romanian",
+    "languagePriority": 0
+  },
+  {
+    "id": "ru",
+    "symbol": "🇷🇺",
+    "nameNative": "Русский",
+    "nameEnglish": "Russian",
+    "languagePriority": 0
+  },
+  {
+    "id": "sa",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "sc",
+    "symbol": null,
+    "nameNative": "Sardinian",
+    "nameEnglish": "Sardinian",
+    "languagePriority": 0
+  },
+  {
+    "id": "si",
+    "symbol": null,
+    "nameNative": "Sinhala / Sinhalese",
+    "nameEnglish": "Sinhala / Sinhalese",
+    "languagePriority": 0
+  },
+  {
+    "id": "sk",
+    "symbol": "🇸🇮",
+    "nameNative": "Slovenčina",
+    "nameEnglish": "Slovak",
+    "languagePriority": 0
+  },
+  {
+    "id": "sl",
+    "symbol": "🇸🇰",
+    "nameNative": "Slovenščina",
+    "nameEnglish": "Slovene",
+    "languagePriority": 0
+  },
+  {
+    "id": "sn",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "so",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "sp",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "sq",
+    "symbol": null,
+    "nameNative": "Albanian",
+    "nameEnglish": "Albanian",
+    "languagePriority": 0
+  },
+  {
+    "id": "sr",
+    "symbol": null,
+    "nameNative": "Српски / Srpski",
+    "nameEnglish": "Serbian",
+    "languagePriority": 0
+  },
+  {
+    "id": "sv",
+    "symbol": "🇸🇪",
+    "nameNative": "Svenska",
+    "nameEnglish": "Swedish",
+    "languagePriority": 0
+  },
+  {
+    "id": "sw",
+    "symbol": null,
+    "nameNative": "Swahili",
+    "nameEnglish": "Swahili",
+    "languagePriority": 0
+  },
+  {
+    "id": "ta",
+    "symbol": null,
+    "nameNative": "தமிழ்",
+    "nameEnglish": "Tamil",
+    "languagePriority": 0
+  },
+  {
+    "id": "te",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "th",
+    "symbol": null,
+    "nameNative": "ภาษาไทย",
+    "nameEnglish": "Thai",
+    "languagePriority": 0
+  },
+  {
+    "id": "tl",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "tr",
+    "symbol": "🇹🇷",
+    "nameNative": "Türkçe",
+    "nameEnglish": "Turkish",
+    "languagePriority": 0
+  },
+  {
+    "id": "tt",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "ug",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "uk",
+    "symbol": "🇺🇦",
+    "nameNative": "Українська",
+    "nameEnglish": "Ukrainian",
+    "languagePriority": 0
+  },
+  {
+    "id": "ur",
+    "symbol": null,
+    "nameNative": "اردو",
+    "nameEnglish": "Urdu",
+    "languagePriority": 0
+  },
+  {
+    "id": "uz",
+    "symbol": null,
+    "nameNative": "Oʻzbekcha / Ўзбекча",
+    "nameEnglish": "Uzbek",
+    "languagePriority": 0
+  },
+  {
+    "id": "vi",
+    "symbol": "🇻🇳",
+    "nameNative": "Tiếng Việt",
+    "nameEnglish": "Vietnamese",
+    "languagePriority": 0
+  },
+  {
+    "id": "yi",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "yo",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  },
+  {
+    "id": "zh-CN",
+    "symbol": null,
+    "nameNative": "简体中文",
+    "nameEnglish": "Simplified Chinese",
+    "languagePriority": 0
+  },
+  {
+    "id": "zh-HK",
+    "symbol": null,
+    "nameNative": "Chinese Honkong",
+    "nameEnglish": "Chinese Honkong",
+    "languagePriority": 0
+  },
+  {
+    "id": "zh-TW",
+    "symbol": null,
+    "nameNative": "繁体中文",
+    "nameEnglish": "Traditional Chinese / Taiwanese",
+    "languagePriority": 0
+  },
+  {
+    "id": "zz",
+    "symbol": null,
+    "nameNative": null,
+    "nameEnglish": null,
+    "languagePriority": 0
+  }
+]

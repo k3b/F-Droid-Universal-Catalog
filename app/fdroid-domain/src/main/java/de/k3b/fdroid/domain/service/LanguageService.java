@@ -285,22 +285,6 @@ public class LanguageService extends CacheService<String, Locale> {
         return isHidden(this.getItemById(languageId));
     }
 
-    public String getLocaleCodeById(String localeId) {
-        Locale locale = getItemById(localeId);
-        return locale == null ? null : locale.getId();
-    }
-
-    /**
-     * @return LANGUAGE_PRIORITY_HIDDEN(- 1) if language is hidden
-     */
-    public String getOrCreateLocaleIdByCode(String localeCode) {
-        Locale found = getOrCreateLocaleByCode(localeCode);
-        if (found != null) {
-            return found.getId();
-        }
-        return "" + LANGUAGE_PRIORITY_HIDDEN;
-    }
-
     /**
      * @return null if this locale is hidden (LanguagePriority < 0)
      */

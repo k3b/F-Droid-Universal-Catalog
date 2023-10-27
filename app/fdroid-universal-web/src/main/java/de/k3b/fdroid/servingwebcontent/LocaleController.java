@@ -26,22 +26,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.entity.Category;
-import de.k3b.fdroid.domain.repository.CategoryRepository;
+import de.k3b.fdroid.domain.entity.Locale;
+import de.k3b.fdroid.domain.repository.LocaleRepository;
 
 @Controller
-public class CategoryController {
-    private final CategoryRepository categoryRepository;
+public class LocaleController {
+    private final LocaleRepository localeRepository;
 
-    public CategoryController(CategoryRepository categoryRepository) {
+    public LocaleController(LocaleRepository localeRepository) {
 
-        this.categoryRepository = categoryRepository;
-        // categoryRepository.findAll()
+        this.localeRepository = localeRepository;
+        // localeRepository.findAll()
     }
 
     @ResponseBody
-    @GetMapping(value = WebConfig.API_ROOT + "/category", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Category> categoryList() {
-        return categoryRepository.findAll();
+    @GetMapping(value = WebConfig.API_ROOT + "/locale", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Locale> localeList() {
+        return localeRepository.findAll();
     }
 }
