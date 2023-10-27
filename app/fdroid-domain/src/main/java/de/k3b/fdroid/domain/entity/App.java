@@ -116,6 +116,7 @@ public class App extends AppCommon implements AppDetail {
     }
 
     @NotNull
+    @Override
     public Integer getId() {
         return id;
     }

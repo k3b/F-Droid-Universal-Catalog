@@ -36,6 +36,7 @@ import de.k3b.fdroid.domain.interfaces.AppDetail;
 @JsonInclude(Include.NON_NULL)
 @SuppressWarnings({"unchecked", "unsafe"})
 public class AppWithDetails extends EntityCommon implements AppDetail, AggregateRoot {
+    @NotNull
     private final App app;
     private final List<Localized> localizedList = new ArrayList<>();
     private final List<Version> versionList = new ArrayList<>();
@@ -44,7 +45,7 @@ public class AppWithDetails extends EntityCommon implements AppDetail, Aggregate
     // does not work with key=string
     //private final List<LinkedDatabaseEntity<Localized, Locale>> localeList = new ArrayList<>();
 
-    public AppWithDetails(App app) {
+    public AppWithDetails(@NotNull App app) {
         this.app = app;
     }
 
@@ -59,6 +60,7 @@ public class AppWithDetails extends EntityCommon implements AppDetail, Aggregate
         return getApp().getAppId();
     }
 
+    @NotNull
     public App getApp() {
         return app;
     }

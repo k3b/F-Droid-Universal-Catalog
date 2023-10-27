@@ -87,6 +87,7 @@ public class Version extends VersionCommon implements AppDetail {
     }
 
     @NotNull
+    @Override
     public Integer getId() {
         return id;
     }

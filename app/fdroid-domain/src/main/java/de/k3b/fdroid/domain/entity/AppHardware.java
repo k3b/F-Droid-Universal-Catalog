@@ -78,6 +78,7 @@ public class AppHardware extends EntityCommon implements AppDetail {
     }
 
     @NotNull
+    @Override
     public Integer getId() {
         return id;
     }

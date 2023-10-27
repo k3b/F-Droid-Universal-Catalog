@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.domain.service;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -122,8 +124,12 @@ public class AppWithDetailsPagerService {
     }
 
     // get from cache. if currentIndex not loaded yet load currentIndex +-
+    @NotNull
     private AppWithDetails getAppWithDetailsByOffset(int currentIndex) {
-        if (currentIndex < 0 || currentIndex >= size()) throw new IndexOutOfBoundsException();
+        if (currentIndex < 0 || currentIndex >= size())
+            throw new IndexOutOfBoundsException("getAppWithDetailsByOffset[" +
+                    currentIndex + "]");
+
         AppWithDetails result = appWithDetailsList[currentIndex];
         if (result == null) {
             // implement load on demand
@@ -135,6 +141,8 @@ public class AppWithDetailsPagerService {
             result = appWithDetailsList[currentIndex];
         }
 
+        if (result == null) throw new ArithmeticException("getAppWithDetailsByOffset[" +
+                currentIndex + "] == null");
         return result;
     }
 
@@ -155,9 +163,9 @@ public class AppWithDetailsPagerService {
         load(Category.class, appIdList, categoryRepository, id2AppLocalizedList);
     }
 
-    private App findByAppId(List<App> apps, Integer appId) {
+    private App findByAppId(@NotNull List<App> apps, int appId) {
         for (App app : apps) {
-            if (app.getId() == appId) return app;
+            if (appId == app.getId().intValue()) return app;
         }
         return null;
     }
@@ -259,6 +267,7 @@ public class AppWithDetailsPagerService {
             return AppWithDetailsPagerService.this.getWhatsNew(currentIndex);
         }
 
+        @NotNull
         public App getApp() {
             return getAppWithDetails().getApp();
         }

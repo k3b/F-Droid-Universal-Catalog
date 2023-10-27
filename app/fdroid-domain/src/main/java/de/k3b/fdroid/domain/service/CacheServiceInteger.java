@@ -32,7 +32,7 @@ public class CacheServiceInteger<T extends DatabaseEntityWithId<Integer>> extend
 
     @Override
     public T getItemById(Integer itemId) {
-        T item = (itemId == 0) ? null : id2Item.get(itemId);
+        T item = (itemId == null || itemId.intValue() == 0) ? null : id2Item.get(itemId);
         return item;
     }
 }

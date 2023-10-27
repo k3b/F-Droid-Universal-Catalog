@@ -109,6 +109,7 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
     }
 
     @NotNull
+    @Override
     public Integer getId() {
         return id;
     }

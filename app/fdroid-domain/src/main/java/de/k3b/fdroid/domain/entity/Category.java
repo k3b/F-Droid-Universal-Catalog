@@ -61,6 +61,7 @@ public class Category extends EntityCommon implements DatabaseEntityWithId<Integ
     }
 
     @NotNull
+    @Override
     public Integer getId() {
         return id;
     }

@@ -88,6 +88,7 @@ public class Localized extends LocalizedCommon implements AppDetail {
     }
 
     @NotNull
+    @Override
     public Integer getId() {
         return id;
     }

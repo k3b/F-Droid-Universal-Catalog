@@ -34,7 +34,8 @@ public interface LocalizedRepository extends Repository {
     void update(Localized localized);
 
     default void save(Localized localized) {
-        if (localized.getId() == 0) {
+        Integer id = localized.getId();
+        if (id == null || id.intValue() == 0) {
             insert(localized);
         } else {
             update(localized);

@@ -34,7 +34,8 @@ public interface AppRepository extends Repository, AppRepositoryFindDynamic {
     void update(App app);
 
     default void save(App app) {
-        if (app.getId() == 0) {
+        Integer id = app.getId();
+        if (id == null || id.intValue() == 0) {
             insert(app);
         } else {
             update(app);

@@ -35,7 +35,8 @@ public interface RepoRepository extends Repository {
     void update(Repo repo);
 
     default void save(Repo repo) {
-        if (repo.getId() == 0) {
+        Integer id = repo.getId();
+        if (id == null || id.intValue() == 0) {
             insert(repo);
         } else {
             update(repo);

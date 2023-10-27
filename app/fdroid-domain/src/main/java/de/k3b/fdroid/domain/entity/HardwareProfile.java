@@ -81,6 +81,7 @@ public class HardwareProfile extends EntityCommon implements DatabaseEntityWithI
     }
 
     @NotNull
+    @Override
     public Integer getId() {
         return id;
     }
