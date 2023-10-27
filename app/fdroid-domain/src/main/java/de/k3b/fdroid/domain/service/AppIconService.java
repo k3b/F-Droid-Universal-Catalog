@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -36,9 +36,9 @@ public class AppIconService extends ImageService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_HTML);
 
     private final AppRepository appRepository;
-    private final CacheService<Repo> repoCache;
+    private final CacheServiceInteger<Repo> repoCache;
 
-    public AppIconService(String imageCacheDir, CacheService<Repo> repoCache, AppRepository appRepository) {
+    public AppIconService(String imageCacheDir, CacheServiceInteger<Repo> repoCache, AppRepository appRepository) {
         super(imageCacheDir);
         this.repoCache = repoCache;
 

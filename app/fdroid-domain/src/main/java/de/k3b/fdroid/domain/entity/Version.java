@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -19,6 +19,8 @@
 package de.k3b.fdroid.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.jetbrains.annotations.NotNull;
 
 import de.k3b.fdroid.domain.entity.common.VersionCommon;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
@@ -84,7 +86,8 @@ public class Version extends VersionCommon implements AppDetail {
         toStringBuilder(sb, "nativecode", this.nativecode);
     }
 
-    public int getId() {
+    @NotNull
+    public Integer getId() {
         return id;
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -61,8 +61,9 @@ public class LocalizedUpdateService implements UpdateService {
         int phoneScreenshotCount = 0;
         for (Map.Entry<String, de.k3b.fdroid.v1domain.entity.Localized> v1Entry : v1LocalizedMap.entrySet()) {
             String language = v1Entry.getKey();
-            int localeId = languageService.getOrCreateLocaleIdByCode(language);
-            if (!LanguageService.isHidden(localeId)) {
+            String localeId = languageService.getOrCreateLocaleIdByCode(language);
+
+            if (!languageService.isHidden(localeId)) {
                 de.k3b.fdroid.v1domain.entity.Localized v1Localized = v1Entry.getValue();
                 Localized roomLocalized = LanguageService.findByLocaleId(roomLocalizedList, localeId);
                 if (roomLocalized == null) {

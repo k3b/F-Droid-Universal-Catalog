@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -19,6 +19,8 @@
 package de.k3b.fdroid.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.jetbrains.annotations.NotNull;
 
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
@@ -42,7 +44,7 @@ import de.k3b.fdroid.domain.util.StringUtil;
 @androidx.room.Entity(indices = {@androidx.room.Index("id")})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
-public class Repo extends RepoCommon implements DatabaseEntityWithId {
+public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
     public static final String STATE_BUSY = "busy"; // while downloding. bg-color=yellow
     public static final String STATE_ERROR = "error"; // download failed bg-color=red
     public static final String STATE_ENABLED = "enabled"; // bg-color=green
@@ -106,7 +108,8 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId {
         return getUrl(server, V1_JAR_NAME);
     }
 
-    public int getId() {
+    @NotNull
+    public Integer getId() {
         return id;
     }
 

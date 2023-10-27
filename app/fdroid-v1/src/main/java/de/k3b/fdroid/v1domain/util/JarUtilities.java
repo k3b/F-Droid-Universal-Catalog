@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -20,6 +20,8 @@
 package de.k3b.fdroid.v1domain.util;
 
 import org.apache.commons.codec.binary.Hex2;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,9 +33,6 @@ import java.security.cert.X509Certificate;
 import java.util.Formatter;
 import java.util.List;
 import java.util.jar.JarEntry;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.entity.Repo;
@@ -117,7 +116,7 @@ public class JarUtilities {
      *
      * @param rawCertFromJar the {@link X509Certificate} embedded in the downloaded jar
      */
-    public static void verifyAndUpdateSigningCertificate(@Nonnull Repo repo, @Nullable Certificate rawCertFromJar) throws V1JarException {
+    public static void verifyAndUpdateSigningCertificate(@NotNull Repo repo, @Nullable Certificate rawCertFromJar) throws V1JarException {
         if (repo == null) throw new NullPointerException();
 
         String certFromJar = null; // assume no cert
@@ -131,7 +130,7 @@ public class JarUtilities {
         }
 
         String certFromDb = StringUtil.emptyAsNull(repo.getJarSigningCertificate());
-        if (certFromDb != null && (certFromJar == null || !certFromDb.equalsIgnoreCase(certFromJar))) {
+        if (certFromDb != null && (!certFromDb.equalsIgnoreCase(certFromJar))) {
             LOGGER.error("Cerificate mismatch in " + repo.getV1Url() +
                     "\n\tcertFromDb  : " + certFromDb +
                     "\n\tcertFromJar : " + certFromJar);
@@ -145,7 +144,7 @@ public class JarUtilities {
                 ? null
                 : StringUtil.emptyAsNull(calcFingerprint(repo, rawCertFromJar));
 
-        if (fingerprintFromDb != null && (fingerprintFromJar == null || !fingerprintFromDb.equalsIgnoreCase(fingerprintFromJar))) {
+        if (fingerprintFromDb != null && (!fingerprintFromDb.equalsIgnoreCase(fingerprintFromJar))) {
             LOGGER.error("Fingerprint mismatch in " + repo.getV1Url() +
                     "\n\tfingerprintFromDb  : " + fingerprintFromDb +
                     "\n\tfingerprintFromJar : " + fingerprintFromJar);
@@ -157,11 +156,11 @@ public class JarUtilities {
         // fingerprint is not set on first run
     }
 
-    private static void throwError(@Nonnull Repo repo, String errorMessage) {
+    private static void throwError(@NotNull Repo repo, String errorMessage) {
         throwError(repo, errorMessage, null);
     }
 
-    private static void throwError(@Nonnull Repo repo, String errorMessage, Throwable e) {
+    private static void throwError(@NotNull Repo repo, String errorMessage, Throwable e) {
         repo.setLastErrorMessage(errorMessage);
         throw new V1JarException(repo, errorMessage, e);
     }

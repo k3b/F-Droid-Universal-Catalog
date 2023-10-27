@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -27,7 +27,7 @@ import java.util.Optional;
  * Android-Room/JPA compatibility layer:
  * implement room aliase.
  */
-public class RepositoryAdapterBase<T, R extends CrudRepository<T, Integer>> {
+public class RepositoryAdapterBase<KEY, T, R extends CrudRepository<T, KEY>> {
     protected final R jpa;
 
     public RepositoryAdapterBase(R jpa) {
@@ -46,7 +46,7 @@ public class RepositoryAdapterBase<T, R extends CrudRepository<T, Integer>> {
         jpa.delete(roomApp);
     }
 
-    public T findById(Integer repoId) {
+    public T findById(KEY repoId) {
         Optional<T> result = jpa.findById(repoId);
         if (result.isPresent()) return result.get();
         return null;
@@ -57,7 +57,7 @@ public class RepositoryAdapterBase<T, R extends CrudRepository<T, Integer>> {
         return (List<T>) jpa.findAll();
     }
 
-    public List<T> findByIds(List<Integer> ids) {
+    public List<T> findByIds(List<KEY> ids) {
         return (List<T>) jpa.findAllById(ids);
     }
 }

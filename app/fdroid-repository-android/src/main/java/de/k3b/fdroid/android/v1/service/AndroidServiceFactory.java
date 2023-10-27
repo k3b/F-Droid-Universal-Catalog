@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -27,7 +27,7 @@ import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.android.repository.FDroidDatabaseFactory;
 import de.k3b.fdroid.android.repository.RepoDao;
 import de.k3b.fdroid.domain.service.AppIconService;
-import de.k3b.fdroid.domain.service.CacheService;
+import de.k3b.fdroid.domain.service.CacheServiceInteger;
 import de.k3b.fdroid.domain.service.RepoIconService;
 import de.k3b.fdroid.v1domain.service.HttpV1JarDownloadService;
 import de.k3b.fdroid.v1domain.service.HttpV1JarImportService;
@@ -85,7 +85,7 @@ public class AndroidServiceFactory {
     public AppIconService getAppIconService() {
         if (appIconService == null) {
             appIconService = new AppIconService(new File(myRoot, "icons").getAbsolutePath(),
-                    new CacheService<>(getRepoRepository().findAll()), database.appRepository());
+                    new CacheServiceInteger<>(getRepoRepository().findAll()), database.appRepository());
         }
         return appIconService;
     }

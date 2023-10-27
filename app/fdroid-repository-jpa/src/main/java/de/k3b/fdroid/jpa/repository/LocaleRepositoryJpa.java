@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -30,6 +30,6 @@ import de.k3b.fdroid.domain.entity.Locale;
  * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
  */
 @Repository
-public interface LocaleRepositoryJpa extends CrudRepository<Locale, Integer> {
+public interface LocaleRepositoryJpa extends CrudRepository<Locale, String> {
 }
 

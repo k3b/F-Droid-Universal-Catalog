@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -34,7 +34,7 @@ import de.k3b.fdroid.jpa.repository.base.RepositoryAdapterBase;
  */
 @Service
 public class LocalizedRepositoryAdapter
-        extends RepositoryAdapterBase<Localized, LocalizedRepositoryJpa>
+        extends RepositoryAdapterBase<Integer, Localized, LocalizedRepositoryJpa>
         implements LocalizedRepository {
     public LocalizedRepositoryAdapter(LocalizedRepositoryJpa jpa) {
         super(jpa);
@@ -46,7 +46,7 @@ public class LocalizedRepositoryAdapter
     }
 
     @Override
-    public List<Localized> findByAppIdAndLocaleIds(int appId, List<Integer> localeIds) {
+    public List<Localized> findByAppIdAndLocaleIds(int appId, List<String> localeIds) {
         return jpa.findForAppIdAndLocales(appId, localeIds);
     }
 

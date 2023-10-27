@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -19,9 +19,9 @@
 package de.k3b.fdroid.domain.interfaces;
 
 /**
- * A Detail one-to-many-detail that belongs to {@link de.k3b.fdroid.domain.App}
+ * A Detail one-to-many-detail that belongs to {@link de.k3b.fdroid.domain.entity.App}
  */
-public interface AppDetail extends DatabaseEntityWithId {
+public interface AppDetail extends DatabaseEntityWithId<Integer> {
 
     int getAppId();
 }

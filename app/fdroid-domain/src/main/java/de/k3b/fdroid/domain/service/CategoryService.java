@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -29,7 +29,7 @@ import de.k3b.fdroid.domain.repository.CategoryRepository;
  * Service to cache/find/insert Category info.
  */
 
-public class CategoryService extends CacheService<Category> {
+public class CategoryService extends CacheServiceInteger<Category> {
     private final CategoryRepository categoryRepository;
 
     Map<String, Category> name2Category;

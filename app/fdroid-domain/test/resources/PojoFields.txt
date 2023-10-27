@@ -42,7 +42,7 @@ de.k3b.fdroid.domain.entity.HardwareProfile
 	nativecode(4)
 de.k3b.fdroid.domain.entity.Locale
 	code(2)
-	id(01)
+	id(1)
 	languagePriority(06)
 	nameEnglish(5)
 	nameNative(4)
@@ -52,7 +52,7 @@ de.k3b.fdroid.domain.entity.Localized
 	description(8)
 	icon(9)
 	id(01)
-	localeId(03)
+	localeId(3)
 	name(6)
 	phoneScreenshotDir(5)
 	phoneScreenshots(4)

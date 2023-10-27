@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -62,7 +62,7 @@ public class LocalizedServiceTest {
         App app = new App();
 
         Localized pl = createLocalized(2, "pl");
-        languageService.getItemById(2).setLanguagePriority(0);
+        languageService.getItemById("pl").setLanguagePriority(0);
 
         localizedService.recalculateSearchFields(0, app, Arrays.asList(
                 localizedEn, localizedDe, pl));
@@ -72,7 +72,7 @@ public class LocalizedServiceTest {
 
     private Locale createLocale(int id, String code) {
         Locale l = new Locale();
-        l.setId(id);
+        l.setId(code);
         l.setLanguagePriority(id);
         l.setCode(code);
         l.setNameEnglish("NameEnglish-"+code);
@@ -87,7 +87,7 @@ public class LocalizedServiceTest {
 
         Localized l = new Localized();
         l.setId(id);
-        l.setLocaleId(id);
+        l.setLocaleId(code);
         l.setName("Name-" + code);
         l.setSummary("Summary-" + code);
         l.setDescription("Description-" + code);

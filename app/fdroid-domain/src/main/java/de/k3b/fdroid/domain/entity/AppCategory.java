@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -17,6 +17,8 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 package de.k3b.fdroid.domain.entity;
+
+import org.jetbrains.annotations.NotNull;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
@@ -62,8 +64,9 @@ public class AppCategory extends EntityCommon implements AppDetail {
         super.toStringBuilder(sb);
     }
 
+    @NotNull
     @Override
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

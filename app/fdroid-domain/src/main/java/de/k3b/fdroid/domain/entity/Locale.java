@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.domain.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 
@@ -31,11 +33,11 @@ import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 @androidx.room.Entity(indices = {@androidx.room.Index("id")})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
-public class Locale extends EntityCommon implements DatabaseEntityWithId {
+public class Locale extends EntityCommon implements DatabaseEntityWithId<String> {
     @javax.persistence.Id
-    @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-    @androidx.room.PrimaryKey(autoGenerate = true)
-    private int id;
+    @androidx.room.PrimaryKey
+    @NotNull
+    private String id;
 
     private String code; // ie de
 
@@ -43,7 +45,9 @@ public class Locale extends EntityCommon implements DatabaseEntityWithId {
 
     private String nameNative; // ie Deutsch
     private String nameEnglish; // ie German
-    private int languagePriority; // translation order highest first
+
+    // translation order highest first; -1 == hidden (Translations are NOT contained in Database)
+    private int languagePriority;
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
@@ -55,11 +59,11 @@ public class Locale extends EntityCommon implements DatabaseEntityWithId {
         toStringBuilder(sb, "languagePriority", this.getLanguagePriority());
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -72,6 +76,7 @@ public class Locale extends EntityCommon implements DatabaseEntityWithId {
 
     public void setCode(String code) {
         this.code = code;
+        setId(code);
     }
 
     /**

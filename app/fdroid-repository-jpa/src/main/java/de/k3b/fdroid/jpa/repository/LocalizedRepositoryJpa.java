@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -38,7 +38,7 @@ public interface LocalizedRepositoryJpa extends CrudRepository<Localized, Intege
     List<Localized> findByAppId(int appId);
 
     @Query(value = "select l from Localized l where l.appId = ?1 and l.localeId in (?2)")
-    List<Localized> findForAppIdAndLocales(int appId, List<Integer> localeIds);
+    List<Localized> findForAppIdAndLocales(int appId, List<String> localeIds);
 
     @Query(value = "select al from Localized al " +
             "inner join Locale l on al.localeId = l.id " +

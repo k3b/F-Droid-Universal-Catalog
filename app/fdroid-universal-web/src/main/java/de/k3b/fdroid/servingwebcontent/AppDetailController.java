@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -53,7 +53,7 @@ import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.repository.VersionRepository;
 import de.k3b.fdroid.domain.repository.VersionRepositoryWithMinSdkFilter;
 import de.k3b.fdroid.domain.service.AppWithDetailsPagerService;
-import de.k3b.fdroid.domain.service.CacheService;
+import de.k3b.fdroid.domain.service.CacheServiceInteger;
 import de.k3b.fdroid.domain.service.LocalizedImageService;
 import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.html.service.GetUrlMustacheLamdaService;
@@ -82,7 +82,7 @@ public class AppDetailController {
                 appAppDetailRepository, localizedRepositoryAdapter, versionRepositoryWithMinSdkFilter,
                 null);
 
-        CacheService<Repo> repoCacheService = new CacheService<>(repoRepository.findAll());
+        CacheServiceInteger<Repo> repoCacheService = new CacheServiceInteger<>(repoRepository.findAll());
         getUrl = new GetUrlMustacheLamdaService(repoCacheService);
 
         localizedImageService = new LocalizedImageService(imageDir, repoCacheService, appRepository);

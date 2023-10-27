@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -18,6 +18,8 @@
  */
 
 package de.k3b.fdroid.domain.service;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +44,7 @@ import de.k3b.fdroid.domain.util.StringUtil;
  * Exception: chinese mainland zh-CN and taiwan zh-TW use different symbols: no canonical
  */
 
-public class LanguageService extends CacheService<Locale> {
+public class LanguageService extends CacheService<String, Locale> {
     /* See {@link #getLanguagePriorityNewItem(String)} */
     public static final int LANGUAGE_PRIORITY_HIDDEN = -1;
 
@@ -151,8 +153,15 @@ public class LanguageService extends CacheService<Locale> {
     }
 
     public static boolean isHidden(Locale locale) {
-        int languagePriority = (locale == null) ? LANGUAGE_PRIORITY_HIDDEN : locale.getLanguagePriority();
-        return isHidden(languagePriority);
+        if (locale == null) return false; // special case unknown locale is not hidden.
+        return locale.getLanguagePriority() == LANGUAGE_PRIORITY_HIDDEN;
+    }
+
+    public static Localized findByLocaleId(List<Localized> roomLocalizedList, @NotNull String localeId) {
+        for (Localized l : roomLocalizedList) {
+            if (localeId.equalsIgnoreCase(l.getLocaleId())) return l;
+        }
+        return null;
     }
 
     /**
@@ -272,18 +281,11 @@ public class LanguageService extends CacheService<Locale> {
         return line.split("\\|");
     }
 
-    public static boolean isHidden(int languagePriority) {
-        return languagePriority == LANGUAGE_PRIORITY_HIDDEN;
+    public boolean isHidden(String languageId) {
+        return isHidden(this.getItemById(languageId));
     }
 
-    public static Localized findByLocaleId(List<Localized> roomLocalizedList, int localeId) {
-        for (Localized l : roomLocalizedList) {
-            if (l.getLocaleId() == localeId) return l;
-        }
-        return null;
-    }
-
-    public String getLocaleCodeById(int localeId) {
+    public String getLocaleCodeById(String localeId) {
         Locale locale = getItemById(localeId);
         return (locale == null) ? null : locale.getCode();
     }
@@ -291,12 +293,12 @@ public class LanguageService extends CacheService<Locale> {
     /**
      * @return LANGUAGE_PRIORITY_HIDDEN(- 1) if language is hidden
      */
-    public int getOrCreateLocaleIdByCode(String localeCode) {
+    public String getOrCreateLocaleIdByCode(String localeCode) {
         Locale found = getOrCreateLocaleByCode(localeCode);
         if (found != null) {
             return found.getId();
         }
-        return LANGUAGE_PRIORITY_HIDDEN;
+        return "" + LANGUAGE_PRIORITY_HIDDEN;
     }
 
     /**
@@ -345,5 +347,11 @@ public class LanguageService extends CacheService<Locale> {
         if (localeCode.equals("en")) return 1;
         if (localeCode.equals(getMyLocale())) return 99;
         return languagePriorityNewItem;
+    }
+
+    public Locale getItemById(String itemId) {
+        Locale item = (itemId == null) ? null : id2Item.get(itemId);
+        return item;
+
     }
 }

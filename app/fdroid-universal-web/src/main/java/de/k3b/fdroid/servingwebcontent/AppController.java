@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -47,7 +47,7 @@ import de.k3b.fdroid.domain.repository.CategoryRepository;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.service.AppIconService;
 import de.k3b.fdroid.domain.service.AppWithDetailsPagerService;
-import de.k3b.fdroid.domain.service.CacheService;
+import de.k3b.fdroid.domain.service.CacheServiceInteger;
 import de.k3b.fdroid.domain.util.AndroidVersionName;
 import de.k3b.fdroid.domain.util.StringUtil;
 
@@ -58,7 +58,7 @@ public class AppController {
     private final AppWithDetailsPagerService appWithDetailsPagerService;
     private final AppIconService iconService;
     private final ArrayList<Category> categoryList;
-    private final CacheService<Category> categoryCache;
+    private final CacheServiceInteger<Category> categoryCache;
 
     public AppController(@Value("${de.k3b.fdroid.downloads.icons}") String iconsDir,
                          RepoRepository repoRepository, AppRepository appRepository,
@@ -68,13 +68,13 @@ public class AppController {
         AppDetailRepository<App> appAppDetailRepository = new AppRepositoryAdapterImpl(appRepository);
         appWithDetailsPagerService = new AppWithDetailsPagerService(
                 appAppDetailRepository, null, null, null);
-        CacheService<Repo> cache = new CacheService<>(repoRepository.findAll());
+        CacheServiceInteger<Repo> cache = new CacheServiceInteger<>(repoRepository.findAll());
         iconService = new AppIconService(iconsDir, cache, appRepository);
 
         ArrayList<Category> categoryList = new ArrayList<>(categoryRepository.findAll());
         categoryList.add(new Category(0,""));
         categoryList.sort(Category.COMPARE_BY_NAME);
-        categoryCache = new CacheService<>(categoryList);
+        categoryCache = new CacheServiceInteger<>(categoryList);
         this.categoryList = categoryList;
     }
 

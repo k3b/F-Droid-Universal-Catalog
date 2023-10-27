@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -37,7 +37,7 @@ public class LocaleRepositoryTest {
     @Autowired
     private LocaleRepository repo;
 
-    private int id = 0;
+    private String id;
 
     @BeforeEach
     public void init() {
@@ -50,7 +50,7 @@ public class LocaleRepositoryTest {
     @AfterEach
     public void finish() {
         jpa.deleteById(id);
-        id = 0;
+        id = null;
     }
 
     @Test

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -18,10 +18,12 @@
  */
 package de.k3b.fdroid.domain.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 import de.k3b.fdroid.domain.interfaces.AppDetail;
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 
-public class LinkedDatabaseEntity<LINK extends AppDetail, ITEM extends DatabaseEntityWithId> implements AppDetail {
+public class LinkedDatabaseEntity<LINK extends AppDetail, ITEM extends DatabaseEntityWithId<Integer>> implements AppDetail {
     private final LINK link;
     private final ITEM item;
 
@@ -44,7 +46,8 @@ public class LinkedDatabaseEntity<LINK extends AppDetail, ITEM extends DatabaseE
     }
 
     @Override
-    public int getId() {
+    @NotNull
+    public Integer getId() {
         return link.getId();
     }
 }

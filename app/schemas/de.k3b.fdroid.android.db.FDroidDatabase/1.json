@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c6cf0c37ab4a6d9fe23310f34d29538e",
+    "identityHash": "6f6b7ba3f37a7d391b35162a4ad68822",
     "entities": [
       {
         "tableName": "App",
@@ -315,12 +315,12 @@
       },
       {
         "tableName": "Locale",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `code` TEXT, `symbol` TEXT, `nameNative` TEXT, `nameEnglish` TEXT, `languagePriority` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `code` TEXT, `symbol` TEXT, `nameNative` TEXT, `nameEnglish` TEXT, `languagePriority` INTEGER NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -358,7 +358,7 @@
           "columnNames": [
             "id"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [
           {
@@ -375,7 +375,7 @@
       },
       {
         "tableName": "Localized",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `localeId` INTEGER NOT NULL, `phoneScreenshots` TEXT, `phoneScreenshotDir` TEXT, `name` TEXT, `summary` TEXT, `description` TEXT, `icon` TEXT, `video` TEXT, `whatsNew` TEXT, FOREIGN KEY(`appId`) REFERENCES `App`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`localeId`) REFERENCES `Locale`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `localeId` TEXT, `phoneScreenshots` TEXT, `phoneScreenshotDir` TEXT, `name` TEXT, `summary` TEXT, `description` TEXT, `icon` TEXT, `video` TEXT, `whatsNew` TEXT, FOREIGN KEY(`appId`) REFERENCES `App`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`localeId`) REFERENCES `Locale`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -392,8 +392,8 @@
           {
             "fieldPath": "localeId",
             "columnName": "localeId",
-            "affinity": "INTEGER",
-            "notNull": true
+            "affinity": "TEXT",
+            "notNull": false
           },
           {
             "fieldPath": "phoneScreenshots",
@@ -1033,7 +1033,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c6cf0c37ab4a6d9fe23310f34d29538e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6f6b7ba3f37a7d391b35162a4ad68822')"
     ]
   }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 by k3b.
+ * Copyright (c) 2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -16,36 +16,23 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.domain.repository;
+package de.k3b.fdroid.domain.service;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.entity.Localized;
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 
-/**
- * Android independent interfaces to use the Database.
- * <p>
- * Persists {@link Localized} (that implements {@link DatabaseEntityWithId}) in the Database.
- */
-public interface LocalizedRepository extends Repository {
-    void insert(Localized localized);
-
-    void update(Localized localized);
-
-    default void save(Localized localized) {
-        if (localized.getId() == 0) {
-            insert(localized);
-        } else {
-            update(localized);
-        }
+public class CacheServiceInteger<T extends DatabaseEntityWithId<Integer>> extends CacheService<Integer, T> {
+    public CacheServiceInteger() {
     }
 
-    void delete(Localized localized);
+    public CacheServiceInteger(List<T> itemList) {
+        super(itemList);
+    }
 
-    List<Localized> findByAppId(int appId);
-
-    List<Localized> findByAppIdAndLocaleIds(int appId, List<String> localeIds);
-
-    List<Localized> findNonHiddenByAppIds(List<Integer> appIds);
+    @Override
+    public T getItemById(Integer itemId) {
+        T item = (itemId == 0) ? null : id2Item.get(itemId);
+        return item;
+    }
 }

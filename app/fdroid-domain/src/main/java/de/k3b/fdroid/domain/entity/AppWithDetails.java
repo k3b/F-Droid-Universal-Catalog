@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -21,6 +21,8 @@ package de.k3b.fdroid.domain.entity;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,14 +40,17 @@ public class AppWithDetails extends EntityCommon implements AppDetail, Aggregate
     private final List<Localized> localizedList = new ArrayList<>();
     private final List<Version> versionList = new ArrayList<>();
     private final List<LinkedDatabaseEntity<AppCategory, Category>> categoryList = new ArrayList<>();
-    private final List<LinkedDatabaseEntity<Localized, Locale>> localeList = new ArrayList<>();
+
+    // does not work with key=string
+    //private final List<LinkedDatabaseEntity<Localized, Locale>> localeList = new ArrayList<>();
 
     public AppWithDetails(App app) {
         this.app = app;
     }
 
     @Override
-    public int getId() {
+    @NotNull
+    public Integer getId() {
         return getApp().getId();
     }
 
@@ -70,7 +75,9 @@ public class AppWithDetails extends EntityCommon implements AppDetail, Aggregate
         if (classz.equals(Localized.class)) return (List<T>) localizedList;
         if (classz.equals(Version.class)) return (List<T>) versionList;
         if (classz.equals(Category.class)) return (List<T>) categoryList;
-        if (classz.equals(Locale.class)) return (List<T>) localeList;
+
+        // does not work with key=string
+        // if (classz.equals(Locale.class)) return (List<T>) localeList;
         throw new IllegalArgumentException("" + classz.getName());
     }
 

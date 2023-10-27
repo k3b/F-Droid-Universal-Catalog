@@ -27,7 +27,7 @@
 
 # jpa compatibility can be removed from android code
 -assumenosideeffects class javax.persistence.**  { *; }
--assumenosideeffects class org.springframework.stereotype.**  { *; }
+-assumenosideeffects class org.springframework.**  { *; }
 
 # removed in org.mapsforge:mapsforge-map-android:0.10.0
 # but still referenced in org.osmdroid.mapsforge.MapsForgeTileSource

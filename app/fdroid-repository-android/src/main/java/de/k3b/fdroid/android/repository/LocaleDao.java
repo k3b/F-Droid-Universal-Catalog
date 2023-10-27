@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -33,7 +33,7 @@ import de.k3b.fdroid.domain.repository.LocaleRepository;
 public interface LocaleDao extends LocaleRepository {
     default void insert(Locale locale) {
         int result = (int) insertEx(locale);
-        locale.setId(result);
+        // locale.setId(result);
     }
 
     @Insert

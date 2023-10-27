@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -38,7 +38,7 @@ public class LocalizedRepositoryTest {
     private static final String MY_Summary = "my.package.name";
     private static final String MY_ICON = "myIcon.ico";
     private int appId;
-    private int localeId;
+    private String localeId;
 
     @Autowired
     JpaTestHelper jpaTestHelper;
@@ -81,7 +81,7 @@ public class LocalizedRepositoryTest {
 
     @Test
     public void findByAppIdAndLocaleIds_notfound() {
-        List<Localized> localized = repo.findByAppIdAndLocaleIds(appId, Collections.singletonList(localeId - 1000));
+        List<Localized> localized = repo.findByAppIdAndLocaleIds(appId, Collections.singletonList(""));
         Assert.isTrue(localized.size() == 0, "found 0");
     }
 

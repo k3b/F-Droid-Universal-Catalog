@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -49,7 +49,7 @@ public interface LocalizedDao extends LocalizedRepository {
     List<Localized> findByAppId(int appId);
 
     @Query("SELECT * FROM Localized WHERE Localized.appId = :appId and Localized.localeId in (:localeIds) ")
-    List<Localized> findByAppIdAndLocaleIds(int appId, List<Integer> localeIds);
+    List<Localized> findByAppIdAndLocaleIds(int appId, List<String> localeIds);
 
     @Query(value = "select al.* from Localized al " +
             "inner join Locale l on al.localeId = l.id " +

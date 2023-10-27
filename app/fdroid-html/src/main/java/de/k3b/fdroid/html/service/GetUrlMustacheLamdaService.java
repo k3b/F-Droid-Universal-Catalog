@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -28,7 +28,7 @@ import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.entity.Version;
 import de.k3b.fdroid.domain.service.AppWithDetailsPagerService;
-import de.k3b.fdroid.domain.service.CacheService;
+import de.k3b.fdroid.domain.service.CacheServiceInteger;
 
 /**
  * Translates local url to repo relative url.
@@ -38,9 +38,9 @@ import de.k3b.fdroid.domain.service.CacheService;
  * if context is Version
  */
 public class GetUrlMustacheLamdaService implements Mustache.Lambda {
-    private final CacheService<Repo> repoCacheService;
+    private final CacheServiceInteger<Repo> repoCacheService;
 
-    public GetUrlMustacheLamdaService(CacheService<Repo> repoCacheService) {
+    public GetUrlMustacheLamdaService(CacheServiceInteger<Repo> repoCacheService) {
         this.repoCacheService = repoCacheService;
     }
 

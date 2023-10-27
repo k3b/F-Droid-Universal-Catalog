@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -29,6 +29,8 @@ import static de.k3b.fdroid.domain.util.StringUtil.getLast;
 import androidx.room.ForeignKey;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.Column;
 
@@ -113,7 +115,8 @@ public class App extends AppCommon implements AppDetail {
         toStringBuilder(sb, "searchSigner", this.searchSigner, 14);
     }
 
-    public int getId() {
+    @NotNull
+    public Integer getId() {
         return id;
     }
 

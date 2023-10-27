@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -19,6 +19,8 @@
 package de.k3b.fdroid.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.Column;
 
@@ -51,7 +53,8 @@ public class Localized extends LocalizedCommon implements AppDetail {
     private int appId;
 
     @androidx.room.ColumnInfo(index = true)
-    private int localeId;
+    @NotNull
+    private String localeId;
 
     @Column(length = MAX_LEN_AGGREGATED)
     private String phoneScreenshots;
@@ -70,7 +73,7 @@ public class Localized extends LocalizedCommon implements AppDetail {
     }
 
     @androidx.room.Ignore
-    public Localized(int appId, int localeId) {
+    public Localized(int appId, String localeId) {
         setAppId(appId);
         setLocaleId(localeId);
     }
@@ -84,7 +87,8 @@ public class Localized extends LocalizedCommon implements AppDetail {
         toStringBuilder(sb, "phoneScreenshots", phoneScreenshots, 20);
     }
 
-    public int getId() {
+    @NotNull
+    public Integer getId() {
         return id;
     }
 
@@ -100,11 +104,12 @@ public class Localized extends LocalizedCommon implements AppDetail {
         this.appId = appId;
     }
 
-    public int getLocaleId() {
+    @NotNull
+    public String getLocaleId() {
         return localeId;
     }
 
-    public void setLocaleId(int localeId) {
+    public void setLocaleId(@NotNull String localeId) {
         this.localeId = localeId;
     }
 

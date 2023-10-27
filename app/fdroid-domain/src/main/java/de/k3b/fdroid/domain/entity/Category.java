@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -19,6 +19,8 @@
 package de.k3b.fdroid.domain.entity;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Comparator;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
@@ -34,7 +36,7 @@ import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 @androidx.room.Entity(indices = {@androidx.room.Index("id"), @androidx.room.Index(value = "name", unique = true)})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
-public class Category extends EntityCommon implements DatabaseEntityWithId {
+public class Category extends EntityCommon implements DatabaseEntityWithId<Integer> {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @androidx.room.PrimaryKey(autoGenerate = true)
@@ -58,7 +60,8 @@ public class Category extends EntityCommon implements DatabaseEntityWithId {
         super.toStringBuilder(sb);
     }
 
-    public int getId() {
+    @NotNull
+    public Integer getId() {
         return id;
     }
 

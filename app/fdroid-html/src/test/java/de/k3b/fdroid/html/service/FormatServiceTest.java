@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -58,10 +58,15 @@ public class FormatServiceTest extends TestCase {
 
     public void testFormatCustom() {
 
-        class CustomType implements Mustache.CustomContext {
-            @Override
-            public Object get(String name) throws Exception {
-                return name;
+        class CustomType {
+            final String a = "hello";
+            final CustomTypeMitContext s = new CustomTypeMitContext();
+
+            class CustomTypeMitContext implements Mustache.CustomContext {
+                @Override
+                public Object get(String name) throws Exception {
+                    return name;
+                }
             }
         }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -24,8 +24,8 @@ import java.util.Map;
 
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 
-public class CacheService<T extends DatabaseEntityWithId> {
-    private Map<Integer, T> id2Item = null;
+public abstract class CacheService<KEY, T extends DatabaseEntityWithId<KEY>> {
+    protected Map<KEY, T> id2Item = null;
 
     public CacheService() {
     }
@@ -45,8 +45,5 @@ public class CacheService<T extends DatabaseEntityWithId> {
         id2Item.put(item.getId(), item);
     }
 
-    public T getItemById(int itemId) {
-        T item = (itemId == 0) ? null : id2Item.get(itemId);
-        return item;
-    }
+    abstract public T getItemById(KEY itemId);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -33,7 +33,7 @@ import de.k3b.fdroid.jpa.repository.base.RepositoryAdapterBase;
  * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
  */
 @Service
-public class AppHardwareRepositoryAdapter extends RepositoryAdapterBase<AppHardware, AppHardwareRepositoryJpa> implements AppHardwareRepository {
+public class AppHardwareRepositoryAdapter extends RepositoryAdapterBase<Integer, AppHardware, AppHardwareRepositoryJpa> implements AppHardwareRepository {
     public AppHardwareRepositoryAdapter(AppHardwareRepositoryJpa jpa) {
         super(jpa);
     }
