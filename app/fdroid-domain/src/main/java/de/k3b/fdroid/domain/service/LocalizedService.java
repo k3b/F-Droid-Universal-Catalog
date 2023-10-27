@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -87,7 +87,7 @@ public class LocalizedService {
         if (roomLocalized == null) return true;
 
         Locale locale = languageService.getItemById(roomLocalized.getLocaleId());
-        return (locale != null && LanguageService.isHidden(locale));
+        return (LanguageService.isHidden(locale));
     }
 
     /**
@@ -107,9 +107,9 @@ public class LocalizedService {
 
             Locale locale = languageService.getItemById(loc.getLocaleId());
             String languagePrefix = "";
-            if (languageService.getOrCreateLocaleByCode(locale.getCode()).getLanguagePriority() < 1) {
+            if (languageService.getOrCreateLocaleByCode(locale.getId()).getLanguagePriority() < 1) {
                 // only visible if it is not a prefered language
-                languagePrefix = locale.getCode() + ": ";
+                languagePrefix = locale.getId() + ": ";
             }
 
             add(name, loc.getName(), "name", EntityCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, SEPERATOR_NAME);

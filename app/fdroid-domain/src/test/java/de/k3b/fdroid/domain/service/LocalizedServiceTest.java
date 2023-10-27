@@ -74,7 +74,6 @@ public class LocalizedServiceTest {
         Locale l = new Locale();
         l.setId(code);
         l.setLanguagePriority(id);
-        l.setCode(code);
         l.setNameEnglish("NameEnglish-"+code);
 
         languageService.init(l);

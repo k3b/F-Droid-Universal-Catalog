@@ -37,9 +37,7 @@ public class Locale extends EntityCommon implements DatabaseEntityWithId<String>
     @javax.persistence.Id
     @androidx.room.PrimaryKey
     @NotNull
-    private String id;
-
-    private String code; // ie de
+    private String id; // ie de
 
     private String symbol; // ie 🇩🇪
 
@@ -51,7 +49,6 @@ public class Locale extends EntityCommon implements DatabaseEntityWithId<String>
 
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
-        toStringBuilder(sb, "code", this.code);
         super.toStringBuilder(sb);
         toStringBuilder(sb, "symbol", this.symbol);
         toStringBuilder(sb, "nameNative", this.nameNative);
@@ -59,24 +56,17 @@ public class Locale extends EntityCommon implements DatabaseEntityWithId<String>
         toStringBuilder(sb, "languagePriority", this.getLanguagePriority());
     }
 
+    /**
+     * locale-language-code. Usually two-letter-lowercase. i.e. it for italian
+     */
+    @NotNull
+    @Override
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NotNull String id) {
         this.id = id;
-    }
-
-    /**
-     * locale-language-code. Usually two-letter-lowercase. i.e. it for italian
-     */
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-        setId(code);
     }
 
     /**

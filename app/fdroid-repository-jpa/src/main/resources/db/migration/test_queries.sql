@@ -1,10 +1,10 @@
 -- hsqldb get aggregated data from LOCALIZED
 select
     a.PACKAGE_NAME,
-    GROUP_CONCAT(l.NAME order by c.CODE SEPARATOR ' | ') as NAME,
-    GROUP_CONCAT(l.SUMMARY ORDER BY c.CODE SEPARATOR ' | ') as SUMMARY,
-    GROUP_CONCAT(l.WHATS_NEW ORDER BY c.CODE SEPARATOR ' | ') as WHATS_NEW,
-    GROUP_CONCAT(c.CODE ORDER BY c.CODE SEPARATOR ' | ') as language
+    GROUP_CONCAT(l.NAME order by c.id SEPARATOR ' | ') as NAME,
+    GROUP_CONCAT(l.SUMMARY ORDER BY c.id SEPARATOR ' | ') as SUMMARY,
+    GROUP_CONCAT(l.WHATS_NEW ORDER BY c.id SEPARATOR ' | ') as WHATS_NEW,
+    GROUP_CONCAT(c.id ORDER BY c.id SEPARATOR ' | ') as language
 from app a
 inner join LOCALIZED l on l.APP_ID = a.id
 inner join Locale c on l.LOCALE_ID = c.id
@@ -47,10 +47,10 @@ order by SEARCH_SDK, PACKAGE_NAME;
 
 ----
 --- number of existing translations
-select l.code, l.NAME_ENGLISH, count(*)
+select l.id, l.NAME_ENGLISH, count(*)
 from LOCALIZED lo
 inner join Locale l on lo.LOCALE_ID = l.id
-group by l.code, l.NAME_ENGLISH
+group by l.id, l.NAME_ENGLISH
 order by count(*) desc
 ;
 
@@ -63,11 +63,11 @@ order by substr(SEARCH_SDK,2,2);
 
 -----
 -- apps description in one language
-select a.PACKAGE_NAME, la.code, lo.NAME, lo.SUMMARY, lo.DESCRIPTION
+select a.PACKAGE_NAME, la.id, lo.NAME, lo.SUMMARY, lo.DESCRIPTION
 from LOCALIZED lo
 inner join Locale la on lo.LOCALE_ID = la.id
 inner join App a on lo.APP_ID = a.id
-where la.code = 'de' and lo.DESCRIPTION is not null
+where la.id = 'de' and lo.DESCRIPTION is not null
 ;
 
 
@@ -118,11 +118,11 @@ order by a.PACKAGE_NAME, av.VERSION_CODE desc;
 
 -- hide all localized that are not de en es nl fr
 
-update Locale set languagePriority = 9 where code = 'de';
-update Locale set languagePriority = 8 where code = 'en';
-update Locale set languagePriority = 7 where code = 'es';
-update Locale set languagePriority = 6 where code = 'nl';
-update Locale set languagePriority = 5 where code = 'fr';
+update Locale set languagePriority = 9 where id = 'de';
+update Locale set languagePriority = 8 where id = 'en';
+update Locale set languagePriority = 7 where id = 'es';
+update Locale set languagePriority = 6 where id = 'nl';
+update Locale set languagePriority = 5 where id = 'fr';
 update Locale set languagePriority = -1 where languagePriority = 0;
 
 insert into HardwareProfile(id,name,sdkVersion,nativecode) values(3,'android-10', 29, 'armeabi-v7a,armeabi');

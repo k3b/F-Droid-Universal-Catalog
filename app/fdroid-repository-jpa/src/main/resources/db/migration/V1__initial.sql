@@ -73,13 +73,11 @@ CREATE TABLE AppCategory (
 
 CREATE TABLE Locale (
   id VARCHAR(8) NOT NULL,
-  code VARCHAR(255) NOT NULL,
   symbol VARCHAR(255),
   nameEnglish VARCHAR(255),
   nameNative VARCHAR(255),
   languagePriority INT default 0,
-  CONSTRAINT pk_locale PRIMARY KEY (id),
-  CONSTRAINT ak_locale UNIQUE (code)
+  CONSTRAINT pk_locale PRIMARY KEY (id)
 );
 
 CREATE TABLE Localized (

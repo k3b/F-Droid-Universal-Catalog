@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -79,7 +79,7 @@ public class JpaTestHelper {
 
     public Locale createLocale(String code) {
         Locale locale = new Locale();
-        locale.setCode(code);
+        locale.setId(code);
         return save(locale);
     }
 

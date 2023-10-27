@@ -41,12 +41,11 @@ de.k3b.fdroid.domain.entity.HardwareProfile
 	name(2)
 	nativecode(4)
 de.k3b.fdroid.domain.entity.Locale
-	code(2)
 	id(1)
-	languagePriority(06)
-	nameEnglish(5)
-	nameNative(4)
-	symbol(3)
+	languagePriority(05)
+	nameEnglish(4)
+	nameNative(3)
+	symbol(2)
 de.k3b.fdroid.domain.entity.Localized
 	appId(02)
 	description(8)

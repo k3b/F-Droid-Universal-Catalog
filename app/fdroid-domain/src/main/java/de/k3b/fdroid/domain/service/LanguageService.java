@@ -96,7 +96,7 @@ public class LanguageService extends CacheService<String, Locale> {
 
     protected void init(Locale locale) {
         super.init(locale);
-        code2Locale.put(locale.getCode(), locale);
+        code2Locale.put(locale.getId(), locale);
     }
 
     public static boolean setTranslations(String localeCode, Locale locale) {
@@ -287,7 +287,7 @@ public class LanguageService extends CacheService<String, Locale> {
 
     public String getLocaleCodeById(String localeId) {
         Locale locale = getItemById(localeId);
-        return (locale == null) ? null : locale.getCode();
+        return locale == null ? null : locale.getId();
     }
 
     /**
@@ -327,7 +327,7 @@ public class LanguageService extends CacheService<String, Locale> {
     private Locale createNewLocale(String localeCode) {
         Locale locale;
         locale = new Locale();
-        locale.setCode(localeCode);
+        locale.setId(localeCode);
         locale.setLanguagePriority(getLanguagePriorityNewItem(localeCode));
 
         setTranslations(localeCode, locale);
