@@ -5,11 +5,9 @@
         {{#app.icon}}
             <img src="icons/{{app.packageName}}.png" width="48" height="48" />
         {{/app.icon}}
-        {{name}}
+        {{app.localizedName}}
     </h3>
     {{> App/list_app_summary}}
-    {{#whatsNew}}{{t.label_app_whats_new}}<pre>{{{.}}}</pre></br>{{/whatsNew}}
-    <pre>{{{description}}}</pre></br>
     {{#LocalizedList}}
         {{> App/localized_detail}}
     {{/LocalizedList}}

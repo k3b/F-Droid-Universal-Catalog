@@ -1,6 +1,13 @@
+<hr/>
+{{localeId}}: {{#name}}{{.}}</br>{{/name}}
+{{#summary}}
+    <pre>{{{.}}}</pre></br>{{/summary}}
+{{#whatsNew}}{{t.label_app_whats_new}}
+<pre>{{{.}}}</pre></br>{{/whatsNew}}
+{{#description}}
+    <pre>{{{.}}}</pre></br>{{/description}}
 {{#phoneScreenshotArray}}
-    {{! dev.lonami.klooni/en-US/phoneScreenshots/ + 1.jpg }}
-    <img src="{{phoneScreenshotDir}}{{.}}" />
-    <hr/>
+{{! dev.lonami.klooni/en-US/phoneScreenshots/ + 1.jpg }}
+    <img src="{{phoneScreenshotDir}}{{.}}"/></br>
 {{/phoneScreenshotArray}}
 

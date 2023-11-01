@@ -57,4 +57,8 @@ public interface LocalizedDao extends LocalizedRepository {
             "order by al.appId, l.languagePriority desc")
     List<Localized> findNonHiddenByAppIds(List<Integer> appIds);
 
+    @Query(value = "select al.* from Localized al " +
+            "where al.appId in (:appIds) and al.localeId in (:localeIds) " +
+            "order by al.appId")
+    List<Localized> findByAppIdsAndLocaleIds(List<Integer> appIds, String[] localeIds);
 }

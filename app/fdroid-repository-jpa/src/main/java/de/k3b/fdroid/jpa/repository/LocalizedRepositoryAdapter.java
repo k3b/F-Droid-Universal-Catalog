@@ -54,4 +54,10 @@ public class LocalizedRepositoryAdapter
     public List<Localized> findNonHiddenByAppIds(List<Integer> appIds) {
         return jpa.findNonHiddenByAppIds(appIds);
     }
+
+    @Override
+    public List<Localized> findByAppIdsAndLocaleIds(List<Integer> appIds, String[] localeIds) {
+        return jpa.findByAppIdsAndLocaleIds(appIds, localeIds);
+    }
+
 }

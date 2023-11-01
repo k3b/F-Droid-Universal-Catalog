@@ -41,15 +41,15 @@ import java.util.Collections;
 
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.adapter.AppRepositoryAdapterImpl;
-import de.k3b.fdroid.domain.adapter.LocalizedRepositoryAdapterImpl;
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.AppSearchParameter;
 import de.k3b.fdroid.domain.entity.AppWithDetails;
-import de.k3b.fdroid.domain.entity.Localized;
+import de.k3b.fdroid.domain.entity.LocalizedLocalesSorter;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.repository.AppDetailRepository;
 import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.repository.LocalizedRepository;
+import de.k3b.fdroid.domain.repository.LocalizedRepositoryWithLocaleFilter;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.repository.VersionRepository;
 import de.k3b.fdroid.domain.repository.VersionRepositoryWithMinSdkFilter;
@@ -66,6 +66,7 @@ public class AppDetailController {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_HTML);
 
     private final VersionRepositoryWithMinSdkFilter versionRepositoryWithMinSdkFilter;
+    private final LocalizedRepositoryWithLocaleFilter localizedRepositoryAdapter;
     private final AppWithDetailsPagerService appWithDetailsPagerService;
     private final Mustache.Lambda getUrl;
     private final AppRepository appRepository;
@@ -78,7 +79,7 @@ public class AppDetailController {
             VersionRepository versionRepository) {
         this.appRepository = appRepository;
         AppDetailRepository<App> appAppDetailRepository = new AppRepositoryAdapterImpl(appRepository);
-        AppDetailRepository<Localized> localizedRepositoryAdapter = new LocalizedRepositoryAdapterImpl(localizedRepository);
+        localizedRepositoryAdapter = new LocalizedRepositoryWithLocaleFilter(localizedRepository);
         versionRepositoryWithMinSdkFilter = new VersionRepositoryWithMinSdkFilter(versionRepository);
 
         appWithDetailsPagerService = new AppWithDetailsPagerService(
@@ -98,7 +99,7 @@ public class AppDetailController {
             @RequestParam(name = "back", required = false, defaultValue = "") String back,
             @RequestParam(name = "locales", required = false, defaultValue = "") String locales,
             Model model) {
-        AppWithDetailsPagerService.AppItemAtOffset[] item = appDetail(
+        AppWithDetails item = appDetail(
                 idOrPackageName, minVersionSdkText, locales);
 
         model.addAttribute("item", item);
@@ -113,7 +114,7 @@ public class AppDetailController {
             @PathVariable String idOrPackageName,
             @RequestParam(name = "minSdk", required = false, defaultValue = "0") String minVersionSdkText,
             @RequestParam(name = "locales", required = false, defaultValue = "") String locales) {
-        AppWithDetails appWithDetails = appDetail(idOrPackageName, minVersionSdkText, locales)[0].getAppWithDetails();
+        AppWithDetails appWithDetails = appDetail(idOrPackageName, minVersionSdkText, locales);
         if (appWithDetails.getVersionList().isEmpty()) {
             LOGGER.info("appDetailRest(idOrPackageName='{}', minSdk='{}') : no Version found for {}",
                     idOrPackageName, minVersionSdkText, appWithDetails);
@@ -122,7 +123,7 @@ public class AppDetailController {
         return appWithDetails;
     }
 
-    private AppWithDetailsPagerService.AppItemAtOffset[] appDetail(
+    private AppWithDetails appDetail(
             String idOrPackageName, String minVersionSdkText, String locales) {
         int minVersionSdk = StringUtil.parseInt(minVersionSdkText, 0);
         int id = 0;
@@ -132,16 +133,21 @@ public class AppDetailController {
             App app = appRepository.findByPackageName(idOrPackageName);
             if (app != null) id = app.getId();
         }
-        versionRepositoryWithMinSdkFilter.setMinSdk(minVersionSdk);
 
+        String[] canonicalLocalesArray = LanguageService.getCanonicalLocalesArray(locales);
         AppSearchParameter appSearchParameter = (StringUtil.isEmpty(locales))
                 ? null
                 : new AppSearchParameter()
-                .locales(LanguageService.getCanonicalLocalesArray(locales));
+                .locales(canonicalLocalesArray);
 
+        versionRepositoryWithMinSdkFilter.setMinSdk(minVersionSdk);
+        localizedRepositoryAdapter.setLocales(canonicalLocalesArray);
         appWithDetailsPagerService.init(Collections.singletonList(id), 1, appSearchParameter);
 
-        AppWithDetailsPagerService.AppItemAtOffset[] item = appWithDetailsPagerService.itemAtOffset(0, 1);
+        AppWithDetails item = appWithDetailsPagerService.itemAtOffset(0, 1)[0].getAppWithDetails();
+        if (canonicalLocalesArray != null && item.getLocalizedList() != null) {
+            item.getLocalizedList().sort(new LocalizedLocalesSorter<>(canonicalLocalesArray));
+        }
         return item;
     }
 
