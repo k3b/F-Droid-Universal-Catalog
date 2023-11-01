@@ -3,15 +3,15 @@ todo
 v Rename existing url-parameter "-v(ersion)" to "-minSdk"
 v LocaleId is iso-code (i.e. "de")
 
+* TODO webservice-AppDetail with locale filter  "Website prefered language"
+
 > webservice api to allow angular or reduce web client
-> v category (to get mapping/combobox categoryId to categoryName)
-> appDetail
-> v appDetail
-* filter returned locales
+> v v v category (to get mapping/combobox categoryId to categoryName)
+> > appDetail
+> > v v v appDetail
+> > v vlocale (to get mapping/checkboxex localeId to localeCode)
 
-* locale (to get mapping/checkboxex localeId to localeCode)
-
-> demo json data for angular or react web client
+> > demo json data for angular or react web client
 
 ------
 

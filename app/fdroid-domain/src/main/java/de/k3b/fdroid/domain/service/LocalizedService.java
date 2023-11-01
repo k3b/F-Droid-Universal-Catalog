@@ -29,6 +29,8 @@ import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.domain.util.StringUtil;
 
 public class LocalizedService {
+    public static final String LOCALE_PREFIX = ":";
+    public static final String LOCALE_SUFFIX = ": ";
     public static final String SEPERATOR_NAME = " | ";
     public static final String SEPERATOR_SUMMARY = "\n";
     public static final String SEPERATOR_DESCRIPTION = "\n\n------------\n\n";
@@ -90,6 +92,27 @@ public class LocalizedService {
         return (LanguageService.isHidden(locale));
     }
 
+    public static String createLocalePrefix(String locale) {
+        return LOCALE_PREFIX + locale + LOCALE_SUFFIX;
+    }
+
+    public static String[] createLocalePrefixes(String[] locales) {
+        String[] result = new String[locales.length];
+        for (int i = 0; i < locales.length; i++) {
+            result[i] = createLocalePrefix(locales[i]);
+        }
+        return result;
+    }
+
+    public static String removeLocalePrefix(String stringWithLocalePrefix) {
+        int posLocaleSuffix;
+        if (stringWithLocalePrefix != null && stringWithLocalePrefix.startsWith(LocalizedService.LOCALE_PREFIX)
+                && (posLocaleSuffix = stringWithLocalePrefix.indexOf(LocalizedService.LOCALE_SUFFIX, 1)) < 8) {
+            stringWithLocalePrefix = stringWithLocalePrefix.substring(posLocaleSuffix + LocalizedService.LOCALE_SUFFIX.length());
+        }
+        return stringWithLocalePrefix;
+    }
+
     /**
      * App.searchXxx calculated from detail Localized-s
      */
@@ -106,11 +129,7 @@ public class LocalizedService {
         for (Localized loc : roomLocalizedListSortByPrio) {
 
             Locale locale = languageService.getItemById(loc.getLocaleId());
-            String languagePrefix = "";
-            if (languageService.getOrCreateLocaleByCode(locale.getId()).getLanguagePriority() < 1) {
-                // only visible if it is not a prefered language
-                languagePrefix = locale.getId() + ": ";
-            }
+            String languagePrefix = createLocalePrefix(locale.getId());
 
             add(name, loc.getName(), "name", EntityCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, SEPERATOR_NAME);
             add(summary, loc.getSummary(), "summary", EntityCommon.MAX_LEN_AGGREGATED, roomApp, languagePrefix, SEPERATOR_SUMMARY);

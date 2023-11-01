@@ -99,7 +99,7 @@ public class LanguageService extends CacheService<String, Locale> {
         code2Locale.put(locale.getId(), locale);
     }
 
-    public static boolean setTranslations(String localeCode, Locale locale) {
+    private static boolean setTranslations(String localeCode, Locale locale) {
         // "de|German|Deutsch|symbol"
         String[] languageTranslation = getLanguageTranslation(localeCode);
         if (languageTranslation != null) {
@@ -150,6 +150,18 @@ public class LanguageService extends CacheService<String, Locale> {
         }
 
         return normalized;
+    }
+
+    public static String[] getCanonicalLocalesArray(String localesString) {
+        if (!StringUtil.isEmpty(localesString)) {
+            String[] locales = localesString.split("[,]");
+            String[] canonicals = new String[locales.length];
+            for (int i = 0; i < locales.length; i++) {
+                canonicals[i] = getCanonicalLocale(locales[i]);
+            }
+            return canonicals;
+        }
+        return null;
     }
 
     public static boolean isHidden(Locale locale) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -54,7 +54,7 @@ public class AppListViewModel extends StatusViewModel {
     public void reload() {
         Log.i(Global.LOG_TAG_APP, "Start reload app");
         FDroidApplication.executor.execute(() -> getPagerData().postValue(pager.init(
-                appRepository.findDynamic(getFilter().getValue()), PAGESIZE)));
+                appRepository.findDynamic(getFilter().getValue()), PAGESIZE, null)));
     }
 
     public MutableLiveData<AppSearchParameter> getFilter() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -47,6 +47,15 @@ public class AppSearchParameter extends EntityCommon implements Serializable {
     // supported by sqLite and hsqldb: SELECT ... FROM ... LIMIT 150 https://www.sqlitetutorial.net/sqlite-limit/
     public int maxRowCount = 150;
 
+    /**
+     * array of normalized locales or languages for the searchresult:
+     * order by highest priority first.
+     * <p>
+     * Example [de,es,en]
+     */
+    public String[] locales = null;
+    public String[] localePrefixes = null;
+
     public AppSearchParameter() {
     }
 
@@ -69,6 +78,13 @@ public class AppSearchParameter extends EntityCommon implements Serializable {
         this.orderBy = orderBy;
         return this;
     }
+
+    public AppSearchParameter locales(String[] locales) {
+        this.locales = locales;
+        localePrefixes = null;
+        return this;
+    }
+
     @Override
     protected void toStringBuilder(StringBuilder sb) {
         super.toStringBuilder(sb);
@@ -76,6 +92,7 @@ public class AppSearchParameter extends EntityCommon implements Serializable {
         toStringBuilder(sb, "versionSdk", this.versionSdk);
         toStringBuilder(sb, "categoryId", this.categoryId);
         toStringBuilder(sb, "orderBy", this.orderBy);
+        toStringBuilder(sb, "locales", this.locales);
         // toStringBuilder(sb, "maxRowCount", this.maxRowCount);
     }
 

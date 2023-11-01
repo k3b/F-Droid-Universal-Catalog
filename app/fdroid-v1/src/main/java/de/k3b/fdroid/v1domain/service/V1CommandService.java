@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -114,7 +114,7 @@ public class V1CommandService {
                 null, // new LocalizedRepositoryAdapterImpl(localizedRepository),
                 null, null);
 
-        details.init(appIdList, 10);
+        details.init(appIdList, 10, null);
 
         StringBuilder result = new StringBuilder()
                 .append("# Search for '").append(search).append("':\n")

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -21,6 +21,9 @@ package de.k3b.fdroid.domain.util;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -31,16 +34,16 @@ public class StringUtilTest {
 
     @Test
     public void isEmptyArray() {
-        assertEquals("null", true, StringUtil.isEmpty((String[]) null));
-        assertEquals("[0]", true, StringUtil.isEmpty(StringUtil.EMPTY_ARRAY));
+        assertTrue("null", StringUtil.isEmpty((String[]) null));
+        assertTrue("[0]", StringUtil.isEmpty(StringUtil.EMPTY_ARRAY));
 
-        assertEquals("[1]", false, StringUtil.isEmpty(new String[]{""}));
+        assertFalse("[1]", StringUtil.isEmpty(new String[]{""}));
     }
 
     @Test
     public void testReplaceEmptyString() {
-        assertEquals("null", null, StringUtil.replaceEmpty(null,null));
-        assertEquals("replaced", "replaced", StringUtil.replaceEmpty(null,"replaced"));
+        assertNull("null", StringUtil.replaceEmpty(null, null));
+        assertEquals("replaced", "replaced", StringUtil.replaceEmpty(null, "replaced"));
         assertEquals("not-replaced", "not-replaced", StringUtil.replaceEmpty("not-replaced","replaced"));
     }
 
@@ -52,31 +55,31 @@ public class StringUtilTest {
 
     @Test
     public void isEmptyString() {
-        assertEquals("null", true, StringUtil.isEmpty((String) null));
-        assertEquals("", true, StringUtil.isEmpty(""));
+        assertTrue("null", StringUtil.isEmpty((String) null));
+        assertTrue("", StringUtil.isEmpty(""));
 
-        assertEquals("something", false, StringUtil.isEmpty("something"));
+        assertFalse("something", StringUtil.isEmpty("something"));
     }
 
     @Test
     public void isEmptyLong() {
-        assertEquals("o", true, StringUtil.isEmpty(0));
+        assertTrue("o", StringUtil.isEmpty(0));
 
-        assertEquals("1", false, StringUtil.isEmpty(1));
+        assertFalse("1", StringUtil.isEmpty(1));
     }
 
     @Test
     public void contains() {
-        assertEquals("found", true, StringUtil.contains("something", new String[]{"something"}));
-        assertEquals("not found", false, StringUtil.contains("something", new String[]{"other"}));
-        assertEquals("empty array", false, StringUtil.contains("something", StringUtil.EMPTY_ARRAY));
+        assertTrue("found", StringUtil.contains("something", new String[]{"something"}));
+        assertFalse("not found", StringUtil.contains("something", new String[]{"other"}));
+        assertFalse("empty array", StringUtil.contains("something", StringUtil.EMPTY_ARRAY));
 
     }
 
     @Test
     public void toCsvStringOrNull() {
-        assertEquals("null", null, StringUtil.toCsvStringOrNull(null));
-        assertEquals("empty", null, StringUtil.toCsvStringOrNull(Collections.emptyList()));
+        assertNull("null", StringUtil.toCsvStringOrNull(null));
+        assertNull("empty", StringUtil.toCsvStringOrNull(Collections.emptyList()));
         assertEquals("1", "1", StringUtil.toCsvStringOrNull(Collections.singletonList("1")));
         assertEquals("1,2", "1,2", StringUtil.toCsvStringOrNull(Arrays.asList("1", "2")));
     }
@@ -87,5 +90,29 @@ public class StringUtilTest {
         assertArrayEquals("empty", StringUtil.EMPTY_ARRAY, StringUtil.toStringArray(""));
         assertArrayEquals("1", new String[]{"1"}, StringUtil.toStringArray("1"));
         assertArrayEquals("1,2", new String[]{"1", "2"}, StringUtil.toStringArray("1,2"));
+    }
+
+    @Test
+    public void getFirst() {
+        String result = StringUtil.getFirst("a, b, c", ", ", null);
+        assertEquals("a", result);
+    }
+
+    @Test
+    public void getLast() {
+        String result = StringUtil.getLast("a, b, c", ", ", null);
+        assertEquals("c", result);
+    }
+
+    @Test
+    public void getFirstWithPrefix() {
+        String combinedValue = "x:a, y:b, z:c";
+        assertEquals("x:a", "a",
+                StringUtil.getFirstWithPrefix(combinedValue, "x:", ", ", null));
+        assertEquals("y:b", "b",
+                StringUtil.getFirstWithPrefix(combinedValue, "y:", ", ", null));
+        assertEquals("z:c", "c",
+                StringUtil.getFirstWithPrefix(combinedValue, "z:", ", ", null));
+        assertNull("not q:", StringUtil.getFirstWithPrefix(combinedValue, "q:", ", ", null));
     }
 }

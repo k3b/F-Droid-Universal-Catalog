@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -121,6 +121,20 @@ public class EntityCommon implements Enitity {
     protected void toStringBuilder(StringBuilder sb, String name, Object value) {
         if (value != null) {
             sb.append(name).append('=').append(value).append(',');
+        }
+    }
+
+    protected void toStringBuilder(StringBuilder sb, String name, Object[] values) {
+        if (values != null && values.length > 0) {
+            sb.append(name).append("= [");
+            String delimiter = "";
+            for (Object value : values) {
+                if (value != null) {
+                    sb.append(delimiter).append(value);
+                    delimiter = ", ";
+                }
+            }
+            sb.append("],");
         }
     }
 

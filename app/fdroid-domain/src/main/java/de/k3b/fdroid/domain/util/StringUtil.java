@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -109,9 +109,22 @@ public class StringUtil {
         return combinedValue;
     }
 
+    public static String getFirstWithPrefix(String combinedValue, String prefix, String seperator, String notFoundValue) {
+        if (!isEmpty(combinedValue)) {
+            int start = combinedValue.indexOf(prefix);
+            if (start >= 0) {
+                start += prefix.length();
+                int end = combinedValue.indexOf(seperator, start);
+                if (end > 0) return combinedValue.substring(start, end);
+                return combinedValue.substring(start);
+            }
+        }
+        return notFoundValue;
+    }
+
     public static String getLast(String combinedValue, String seperator, String notFoundValue) {
         if (StringUtil.isEmpty(combinedValue)) return notFoundValue;
-        int pos = combinedValue.indexOf(seperator);
+        int pos = combinedValue.lastIndexOf(seperator);
         if (pos >= 0) {
             String substring = combinedValue.substring(pos + seperator.length());
             if (!StringUtil.isEmpty(substring)) return substring;

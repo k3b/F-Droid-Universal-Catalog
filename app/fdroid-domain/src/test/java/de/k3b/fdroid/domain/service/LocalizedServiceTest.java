@@ -66,15 +66,27 @@ public class LocalizedServiceTest {
 
         localizedService.recalculateSearchFields(0, app, Arrays.asList(
                 localizedEn, localizedDe, pl));
-        assertEquals("Name-de | Name-en | pl: Name-pl", app.getSearchName());
+        assertEquals(":de: Name-de | :en: Name-en | :pl: Name-pl", app.getSearchName());
     }
+
+    @Test
+    public void createLocalePrefix() {
+        assertEquals(":de: ", LocalizedService.createLocalePrefix("de"));
+    }
+
+    @Test
+    public void removeLocalePrefix() {
+        assertEquals("Hello World!", LocalizedService.removeLocalePrefix("Hello World!"));
+        assertEquals("Hello World!", LocalizedService.removeLocalePrefix(LocalizedService.createLocalePrefix("de") + "Hello World!"));
+    }
+
     //--------------
 
     private Locale createLocale(int id, String code) {
         Locale l = new Locale();
         l.setId(code);
         l.setLanguagePriority(id);
-        l.setNameEnglish("NameEnglish-"+code);
+        l.setNameEnglish("NameEnglish-" + code);
 
         languageService.init(l);
         return l;

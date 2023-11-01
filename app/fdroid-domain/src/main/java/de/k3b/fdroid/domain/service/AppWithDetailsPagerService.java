@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -28,6 +28,7 @@ import java.util.Map;
 
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.AppCategory;
+import de.k3b.fdroid.domain.entity.AppSearchParameter;
 import de.k3b.fdroid.domain.entity.AppWithDetails;
 import de.k3b.fdroid.domain.entity.Category;
 import de.k3b.fdroid.domain.entity.LinkedDatabaseEntity;
@@ -39,15 +40,24 @@ import de.k3b.fdroid.domain.repository.AppDetailRepository;
 /**
  * Load cached items, loadOnDemand +-pageSize if necessary
  */
+@SuppressWarnings("unused")
 public class AppWithDetailsPagerService {
     private final AppDetailRepository<App> appRepository;
     private final AppDetailRepository<Localized> localizedRepository;
     private final AppDetailRepository<Version> versionRepository;
     private final AppDetailRepository<LinkedDatabaseEntity<AppCategory, Category>> categoryRepository;
 
+    /**
+     * all matching appIds
+     */
     private Integer[] appIds;
+
+    /**
+     * all items. null means not loaded yet
+     */
     private AppWithDetails[] appWithDetailsList;
     private int pageSize;
+    private AppSearchParameter appSearchParameter;
 
     public AppWithDetailsPagerService(
             AppDetailRepository<App> appRepository,
@@ -60,10 +70,11 @@ public class AppWithDetailsPagerService {
         this.categoryRepository = categoryRepository;
     }
 
-    public AppWithDetailsPagerService init(List<Integer> appIds, int pageSize) {
+    public AppWithDetailsPagerService init(List<Integer> appIds, int pageSize, AppSearchParameter appSearchParameter) {
         this.appIds = appIds.toArray(new Integer[0]);
         appWithDetailsList = new AppWithDetails[appIds.size()];
         this.pageSize = pageSize;
+        this.appSearchParameter = appSearchParameter;
         return this;
     }
 
@@ -149,8 +160,13 @@ public class AppWithDetailsPagerService {
     private void update(ArrayList<Integer> appIdList, int from) {
         Map<Integer, AppWithDetails> id2AppLocalizedList = new HashMap<>();
         List<App> apps = appRepository.findByAppIds(appIdList);
+        if (appSearchParameter != null) {
+            for (App app : apps) {
+                app.setAppSearchParameter(appSearchParameter);
+            }
+        }
 
-        for(Integer appId : appIdList) {
+        for (Integer appId : appIdList) {
             // apps order might not match appIdList order
             AppWithDetails appWithDetails = new AppWithDetails(findByAppId(apps, appId));
             appWithDetailsList[from] = appWithDetails;
@@ -283,5 +299,18 @@ public class AppWithDetailsPagerService {
         public AppWithDetails getAppWithDetails() {
             return AppWithDetailsPagerService.this.getAppWithDetailsByOffset(currentIndex);
         }
+    }
+
+    public AppWithDetails[] getAppWithDetailsArray(int pagenumber) {
+        int from = Math.max(0, pagenumber * pageSize);
+        int to = Math.min(size(), from + pageSize);
+        if (to - from < 1) return new AppWithDetails[0];
+
+        AppItemAtOffset[] items = itemAtOffset(from, to);
+        AppWithDetails[] result = new AppWithDetails[items.length];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = items[i].getAppWithDetails();
+        }
+        return result;
     }
 }

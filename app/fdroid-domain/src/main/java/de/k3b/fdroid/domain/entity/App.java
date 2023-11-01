@@ -22,8 +22,8 @@ import static de.k3b.fdroid.domain.service.LocalizedService.SEPERATOR_DESCRIPTIO
 import static de.k3b.fdroid.domain.service.LocalizedService.SEPERATOR_NAME;
 import static de.k3b.fdroid.domain.service.LocalizedService.SEPERATOR_SUMMARY;
 import static de.k3b.fdroid.domain.service.LocalizedService.SEPERATOR_WHATS_NEW;
+import static de.k3b.fdroid.domain.service.LocalizedService.createLocalePrefixes;
 import static de.k3b.fdroid.domain.service.VersionService.SEPERATOR_MIN_MAX;
-import static de.k3b.fdroid.domain.util.StringUtil.getFirst;
 import static de.k3b.fdroid.domain.util.StringUtil.getLast;
 
 import androidx.room.ForeignKey;
@@ -36,6 +36,8 @@ import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.entity.common.AppCommon;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
+import de.k3b.fdroid.domain.service.LocalizedService;
+import de.k3b.fdroid.domain.util.StringUtil;
 
 /**
  * Information about an Android App.
@@ -88,6 +90,11 @@ public class App extends AppCommon implements AppDetail {
 
     @JsonIgnore
     private String searchCategory;
+
+    @JsonIgnore
+    @androidx.room.Ignore
+    @javax.persistence.Transient
+    private AppSearchParameter appSearchParameter;
 
     // needed by android-room and jpa
     public App() {
@@ -194,20 +201,40 @@ public class App extends AppCommon implements AppDetail {
         this.searchCategory = searchCategory;
     }
 
+    private String getFromSearchText(String searchText, String seperator, String notFoundValue) {
+        String[] locales = (this.appSearchParameter == null) ? null : this.appSearchParameter.locales;
+        if (locales != null && locales.length > 0) {
+            String[] localePrefixes = this.appSearchParameter.localePrefixes;
+            if (localePrefixes == null) {
+                this.appSearchParameter.localePrefixes = localePrefixes = createLocalePrefixes(locales);
+            }
+            for (String prefix : localePrefixes) {
+                String found = LocalizedService.removeLocalePrefix(
+                        StringUtil.getFirstWithPrefix(searchText, prefix, seperator, null));
+                if (found != null) {
+                    return found;
+                }
+            }
+        }
+        return LocalizedService.removeLocalePrefix(StringUtil.getFirst(searchText, seperator, notFoundValue));
+    }
+
     public String getLocalizedName() {
-        return getFirst(searchName, SEPERATOR_NAME, getPackageName());
+        return getFromSearchText(searchName, SEPERATOR_NAME, getPackageName());
     }
 
     public String getLocalizedSummary() {
-        return getFirst(searchSummary, SEPERATOR_SUMMARY, NOT_FOUND_VALUE);
+        return getFromSearchText(searchSummary, SEPERATOR_SUMMARY, NOT_FOUND_VALUE);
     }
 
+    @JsonIgnore // for web strings must be loaded from locales
     public String getLocalizedDescription() {
-        return getFirst(searchDescription, SEPERATOR_DESCRIPTION, NOT_FOUND_VALUE);
+        return getFromSearchText(searchDescription, SEPERATOR_DESCRIPTION, NOT_FOUND_VALUE);
     }
 
+    @JsonIgnore // for web strings must be loaded from locales
     public String getLocalizedWhatsNew() {
-        return getFirst(searchWhatsNew, SEPERATOR_WHATS_NEW, NOT_FOUND_VALUE);
+        return getFromSearchText(searchWhatsNew, SEPERATOR_WHATS_NEW, NOT_FOUND_VALUE);
     }
 
     public String getVersion() {
@@ -229,5 +256,13 @@ public class App extends AppCommon implements AppDetail {
 
     public void setResourceRepoId(Integer resourceRepoId) {
         this.resourceRepoId = resourceRepoId;
+    }
+
+    public AppSearchParameter getAppSearchParameter() {
+        return appSearchParameter;
+    }
+
+    public void setAppSearchParameter(AppSearchParameter appSearchParameter) {
+        this.appSearchParameter = appSearchParameter;
     }
 }

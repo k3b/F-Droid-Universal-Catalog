@@ -43,6 +43,7 @@ import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.adapter.AppRepositoryAdapterImpl;
 import de.k3b.fdroid.domain.adapter.LocalizedRepositoryAdapterImpl;
 import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.entity.AppSearchParameter;
 import de.k3b.fdroid.domain.entity.AppWithDetails;
 import de.k3b.fdroid.domain.entity.Localized;
 import de.k3b.fdroid.domain.entity.Repo;
@@ -54,11 +55,13 @@ import de.k3b.fdroid.domain.repository.VersionRepository;
 import de.k3b.fdroid.domain.repository.VersionRepositoryWithMinSdkFilter;
 import de.k3b.fdroid.domain.service.AppWithDetailsPagerService;
 import de.k3b.fdroid.domain.service.CacheServiceInteger;
+import de.k3b.fdroid.domain.service.LanguageService;
 import de.k3b.fdroid.domain.service.LocalizedImageService;
 import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.html.service.GetUrlMustacheLamdaService;
 
 @Controller
+@SuppressWarnings("unused")
 public class AppDetailController {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_HTML);
 
@@ -93,8 +96,10 @@ public class AppDetailController {
             @PathVariable String idOrPackageName,
             @RequestParam(name = "minSdk", required = false, defaultValue = "0") String minVersionSdkText,
             @RequestParam(name = "back", required = false, defaultValue = "") String back,
+            @RequestParam(name = "locales", required = false, defaultValue = "") String locales,
             Model model) {
-        AppWithDetailsPagerService.AppItemAtOffset[] item = appDetail(idOrPackageName, minVersionSdkText);
+        AppWithDetailsPagerService.AppItemAtOffset[] item = appDetail(
+                idOrPackageName, minVersionSdkText, locales);
 
         model.addAttribute("item", item);
         model.addAttribute("getUrl", getUrl);
@@ -106,8 +111,9 @@ public class AppDetailController {
     @GetMapping(value = WebConfig.API_ROOT + "/app/{idOrPackageName}", produces = MediaType.APPLICATION_JSON_VALUE)
     public AppWithDetails appDetailRest(
             @PathVariable String idOrPackageName,
-            @RequestParam(name = "minSdk", required = false, defaultValue = "0") String minVersionSdkText) {
-        AppWithDetails appWithDetails = appDetail(idOrPackageName, minVersionSdkText)[0].getAppWithDetails();
+            @RequestParam(name = "minSdk", required = false, defaultValue = "0") String minVersionSdkText,
+            @RequestParam(name = "locales", required = false, defaultValue = "") String locales) {
+        AppWithDetails appWithDetails = appDetail(idOrPackageName, minVersionSdkText, locales)[0].getAppWithDetails();
         if (appWithDetails.getVersionList().isEmpty()) {
             LOGGER.info("appDetailRest(idOrPackageName='{}', minSdk='{}') : no Version found for {}",
                     idOrPackageName, minVersionSdkText, appWithDetails);
@@ -116,7 +122,8 @@ public class AppDetailController {
         return appWithDetails;
     }
 
-    private AppWithDetailsPagerService.AppItemAtOffset[] appDetail(String idOrPackageName, String minVersionSdkText) {
+    private AppWithDetailsPagerService.AppItemAtOffset[] appDetail(
+            String idOrPackageName, String minVersionSdkText, String locales) {
         int minVersionSdk = StringUtil.parseInt(minVersionSdkText, 0);
         int id = 0;
         try {
@@ -126,7 +133,13 @@ public class AppDetailController {
             if (app != null) id = app.getId();
         }
         versionRepositoryWithMinSdkFilter.setMinSdk(minVersionSdk);
-        appWithDetailsPagerService.init(Collections.singletonList(id), 1);
+
+        AppSearchParameter appSearchParameter = (StringUtil.isEmpty(locales))
+                ? null
+                : new AppSearchParameter()
+                .locales(LanguageService.getCanonicalLocalesArray(locales));
+
+        appWithDetailsPagerService.init(Collections.singletonList(id), 1, appSearchParameter);
 
         AppWithDetailsPagerService.AppItemAtOffset[] item = appWithDetailsPagerService.itemAtOffset(0, 1);
         return item;

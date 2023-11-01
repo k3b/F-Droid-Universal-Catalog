@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -29,30 +29,39 @@ public class LanguageServiceTest {
 
     @Test
     public void getCanonicalLocale() {
-        testCanonical("en", "en-US");
+        testCanonical("en-US", "en");
 
         testCanonical("de", "de");
-        testCanonical("de", "de-DE");
-        testCanonical("de", "de_DE");
-        testCanonical("de", "de-rDE");
-        testCanonical("de", "de-AT");
+        testCanonical("de-DE", "de");
+        testCanonical("de_DE", "de");
+        testCanonical("de-rDE", "de");
+        testCanonical("de-AT", "de");
 
         // special case chineese
-        testCanonical("zh-TW", "zh-rTW");
+        testCanonical("zh-rTW", "zh-TW");
 
         // special case non-2-letter-language (plattdütsch, ancient german)
         testCanonical("nds-DE", "nds-DE");
 
         // error non-locale
-        testCanonical(null, null);
+        testCanonical(null, (String) null);
         testCanonical("", "");
         testCanonical("heLLo World", "heLLo World");
+
+        testCanonical("en-US,de-DE", "en", "de");
+        testCanonical(null, (String[]) null);
     }
 
-    private void testCanonical(String expected, String fdroidLocale) {
+    private void testCanonical(String fdroidLocale, String expected) {
         assertEquals("LanguageService.getCanonicalLocale(" + fdroidLocale + ")", expected, LanguageService.getCanonicalLocale(fdroidLocale));
     }
 
+    private void testCanonical(String fdroidLocale, String... expected) {
+        String[] result = LanguageService.getCanonicalLocalesArray(fdroidLocale);
+        assertEquals("LanguageService.getCanonicalLocalesArray(" + fdroidLocale + ")", expected, result);
+    }
+
+    // getCanonicalLocalesArray
     @Test
     public void getCanonicalLocaleChangeIndex() {
         String[] keys = new String[]{
