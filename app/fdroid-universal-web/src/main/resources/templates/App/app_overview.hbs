@@ -8,15 +8,18 @@
             </td>
             <td>
                 <select name="locales">
-                    {{#localeList}}
-                        <option value="{{id}},en">{{id}} {{symbol}} {{nameNative}} ({{nameEnglish}}
-                            )
-                        </option>
-                        <option value="" selected="selected"></option>
-                    {{/localeList}}
                     {{#locales}}
-                        <option value="{{{locales}}}" selected="selected">{{{locales}}}</option>
+                        <option value=""></option>
+                        <option value="{{locales}}" selected="selected">{{locales}}</option>
                     {{/locales}}
+                    {{^locales}}
+                        <option value="" selected="selected"></option>
+                    {{/locales}}
+                    {{#localeList}}
+                        <option value="{{id}},en">
+                            {{id}} {{symbol}} {{nameNative}} ({{nameEnglish}})
+                        </option>
+                    {{/localeList}}
                 </select>
             </td>
         </tr>
