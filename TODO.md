@@ -1,5 +1,11 @@
 todo
 
+v screenshots only from prefered locale(s)
+
+* app-search with language picker
+
+---------------
+
 v Rename existing url-parameter "-v(ersion)" to "-minSdk"
 v LocaleId is iso-code (i.e. "de")
 

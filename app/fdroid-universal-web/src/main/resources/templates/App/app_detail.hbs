@@ -19,12 +19,9 @@
         <pre>{{{.}}}</pre></br>
     {{/app.localizedDescription}}
 
-    {{#LocalizedList}}
-        {{#phoneScreenshotArray}}
-        {{! dev.lonami.klooni/en-US/phoneScreenshots/ + 1.jpg }}
-            <img src="{{phoneScreenshotDir}}{{.}}"/></br>
-        {{/phoneScreenshotArray}}
-    {{/LocalizedList}}
+    {{#phoneScreenshotUrls}}
+        <img src="{{.}}"/></br>
+    {{/phoneScreenshotUrls}}
 
     {{! #LocalizedList}}
     {{! > App/localized_detail}}

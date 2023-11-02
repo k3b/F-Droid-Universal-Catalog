@@ -18,11 +18,13 @@
     "searchSigner": "666d4e095d70b606629a0697f3da15b66fa08a03c620b3a6feb9e19407be31a5 ",
     "version": "0.8.3.200315(47)",
     "localizedName": "A Photo Manager",
-    "appId": 131,
     "sdk": "[14,21,28]",
+    "appId": 131,
     "localizedSummary": "Verwalte lokale Photos: Suchen/Kopieren/Exif bearbeiten/Gallerie/Landkarte.",
-    "addedDate": "2015-07-30",
-    "lastUpdatedDate": "2020-03-14"
+    "localizedDescription": "Merkmale:\n\n* Schnelle Bildsuche per Tags(Suchbegriffe), Datei(unter)ordner, Datum, Geo-Daten ...\n* Anzeige in Gallerie oder Landkarte (Openstreetmap)\n* Unterstützt virtuelle Alben.\n* Eingebaute Dateiverwaltung für Bilder: Kopieren, Löschen, Teilen/Senden, stufenweise Datensicherung (Incremental Backup)... .\n* Bearbeiten von Bildeigenschaften (exif metadata): Datum, Title, Bild-Beschreibung , tags(Suchbegriffe), geo, Bewertung (rating), ....\n* Optional Autoprocessing: Photos können beim Kopieren/Verschieben automatisch umbenannt und mit Tags, Geo, Title, ... versehen werden.\n* Verwaltet große Bildersammlungen (20000+ Bilder in 1000+ Ordnern)\n* Geringer Speicherverbrauch (1.5 MB), arbeitet auch auf alten Antroid-4.0 Geräten mit wenig internen Speicher\n* Funktioniert auch ohne vorherigem media scan (Android native media content-provider).\n* Erweiterter Media-Scanner für Bilder: Exif, IPTC, XMP.\n\nPrivacy:\n\n* Bilder als \"Privat\" markieren und so für andere Bild Programme unsichtbar machen.\n* Tresor-Modus (Vault mode): Wenn aktiviert sind nur noch zuvor ausgewähtle Photos sichtbar und potentiell gefährliche Aktionen (Kopieren, Löschen, Verschieben, Bildauswahl ändern, ...) nicht möglich. So kann das Gerät gefahrlos einem dritten übergeben werden.\n* Photos verbleiben auf dem Gerät dh sie werden nicht auf Server ins internet geladen.\n* Keine Werbung, keine Datensammlung (usertracking), freie (kostenlos, uneingeschränkt nutzbare) Software verfügbar per f-droid.\n\nAndroid Berechtigungen: :\n\n* INTERNET: Download Landkarten von Openstreetmap.\n* ACCESS_NETWORK_STATE und ACCESS_WIFI_STATE: Feststellen ob wifi/internet verfügbar ist für Landkarten download.\n* WRITE_EXTERNAL_STORAGE Zwichenspeichern von Landkarten und Dateioperationen mit Bildern.\n* READ_LOGS Speichere Programmabsturz-Infos in lokaler Textdatei.\n.\n",
+    "localizedWhatsNew": "* #168: Bugfix crash in \"incremental backup to zip-file\"\n* translation updates nl, ru, zh-CN\n* APhotoManager is not Android-10 (api-29) ready yet.\n",
+    "lastUpdatedDate": "2020-03-14",
+    "addedDate": "2015-07-30"
   },
   "localizedList": [
     {
@@ -286,5 +288,12 @@
     }
   ],
   "id": 131,
+  "phoneScreenshotUrls": [
+    "de.k3b.android.androFotoFinder/en-US/phoneScreenshots/1-Gallery.png",
+    "de.k3b.android.androFotoFinder/en-US/phoneScreenshots/2-SelectArea.png",
+    "de.k3b.android.androFotoFinder/en-US/phoneScreenshots/3-ExifEdit.png",
+    "de.k3b.android.androFotoFinder/en-US/phoneScreenshots/7-Filter.png",
+    "de.k3b.android.androFotoFinder/en-US/phoneScreenshots/9-tags.png"
+  ],
   "appId": 131
 }

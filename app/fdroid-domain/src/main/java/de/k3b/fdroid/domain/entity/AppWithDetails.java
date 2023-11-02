@@ -18,12 +18,14 @@
  */
 package de.k3b.fdroid.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
@@ -71,6 +73,43 @@ public class AppWithDetails extends EntityCommon implements AppDetail, Aggregate
 
     public List<Version> getVersionList() {
         return versionList;
+    }
+
+    @androidx.room.Ignore
+    @javax.persistence.Transient
+    public String[] getPhoneScreenshotUrls() {
+        Localized[] localizedArray = getLocalizedSorted();
+        if (localizedArray != null) {
+            for (Localized l : localizedArray) {
+                String[] urls = l.getPhoneScreenshotArray();
+                String dir = l.getPhoneScreenshotDir();
+                if (urls != null && urls.length > 0 && dir != null) {
+                    for (int i = 0; i < urls.length; i++) {
+                        urls[i] = dir + urls[i];
+                    }
+                    return urls;
+                }
+            }
+        }
+        return null;
+    }
+
+    @JsonIgnore
+    @androidx.room.Ignore
+    @javax.persistence.Transient
+    public Localized[] getLocalizedSorted() {
+        if (getLocalizedList() == null) return null;
+
+        Localized[] localizedArray = getLocalizedList().toArray(new Localized[0]);
+
+        AppSearchParameter appSearchParameter = getApp().getAppSearchParameter();
+        String[] locales = (appSearchParameter == null) ? null : appSearchParameter.locales;
+
+        if (locales != null && locales.length > 1) {
+            LocalizedLocalesSorter<Localized> sorter = new LocalizedLocalesSorter<>(locales);
+            Arrays.sort(localizedArray, sorter);
+        }
+        return localizedArray;
     }
 
     public <T extends AppDetail> List<T> getList(Class<?> classz) {

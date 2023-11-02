@@ -227,12 +227,10 @@ public class App extends AppCommon implements AppDetail {
         return getFromSearchText(searchSummary, SEPERATOR_SUMMARY, NOT_FOUND_VALUE);
     }
 
-    @JsonIgnore // for web strings must be loaded from locales
     public String getLocalizedDescription() {
         return getFromSearchText(searchDescription, SEPERATOR_DESCRIPTION, NOT_FOUND_VALUE);
     }
 
-    @JsonIgnore // for web strings must be loaded from locales
     public String getLocalizedWhatsNew() {
         return getFromSearchText(searchWhatsNew, SEPERATOR_WHATS_NEW, NOT_FOUND_VALUE);
     }
