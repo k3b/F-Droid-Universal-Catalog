@@ -37,6 +37,7 @@
     <string name="label_search">Find</string>
     <string name="label_search_text">Search Text:</string>
     <string name="label_app_whats_new">What is new:</string>
+    <string name="label_app_description">Description:</string>
 
     <!-- from list demo -->
     <string name="element_text">Element</string>

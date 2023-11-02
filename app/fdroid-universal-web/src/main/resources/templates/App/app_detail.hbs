@@ -3,14 +3,33 @@
 {{#item}}
     <h3>
         {{#app.icon}}
-            <img src="icons/{{app.packageName}}.png" width="48" height="48" />
+            <img src="icons/{{app.packageName}}.png" width="48" height="48"/>
         {{/app.icon}}
         {{app.localizedName}}
+
     </h3>
-    {{> App/list_app_summary}}
+        {{#app.localizedSummary}}{{.}}</br>{{/app.localizedSummary}}
+
+    {{#app.localizedWhatsNew}}
+        <h4>{{t.label_app_whats_new}}</h4>
+        <pre>{{{.}}}</pre></br>
+    {{/app.localizedWhatsNew}}
+    {{#app.localizedDescription}}
+        <h4>{{t.label_app_description}}</h4>
+        <pre>{{{.}}}</pre></br>
+    {{/app.localizedDescription}}
+
     {{#LocalizedList}}
-        {{> App/localized_detail}}
+        {{#phoneScreenshotArray}}
+        {{! dev.lonami.klooni/en-US/phoneScreenshots/ + 1.jpg }}
+            <img src="{{phoneScreenshotDir}}{{.}}"/></br>
+        {{/phoneScreenshotArray}}
     {{/LocalizedList}}
+
+    {{! #LocalizedList}}
+    {{! > App/localized_detail}}
+    {{! /LocalizedList}}
+
     {{#VersionList}}
         {{> App/version_detail}}
     {{/VersionList}}
