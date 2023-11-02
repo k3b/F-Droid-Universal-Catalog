@@ -45,6 +45,7 @@ import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.repository.AppDetailRepository;
 import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.repository.CategoryRepository;
+import de.k3b.fdroid.domain.repository.LocaleRepository;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.service.AppIconService;
 import de.k3b.fdroid.domain.service.AppWithDetailsPagerService;
@@ -59,6 +60,7 @@ public class AppController {
     private static final int PAGESIZE_DEFAULT = 5;
     private static final int PAGESIZE_MAX = 25;
     private final AppRepository appRepository;
+    private final LocaleRepository localeRepository;
     private final AppWithDetailsPagerService appWithDetailsPagerService;
     private final AppIconService iconService;
     private final ArrayList<Category> categoryList;
@@ -66,7 +68,8 @@ public class AppController {
 
     public AppController(@Value("${de.k3b.fdroid.downloads.icons}") String iconsDir,
                          RepoRepository repoRepository, AppRepository appRepository,
-                         CategoryRepository categoryRepository) {
+                         CategoryRepository categoryRepository,
+                         LocaleRepository localeRepository) {
         this.appRepository = appRepository;
 
         AppDetailRepository<App> appAppDetailRepository = new AppRepositoryAdapterImpl(appRepository);
@@ -80,6 +83,7 @@ public class AppController {
         categoryList.sort(Category.COMPARE_BY_NAME);
         categoryCache = new CacheServiceInteger<>(categoryList);
         this.categoryList = categoryList;
+        this.localeRepository = localeRepository;
     }
 
     @ResponseBody
@@ -160,6 +164,7 @@ public class AppController {
             model.addAttribute("categories", categoryList);
             model.addAttribute("category", categoryCache.getItemById(categoryId));
             model.addAttribute("locales", locales);
+            model.addAttribute("localeList", localeRepository.findAll());
 
             if (page > 0) model.addAttribute("prev", page - 1);
             if (page + 1 < maxPage) model.addAttribute("next", page + 1);

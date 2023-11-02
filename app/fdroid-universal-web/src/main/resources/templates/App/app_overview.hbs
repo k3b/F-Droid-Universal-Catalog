@@ -4,10 +4,28 @@
     <table border="1">
         <tr>
             <td>
+                <label for="locales">{{t.label_locale_title}}:</label>
+            </td>
+            <td>
+                <select name="locales">
+                    {{#localeList}}
+                        <option value="{{id}},en">{{id}} {{symbol}} {{nameNative}} ({{nameEnglish}}
+                            )
+                        </option>
+                        <option value="" selected="selected"></option>
+                    {{/localeList}}
+                    {{#locales}}
+                        <option value="{{{locales}}}" selected="selected">{{{locales}}}</option>
+                    {{/locales}}
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 <label for="q">{{t.label_search_text}}</label>
             </td>
             <td>
-                <input type="text" name="q" value="{{query}}" />
+                <input type="text" name="q" value="{{query}}"/>
             </td>
         </tr>
         <tr>
