@@ -25,13 +25,10 @@
 
 -dontnote MobileAds
 
-# jpa compatibility can be removed from android code
--assumenosideeffects class javax.persistence.**  { *; }
--assumenosideeffects class org.springframework.**  { *; }
-
-# removed in org.mapsforge:mapsforge-map-android:0.10.0
-# but still referenced in org.osmdroid.mapsforge.MapsForgeTileSource
-# -assumenosideeffects class org.mapsforge.map.reader.ReadBuffer { public void setMaximumBufferSize(...); }
+# non android annotations can be removed from android code
+-assumenosideeffects class javax.persistence.**  { *; } # jpa compatibility
+-assumenosideeffects class org.springframework.**  { *; } # spring persistence
+-assumenosideeffects class io.swagger.v3.oas.annotations.**  { *; } # inline documentation (OpenAPI + Swagger)
 
 ###############
 # I use proguard only to remove unused stuff and to keep the app small.

@@ -39,6 +39,11 @@ import java.util.Properties;
 
 import de.k3b.fdroid.html.service.ResourceBundleMustacheContext;
 import de.k3b.fdroid.html.util.MustacheEx;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
+import io.swagger.v3.oas.annotations.servers.Server;
 
 /**
  * j2se-jpa-db implementation that reads from fdroid-v1-jar and updates a jpa database
@@ -48,6 +53,22 @@ import de.k3b.fdroid.html.util.MustacheEx;
 @ComponentScan(basePackages = {"de.k3b.fdroid"})
 @EntityScan({"de.k3b.fdroid"})
 @SpringBootApplication
+@OpenAPIDefinition(
+		info = @Info(
+				title = "F-Droid-Universal-Catalog",
+				description = "" +
+						"An 'App Catalog' to find, discover and download apps for your Android Smartphone or Android Tablet.",
+				contact = @Contact(
+						name = "k3b",
+						url = "https://github.com/k3b/f-Droid-Universal-Catalog/wiki/"
+						// email = "petros.stergioulas94@gmail.com"
+				),
+				license = @License(
+						name = "GPL-3.0 license",
+						url = "https://github.com/k3b/F-Droid-Universal-Catalog/blob/master/LICENSE")),
+		servers = @Server(url = "http://localhost:8080")
+)
+@SuppressWarnings("unused")
 public class WebServerApplication {
 	private static final Logger log = LoggerFactory.getLogger(WebServerApplication.class);
 

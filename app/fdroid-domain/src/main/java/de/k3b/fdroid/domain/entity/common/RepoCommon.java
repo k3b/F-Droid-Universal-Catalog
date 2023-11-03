@@ -19,29 +19,46 @@
 
 package de.k3b.fdroid.domain.entity.common;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 /**
  * Common data for v1-Gson-json and android-room-database-Entities.
  * Only primitive types are allowed. No relations, no Objects, no Lists
  * as these are Gson/Android-Room-Database specific.
  */
 @javax.persistence.MappedSuperclass
+@SuppressWarnings("unused")
 public class RepoCommon extends EntityCommon {
     public static final String V1_JAR_NAME = "index-v1.jar";
     public static final String V1_JSON_NAME = "index-v1.json";
 
+    @Schema(description = "Name of the Repo.",
+            example = "F-Droid")
     private String name;
 
     @androidx.room.ColumnInfo(defaultValue = "0")
+    @Schema(description = "When the Repo-Catalog-download-file was last created in internal numeric format.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo-Catalog"),
+            example = "1654792862000")
     private long timestamp;
 
     @androidx.room.ColumnInfo(defaultValue = "0")
     private int version;
 
     @androidx.room.ColumnInfo(defaultValue = "0")
+    @Schema(description = "After [xxx=14] Days the repository-content should be reloaded.",
+            example = "14")
     private int maxage;
 
+    @Schema(description = "Used to calculate the url from [address].",
+            example = "fdroid-icon.png")
     private String icon;
+    @Schema(description = "Root adress where urls are calculated from.",
+            example = "https://f-droid.org/repo")
     private String address;
+    @Schema(description = "Descripton of the Repo.",
+            example = "The official F-Droid Free Software repository.  Everything in this repository ...")
     private String description;
 
     public static void copyCommon(RepoCommon dest, RepoCommon src) {
@@ -77,6 +94,9 @@ public class RepoCommon extends EntityCommon {
         return fileName + "-" + V1_JAR_NAME;
     }
 
+    @Schema(description = "Name of the Repo-Catalog-download-file. Used to calculate the url from [address].",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo-Catalog"),
+            example = "F-Droid-index-v1.jar")
     public String getV1JarFileName() {
         return getV1JarFileName(this.getName());
     }
@@ -84,6 +104,10 @@ public class RepoCommon extends EntityCommon {
     public long getTimestamp() {
         return timestamp;
     }
+
+    @Schema(description = "Date, when the Repo-Catalog-download-file was last created.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo-Catalog"),
+            example = "2022-06-09")
     public String getTimestampDate() {
         return timestamp == 0 ? null : asDateString(timestamp);
     }
@@ -129,9 +153,11 @@ public class RepoCommon extends EntityCommon {
     }
 
     /**
-     * Only the first sence of the Description. The whole Description is
-     * to much for for an android listview
+     * Only the first sentence of the Description. The whole Description is
+     * to much for an android listview
      */
+    @Schema(description = "The first sentence of the [description]. The whole [description] is to much for an android listview",
+            example = "The official F-Droid Free Software repository.")
     public String getShortDescription() {
         int len = (description != null) ? description.length() : 0;
         if (len > 100) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -16,18 +16,11 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.servingwebcontent;
+package de.k3b.fdroid.domain.entity.common;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-@Controller
-public class GreetingController {
-    @GetMapping("/greeting")
-    public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name, Model model) {
-        model.addAttribute("name", name);
-        return "greeting";
-    }
+public class WebReferences {
+    /**
+     * where docs for io.swagger.v3.oas.annotations.ExternalDocumentation are loaded from
+     */
+    public static final String GLOSSAR_URL = "https://github.com/k3b/F-Droid-Universal-Catalog/wiki/Glossar#";
 }

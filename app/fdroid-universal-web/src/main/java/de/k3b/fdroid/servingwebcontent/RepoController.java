@@ -34,10 +34,16 @@ import java.io.InputStream;
 import java.util.List;
 
 import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.entity.common.WebReferences;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.service.RepoIconService;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Controller
+@Tag(name = "Repo(s)", description = "Get available Repositories where Android Apps can be downloaded from",
+        externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo"))
+@SuppressWarnings("unused")
 public class RepoController {
     private final RepoIconService iconService;
     private final RepoRepository repoRepository;
@@ -74,7 +80,7 @@ public class RepoController {
     }
 
 
-    @GetMapping(value = "/Repo/repo/icons/repo_{id}.png", produces = MediaType.IMAGE_PNG_VALUE)
+    @GetMapping(value = "/Repo/repo/icon/repo_{id}.png", produces = MediaType.IMAGE_PNG_VALUE)
     public @ResponseBody
     byte[] appIcon(@PathVariable int id) {
         File file = iconService.getOrDownloadLocalImageFile(repoRepository.findById(id));

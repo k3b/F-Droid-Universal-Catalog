@@ -23,8 +23,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.jetbrains.annotations.NotNull;
 
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
+import de.k3b.fdroid.domain.entity.common.WebReferences;
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 import de.k3b.fdroid.domain.util.StringUtil;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Android independent: Pojo-s with all properties that are persisted in the Database.
@@ -44,6 +47,8 @@ import de.k3b.fdroid.domain.util.StringUtil;
 @androidx.room.Entity(indices = {@androidx.room.Index("id")})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
+@ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo")
+@SuppressWarnings("unused")
 public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
     public static final String STATE_BUSY = "busy"; // while downloding. bg-color=yellow
     public static final String STATE_ERROR = "error"; // download failed bg-color=red
@@ -55,6 +60,9 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
     @androidx.room.PrimaryKey(autoGenerate = true)
     private int id;
 
+    @Schema(description = "List of duplicates of a Ropos that allows to download under a different Adress or url used for Load balancing.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Mirror"),
+            example = "https://ftp.fau.de/fdroid/repo,https://mirror.cyberbits.eu/fdroid/repo,https://fdroid.tetaneutral.net/fdroid/repo,https://ftp.lysator.liu.se/pub/fdroid/repo,https://plug-mirror.rcac.purdue.edu/fdroid/repo")
     private String mirrors = null;
     /**
      * calculated and cached from {@link #mirrors}. Not persisted in Database
@@ -68,23 +76,38 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
 
     private String jarSigningCertificateFingerprint;
 
+    @Schema(description = "Server, where Catalogfile was last downloaded from .",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Mirror"),
+            example = "https://f-droid.org/repo")
     private String lastUsedDownloadMirror;
 
+    @Schema(description = "Last download ErrorMessage.")
     private String lastErrorMessage;
 
     @androidx.room.ColumnInfo(defaultValue = "0")
+    @Schema(description = "When the Repo-Catalog-download-file was downloaded in internal numeric format.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo-Catalog"),
+            example = "1654792862000")
     private long lastUsedDownloadDateTimeUtc;
 
     @androidx.room.ColumnInfo(defaultValue = "0")
+    @Schema(description = "Number of different Apps available in this Repo.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "App"),
+            example = "3868")
     private int lastAppCount;
 
     @androidx.room.ColumnInfo(defaultValue = "0")
+    @Schema(description = "Number of different App-Versions available in this Repo.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Version"),
+            example = "9087")
     private int lastVersionCount;
 
     @androidx.room.ColumnInfo(defaultValue = "0")
+    @JsonIgnore
     private boolean autoDownloadEnabled;
 
     // uuid of WorkRequest used to download/import
+    @JsonIgnore
     private String downloadTaskId;
 
     private String repoTyp;
@@ -104,6 +127,9 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
         setRepoTyp(repoTyp);
     }
 
+    @Schema(description = "Calculated Catalog download file-url.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Mirror"),
+            example = "https://f-droid.org/repo/index-v1.jar")
     public static String getV1Url(String server) {
         return getUrl(server, V1_JAR_NAME);
     }
@@ -208,6 +234,9 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
         toStringBuilder(sb, "downloadTaskId", this.downloadTaskId);
     }
 
+    @Schema(description = "Calculated Url where V1-Repo-Catalog-file is downloaded from.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo-Catalog"),
+            example = "https://f-droid.org/repo/index-v1.jar")
     public String getV1Url() {
         String server = removeName(getLastUsedDownloadMirror());
         return getV1Url(server);
@@ -224,6 +253,8 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
         return url;
     }
 
+    @Schema(description = "Calculated Icon-Url of the [repo]",
+            example = "https://f-droid.org/repo/icons/fdroid-icon.png")
     public String getRepoIconUrl() {
         return getAppIconUrl(getIcon());
     }
@@ -234,6 +265,10 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
         }
         return getTimestamp();
     }
+
+    @Schema(description = "Date, when the Repo-Catalog-download-file was downloaded.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo-Catalog"),
+            example = "2022-06-09")
 
     public String getLastUsedDownloadDateTimeUtcDate() {
         long l = getLastUsedDownloadDateTimeUtc();
@@ -289,6 +324,8 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
      * In android to backgroundcolor 'bg_state_xxxxx'
      * Called by reflection from fdroid-html
      */
+    @Schema(description = "Status of the Repository that will be translated to html-css-class='state_xxxxx'.",
+            example = "enabled")
     public String getStateCode() {
         if (isBusy()) return STATE_BUSY;
         if (!StringUtil.isEmpty(getLastErrorMessage())) return STATE_ERROR;

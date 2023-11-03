@@ -18,19 +18,13 @@
  */
 package de.k3b.fdroid.servingwebcontent;
 
-import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -42,19 +36,23 @@ import de.k3b.fdroid.domain.entity.AppSearchParameter;
 import de.k3b.fdroid.domain.entity.AppWithDetails;
 import de.k3b.fdroid.domain.entity.Category;
 import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.entity.common.WebReferences;
 import de.k3b.fdroid.domain.repository.AppDetailRepository;
 import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.repository.CategoryRepository;
 import de.k3b.fdroid.domain.repository.LocaleRepository;
 import de.k3b.fdroid.domain.repository.RepoRepository;
-import de.k3b.fdroid.domain.service.AppIconService;
 import de.k3b.fdroid.domain.service.AppWithDetailsPagerService;
 import de.k3b.fdroid.domain.service.CacheServiceInteger;
 import de.k3b.fdroid.domain.service.LanguageService;
 import de.k3b.fdroid.domain.util.AndroidVersionName;
 import de.k3b.fdroid.domain.util.StringUtil;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Controller
+@Tag(name = "App(s)", description = "Find Android Apps",
+        externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "App"))
 @SuppressWarnings("unused")
 public class AppController {
     private static final int PAGESIZE_DEFAULT = 5;
@@ -62,12 +60,10 @@ public class AppController {
     private final AppRepository appRepository;
     private final LocaleRepository localeRepository;
     private final AppWithDetailsPagerService appWithDetailsPagerService;
-    private final AppIconService iconService;
     private final ArrayList<Category> categoryList;
     private final CacheServiceInteger<Category> categoryCache;
 
-    public AppController(@Value("${de.k3b.fdroid.downloads.icons}") String iconsDir,
-                         RepoRepository repoRepository, AppRepository appRepository,
+    public AppController(RepoRepository repoRepository, AppRepository appRepository,
                          CategoryRepository categoryRepository,
                          LocaleRepository localeRepository) {
         this.appRepository = appRepository;
@@ -76,7 +72,6 @@ public class AppController {
         appWithDetailsPagerService = new AppWithDetailsPagerService(
                 appAppDetailRepository, null, null, null);
         CacheServiceInteger<Repo> cache = new CacheServiceInteger<>(repoRepository.findAll());
-        iconService = new AppIconService(iconsDir, cache, appRepository);
 
         ArrayList<Category> categoryList = new ArrayList<>(categoryRepository.findAll());
         categoryList.add(new Category(0, ""));
@@ -174,20 +169,6 @@ public class AppController {
 
     private String urlencode(String q) {
         return URLEncoder.encode(q, StandardCharsets.UTF_8);
-    }
-
-    @GetMapping(value = WebConfig.HTML_APP_ROOT + "/icons/{packageName}.png", produces = MediaType.IMAGE_PNG_VALUE)
-    public @ResponseBody
-    byte[] appIcon(@PathVariable String packageName) {
-        File file = iconService.getOrDownloadLocalImageFile(packageName);
-        if (file != null) {
-            try (InputStream in = new FileInputStream(file)) {
-                return IOUtils.toByteArray(in);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
     }
 
 }

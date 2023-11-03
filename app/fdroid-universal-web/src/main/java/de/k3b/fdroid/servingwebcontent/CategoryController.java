@@ -27,9 +27,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 import de.k3b.fdroid.domain.entity.Category;
+import de.k3b.fdroid.domain.entity.common.WebReferences;
 import de.k3b.fdroid.domain.repository.CategoryRepository;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Controller
+@Tag(name = "Category(s)", description = "Get available categories for Android Apps",
+        externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Category"))
+@SuppressWarnings("unused")
 public class CategoryController {
     private final CategoryRepository categoryRepository;
 

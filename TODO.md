@@ -1,9 +1,8 @@
 todo
 
 v screenshots only from prefered locale(s)
-
-* app-search with language picker
-
+v app-search with language picker
+> swagger gui for webservices
 ---------------
 
 v Rename existing url-parameter "-v(ersion)" to "-minSdk"

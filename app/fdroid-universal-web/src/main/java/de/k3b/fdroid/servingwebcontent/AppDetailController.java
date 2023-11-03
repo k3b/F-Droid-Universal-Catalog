@@ -46,6 +46,7 @@ import de.k3b.fdroid.domain.entity.AppSearchParameter;
 import de.k3b.fdroid.domain.entity.AppWithDetails;
 import de.k3b.fdroid.domain.entity.LocalizedLocalesSorter;
 import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.entity.common.WebReferences;
 import de.k3b.fdroid.domain.repository.AppDetailRepository;
 import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.repository.LocalizedRepository;
@@ -53,14 +54,19 @@ import de.k3b.fdroid.domain.repository.LocalizedRepositoryWithLocaleFilter;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.repository.VersionRepository;
 import de.k3b.fdroid.domain.repository.VersionRepositoryWithMinSdkFilter;
+import de.k3b.fdroid.domain.service.AppIconService;
 import de.k3b.fdroid.domain.service.AppWithDetailsPagerService;
 import de.k3b.fdroid.domain.service.CacheServiceInteger;
 import de.k3b.fdroid.domain.service.LanguageService;
 import de.k3b.fdroid.domain.service.LocalizedImageService;
 import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.html.service.GetUrlMustacheLamdaService;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Controller
+@Tag(name = "App", description = "Get infos for an Android App",
+        externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "App"))
 @SuppressWarnings("unused")
 public class AppDetailController {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_HTML);
@@ -70,10 +76,14 @@ public class AppDetailController {
     private final AppWithDetailsPagerService appWithDetailsPagerService;
     private final Mustache.Lambda getUrl;
     private final AppRepository appRepository;
+
+    private final AppIconService iconService;
+
     private final LocalizedImageService localizedImageService;
 
     public AppDetailController(
             @Value("${de.k3b.fdroid.downloads.images}") String imageDir,
+            @Value("${de.k3b.fdroid.downloads.icons}") String iconsDir,
             RepoRepository repoRepository, AppRepository appRepository,
             LocalizedRepository localizedRepository,
             VersionRepository versionRepository) {
@@ -90,6 +100,9 @@ public class AppDetailController {
         getUrl = new GetUrlMustacheLamdaService(repoCacheService);
 
         localizedImageService = new LocalizedImageService(imageDir, repoCacheService, appRepository);
+
+        CacheServiceInteger<Repo> cache = new CacheServiceInteger<>(repoRepository.findAll());
+        iconService = new AppIconService(iconsDir, cache, appRepository);
     }
 
     @GetMapping(HTML_APP_ROOT + "/{idOrPackageName}")
@@ -156,6 +169,20 @@ public class AppDetailController {
     byte[] localizedPhoneScreenshots(@PathVariable String packageName, @PathVariable String locale, @PathVariable String name) {
         String path = packageName + "/" + locale + "/phoneScreenshots/" + name;
         File file = localizedImageService.getOrDownloadLocalImageFile(packageName, path);
+        if (file != null) {
+            try (InputStream in = new FileInputStream(file)) {
+                return IOUtils.toByteArray(in);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    @GetMapping(value = WebConfig.HTML_APP_ROOT + "/icon/{packageName}.png", produces = MediaType.IMAGE_PNG_VALUE)
+    public @ResponseBody
+    byte[] appIcon(@PathVariable String packageName) {
+        File file = iconService.getOrDownloadLocalImageFile(packageName);
         if (file != null) {
             try (InputStream in = new FileInputStream(file)) {
                 return IOUtils.toByteArray(in);
