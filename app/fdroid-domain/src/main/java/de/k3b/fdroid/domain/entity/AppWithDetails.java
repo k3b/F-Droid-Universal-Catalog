@@ -29,14 +29,19 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
+import de.k3b.fdroid.domain.entity.common.WebReferences;
 import de.k3b.fdroid.domain.interfaces.AggregateRoot;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * DDD {@link AggregateRoot} for {@link App}
  */
 @JsonInclude(Include.NON_NULL)
 @SuppressWarnings({"unchecked", "unsafe", "unused"})
+@ExternalDocumentation(description = "Information about an Android App that is available in a Repo or Mirror",
+        url = WebReferences.GLOSSAR_URL + "App")
 public class AppWithDetails extends EntityCommon implements AppDetail, AggregateRoot {
     @NotNull
     private final App app;
@@ -77,6 +82,8 @@ public class AppWithDetails extends EntityCommon implements AppDetail, Aggregate
 
     @androidx.room.Ignore
     @javax.persistence.Transient
+    @Schema(description = "Screenshot(s) from Android-Phone.",
+            example = "de.k3b.android.androFotoFinder/en-US/phoneScreenshots/1-Gallery.png")
     public String[] getPhoneScreenshotUrls() {
         Localized[] localizedArray = getLocalizedSorted();
         if (localizedArray != null) {

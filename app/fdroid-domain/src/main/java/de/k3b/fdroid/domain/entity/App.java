@@ -35,9 +35,12 @@ import org.jetbrains.annotations.NotNull;
 import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.entity.common.AppCommon;
+import de.k3b.fdroid.domain.entity.common.WebReferences;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
 import de.k3b.fdroid.domain.service.LocalizedService;
 import de.k3b.fdroid.domain.util.StringUtil;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Information about an Android App.
@@ -54,6 +57,8 @@ import de.k3b.fdroid.domain.util.StringUtil;
 @javax.persistence.Table(name = "App")
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 @SuppressWarnings("unused")
+@ExternalDocumentation(description = "Information about an Android App that is available in a Repo or Mirror",
+        url = WebReferences.GLOSSAR_URL + "App")
 public class App extends AppCommon implements AppDetail {
     public static final String NOT_FOUND_VALUE = "";
 
@@ -85,7 +90,13 @@ public class App extends AppCommon implements AppDetail {
     /** all different locale whatsNew values concatenated for faster search */
     private String searchWhatsNew;
 
+    @Schema(description = "Range of available version-s of the app.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Version"),
+            example = "0.8.0.191021(44) - 0.8.3.200315(47)")
     private String searchVersion;
+    @Schema(description = "Range of available MinSdk-s (= technical term for device compatibility) of the app.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "MinSdk"),
+            example = "[14,21,28] - [14,21,28]")
     private String searchSdk;
     private String searchSigner;
 
@@ -220,26 +231,40 @@ public class App extends AppCommon implements AppDetail {
         return LocalizedService.removeLocalePrefix(StringUtil.getFirst(searchText, seperator, notFoundValue));
     }
 
+    @Schema(description = "App name calculated from chosen locales/languages.",
+            example = "A Photo Manager (Manejador de fotos)")
     public String getLocalizedName() {
         return getFromSearchText(searchName, SEPERATOR_NAME, getPackageName());
     }
 
+    @Schema(description = "Description summary of the app calculated from chosen locales/languages.",
+            example = "Verwalte lokale Photos: Suchen/Kopieren/Exif bearbeiten/Gallerie/Landkarte.")
     public String getLocalizedSummary() {
         return getFromSearchText(searchSummary, SEPERATOR_SUMMARY, NOT_FOUND_VALUE);
     }
 
+    @Schema(description = "app name calculated from chosen locales/languages.",
+            example = "Merkmale: Schnelle Bildsuche per Tags(Suchbegriffe), ...")
     public String getLocalizedDescription() {
         return getFromSearchText(searchDescription, SEPERATOR_DESCRIPTION, NOT_FOUND_VALUE);
     }
 
+    @Schema(description = "app name calculated from chosen locales/languages.",
+            example = "#168: Bugfix crash in ...")
     public String getLocalizedWhatsNew() {
         return getFromSearchText(searchWhatsNew, SEPERATOR_WHATS_NEW, NOT_FOUND_VALUE);
     }
 
+    @Schema(description = "Most recent (stable) Version of the app.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Version"),
+            example = "0.8.3.200315(47)")
     public String getVersion() {
         return getLast(searchVersion, SEPERATOR_MIN_MAX, NOT_FOUND_VALUE);
     }
 
+    @Schema(description = "Most recent (stable) minSdk  (= technical term for device compatibility) of the app.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "minSdk"),
+            example = "0.8.3.200315(47)")
     public String getSdk() {
         return getLast(searchSdk, SEPERATOR_MIN_MAX, NOT_FOUND_VALUE);
     }

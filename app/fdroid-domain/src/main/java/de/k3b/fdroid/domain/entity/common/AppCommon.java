@@ -19,6 +19,9 @@
 
 package de.k3b.fdroid.domain.entity.common;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @javax.persistence.MappedSuperclass
 /**
  * Common data for v1-Gson-json and android-room-database-Entities.
@@ -27,26 +30,52 @@ package de.k3b.fdroid.domain.entity.common;
  */
 @SuppressWarnings("unused")
 public class AppCommon extends EntityCommon {
+    @Schema(description = "Unique package name of the app.",
+            example = "de.k3b.android.androFotoFinder")
     private String packageName;
+    @Schema(description = "Url where you can see the change history of the app.",
+            example = "https://github.com/k3b/APhotoManager/wiki/History")
     private String changelog;
+    @Schema(description = "Most recent (stable) Version-Name of the app.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Version"),
+            example = "0.8.3.200315")
     private String suggestedVersionName;
+    @Schema(description = "Most recent (stable) Version-Code of the app.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Version"),
+            example = "47")
     private String suggestedVersionCode;
+    @Schema(description = "Url where you can see the open issues of the app.",
+            example = "https://github.com/k3b/APhotoManager/issues")
     private String issueTracker;
+    @Schema(description = "License of the app.",
+            example = "GPL-3.0-only")
     private String license;
+    @Schema(description = "Url where you can download the sourcecode of the app.",
+            example = "https://github.com/k3b/APhotoManager")
     private String sourceCode;
+    @Schema(description = "Url of the website of the app.",
+            example = "https://github.com/k3b/APhotoManager/wiki")
     private String webSite;
+    @Schema(description = "When the app was added to the Repo in internal numeric format.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo"),
+            example = "1438214400000")
     private long added;
+    @Schema(description = "Relative url of the icon of the app.",
+            example = "de.k3b.android.androFotoFinder.44.png")
     private String icon;
+    @Schema(description = "When the app was last updated in the Repo in internal numeric format.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo"),
+            example = "1584144000000")
     private long lastUpdated;
 
     public static void copyCommon(AppCommon dest, AppCommon src) {
-        dest.setIcon(ifNotNull(src.getIcon(),dest.getIcon()));
-        dest.setPackageName(ifNotNull(src.getPackageName(),dest.getPackageName()));
-        dest.setChangelog(ifNotNull(src.getChangelog(),dest.getChangelog()));
-        dest.setSuggestedVersionName(ifNotNull(src.getSuggestedVersionName(),dest.getSuggestedVersionName()));
-        dest.setSuggestedVersionCode(ifNotNull(src.getSuggestedVersionCode(),dest.getSuggestedVersionCode()));
-        dest.setIssueTracker(ifNotNull(src.getIssueTracker(),dest.getIssueTracker()));
-        dest.setLicense(ifNotNull(src.getLicense(),dest.getLicense()));
+        dest.setIcon(ifNotNull(src.getIcon(), dest.getIcon()));
+        dest.setPackageName(ifNotNull(src.getPackageName(), dest.getPackageName()));
+        dest.setChangelog(ifNotNull(src.getChangelog(), dest.getChangelog()));
+        dest.setSuggestedVersionName(ifNotNull(src.getSuggestedVersionName(), dest.getSuggestedVersionName()));
+        dest.setSuggestedVersionCode(ifNotNull(src.getSuggestedVersionCode(), dest.getSuggestedVersionCode()));
+        dest.setIssueTracker(ifNotNull(src.getIssueTracker(), dest.getIssueTracker()));
+        dest.setLicense(ifNotNull(src.getLicense(), dest.getLicense()));
         dest.setSourceCode(ifNotNull(src.getSourceCode(),dest.getSourceCode()));
         dest.setWebSite(ifNotNull(src.getWebSite(),dest.getWebSite()));
         dest.setAdded(ifNotNull(src.getAdded(),dest.getAdded()));
@@ -117,6 +146,9 @@ public class AppCommon extends EntityCommon {
         this.added = added;
     }
 
+    @Schema(description = "When the app was added to the Repo.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo"),
+            example = "2015-07-30")
     public String getAddedDate() {
         return EntityCommon.asDateString(added);
     }
@@ -137,6 +169,9 @@ public class AppCommon extends EntityCommon {
         this.lastUpdated = lastUpdated;
     }
 
+    @Schema(description = "When the app was last updated in the Repo.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo"),
+            example = "2020-03-14")
     public String getLastUpdatedDate() {
         return asDateString(lastUpdated);
     }

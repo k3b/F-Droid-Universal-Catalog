@@ -21,7 +21,9 @@ package de.k3b.fdroid.domain.entity;
 import org.jetbrains.annotations.NotNull;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
+import de.k3b.fdroid.domain.entity.common.WebReferences;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
 
 /**
  * {@link AppCategory}: An {@link App} can belong to zero or more {@link Category}s.
@@ -37,6 +39,7 @@ import de.k3b.fdroid.domain.interfaces.AppDetail;
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 @SuppressWarnings("unused")
+@ExternalDocumentation(description = "Category of an App", url = WebReferences.GLOSSAR_URL + "Category")
 public class AppCategory extends EntityCommon implements AppDetail {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)

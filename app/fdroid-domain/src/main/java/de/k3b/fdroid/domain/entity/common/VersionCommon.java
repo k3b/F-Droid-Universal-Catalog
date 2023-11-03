@@ -21,6 +21,9 @@ package de.k3b.fdroid.domain.entity.common;
 
 import java.util.Comparator;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @javax.persistence.MappedSuperclass
 /**
  * Common data for v1-Gson-json and android-room-database-Entities.
@@ -30,14 +33,25 @@ import java.util.Comparator;
 @SuppressWarnings("unused")
 public class VersionCommon extends ProfileCommon {
 
+    @Schema(description = "Device compatibility: minSdkVersion = 'Minimal Required Android SDK API Version'.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "MinSdk"),
+            example = "14")
     private int minSdkVersion;
+    @Schema(description = "'Android SDK API Version' for which the app was created.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "MinSdk"),
+            example = "21")
     private int targetSdkVersion;
+    @Schema(description = "Device compatibility: maxSdkVersion = 'Maximum Required Android SDK API Version'.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "MinSdk"),
+            example = "28")
     private int maxSdkVersion;
 
     private String hash;
     private String hashType;
     private String sig;
     private String signer;
+    @Schema(description = "filename of the sourcecode.",
+            example = "de.k3b.android.androFotoFinder_44_src.tar.gz")
     private String srcname;
 
     public static void copyCommon(VersionCommon dest, VersionCommon src) {

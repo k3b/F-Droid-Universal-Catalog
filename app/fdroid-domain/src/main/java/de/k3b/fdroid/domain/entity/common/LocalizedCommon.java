@@ -21,6 +21,8 @@ package de.k3b.fdroid.domain.entity.common;
 
 import javax.persistence.Column;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 @javax.persistence.MappedSuperclass
 /**
  * Common data for v1-Gson-json and android-room-database-Entities.
@@ -29,13 +31,21 @@ import javax.persistence.Column;
  */
 @SuppressWarnings("unused")
 public class LocalizedCommon extends EntityCommon {
+    @Schema(description = "Localized app name.",
+            example = "A Photo Manager (Manejador de fotos)")
     private String name;
+    @Schema(description = "Localized description summary of the app.",
+            example = "Verwalte lokale Photos: Suchen/Kopieren/Exif bearbeiten/Gallerie/Landkarte.")
     private String summary;
     @Column(length = MAX_LEN_AGGREGATED)
+    @Schema(description = "Localized description of the app.",
+            example = "Merkmale: Schnelle Bildsuche per Tags(Suchbegriffe), ...")
     private String description;
     private String icon;
     private String video;
     @Column(length = MAX_LEN_AGGREGATED)
+    @Schema(description = "Localized 'What is new' info of the app.",
+            example = "#168: Bugfix crash in  ...")
     private String whatsNew;
 
     public static void copyCommon(LocalizedCommon dest, LocalizedCommon src) {

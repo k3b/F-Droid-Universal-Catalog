@@ -23,19 +23,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.jetbrains.annotations.NotNull;
 
 import de.k3b.fdroid.domain.entity.common.VersionCommon;
+import de.k3b.fdroid.domain.entity.common.WebReferences;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
 import de.k3b.fdroid.domain.util.AndroidVersionName;
 import de.k3b.fdroid.domain.util.StringUtil;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Android independent: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  * Database Entity compatible with Android-Room and non-android-j2se-jpa
  */
+@ExternalDocumentation(description = "The [Version] of an App in a Repo contains " +
+        "App-Compatibility info (NativeCode and MinSdk) and a Url to download the APK-File",
+        url = WebReferences.GLOSSAR_URL + "Version")
 @androidx.room.Entity(foreignKeys = {@androidx.room.ForeignKey(entity = App.class,
-        parentColumns = "id", childColumns = "appId",onDelete = androidx.room.ForeignKey.CASCADE),
+        parentColumns = "id", childColumns = "appId", onDelete = androidx.room.ForeignKey.CASCADE),
         @androidx.room.ForeignKey(entity = Repo.class,
-                parentColumns = "id", childColumns = "repoId",onDelete = androidx.room.ForeignKey.CASCADE)},
+                parentColumns = "id", childColumns = "repoId", onDelete = androidx.room.ForeignKey.CASCADE)},
         tableName = "AppVersion", indices = {@androidx.room.Index("id"),
         @androidx.room.Index({"appId", "repoId"})})
 @javax.persistence.Entity(name = "AppVersion")
@@ -53,6 +59,9 @@ public class Version extends VersionCommon implements AppDetail {
     @androidx.room.ColumnInfo(index = true)
     private int repoId;
 
+    @Schema(description = "Device compatibility: Code requires one of these specific  microprocessors to run. Empty means runs on all",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "NativeCode"),
+            example = "arm64-v8a,armeabi-v7a,x86,x86_64")
     private String nativecode;
 
     /**
@@ -129,6 +138,9 @@ public class Version extends VersionCommon implements AppDetail {
         return nativecodeArray;
     }
 
+    @Schema(description = "Calculated summary of device compatibility info.",
+            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "MinSdk"),
+            example = "arm64-v8a,armeabi-v7a,x86,x86_64 ICE_CREAM_SANDWICH - Android 4.0 - SDK14 - October 2011")
     public String getSdkInfo() {
         return AndroidVersionName.getName(getMinSdkVersion(), getNativecode());
     }

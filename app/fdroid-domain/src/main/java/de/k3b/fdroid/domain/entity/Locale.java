@@ -21,7 +21,10 @@ package de.k3b.fdroid.domain.entity;
 import org.jetbrains.annotations.NotNull;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
+import de.k3b.fdroid.domain.entity.common.WebReferences;
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * {@link Locale}: Language of a {@link Localized}.
@@ -34,15 +37,24 @@ import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 @SuppressWarnings("unused")
+@ExternalDocumentation(description = "Locale or Language of Translation of an App", url = WebReferences.GLOSSAR_URL + "Locale")
 public class Locale extends EntityCommon implements DatabaseEntityWithId<String> {
     @javax.persistence.Id
     @androidx.room.PrimaryKey
     @NotNull
+    @Schema(description = "Iso-Language-Code (Without the Country-Code).",
+            example = "de")
     private String id; // ie de
 
+    @Schema(description = "Emoji-Character of the flag-symbol of the Language.",
+            example = "🇩🇪")
     private String symbol; // ie 🇩🇪
 
+    @Schema(description = "The native name of the language.",
+            example = "Deutsch")
     private String nameNative; // ie Deutsch
+    @Schema(description = "The english name of the language.",
+            example = "German")
     private String nameEnglish; // ie German
 
     // translation order highest first; -1 == hidden (Translations are NOT contained in Database)

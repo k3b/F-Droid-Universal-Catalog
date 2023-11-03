@@ -25,8 +25,11 @@ import org.jetbrains.annotations.NotNull;
 import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.entity.common.LocalizedCommon;
+import de.k3b.fdroid.domain.entity.common.WebReferences;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
 import de.k3b.fdroid.domain.util.StringUtil;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Translated infos about an {@link App}.
@@ -43,6 +46,7 @@ import de.k3b.fdroid.domain.util.StringUtil;
         @androidx.room.Index({"appId", "localeId"})})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
+@ExternalDocumentation(description = "Locale or Language of Translation of an App", url = WebReferences.GLOSSAR_URL + "Localized")
 @SuppressWarnings("unused")
 public class Localized extends LocalizedCommon implements AppDetail {
     @javax.persistence.Id
@@ -55,9 +59,13 @@ public class Localized extends LocalizedCommon implements AppDetail {
 
     @androidx.room.ColumnInfo(index = true)
     @NotNull
+    @Schema(description = "Iso-Language-Code (Without the Country-Code).",
+            example = "de")
     private String localeId;
 
     @Column(length = MAX_LEN_AGGREGATED)
+    @Schema(description = "Screenshot(s) from Android-Phone.",
+            example = "1-Gallery.png,2-SelectArea.png")
     private String phoneScreenshots;
     /**
      * calculated and cached from {@link #phoneScreenshots}. Not persisted in Database
@@ -67,6 +75,8 @@ public class Localized extends LocalizedCommon implements AppDetail {
     @JsonIgnore
     private String[] phoneScreenshotArray;
 
+    @Schema(description = "Relative url where phoneScreenshots are stored.",
+            example = "de.k3b.android.androFotoFinder/en-US/phoneScreenshots/")
     private String phoneScreenshotDir;
 
     // needed by android-room and jpa

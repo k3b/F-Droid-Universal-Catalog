@@ -21,6 +21,7 @@ package de.k3b.fdroid.domain.entity.common;
 
 import de.k3b.fdroid.domain.entity.HardwareProfile;
 import de.k3b.fdroid.domain.entity.Version;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * Common data for App_{@link Version} and {@link HardwareProfile}.
@@ -33,10 +34,20 @@ import de.k3b.fdroid.domain.entity.Version;
 public class ProfileCommon extends EntityCommon {
     private static final double MEGA_BYTE = 1024 * 1024;
 
+    @Schema(description = "Filename of the apk version that will become part of the download url.",
+            example = "de.k3b.android.androFotoFinder_45.apk")
     private String apkName;
+    @Schema(description = "Code of the apk version.",
+            example = "45")
     private int versionCode;
+    @Schema(description = "Name of the apk version.",
+            example = "0.8.1.200212")
     private String versionName;
+    @Schema(description = "Date when the version of the app added the Repo in internal numeric format.",
+            example = "1581465600000")
     private long added;
+    @Schema(description = "Apk size in Bytes.",
+            example = "1492672")
     private int size;
 
     public static void copyCommon(ProfileCommon dest, ProfileCommon src) {
@@ -59,6 +70,8 @@ public class ProfileCommon extends EntityCommon {
         this.added = added;
     }
 
+    @Schema(description = "Date when the version of the app added the Repo.",
+            example = "2020-02-12")
     public String getAddedDate() {
         return asDateString(added);
     }
@@ -71,6 +84,8 @@ public class ProfileCommon extends EntityCommon {
         this.apkName = apkName;
     }
 
+    @Schema(description = "Apk size in Megabytes.",
+            example = "1.4 MB")
     public String getSizeMB() {
         double megabyte = size / MEGA_BYTE;
         int m = (int) (megabyte * 10);

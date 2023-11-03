@@ -47,7 +47,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @androidx.room.Entity(indices = {@androidx.room.Index("id")})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
-@ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo")
+@ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo",
+        description = "An Android [App] Repository that contains a catalogue of Android apps. " +
+                "A [Repo] allows to download APK-File in one or more [Version]-s")
 @SuppressWarnings("unused")
 public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
     public static final String STATE_BUSY = "busy"; // while downloding. bg-color=yellow

@@ -24,7 +24,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Comparator;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
+import de.k3b.fdroid.domain.entity.common.WebReferences;
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
  * {@link AppCategory}: An {@link App} can belong to zero or more {@link Category}s.
@@ -37,12 +40,15 @@ import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 @SuppressWarnings("unused")
+@ExternalDocumentation(description = "Category of an App", url = WebReferences.GLOSSAR_URL + "Category")
 public class Category extends EntityCommon implements DatabaseEntityWithId<Integer> {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @androidx.room.PrimaryKey(autoGenerate = true)
     private int id;
 
+    @Schema(description = "Category name in English.",
+            example = "Graphics")
     private String name;
 
     // needed by android-room and jpa
