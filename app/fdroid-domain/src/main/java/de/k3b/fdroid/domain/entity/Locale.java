@@ -33,6 +33,7 @@ import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 @androidx.room.Entity(indices = {@androidx.room.Index("id")})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
+@SuppressWarnings("unused")
 public class Locale extends EntityCommon implements DatabaseEntityWithId<String> {
     @javax.persistence.Id
     @androidx.room.PrimaryKey

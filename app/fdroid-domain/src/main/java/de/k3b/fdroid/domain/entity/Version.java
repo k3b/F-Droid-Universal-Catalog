@@ -40,6 +40,7 @@ import de.k3b.fdroid.domain.util.StringUtil;
         @androidx.room.Index({"appId", "repoId"})})
 @javax.persistence.Entity(name = "AppVersion")
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
+@SuppressWarnings("unused")
 public class Version extends VersionCommon implements AppDetail {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)

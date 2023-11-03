@@ -44,6 +44,7 @@ import de.k3b.fdroid.domain.util.StringUtil;
 @androidx.room.Entity
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
+@SuppressWarnings("unused")
 public class HardwareProfile extends EntityCommon implements DatabaseEntityWithId<Integer> {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)

@@ -43,6 +43,7 @@ import de.k3b.fdroid.domain.util.StringUtil;
         @androidx.room.Index({"appId", "localeId"})})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
+@SuppressWarnings("unused")
 public class Localized extends LocalizedCommon implements AppDetail {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)

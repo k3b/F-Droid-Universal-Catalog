@@ -27,6 +27,7 @@ import java.util.Comparator;
  * Only primitive types are allowed. No relations, no Objects, no Lists
  * as these are Gson/Android-Room-Database specific.
  */
+@SuppressWarnings("unused")
 public class VersionCommon extends ProfileCommon {
 
     private int minSdkVersion;

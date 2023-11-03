@@ -36,6 +36,7 @@ import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 @androidx.room.Entity(indices = {@androidx.room.Index("id"), @androidx.room.Index(value = "name", unique = true)})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
+@SuppressWarnings("unused")
 public class Category extends EntityCommon implements DatabaseEntityWithId<Integer> {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)

@@ -36,6 +36,7 @@ import de.k3b.fdroid.domain.interfaces.AppDetail;
         indices = {@androidx.room.Index({"appId", "categoryId"})})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
+@SuppressWarnings("unused")
 public class AppCategory extends EntityCommon implements AppDetail {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)

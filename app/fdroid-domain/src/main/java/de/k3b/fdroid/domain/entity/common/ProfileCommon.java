@@ -29,6 +29,7 @@ import de.k3b.fdroid.domain.entity.Version;
  * as these are Gson/Android-Room-Database specific.
  */
 @javax.persistence.MappedSuperclass
+@SuppressWarnings("unused")
 public class ProfileCommon extends EntityCommon {
     private static final double MEGA_BYTE = 1024 * 1024;
 

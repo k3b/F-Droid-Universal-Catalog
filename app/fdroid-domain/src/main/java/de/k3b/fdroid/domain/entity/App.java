@@ -53,6 +53,7 @@ import de.k3b.fdroid.domain.util.StringUtil;
 @javax.persistence.Entity
 @javax.persistence.Table(name = "App")
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
+@SuppressWarnings("unused")
 public class App extends AppCommon implements AppDetail {
     public static final String NOT_FOUND_VALUE = "";
 

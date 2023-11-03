@@ -36,7 +36,7 @@ import de.k3b.fdroid.domain.interfaces.AppDetail;
  * DDD {@link AggregateRoot} for {@link App}
  */
 @JsonInclude(Include.NON_NULL)
-@SuppressWarnings({"unchecked", "unsafe"})
+@SuppressWarnings({"unchecked", "unsafe", "unused"})
 public class AppWithDetails extends EntityCommon implements AppDetail, AggregateRoot {
     @NotNull
     private final App app;

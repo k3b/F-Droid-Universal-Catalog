@@ -42,6 +42,7 @@ import de.k3b.fdroid.domain.interfaces.AppDetail;
         indices = {@androidx.room.Index({"appId", "hardwareProfileId"})})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
+@SuppressWarnings("unused")
 public class AppHardware extends EntityCommon implements AppDetail {
     @androidx.room.Embedded
     @javax.persistence.Embedded
