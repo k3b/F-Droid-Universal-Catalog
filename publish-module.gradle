@@ -5,7 +5,7 @@
 
 // variables inherited from root-build.gradle
 
-task javadocs(type: Javadoc) {
+tasks.register('javadocs', Javadoc) {
     if (project.plugins.findPlugin("com.android.library")) {
         source = android.sourceSets.main.java.srcDirs
         classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
@@ -20,12 +20,13 @@ task javadocs(type: Javadoc) {
     exclude '**/R.html', '**/R.*.html', '**/index.html'
 }
 
-task javadocsJar(type: Jar, dependsOn: javadocs) {
+tasks.register('javadocsJar', Jar) {
+    dependsOn javadocs
     archiveClassifier.set('javadoc')
     from javadocs.destinationDir
 }
 
-task sourcesJar(type: Jar) {
+tasks.register('sourcesJar', Jar) {
     archiveClassifier.set('sources')
     if (project.plugins.findPlugin("com.android.library")) {
         from android.sourceSets.main.java.srcDirs

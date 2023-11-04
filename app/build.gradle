@@ -80,6 +80,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
 
     def work_version = "2.7.1"
+    // def work_version = "2.8.1" // requires targetSdk 33
 
     // (Java only)
     implementation "androidx.work:work-runtime:$work_version"
@@ -88,14 +89,14 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-viewmodel:2.4.1")
 
-    implementation 'com.google.code.gson:gson:2.9.0'
+    implementation 'com.google.code.gson:gson:2.9.1'
     implementation 'commons-codec:commons-codec:1.15' // Hex.en/decodeHex
     implementation 'com.samskivert:jmustache:1.15'
     // https://github.com/samskivert/jmustache to generate html
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'commons-io:commons-io:2.8.0'
 
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.9.0'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.13.5'
 
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
 

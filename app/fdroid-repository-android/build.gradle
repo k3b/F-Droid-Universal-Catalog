@@ -15,6 +15,7 @@ android {
         minSdk 14 // TODO iw api 14 also working?
 //        minSdk 16
         targetSdk 31
+        // targetSdk 33 required by androidx.work:work-runtime:2.8.1, androidx.room:room-runtime:2.5.0, androidx.sqlite:sqlite-framework:2.3.0, androidx.sqlite:sqlite:2.3.0
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"

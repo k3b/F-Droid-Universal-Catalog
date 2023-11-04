@@ -18,7 +18,7 @@ java {
 }
 
 dependencies {
-	implementation project(path: ':app:room-annotations')
+	// implementation project(path: ':app:room-annotations')
 	implementation (project(path: ':app:fdroid-domain'))
 	implementation (project(path: ':app:fdroid-v1'))
 	implementation (project(path: ':app:fdroid-html'))
