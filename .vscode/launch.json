@@ -5,21 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch local apps",
-            "type": "firefox",
+            "type": "java",
+            "name": "DemoApplication",
             "request": "launch",
-            "reAttach": true,
-            "file": "${workspaceFolder}/App/app"
+            "mainClass": "de.k3b.fdroid.v1domain.DemoApplication",
+            "projectName": "fdroid-universal-cli",
+            "args": "-r" 
         },
         {
             "type": "java",
-            "name": "Spring Boot-WebServerApplication<fdroid-universal-web>",
+            "name": "WebServerApplication",
             "request": "launch",
-            "cwd": "${workspaceFolder}",
             "mainClass": "de.k3b.fdroid.WebServerApplication",
-            "projectName": "fdroid-universal-web",
-            "args": "",
-            "envFile": "${workspaceFolder}/.env"
+            "projectName": "fdroid-universal-web"
         }
     ]
 }
