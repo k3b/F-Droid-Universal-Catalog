@@ -98,9 +98,11 @@ public class App extends AppCommon implements AppDetail {
             externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "MinSdk"),
             example = "[14,21,28] - [14,21,28]")
     private String searchSdk;
+    @Column(length = MAX_LEN_AGGREGATED)
     private String searchSigner;
 
     @JsonIgnore
+    @Column(length = MAX_LEN_AGGREGATED)
     private String searchCategory;
 
     @JsonIgnore
@@ -154,7 +156,7 @@ public class App extends AppCommon implements AppDetail {
     }
 
     public void setSearchName(String searchName) {
-        this.searchName = searchName;
+        this.searchName = maxlen(searchName, MAX_LEN_AGGREGATED);
     }
 
     public String getSearchSummary() {
@@ -162,7 +164,7 @@ public class App extends AppCommon implements AppDetail {
     }
 
     public void setSearchSummary(String searchSummary) {
-        this.searchSummary = searchSummary;
+        this.searchSummary = maxlen(searchSummary, MAX_LEN_AGGREGATED);
     }
 
     public String getSearchDescription() {
@@ -170,7 +172,7 @@ public class App extends AppCommon implements AppDetail {
     }
 
     public void setSearchDescription(String searchDescription) {
-        this.searchDescription = searchDescription;
+        this.searchDescription = maxlen(searchDescription, MAX_LEN_AGGREGATED_DESCRIPTION);
     }
 
     public String getSearchWhatsNew() {
@@ -178,7 +180,7 @@ public class App extends AppCommon implements AppDetail {
     }
 
     public void setSearchWhatsNew(String searchWhatsNew) {
-        this.searchWhatsNew = searchWhatsNew;
+        this.searchWhatsNew = maxlen(searchWhatsNew, MAX_LEN_AGGREGATED);
     }
 
     public String getSearchVersion() {
@@ -186,7 +188,7 @@ public class App extends AppCommon implements AppDetail {
     }
 
     public void setSearchVersion(String searchVersion) {
-        this.searchVersion = searchVersion;
+        this.searchVersion = maxlen(searchVersion);
     }
 
     public String getSearchSdk() {
@@ -194,7 +196,7 @@ public class App extends AppCommon implements AppDetail {
     }
 
     public void setSearchSdk(String searchSdk) {
-        this.searchSdk = searchSdk;
+        this.searchSdk = maxlen(searchSdk);
     }
 
     public String getSearchSigner() {
@@ -202,7 +204,7 @@ public class App extends AppCommon implements AppDetail {
     }
 
     public void setSearchSigner(String searchSigner) {
-        this.searchSigner = searchSigner;
+        this.searchSigner = maxlen(searchSigner, MAX_LEN_AGGREGATED);
     }
 
     public String getSearchCategory() {
@@ -210,7 +212,7 @@ public class App extends AppCommon implements AppDetail {
     }
 
     public void setSearchCategory(String searchCategory) {
-        this.searchCategory = searchCategory;
+        this.searchCategory = maxlen(searchCategory, MAX_LEN_AGGREGATED);
     }
 
     private String getFromSearchText(String searchText, String seperator, String notFoundValue) {

@@ -127,7 +127,7 @@ public class Version extends VersionCommon implements AppDetail {
     }
 
     public void setNativecode(String nativecode) {
-        this.nativecode = nativecode;
+        this.nativecode = maxlen(nativecode);
         nativecodeArray = null;
     }
 

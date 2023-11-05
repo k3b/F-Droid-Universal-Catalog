@@ -38,6 +38,8 @@ import de.k3b.fdroid.domain.util.TestDataGenerator;
  * pojo Properties are not allowed
  */
 public class EntityCommon implements Enitity {
+    public static final int MAX_LEN_LOCALE = 8;
+
     /**
      * non standard string len for aggregated fields and for app description
      */
@@ -181,6 +183,17 @@ public class EntityCommon implements Enitity {
             sb.append(']');
         }
         return sb.toString();
+    }
+
+    public static String maxlen(String s) {
+        return maxlen(s, 255);
+    }
+
+    public static String maxlen(String s, int maxlen) {
+        if (s != null && s.length() > maxlen) {
+            throw new IllegalArgumentException("string-len > " + maxlen + " : '" + s + "'");
+        }
+        return s;
     }
 
     protected void toStringBuilder(StringBuilder sb) {

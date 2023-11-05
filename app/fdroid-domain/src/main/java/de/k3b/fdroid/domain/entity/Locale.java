@@ -44,6 +44,7 @@ public class Locale extends EntityCommon implements DatabaseEntityWithId<String>
     @NotNull
     @Schema(description = "Iso-Language-Code (Without the Country-Code).",
             example = "de")
+    @Column(length = MAX_LEN_LOCALE)
     private String id; // ie de
 
     @Schema(description = "Emoji-Character of the flag-symbol of the Language.",
@@ -79,7 +80,7 @@ public class Locale extends EntityCommon implements DatabaseEntityWithId<String>
     }
 
     public void setId(@NotNull String id) {
-        this.id = id;
+        this.id = maxlen(id, MAX_LEN_LOCALE);
     }
 
     /**
@@ -90,7 +91,7 @@ public class Locale extends EntityCommon implements DatabaseEntityWithId<String>
     }
 
     public void setSymbol(String symbol) {
-        this.symbol = symbol;
+        this.symbol = maxlen(symbol);
     }
 
     public String getNameNative() {
@@ -98,7 +99,7 @@ public class Locale extends EntityCommon implements DatabaseEntityWithId<String>
     }
 
     public void setNameNative(String nameNative) {
-        this.nameNative = nameNative;
+        this.nameNative = maxlen(nameNative);
     }
 
     public String getNameEnglish() {
@@ -106,7 +107,7 @@ public class Locale extends EntityCommon implements DatabaseEntityWithId<String>
     }
 
     public void setNameEnglish(String nameEnglish) {
-        this.nameEnglish = nameEnglish;
+        this.nameEnglish = maxlen(nameEnglish);
     }
 
     public int getLanguagePriority() {

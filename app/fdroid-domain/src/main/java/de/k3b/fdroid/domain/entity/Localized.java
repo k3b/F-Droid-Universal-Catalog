@@ -61,6 +61,7 @@ public class Localized extends LocalizedCommon implements AppDetail {
     @NotNull
     @Schema(description = "Iso-Language-Code (Without the Country-Code).",
             example = "de")
+    @Column(length = MAX_LEN_LOCALE)
     private String localeId;
 
     @Column(length = MAX_LEN_AGGREGATED)
@@ -122,7 +123,7 @@ public class Localized extends LocalizedCommon implements AppDetail {
     }
 
     public void setLocaleId(@NotNull String localeId) {
-        this.localeId = localeId;
+        this.localeId = maxlen(localeId, MAX_LEN_LOCALE);
     }
 
     /**
@@ -137,7 +138,7 @@ public class Localized extends LocalizedCommon implements AppDetail {
     }
 
     public void setPhoneScreenshots(String phoneScreenshots) {
-        this.phoneScreenshots = phoneScreenshots;
+        this.phoneScreenshots = maxlen(phoneScreenshots, MAX_LEN_AGGREGATED);
         phoneScreenshotArray = null;
     }
 
@@ -156,6 +157,6 @@ public class Localized extends LocalizedCommon implements AppDetail {
     }
 
     public void setPhoneScreenshotDir(String phoneScreenshotDir) {
-        this.phoneScreenshotDir = phoneScreenshotDir;
+        this.phoneScreenshotDir = maxlen(phoneScreenshotDir);
     }
 }

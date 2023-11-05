@@ -69,11 +69,7 @@ public class RepoCommon extends EntityCommon {
         dest.setIcon(src.getIcon());
         dest.setAddress(src.getAddress());
         String description = src.getDescription();
-        if (description != null && description.length() > 255) {
-            dest.setDescription(description.substring(0,255));
-        } else {
-            dest.setDescription(description);
-        }
+        dest.setDescription(description);
     }
 
     public String getName() {
@@ -81,7 +77,7 @@ public class RepoCommon extends EntityCommon {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = maxlen(name);
     }
 
     public static String getV1JarFileName(String name) {
@@ -137,7 +133,7 @@ public class RepoCommon extends EntityCommon {
     }
 
     public void setIcon(String icon) {
-        this.icon = icon;
+        this.icon = maxlen(icon);
     }
 
     public String getAddress() {
@@ -145,7 +141,7 @@ public class RepoCommon extends EntityCommon {
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.address = maxlen(address);
     }
 
     public String getDescription() {
@@ -169,7 +165,11 @@ public class RepoCommon extends EntityCommon {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        if (description != null && description.length() > 255) {
+            description = description.substring(0, 255);
+        }
+        this.description = maxlen(description);
+
     }
 
     protected void toStringBuilder(StringBuilder sb) {

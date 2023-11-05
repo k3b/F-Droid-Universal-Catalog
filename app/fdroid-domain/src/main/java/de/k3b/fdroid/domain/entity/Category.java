@@ -82,7 +82,7 @@ public class Category extends EntityCommon implements DatabaseEntityWithId<Integ
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = maxlen(name);
     }
 
     public static final Comparator<Category> COMPARE_BY_NAME =  (o1, o2) -> o1.getName().compareTo(o2.getName());

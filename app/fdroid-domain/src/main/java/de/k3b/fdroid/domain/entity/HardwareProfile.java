@@ -100,7 +100,7 @@ public class HardwareProfile extends EntityCommon implements DatabaseEntityWithI
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = maxlen(name);
     }
 
     public int getSdkVersion() {
@@ -116,7 +116,7 @@ public class HardwareProfile extends EntityCommon implements DatabaseEntityWithI
     }
 
     public void setNativecode(String nativecode) {
-        this.nativecode = nativecode;
+        this.nativecode = maxlen(nativecode);
         nativecodeArray = null;
     }
 

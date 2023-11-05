@@ -62,7 +62,7 @@ public class LocalizedCommon extends EntityCommon {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = maxlen(name);
     }
 
     public String getSummary() {
@@ -70,7 +70,7 @@ public class LocalizedCommon extends EntityCommon {
     }
 
     public void setSummary(String summary) {
-        this.summary = summary;
+        this.summary = maxlen(summary);
     }
 
     public String getDescription() {
@@ -78,7 +78,7 @@ public class LocalizedCommon extends EntityCommon {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = maxlen(description, MAX_LEN_AGGREGATED);
     }
 
     public String getIcon() {
@@ -86,7 +86,7 @@ public class LocalizedCommon extends EntityCommon {
     }
 
     public void setIcon(String icon) {
-        this.icon = icon;
+        this.icon = maxlen(icon);
     }
 
     public String getVideo() {
@@ -94,7 +94,7 @@ public class LocalizedCommon extends EntityCommon {
     }
 
     public void setVideo(String video) {
-        this.video = video;
+        this.video = maxlen(video);
     }
 
     public String getWhatsNew() {
@@ -102,7 +102,7 @@ public class LocalizedCommon extends EntityCommon {
     }
 
     public void setWhatsNew(String whatsNew) {
-        this.whatsNew = whatsNew;
+        this.whatsNew = maxlen(whatsNew, MAX_LEN_AGGREGATED);
     }
 
     protected void toStringBuilder(StringBuilder sb) {

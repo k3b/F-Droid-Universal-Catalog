@@ -87,7 +87,7 @@ public class AppCommon extends EntityCommon {
     }
 
     public void setChangelog(String changelog) {
-        this.changelog = changelog;
+        this.changelog = maxlen(changelog);
     }
 
     public String getSuggestedVersionName() {
@@ -95,7 +95,7 @@ public class AppCommon extends EntityCommon {
     }
 
     public void setSuggestedVersionName(String suggestedVersionName) {
-        this.suggestedVersionName = suggestedVersionName;
+        this.suggestedVersionName = maxlen(suggestedVersionName);
     }
 
     public String getSuggestedVersionCode() {
@@ -103,7 +103,7 @@ public class AppCommon extends EntityCommon {
     }
 
     public void setSuggestedVersionCode(String suggestedVersionCode) {
-        this.suggestedVersionCode = suggestedVersionCode;
+        this.suggestedVersionCode = maxlen(suggestedVersionCode);
     }
 
     public String getIssueTracker() {
@@ -111,7 +111,7 @@ public class AppCommon extends EntityCommon {
     }
 
     public void setIssueTracker(String issueTracker) {
-        this.issueTracker = issueTracker;
+        this.issueTracker = maxlen(issueTracker);
     }
 
     public String getLicense() {
@@ -119,7 +119,7 @@ public class AppCommon extends EntityCommon {
     }
 
     public void setLicense(String license) {
-        this.license = license;
+        this.license = maxlen(license);
     }
 
     public String getSourceCode() {
@@ -127,7 +127,7 @@ public class AppCommon extends EntityCommon {
     }
 
     public void setSourceCode(String sourceCode) {
-        this.sourceCode = sourceCode;
+        this.sourceCode = maxlen(sourceCode);
     }
 
     public String getWebSite() {
@@ -135,7 +135,7 @@ public class AppCommon extends EntityCommon {
     }
 
     public void setWebSite(String webSite) {
-        this.webSite = webSite;
+        this.webSite = maxlen(webSite);
     }
 
     public long getAdded() {
@@ -158,7 +158,7 @@ public class AppCommon extends EntityCommon {
     }
 
     public void setIcon(String icon) {
-        this.icon = icon;
+        this.icon = maxlen(icon);
     }
 
     public long getLastUpdated() {
@@ -181,7 +181,7 @@ public class AppCommon extends EntityCommon {
     }
 
     public void setPackageName(String packageName) {
-        this.packageName = packageName;
+        this.packageName = maxlen(packageName);
     }
 
     protected void toStringBuilder(StringBuilder sb) {

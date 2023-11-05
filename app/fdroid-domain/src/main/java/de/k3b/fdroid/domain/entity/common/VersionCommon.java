@@ -79,7 +79,7 @@ public class VersionCommon extends ProfileCommon {
     }
 
     public void setHash(String hash) {
-        this.hash = hash;
+        this.hash = maxlen(hash);
     }
 
     public String getHashType() {
@@ -87,7 +87,7 @@ public class VersionCommon extends ProfileCommon {
     }
 
     public void setHashType(String hashType) {
-        this.hashType = hashType;
+        this.hashType = maxlen(hashType);
     }
 
     public int getMinSdkVersion() {
@@ -117,7 +117,7 @@ public class VersionCommon extends ProfileCommon {
     }
 
     public void setSig(String sig) {
-        this.sig = sig;
+        this.sig = maxlen(sig);
     }
 
     public String getSigner() {
@@ -125,7 +125,7 @@ public class VersionCommon extends ProfileCommon {
     }
 
     public void setSigner(String signer) {
-        this.signer = signer;
+        this.signer = maxlen(signer);
     }
 
     public String getSrcname() {
@@ -133,7 +133,7 @@ public class VersionCommon extends ProfileCommon {
     }
 
     public void setSrcname(String srcname) {
-        this.srcname = srcname;
+        this.srcname = maxlen(srcname);
     }
 
     public int getTargetSdkVersion() {

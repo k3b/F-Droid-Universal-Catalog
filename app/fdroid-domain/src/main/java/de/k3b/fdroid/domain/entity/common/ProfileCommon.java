@@ -81,7 +81,7 @@ public class ProfileCommon extends EntityCommon {
     }
 
     public void setApkName(String apkName) {
-        this.apkName = apkName;
+        this.apkName = maxlen(apkName);
     }
 
     @Schema(description = "Apk size in Megabytes.",
@@ -114,7 +114,7 @@ public class ProfileCommon extends EntityCommon {
     }
 
     public void setVersionName(String versionName) {
-        this.versionName = versionName;
+        this.versionName = maxlen(versionName);
     }
 
     protected void toStringBuilder(StringBuilder sb) {

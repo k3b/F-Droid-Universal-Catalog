@@ -151,7 +151,7 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
     }
 
     public void setMirrors(String mirrors) {
-        this.mirrors = mirrors;
+        this.mirrors = maxlen(mirrors, MAX_LEN_AGGREGATED);
         mirrorsArray = null;
     }
 
@@ -170,7 +170,7 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
     }
 
     public void setJarSigningCertificate(String jarSigningCertificate) {
-        this.jarSigningCertificate = jarSigningCertificate;
+        this.jarSigningCertificate = maxlen(jarSigningCertificate, MAX_LEN_AGGREGATED);
     }
 
     /**
@@ -181,7 +181,7 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
     }
 
     public void setJarSigningCertificateFingerprint(String jarSigningCertificateFingerprint) {
-        this.jarSigningCertificateFingerprint = jarSigningCertificateFingerprint;
+        this.jarSigningCertificateFingerprint = maxlen(jarSigningCertificateFingerprint);
     }
 
     public String getLastUsedDownloadMirror() {
@@ -216,7 +216,7 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
     }
 
     public void setLastUsedDownloadMirror(String lastUsedDownloadMirror) {
-        this.lastUsedDownloadMirror = removeName(lastUsedDownloadMirror);
+        this.lastUsedDownloadMirror = maxlen(removeName(lastUsedDownloadMirror));
     }
 
     protected void toStringBuilder(StringBuilder sb) {
@@ -310,7 +310,7 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
     }
 
     public void setLastErrorMessage(String lastErrorMessage) {
-        this.lastErrorMessage = lastErrorMessage;
+        this.lastErrorMessage = maxlen(lastErrorMessage);
     }
 
     public String getDownloadTaskId() {
@@ -318,7 +318,7 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
     }
 
     public void setDownloadTaskId(String downloadTaskId) {
-        this.downloadTaskId = downloadTaskId;
+        this.downloadTaskId = maxlen(downloadTaskId);
     }
 
     /**
@@ -356,6 +356,6 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
     }
 
     public void setRepoTyp(String repoTyp) {
-        this.repoTyp = repoTyp;
+        this.repoTyp = maxlen(repoTyp);
     }
 }
