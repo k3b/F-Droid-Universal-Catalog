@@ -18,7 +18,7 @@
  */
 package de.k3b.fdroid.jpa.repository.base;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +27,7 @@ import java.util.Optional;
  * Android-Room/JPA compatibility layer:
  * implement room aliase.
  */
-public class RepositoryAdapterBase<KEY, T, R extends JpaRepository<T, KEY>> {
+public class RepositoryAdapterBase<KEY, T, R extends CrudRepository<T, KEY>> {
     protected final R jpa;
 
     public RepositoryAdapterBase(R jpa) {
@@ -35,11 +35,11 @@ public class RepositoryAdapterBase<KEY, T, R extends JpaRepository<T, KEY>> {
     }
 
     public void insert(T roomApp) {
-        jpa.saveAndFlush(roomApp);
+        jpa.save(roomApp);
     }
 
     public void update(T roomApp) {
-        jpa.saveAndFlush(roomApp);
+        jpa.save(roomApp);
     }
 
     public void delete(T roomApp) {
