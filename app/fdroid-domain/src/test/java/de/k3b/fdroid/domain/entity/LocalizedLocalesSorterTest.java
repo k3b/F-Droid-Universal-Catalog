@@ -29,7 +29,7 @@ import java.util.List;
 
 public class LocalizedLocalesSorterTest {
     private static final String[] locales = "es,de,en".split(",");
-    private static final LocalizedLocalesSorter sut = new LocalizedLocalesSorter<>(locales);
+    private static final LocalizedLocalesSorter<Localized> sut = new LocalizedLocalesSorter<>(locales);
 
     private static final Localized es = createLocalized("es");
     private static final Localized de = createLocalized("de");
@@ -44,6 +44,7 @@ public class LocalizedLocalesSorterTest {
     }
 
     @Test
+    @SuppressWarnings("unused")
     public void testCompare() {
         assertTrue(sut.compare(es, de) < 0);
         assertEquals(0, sut.compare(es, es));

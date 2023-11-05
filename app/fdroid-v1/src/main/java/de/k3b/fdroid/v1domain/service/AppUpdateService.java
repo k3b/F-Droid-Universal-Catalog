@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -19,10 +19,17 @@
 
 package de.k3b.fdroid.v1domain.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.persistence.PersistenceException;
+
+import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.entity.common.AppCommon;
 import de.k3b.fdroid.domain.interfaces.ProgressObservable;
 import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.domain.repository.AppRepository;
+import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.v1domain.entity.App;
 import de.k3b.fdroid.v1domain.entity.UpdateService;
@@ -32,6 +39,8 @@ import de.k3b.fdroid.v1domain.entity.UpdateService;
  * from {@link App} using a {@link AppRepository}
  */
 public class AppUpdateService implements UpdateService, ProgressObservable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
+
     private static final int PROGRESS_INTERVALL = 100;
 
     private final AppRepository appRepository;
@@ -57,30 +66,47 @@ public class AppUpdateService implements UpdateService, ProgressObservable {
         progressCountdown = 0;
     }
 
-    public de.k3b.fdroid.domain.entity.App update(int repoId, App v1App) {
-        de.k3b.fdroid.domain.entity.App roomApp = appRepository.findByPackageName(v1App.getPackageName());
-        String progressChar = ".";
-        if (roomApp == null) {
-            progressChar = "+";
-            roomApp = new de.k3b.fdroid.domain.entity.App();
-        }
-        AppCommon.copyCommon(roomApp, v1App);
-        roomApp.setSearchCategory(StringUtil.toCsvStringOrNull(v1App.getCategories()));
-        appRepository.save(roomApp);
+    public de.k3b.fdroid.domain.entity.App update(int repoId, App v1App)
+            throws PersistenceException {
+        String packageName = v1App.getPackageName();
+        de.k3b.fdroid.domain.entity.App roomApp = null;
+        try {
+            roomApp = appRepository.findByPackageName(packageName);
+            String progressChar = ".";
+            if (roomApp == null) {
+                progressChar = "+";
+                roomApp = new de.k3b.fdroid.domain.entity.App();
+            }
+            AppCommon.copyCommon(roomApp, v1App);
+            roomApp.setSearchCategory(StringUtil.toCsvStringOrNull(v1App.getCategories()));
+            appRepository.save(roomApp);
 
-        progressCounter++;
-        if (progressObserver != null && (--progressCountdown) <= 0) {
-            progressObserver.onProgress(progressCounter, progressChar, roomApp.getPackageName());
-            progressCountdown = PROGRESS_INTERVALL;
+            progressCounter++;
+            if (progressObserver != null && (--progressCountdown) <= 0) {
+                progressObserver.onProgress(progressCounter, progressChar, roomApp.getPackageName());
+                progressCountdown = PROGRESS_INTERVALL;
+            }
+
+            if (appCategoryUpdateService != null)
+                appCategoryUpdateService.update(roomApp.getId(), v1App.getCategories());
+            if (localizedUpdateService != null) {
+                localizedUpdateService.update(repoId, roomApp.getId(), roomApp, v1App.getLocalized());
+                appRepository.update(roomApp);
+            }
+            return roomApp;
+        } catch (Exception ex) {
+            // thrown by j2se hibernate database problem
+            // hibernate DataIntegrityViolationException -> NestedRuntimeException
+            // hibernate org.hibernate.exception.DataException inherits from PersistenceException
+            String message = "PersistenceException in " + getClass().getSimpleName() + ".update(repo="
+                    + repoId + ", app("
+                    + (roomApp == null ? "?" : roomApp.getAppId())
+                    + ")=" + packageName + ") "
+                    + ExceptionUtils.getParentCauseMessage(ex, PersistenceException.class);
+            LOGGER.error(message + "\n\tv1App=" + v1App, ex);
+            throw new PersistenceException(message, ex);
         }
 
-        if (appCategoryUpdateService != null)
-            appCategoryUpdateService.update(roomApp.getId(), v1App.getCategories());
-        if (localizedUpdateService != null) {
-            localizedUpdateService.update(repoId, roomApp.getId(), roomApp, v1App.getLocalized());
-            appRepository.update(roomApp);
-        }
-        return roomApp;
     }
 
     @Override

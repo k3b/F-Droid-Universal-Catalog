@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -18,17 +18,26 @@
  */
 package de.k3b.fdroid.v1domain.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
+import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.entity.AppCategory;
 import de.k3b.fdroid.domain.repository.AppCategoryRepository;
 import de.k3b.fdroid.domain.service.CategoryService;
+import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.v1domain.entity.UpdateService;
 
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
 public class AppCategoryUpdateService implements UpdateService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
+
     private final CategoryService categoryService;
     private final AppCategoryRepository appCategoryRepository;
 
@@ -42,21 +51,40 @@ public class AppCategoryUpdateService implements UpdateService {
         return this;
     }
 
-    public void update(int appId, List<String> v1Categories) {
-        List<AppCategory> roomAppCategories = appCategoryRepository.findByAppId(appId);
+    public void update(int appId, List<String> v1Categories)
+            throws PersistenceException {
+        List<AppCategory> roomAppCategories;
+        int categoryId = 0;
+        String categoryName = "";
+        try {
+            roomAppCategories = appCategoryRepository.findByAppId(appId);
 
-        deleteRemoved(roomAppCategories, v1Categories);
-        for (String v1Category : v1Categories) {
-            int categoryId = categoryService.getOrCreateCategoryId(v1Category);
+            deleteRemoved(roomAppCategories, v1Categories);
+            for (String v1Category : v1Categories) {
+                categoryName = v1Category;
+                categoryId = categoryService.getOrCreateCategoryId(categoryName);
 
-            AppCategory roomAppCategory = findByCategoryId(roomAppCategories, categoryId);
-            if (roomAppCategory == null) {
-                roomAppCategory = new AppCategory(appId, categoryId);
-                appCategoryRepository.insert(roomAppCategory);
-                roomAppCategories.add(roomAppCategory);
-            } else {
-                // category already assigned. Nothing to do
+                AppCategory roomAppCategory = findByCategoryId(roomAppCategories, categoryId);
+                if (roomAppCategory == null) {
+                    roomAppCategory = new AppCategory(appId, categoryId);
+                    appCategoryRepository.insert(roomAppCategory);
+                    roomAppCategories.add(roomAppCategory);
+                } else {
+                    // category already assigned. Nothing to do
+                }
             }
+        } catch (Exception ex) {
+            // thrown by j2se hibernate database problem
+            // hibernate DataIntegrityViolationException -> NestedRuntimeException
+            // hibernate org.hibernate.exception.DataException inherits from PersistenceException
+            String message = "PersistenceException in " + getClass().getSimpleName()
+                    + ".update(app=" + appId
+                    + ",categoryId=" + categoryId
+                    + ",categoryName='" + categoryName
+                    + "') "
+                    + ExceptionUtils.getParentCauseMessage(ex, PersistenceException.class);
+            LOGGER.error(message + "\n\tv1Categories=" + v1Categories, ex);
+            throw new PersistenceException(message, ex);
         }
     }
 

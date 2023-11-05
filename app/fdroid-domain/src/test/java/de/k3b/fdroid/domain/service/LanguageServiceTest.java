@@ -58,7 +58,7 @@ public class LanguageServiceTest {
 
     private void testCanonical(String fdroidLocale, String... expected) {
         String[] result = LanguageService.getCanonicalLocalesArray(fdroidLocale);
-        assertEquals("LanguageService.getCanonicalLocalesArray(" + fdroidLocale + ")", expected, result);
+        assertArrayEquals("LanguageService.getCanonicalLocalesArray(" + fdroidLocale + ")", expected, result);
     }
 
     // getCanonicalLocalesArray

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -32,7 +32,6 @@ import org.junit.runners.Parameterized;
 import org.mockito.Mockito;
 
 import java.security.cert.Certificate;
-import java.security.cert.CertificateEncodingException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -64,7 +63,7 @@ public class JarUtilitiesTest {
     }
 
     @Parameterized.Parameters
-    public static Collection<Object[]> input() throws Exception {
+    public static Collection<Object[]> input() {
         return Arrays.asList(new Object[][]{
                 {null, null, null, null},
                 {null, exampleCert, exampleCertString, exampleFingerprint},
@@ -78,10 +77,13 @@ public class JarUtilitiesTest {
     }
 
     private static Certificate createCert(String encoded) {
-        Certificate exampleCert = Mockito.mock(Certificate.class);
+        Certificate exampleCert = null;
         try {
+            exampleCert = Mockito.mock(Certificate.class);
             when(exampleCert.getEncoded()).thenReturn(encoded.getBytes());
-        } catch (CertificateEncodingException e) {
+//        } catch (CertificateEncodingException e) {
+//            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return exampleCert;

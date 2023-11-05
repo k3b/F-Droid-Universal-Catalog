@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -19,9 +19,16 @@
 
 package de.k3b.fdroid.v1domain.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.persistence.PersistenceException;
+
+import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
 import de.k3b.fdroid.domain.repository.RepoRepository;
+import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.v1domain.entity.UpdateService;
 
@@ -30,26 +37,39 @@ import de.k3b.fdroid.v1domain.entity.UpdateService;
  * from {@link de.k3b.fdroid.v1domain.entity.Repo} using a {@link RepoRepository}
  */
 public class RepoUpdateService implements UpdateService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
+
     private final RepoRepository repoRepository;
 
     public RepoUpdateService(RepoRepository repoRepository) {
         this.repoRepository = repoRepository;
     }
 
-    public Repo update(de.k3b.fdroid.v1domain.entity.Repo v1Repo, Repo roomRepoOrNull) {
+    public Repo update(de.k3b.fdroid.v1domain.entity.Repo v1Repo, Repo roomRepoOrNull)
+            throws PersistenceException {
         Repo roomRepo = roomRepoOrNull;
-        if (roomRepo == null) {
-            roomRepo = repoRepository.findByAddress(v1Repo.getAddress());
+        try {
+            if (roomRepo == null) {
+                roomRepo = repoRepository.findByAddress(v1Repo.getAddress());
+            }
+            if (roomRepo == null) {
+                roomRepo = new Repo();
+                copy(roomRepo, v1Repo);
+                repoRepository.insert(roomRepo);
+            } else {
+                copy(roomRepo, v1Repo);
+                repoRepository.update(roomRepo);
+            }
+            return roomRepo;
+        } catch (PersistenceException ex) {
+            // thrown by j2se hibernate database problem
+            String message = "PersistenceException in " + getClass().getSimpleName() + ".update(repo("
+                    + roomRepo.getId() + ")="
+                    + roomRepo.getAddress() + ") "
+                    + ExceptionUtils.getParentCauseMessage(ex, PersistenceException.class);
+            LOGGER.error(message + "\n\tv1Repo=" + v1Repo, ex);
+            throw new PersistenceException(message, ex);
         }
-        if (roomRepo == null) {
-            roomRepo = new Repo();
-            copy(roomRepo, v1Repo);
-            repoRepository.insert(roomRepo);
-        } else {
-            copy(roomRepo, v1Repo);
-            repoRepository.update(roomRepo);
-        }
-        return roomRepo;
     }
 
     private void copy(Repo dest, de.k3b.fdroid.v1domain.entity.Repo src) {

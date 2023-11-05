@@ -5,12 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "java",
-            "name": "DemoApplication",
-            "request": "launch",
-            "mainClass": "de.k3b.fdroid.v1domain.DemoApplication",
-            "projectName": "fdroid-universal-cli",
-            "args": "-r" 
+          "type": "java",
+          "name": "fuc-cli -r(eload)",
+          "request": "launch",
+          "mainClass": "de.k3b.fdroid.v1domain.DemoApplication",
+          "projectName": "fdroid-universal-cli",
+          "args": "test-string-overflow-index-v1.json"
+          // import test v1-json with problematic data
+          // "args": "IzzyOnDroid_F-Droid_Repo-index-v1.jar"  // reimport downloaded v1-jar
+          // "args": "-r"  // reimport all local v1-jars
         },
         {
             "type": "java",

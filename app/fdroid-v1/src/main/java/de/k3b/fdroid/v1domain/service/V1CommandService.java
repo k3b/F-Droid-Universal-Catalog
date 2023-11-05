@@ -27,6 +27,8 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.PersistenceException;
+
 import de.k3b.fdroid.domain.adapter.AppRepositoryAdapterImpl;
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.AppSearchParameter;
@@ -37,6 +39,7 @@ import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.repository.LocalizedRepository;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.service.AppWithDetailsPagerService;
+import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.StringUtil;
 
 /**
@@ -158,10 +161,16 @@ public class V1CommandService {
     private void execReloadDbFromDownload() throws IOException {
         for (File f : listFiles()) {
             String absolutePath = f.getAbsolutePath();
-            System.out.println();
-            System.out.println("reload " + absolutePath);
-            if (absolutePath.endsWith(RepoCommon.V1_JAR_NAME)) {
-                execImportLocalFile(absolutePath);
+            try {
+                System.out.println();
+                System.out.println("reload " + absolutePath);
+                if (absolutePath.endsWith(RepoCommon.V1_JAR_NAME)) {
+                    execImportLocalFile(absolutePath);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                throw new IOException("execReloadDbFromDownload('" + absolutePath + "') "
+                        + ExceptionUtils.getParentCauseMessage(ex, PersistenceException.class), ex);
             }
         }
     }

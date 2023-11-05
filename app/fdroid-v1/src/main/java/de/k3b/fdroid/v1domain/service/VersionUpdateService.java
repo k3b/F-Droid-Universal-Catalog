@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -19,11 +19,17 @@
 
 package de.k3b.fdroid.v1domain.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.PersistenceException;
+
+import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.Version;
 import de.k3b.fdroid.domain.entity.common.VersionCommon;
@@ -33,6 +39,7 @@ import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.repository.VersionRepository;
 import de.k3b.fdroid.domain.service.HardwareProfileService;
 import de.k3b.fdroid.domain.service.VersionService;
+import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.v1domain.entity.UpdateService;
 
@@ -41,6 +48,8 @@ import de.k3b.fdroid.v1domain.entity.UpdateService;
  * from {@link de.k3b.fdroid.v1domain.entity.Version} using a {@link VersionRepository}
  */
 public class VersionUpdateService implements UpdateService, ProgressObservable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
+
     private static final int PROGRESS_INTERVALL = 100;
 
     private final AppRepository appRepository;
@@ -76,14 +85,32 @@ public class VersionUpdateService implements UpdateService, ProgressObservable {
     }
 
     // update(repoId, packageName,List<v1Version>) -> update(app,List<v1Version>)
-    private void updateGetCorrespondingApp(int repoId, String packageName, List<de.k3b.fdroid.v1domain.entity.Version> v1VersionList) {
-        App app = getOrCreateApp(packageName);
+    private void updateCorrespondingApp(
+            int repoId, String packageName,
+            List<de.k3b.fdroid.v1domain.entity.Version> v1VersionList)
+            throws PersistenceException {
+        App roomApp = null;
+        try {
+            roomApp = getOrCreateApp(packageName);
 
-        update(repoId, app, v1VersionList);
+            update(repoId, roomApp, v1VersionList);
+        } catch (Exception ex) {
+            // thrown by j2se hibernate database problem
+            // hibernate DataIntegrityViolationException -> NestedRuntimeException
+            // hibernate org.hibernate.exception.DataException inherits from PersistenceException
+            String message = "PersistenceException in " + getClass().getSimpleName()
+                    + ".update(repo=" + repoId + ", app("
+                    + (roomApp == null ? "?" : roomApp.getAppId())
+                    + ")=" + packageName + ") "
+                    + ExceptionUtils.getParentCauseMessage(ex, PersistenceException.class);
+            LOGGER.error(message + "\n\tv1Version=" + v1VersionList, ex);
+            throw new PersistenceException(message, ex);
+        }
     }
 
     // most processing is done here
-    private void update(int repoId, App app, List<de.k3b.fdroid.v1domain.entity.Version> v1VersionList) {
+    private void update(int repoId, App app,
+                        List<de.k3b.fdroid.v1domain.entity.Version> v1VersionList) {
         progressCounter++;
         if (progressObserver != null && (--progressCountdown) <= 0) {
             progressObserver.onProgress(progressCounter, ".", app.getPackageName());
@@ -108,7 +135,6 @@ public class VersionUpdateService implements UpdateService, ProgressObservable {
         if (this.hardwareProfileService != null) {
             this.hardwareProfileService.updateAppProfiles(app, roomVersionList);
         }
-
 
     }
 
@@ -183,7 +209,7 @@ public class VersionUpdateService implements UpdateService, ProgressObservable {
         public void update(int repoId, String packageName, de.k3b.fdroid.v1domain.entity.Version v1Version) {
             if (v1VersionList.size() > 0 && (packageName == null || packageName.compareTo(lastPackageName) != 0)) {
                 // packagename null or changed : Process collected versons
-                VersionUpdateService.this.updateGetCorrespondingApp(repoId, lastPackageName, v1VersionList);
+                VersionUpdateService.this.updateCorrespondingApp(repoId, lastPackageName, v1VersionList);
 
                 v1VersionList = new ArrayList<>();
             }
