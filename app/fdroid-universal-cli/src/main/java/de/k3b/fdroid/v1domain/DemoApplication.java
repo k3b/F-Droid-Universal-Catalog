@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -48,8 +48,6 @@ import de.k3b.fdroid.domain.repository.LocalizedRepository;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.html.service.ResourceBundleMustacheContext;
 import de.k3b.fdroid.html.util.MustacheEx;
-import de.k3b.fdroid.jpa.repository.testcase.TestEntity;
-import de.k3b.fdroid.jpa.repository.testcase.TestRepositoryJpa;
 import de.k3b.fdroid.v1domain.service.HttpV1JarDownloadService;
 import de.k3b.fdroid.v1domain.service.V1CommandService;
 import de.k3b.fdroid.v1domain.service.V1UpdateServiceEx;
@@ -189,35 +187,4 @@ public class DemoApplication {
         for (de.k3b.fdroid.domain.entity.App a : all) appRepo.delete(a);
 
     }
-
-	private void demoTestEntity(TestRepositoryJpa repository) {
-		Iterable<TestEntity> all = repository.findAll();
-		for (TestEntity t : all) repository.delete(t);
-
-
-		// save a few customers
-		TestEntity testEntity = new TestEntity();
-		testEntity.name = "my.demo.testEntity";
-		testEntity.familyName = "smith";
-		repository.save(testEntity);
-
-		log.info("Customers found with findAll():");
-		log.info("-------------------------------");
-		for (TestEntity customer : repository.findAll()) {
-			log.info("id: " + customer.id +
-					", name: " + customer.name +
-					", familyName: " + customer.familyName);
-		}
-		log.info("");
-
-		List<TestEntity> testEntity2 = repository.findByFamilyName("smith");
-		log.info("search result " + testEntity2.get(0).toString());
-		TestEntity testEntity3 = repository.findByName("my.demo.testEntity");
-		log.info("search result " + testEntity3.toString());
-
-		all = repository.findAll();
-		for (TestEntity t : all) repository.delete(t);
-
-	}
-
 }

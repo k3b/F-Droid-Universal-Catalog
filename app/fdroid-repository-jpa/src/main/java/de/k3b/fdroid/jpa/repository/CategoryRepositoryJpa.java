@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -18,7 +18,7 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import de.k3b.fdroid.domain.entity.Category;
@@ -30,7 +30,7 @@ import de.k3b.fdroid.domain.entity.Category;
  * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
  */
 @Repository
-public interface CategoryRepositoryJpa extends CrudRepository<Category, Integer> {
+public interface CategoryRepositoryJpa extends JpaRepository<Category, Integer> {
     Category findByName(String name);
 }
 

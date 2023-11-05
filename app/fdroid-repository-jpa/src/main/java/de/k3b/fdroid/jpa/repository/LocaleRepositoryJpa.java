@@ -18,7 +18,7 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import de.k3b.fdroid.domain.entity.Locale;
@@ -30,6 +30,6 @@ import de.k3b.fdroid.domain.entity.Locale;
  * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
  */
 @Repository
-public interface LocaleRepositoryJpa extends CrudRepository<Locale, String> {
+public interface LocaleRepositoryJpa extends JpaRepository<Locale, String> {
 }
 

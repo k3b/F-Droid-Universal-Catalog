@@ -18,8 +18,8 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,7 +33,7 @@ import de.k3b.fdroid.domain.entity.Localized;
  * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
  */
 @Repository
-public interface LocalizedRepositoryJpa extends CrudRepository<Localized, Integer> {
+public interface LocalizedRepositoryJpa extends JpaRepository<Localized, Integer> {
     // @Query(value = "select l from Localized l where l.appId = ?1")
     List<Localized> findByAppId(int appId);
 

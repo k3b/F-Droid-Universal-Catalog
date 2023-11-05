@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -18,7 +18,7 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import de.k3b.fdroid.domain.entity.HardwareProfile;
@@ -30,7 +30,7 @@ import de.k3b.fdroid.domain.entity.HardwareProfile;
  * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
  */
 @Repository
-public interface HardwareProfileRepositoryJpa extends CrudRepository<HardwareProfile, Integer> {
+public interface HardwareProfileRepositoryJpa extends JpaRepository<HardwareProfile, Integer> {
     HardwareProfile findByName(String name);
 }
 
