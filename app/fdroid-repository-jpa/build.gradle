@@ -28,7 +28,8 @@ dependencies {
     implementation 'javax.persistence:javax.persistence-api:2.2'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'com.samskivert:jmustache:1.15' // https://github.com/samskivert/jmustache to generate html from template
+    implementation 'com.samskivert:jmustache:1.15'
+    // https://github.com/samskivert/jmustache to generate html from template
 
     //!!!
     implementation 'org.flywaydb:flyway-core:8.5.7'

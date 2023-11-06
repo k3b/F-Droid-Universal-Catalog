@@ -20,6 +20,7 @@
 package de.k3b.fdroid.v1domain.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 import static de.k3b.fdroid.v1domain.util.JarUtilities.ERR_CERTIFICATE_FINGERPRINT_MISMATCH;
 import static de.k3b.fdroid.v1domain.util.JarUtilities.ERR_CERTIFICATE_MISMATCH;
@@ -65,6 +66,7 @@ public class JarUtilitiesTest {
     @Parameterized.Parameters
     public static Collection<Object[]> input() {
         return Arrays.asList(new Object[][]{
+                // errorMessage, jarCert, dbCert, dbFingerprint
                 {null, null, null, null},
                 {null, exampleCert, exampleCertString, exampleFingerprint},
                 {null, exampleCert, null, exampleFingerprint},
@@ -85,6 +87,7 @@ public class JarUtilitiesTest {
 //            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+            fail("Cert-mock kann nicht erstellt werden");
         }
         return exampleCert;
     }

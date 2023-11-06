@@ -18,10 +18,10 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceUnit;
 
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.AppCategory;
@@ -33,7 +33,8 @@ import de.k3b.fdroid.domain.entity.Version;
 
 @Service
 public class JpaTestHelper {
-    @Autowired
+    //@Autowired // does not work anymore
+    @PersistenceUnit
     EntityManager entityManager;
 
     private int nextNo = 1;
