@@ -10,7 +10,7 @@ CREATE TABLE Repo (
   repoTyp VARCHAR(2),
   autoDownloadEnabled BOOLEAN default false,
   description VARCHAR(255),
-  mirrors  VARCHAR(255),
+  mirrors  VARCHAR(8000),
   lastUsedDownloadMirror VARCHAR(255),
   lastUsedDownloadDateTimeUtc BIGINT default 0 NOT NULL,
   lastAppCount INT default 0 NOT NULL,

@@ -19,7 +19,7 @@ test {
 }
 
 dependencies {
-    // implementation project(path: ':app:room-annotations')
+    // implementation 'androidx.room:room-common:2.6.0'
 
     implementation (project(path: ':app:fdroid-domain'))
     implementation (project(path: ':app:fdroid-v1'))
@@ -32,12 +32,12 @@ dependencies {
     // https://github.com/samskivert/jmustache to generate html from template
 
     //!!!
-    implementation 'org.flywaydb:flyway-core:8.5.7'
+    implementation 'org.flywaydb:flyway-core:10.0.0'
     runtimeOnly 'org.hsqldb:hsqldb'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure:2.6.6'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure:3.1.5'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
     testImplementation 'org.hamcrest:hamcrest:2.2'
 }
 

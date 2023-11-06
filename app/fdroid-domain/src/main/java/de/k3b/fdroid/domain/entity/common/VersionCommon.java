@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -34,15 +34,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class VersionCommon extends ProfileCommon {
 
     @Schema(description = "Device compatibility: minSdkVersion = 'Minimal Required Android SDK API Version'.",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "MinSdk"),
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "MinSdk"),
             example = "14")
     private int minSdkVersion;
-    @Schema(description = "'Android SDK API Version' for which the app was created.",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "MinSdk"),
+    @Schema(description = "'Android SDK API Version' for which the [App] was created.",
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "MinSdk"),
             example = "21")
     private int targetSdkVersion;
     @Schema(description = "Device compatibility: maxSdkVersion = 'Maximum Required Android SDK API Version'.",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "MinSdk"),
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "MinSdk"),
             example = "28")
     private int maxSdkVersion;
 

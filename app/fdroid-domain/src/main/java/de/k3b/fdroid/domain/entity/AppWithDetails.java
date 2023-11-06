@@ -29,7 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
-import de.k3b.fdroid.domain.entity.common.WebReferences;
+import de.k3b.fdroid.domain.entity.common.ExtDoc;
 import de.k3b.fdroid.domain.interfaces.AggregateRoot;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -40,8 +40,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 @JsonInclude(Include.NON_NULL)
 @SuppressWarnings({"unchecked", "unsafe", "unused"})
-@ExternalDocumentation(description = "Information about an Android App that is available in a Repo or Mirror",
-        url = WebReferences.GLOSSAR_URL + "App")
+@ExternalDocumentation(description = "Information about an Android [App] that is available in a [Repo] or [Mirror]",
+        url = ExtDoc.GLOSSAR_URL + "App")
 public class AppWithDetails extends EntityCommon implements AppDetail, AggregateRoot {
     @NotNull
     private final App app;

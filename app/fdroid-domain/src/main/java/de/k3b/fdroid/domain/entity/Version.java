@@ -22,8 +22,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.jetbrains.annotations.NotNull;
 
+import de.k3b.fdroid.domain.entity.common.ExtDoc;
 import de.k3b.fdroid.domain.entity.common.VersionCommon;
-import de.k3b.fdroid.domain.entity.common.WebReferences;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
 import de.k3b.fdroid.domain.util.AndroidVersionName;
 import de.k3b.fdroid.domain.util.StringUtil;
@@ -35,9 +35,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
  * Database Entity compatible with Android-Room and non-android-j2se-jpa
  */
-@ExternalDocumentation(description = "The [Version] of an App in a Repo contains " +
-        "App-Compatibility info (NativeCode and MinSdk) and a Url to download the APK-File",
-        url = WebReferences.GLOSSAR_URL + "Version")
+@ExternalDocumentation(description = "The [Version] of an [App] in a [Repo] contains " +
+        "[App-Compatibility] info ([NativeCode] and [MinSdk]) and a Url to download the APK-File from",
+        url = ExtDoc.GLOSSAR_URL + "Version")
 @androidx.room.Entity(foreignKeys = {@androidx.room.ForeignKey(entity = App.class,
         parentColumns = "id", childColumns = "appId", onDelete = androidx.room.ForeignKey.CASCADE),
         @androidx.room.ForeignKey(entity = Repo.class,
@@ -60,7 +60,7 @@ public class Version extends VersionCommon implements AppDetail {
     private int repoId;
 
     @Schema(description = "Device compatibility: Code requires one of these specific  microprocessors to run. Empty means runs on all",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "NativeCode"),
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "NativeCode"),
             example = "arm64-v8a,armeabi-v7a,x86,x86_64")
     private String nativecode;
 
@@ -139,7 +139,7 @@ public class Version extends VersionCommon implements AppDetail {
     }
 
     @Schema(description = "Calculated summary of device compatibility info.",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "MinSdk"),
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "MinSdk"),
             example = "arm64-v8a,armeabi-v7a,x86,x86_64 ICE_CREAM_SANDWICH - Android 4.0 - SDK14 - October 2011")
     public String getSdkInfo() {
         return AndroidVersionName.getName(getMinSdkVersion(), getNativecode());

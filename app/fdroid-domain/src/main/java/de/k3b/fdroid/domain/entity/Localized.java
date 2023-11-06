@@ -24,8 +24,8 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.Column;
 
+import de.k3b.fdroid.domain.entity.common.ExtDoc;
 import de.k3b.fdroid.domain.entity.common.LocalizedCommon;
-import de.k3b.fdroid.domain.entity.common.WebReferences;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
 import de.k3b.fdroid.domain.util.StringUtil;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -46,7 +46,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
         @androidx.room.Index({"appId", "localeId"})})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
-@ExternalDocumentation(description = "Locale or Language of Translation of an App", url = WebReferences.GLOSSAR_URL + "Localized")
+@ExternalDocumentation(description = "Translation of an [App]-infos in a [Locale] or language", url = ExtDoc.GLOSSAR_URL + "Localized")
 @SuppressWarnings("unused")
 public class Localized extends LocalizedCommon implements AppDetail {
     @javax.persistence.Id

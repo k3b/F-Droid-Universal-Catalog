@@ -46,7 +46,7 @@ import de.k3b.fdroid.domain.entity.AppSearchParameter;
 import de.k3b.fdroid.domain.entity.AppWithDetails;
 import de.k3b.fdroid.domain.entity.LocalizedLocalesSorter;
 import de.k3b.fdroid.domain.entity.Repo;
-import de.k3b.fdroid.domain.entity.common.WebReferences;
+import de.k3b.fdroid.domain.entity.common.ExtDoc;
 import de.k3b.fdroid.domain.repository.AppDetailRepository;
 import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.repository.LocalizedRepository;
@@ -62,23 +62,30 @@ import de.k3b.fdroid.domain.service.LocalizedImageService;
 import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.html.service.GetUrlMustacheLamdaService;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Controller
 @Tag(name = "App", description = "Get infos for an Android App",
-        externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "App"))
+        externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "App"))
 @SuppressWarnings("unused")
 public class AppDetailController {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_HTML);
 
+    // url parameter
+    private static final String PARAM_PACKAGENAME_DESCRIPTION = "packageName";
+    private static final String PARAM_PACKAGENAME_EXAMPLE = "de.k3b.android.androFotoFinder";
+    private static final String PARAM_ID_PACKAGENAME_DESCRIPTION = "appId or " + PARAM_PACKAGENAME_DESCRIPTION;
+    private static final String PARAM_ID_PACKAGENAME_EXAMPLE = "131 or " + PARAM_PACKAGENAME_EXAMPLE;
+    private static final String PARAM_BACK_DESCRIPTION = "Relative url to return to search page";
+
+    // injected Services
     private final VersionRepositoryWithMinSdkFilter versionRepositoryWithMinSdkFilter;
     private final LocalizedRepositoryWithLocaleFilter localizedRepositoryAdapter;
     private final AppWithDetailsPagerService appWithDetailsPagerService;
     private final Mustache.Lambda getUrl;
     private final AppRepository appRepository;
-
     private final AppIconService iconService;
-
     private final LocalizedImageService localizedImageService;
 
     public AppDetailController(
@@ -105,15 +112,40 @@ public class AppDetailController {
         iconService = new AppIconService(iconsDir, cache, appRepository);
     }
 
+    private static byte[] readFile(File file) {
+        if (file != null && file.exists() && file.canRead()) {
+            try (InputStream in = new FileInputStream(file)) {
+                return IOUtils.toByteArray(in);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     @GetMapping(HTML_APP_ROOT + "/{idOrPackageName}")
     public String appDetailHtml(
-            @PathVariable String idOrPackageName,
-            @RequestParam(name = "minSdk", required = false, defaultValue = "0") String minVersionSdkText,
-            @RequestParam(name = "back", required = false, defaultValue = "") String back,
-            @RequestParam(name = "locales", required = false, defaultValue = "") String locales,
+            @PathVariable
+            @Schema(description = PARAM_ID_PACKAGENAME_DESCRIPTION, example = PARAM_ID_PACKAGENAME_EXAMPLE)
+            String idOrPackageName,
+
+            @RequestParam(name = "minSdk", required = false, defaultValue = "0")
+            @Schema(description = ExtDoc.PARAM_MINSDK_DESCRIPTION, example = "14",
+                    externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "MinSdk"))
+            String minSdkText,
+
+            @RequestParam(name = "back", required = false, defaultValue = "")
+            @Schema(description = PARAM_BACK_DESCRIPTION)
+            String back,
+
+            @RequestParam(name = "locales", required = false, defaultValue = "")
+            @Schema(description = ExtDoc.PARAM_LOKALES_DESCRIPTION, example = "de,en",
+                    externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Locale"))
+            String locales,
+
             Model model) {
         AppWithDetails item = appDetail(
-                idOrPackageName, minVersionSdkText, locales);
+                idOrPackageName, minSdkText, locales);
 
         model.addAttribute("item", item);
         model.addAttribute("getUrl", getUrl);
@@ -124,21 +156,35 @@ public class AppDetailController {
     @ResponseBody
     @GetMapping(value = WebConfig.API_ROOT + "/app/{idOrPackageName}", produces = MediaType.APPLICATION_JSON_VALUE)
     public AppWithDetails appDetailRest(
-            @PathVariable String idOrPackageName,
-            @RequestParam(name = "minSdk", required = false, defaultValue = "0") String minVersionSdkText,
-            @RequestParam(name = "locales", required = false, defaultValue = "") String locales) {
-        AppWithDetails appWithDetails = appDetail(idOrPackageName, minVersionSdkText, locales);
+            @PathVariable
+            @Schema(description = PARAM_ID_PACKAGENAME_DESCRIPTION, example = PARAM_ID_PACKAGENAME_EXAMPLE)
+            String idOrPackageName,
+
+            @RequestParam(name = "minSdk", required = false, defaultValue = "0")
+            @Schema(description = ExtDoc.PARAM_MINSDK_DESCRIPTION, example = "14",
+                    externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "MinSdk"))
+            String minSdkText,
+
+            @RequestParam(name = "back", required = false, defaultValue = "")
+            @Schema(description = PARAM_BACK_DESCRIPTION)
+            String back,
+
+            @RequestParam(name = "locales", required = false, defaultValue = "")
+            @Schema(description = ExtDoc.PARAM_LOKALES_DESCRIPTION, example = "de,en",
+                    externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Locale"))
+            String locales) {
+        AppWithDetails appWithDetails = appDetail(idOrPackageName, minSdkText, locales);
         if (appWithDetails.getVersionList().isEmpty()) {
             LOGGER.info("appDetailRest(idOrPackageName='{}', minSdk='{}') : no Version found for {}",
-                    idOrPackageName, minVersionSdkText, appWithDetails);
+                    idOrPackageName, minSdkText, appWithDetails);
             return null;
         }
         return appWithDetails;
     }
 
     private AppWithDetails appDetail(
-            String idOrPackageName, String minVersionSdkText, String locales) {
-        int minVersionSdk = StringUtil.parseInt(minVersionSdkText, 0);
+            String idOrPackageName, String minSdkText, String locales) {
+        int minVersionSdk = StringUtil.parseInt(minSdkText, 0);
         int id = 0;
         try {
             id = Integer.parseInt(idOrPackageName);
@@ -164,33 +210,30 @@ public class AppDetailController {
         return item;
     }
 
-    @GetMapping(value = HTML_APP_ROOT + "/{packageName}/{locale}/phoneScreenshots/{name}", produces = "image/*")
+    @GetMapping(value = HTML_APP_ROOT + "/{packageName}/{locale}/phoneScreenshots/{phoneScreenshotNameWithoutPath}", produces = "image/*")
     public @ResponseBody
-    byte[] localizedPhoneScreenshots(@PathVariable String packageName, @PathVariable String locale, @PathVariable String name) {
-        String path = packageName + "/" + locale + "/phoneScreenshots/" + name;
-        File file = localizedImageService.getOrDownloadLocalImageFile(packageName, path);
-        if (file != null) {
-            try (InputStream in = new FileInputStream(file)) {
-                return IOUtils.toByteArray(in);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
+    byte[] localizedPhoneScreenshots(
+            @PathVariable
+            @Schema(description = PARAM_PACKAGENAME_DESCRIPTION, example = PARAM_PACKAGENAME_EXAMPLE)
+            String packageName,
+
+            @PathVariable
+            @Schema(description = "Locale or language of the result", example = "de",
+                    externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Locale"))
+            String locale,
+
+            @PathVariable
+            @Schema(example = "1-Gallery.png")
+            String phoneScreenshotNameWithoutPath) {
+        String path = packageName + "/" + locale + "/phoneScreenshots/" + phoneScreenshotNameWithoutPath;
+        return readFile(localizedImageService.getOrDownloadLocalImageFile(packageName, path));
     }
 
     @GetMapping(value = WebConfig.HTML_APP_ROOT + "/icon/{packageName}.png", produces = MediaType.IMAGE_PNG_VALUE)
     public @ResponseBody
-    byte[] appIcon(@PathVariable String packageName) {
-        File file = iconService.getOrDownloadLocalImageFile(packageName);
-        if (file != null) {
-            try (InputStream in = new FileInputStream(file)) {
-                return IOUtils.toByteArray(in);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return null;
+    byte[] appIcon(@PathVariable
+                   @Schema(description = PARAM_PACKAGENAME_DESCRIPTION, example = PARAM_PACKAGENAME_EXAMPLE)
+                   String packageName) {
+        return readFile(iconService.getOrDownloadLocalImageFile(packageName));
     }
-
 }

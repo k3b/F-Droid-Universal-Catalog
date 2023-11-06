@@ -36,7 +36,7 @@ import de.k3b.fdroid.domain.entity.AppSearchParameter;
 import de.k3b.fdroid.domain.entity.AppWithDetails;
 import de.k3b.fdroid.domain.entity.Category;
 import de.k3b.fdroid.domain.entity.Repo;
-import de.k3b.fdroid.domain.entity.common.WebReferences;
+import de.k3b.fdroid.domain.entity.common.ExtDoc;
 import de.k3b.fdroid.domain.repository.AppDetailRepository;
 import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.repository.CategoryRepository;
@@ -48,15 +48,26 @@ import de.k3b.fdroid.domain.service.LanguageService;
 import de.k3b.fdroid.domain.util.AndroidVersionName;
 import de.k3b.fdroid.domain.util.StringUtil;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Controller
 @Tag(name = "App(s)", description = "Find Android Apps",
-        externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "App"))
+        externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "App"))
 @SuppressWarnings("unused")
 public class AppController {
-    private static final int PAGESIZE_DEFAULT = 5;
-    private static final int PAGESIZE_MAX = 25;
+    // url parameter
+    private static final int PARAM_PAGESIZE_DEFAULT = 5;
+    private static final int PARAM_PAGESIZE_MAX = 25;
+    private static final String PARAM_Q_DESCRIPTION = "Optional query: Show only apps that contain all these words in any order and any translation.";
+    private static final String PARAM_Q_EXAMPLE = "支持 photo ";
+    private static final String PARAM_C_DESCRIPTION = "Optional category-id: Show only apps that have this category.";
+    private static final String PARAM_S_DESCRIPTION = "Optional sort order.";
+    private static final String PARAM_PAGE_DESCRIPTION = "Optional Paging: the Page-Number to display.";
+    private static final String PARAM_PAGESIZE_DESCRIPTION = "Optional Paging: Items per page (1.." +
+            PARAM_PAGESIZE_MAX + ").";
+
+    // injected Services
     private final AppRepository appRepository;
     private final LocaleRepository localeRepository;
     private final AppWithDetailsPagerService appWithDetailsPagerService;
@@ -84,43 +95,91 @@ public class AppController {
     @ResponseBody
     @GetMapping(value = WebConfig.API_ROOT + "/app/", produces = MediaType.APPLICATION_JSON_VALUE)
     public AppWithDetails[] appListRest(
-            @RequestParam(name = "q", required = false, defaultValue = "") String query,
-            @RequestParam(name = "minSdk", required = false, defaultValue = "0") String minVersionSdkText,
-            @RequestParam(name = "c", required = false, defaultValue = "0") String categoryIdText,
-            @RequestParam(name = "s", required = false, defaultValue = "") String sort,
-            @RequestParam(name = "page", required = false, defaultValue = "0") String page,
-            @RequestParam(name = "pageSize", required = false, defaultValue = "" + PAGESIZE_DEFAULT) String pageSize,
-            @RequestParam(name = "locales", required = false, defaultValue = "") String locales
+            @RequestParam(name = "q", required = false, defaultValue = "")
+            @Schema(description = PARAM_Q_DESCRIPTION, example = PARAM_Q_EXAMPLE)
+            String query,
+
+            @RequestParam(name = "minSdk", required = false, defaultValue = "0")
+            @Schema(description = ExtDoc.PARAM_MINSDK_DESCRIPTION, example = "14",
+                    externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "MinSdk"))
+            String minSdkText,
+
+            @RequestParam(name = "c", required = false, defaultValue = "0")
+            @Schema(description = PARAM_C_DESCRIPTION, example = "100",
+                    externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Category"))
+            String categoryIdText,
+
+            @RequestParam(name = "s", required = false, defaultValue = "")
+            @Schema(description = PARAM_S_DESCRIPTION)
+            String sort,
+
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Schema(description = PARAM_PAGE_DESCRIPTION, example = "0")
+            String page,
+
+            @RequestParam(name = "pageSize", required = false, defaultValue = "" + PARAM_PAGESIZE_DEFAULT)
+            @Schema(description = PARAM_PAGESIZE_DESCRIPTION, example = "" + PARAM_PAGESIZE_DEFAULT)
+            String pageSize,
+
+            @RequestParam(name = "locales", required = false, defaultValue = "")
+            @Schema(description = ExtDoc.PARAM_LOKALES_DESCRIPTION, example = "de,en",
+                    externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Locale"))
+            String locales
     ) {
-        int pageNumber = appList(query, minVersionSdkText, categoryIdText, sort, page, pageSize, locales, null);
+        int pageNumber = appList(query, minSdkText, categoryIdText, sort, page, pageSize, locales, null);
         return appWithDetailsPagerService.getAppWithDetailsArray(pageNumber);
     }
 
     @GetMapping(WebConfig.HTML_APP_ROOT)
     public String appListHtml(
-            @RequestParam(name = "q", required = false, defaultValue = "") String query,
-            @RequestParam(name = "minSdk", required = false, defaultValue = "0") String minVersionSdkText,
-            @RequestParam(name = "c", required = false, defaultValue = "0") String categoryIdText,
-            @RequestParam(name = "s", required = false, defaultValue = "") String sort,
-            @RequestParam(name = "page", required = false, defaultValue = "0") String page,
-            @RequestParam(name = "pageSize", required = false, defaultValue = "" + PAGESIZE_DEFAULT) String pageSize,
-            @RequestParam(name = "locales", required = false, defaultValue = "") String locales,
+            @RequestParam(name = "q", required = false, defaultValue = "")
+            @Schema(description = PARAM_Q_DESCRIPTION, example = PARAM_Q_EXAMPLE)
+            String query,
+
+            @RequestParam(name = "minSdk", required = false, defaultValue = "0")
+            @Schema(description = ExtDoc.PARAM_MINSDK_DESCRIPTION, example = "14",
+                    externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "MinSdk"))
+            String minSdkText,
+
+            @RequestParam(name = "c", required = false, defaultValue = "0")
+            @Schema(description = PARAM_C_DESCRIPTION, example = "100",
+                    externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Category"))
+            String categoryIdText,
+
+            @RequestParam(name = "s", required = false, defaultValue = "")
+            @Schema(description = PARAM_S_DESCRIPTION)
+            String sort,
+
+            @RequestParam(name = "page", required = false, defaultValue = "0")
+            @Schema(description = PARAM_PAGE_DESCRIPTION, example = "0")
+            String page,
+
+            @RequestParam(name = "pageSize", required = false, defaultValue = "" + PARAM_PAGESIZE_DEFAULT)
+            @Schema(description = PARAM_PAGESIZE_DESCRIPTION, example = "" + PARAM_PAGESIZE_DEFAULT)
+            String pageSize,
+
+            @RequestParam(name = "locales", required = false, defaultValue = "")
+            @Schema(description = ExtDoc.PARAM_LOKALES_DESCRIPTION, example = "de,en",
+                    externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Locale"))
+            String locales,
+
+
             Model model) {
-        appList(query, minVersionSdkText, categoryIdText, sort, page, pageSize, locales, model);
+        appList(query, minSdkText, categoryIdText, sort, page, pageSize, locales, model);
 
         return "App/app_overview";
         // return "greeting";
     }
 
-    private int appList(String query, String minVersionSdkText, String categoryIdText, String sort,
+    private int appList(String query, String minSdkText, String categoryIdText, String sort,
                         String pageText, String pageSizeText, String locales, Model model) {
-        int minVersionSdk = StringUtil.parseInt(minVersionSdkText, 0);
+        int minVersionSdk = StringUtil.parseInt(minSdkText, 0);
         int page = StringUtil.parseInt(pageText, 0);
-        int pageSize = StringUtil.parseInt(pageSizeText, PAGESIZE_DEFAULT);
+        int pageSize = StringUtil.parseInt(pageSizeText, PARAM_PAGESIZE_DEFAULT);
         int categoryId = StringUtil.parseInt(categoryIdText, 0);
 
         if (pageSize < 1) pageSize = 1;
-        if (pageSize > PAGESIZE_MAX) pageSize = PAGESIZE_MAX;
+        if (pageSize > PARAM_PAGESIZE_MAX) pageSize = PARAM_PAGESIZE_MAX;
 
         AppSearchParameter appSearchParameter = new AppSearchParameter()
                 .searchText(query)
@@ -146,7 +205,7 @@ public class AppController {
             if (categoryId > 0) params.append("&c=").append(categoryId);
             if (!StringUtil.isEmpty(sort)) params.append("&s=").append(sort);
             if (!StringUtil.isEmpty(locales)) params.append("&locales=").append(locales);
-            if (pageSize != PAGESIZE_DEFAULT) params.append("&pageSize=").append(pageSize);
+            if (pageSize != PARAM_PAGESIZE_DEFAULT) params.append("&pageSize=").append(pageSize);
 
             model.addAttribute("item", items);
             model.addAttribute("query", query);

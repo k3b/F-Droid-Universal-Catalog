@@ -16,7 +16,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "F-Droid Universal Catalog"
 include ':app'
-// include ':app:room-annotations' // replaced by jar "api 'androidx.room:room-common:2.6.0'"
 include ':app:fdroid-universal-cli'
 include ':app:fdroid-universal-web'
 include ':app:fdroid-domain'

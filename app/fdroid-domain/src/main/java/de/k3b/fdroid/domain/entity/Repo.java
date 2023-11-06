@@ -22,8 +22,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.jetbrains.annotations.NotNull;
 
+import javax.persistence.Column;
+
+import de.k3b.fdroid.domain.entity.common.ExtDoc;
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
-import de.k3b.fdroid.domain.entity.common.WebReferences;
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 import de.k3b.fdroid.domain.util.StringUtil;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -47,7 +49,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @androidx.room.Entity(indices = {@androidx.room.Index("id")})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
-@ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo",
+@ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Repo",
         description = "An Android [App] Repository that contains a catalogue of Android apps. " +
                 "A [Repo] allows to download APK-File in one or more [Version]-s")
 @SuppressWarnings("unused")
@@ -62,9 +64,10 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
     @androidx.room.PrimaryKey(autoGenerate = true)
     private int id;
 
-    @Schema(description = "List of duplicates of a Ropos that allows to download under a different Adress or url used for Load balancing.",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Mirror"),
+    @Schema(description = "List of duplicates of this [Ropo] that allows to download under a different Adress or url. (used for Load balancing.)",
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Mirror"),
             example = "https://ftp.fau.de/fdroid/repo,https://mirror.cyberbits.eu/fdroid/repo,https://fdroid.tetaneutral.net/fdroid/repo,https://ftp.lysator.liu.se/pub/fdroid/repo,https://plug-mirror.rcac.purdue.edu/fdroid/repo")
+    @Column(length = MAX_LEN_AGGREGATED)
     private String mirrors = null;
     /**
      * calculated and cached from {@link #mirrors}. Not persisted in Database
@@ -79,7 +82,7 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
     private String jarSigningCertificateFingerprint;
 
     @Schema(description = "Server, where Catalogfile was last downloaded from .",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Mirror"),
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Mirror"),
             example = "https://f-droid.org/repo")
     private String lastUsedDownloadMirror;
 
@@ -87,20 +90,20 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
     private String lastErrorMessage;
 
     @androidx.room.ColumnInfo(defaultValue = "0")
-    @Schema(description = "When the Repo-Catalog-download-file was downloaded in internal numeric format.",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo-Catalog"),
+    @Schema(description = "When the [Repo-Catalog]-download-file was downloaded in internal numeric format.",
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Repo-Catalog"),
             example = "1654792862000")
     private long lastUsedDownloadDateTimeUtc;
 
     @androidx.room.ColumnInfo(defaultValue = "0")
-    @Schema(description = "Number of different Apps available in this Repo.",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "App"),
+    @Schema(description = "Number of different [App]s available in this Repo.",
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "App"),
             example = "3868")
     private int lastAppCount;
 
     @androidx.room.ColumnInfo(defaultValue = "0")
-    @Schema(description = "Number of different App-Versions available in this Repo.",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Version"),
+    @Schema(description = "Number of different App-[Version]s available in this Repo.",
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Version"),
             example = "9087")
     private int lastVersionCount;
 
@@ -130,7 +133,7 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
     }
 
     @Schema(description = "Calculated Catalog download file-url.",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Mirror"),
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Mirror"),
             example = "https://f-droid.org/repo/index-v1.jar")
     public static String getV1Url(String server) {
         return getUrl(server, V1_JAR_NAME);
@@ -237,7 +240,7 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
     }
 
     @Schema(description = "Calculated Url where V1-Repo-Catalog-file is downloaded from.",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo-Catalog"),
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Repo-Catalog"),
             example = "https://f-droid.org/repo/index-v1.jar")
     public String getV1Url() {
         String server = removeName(getLastUsedDownloadMirror());
@@ -255,8 +258,8 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
         return url;
     }
 
-    @Schema(description = "Calculated Icon-Url of the [repo]",
-            example = "https://f-droid.org/repo/icons/fdroid-icon.png")
+    @Schema(description = "Calculated Icon-Url of the [Repo]",
+            example = "https://f-droid.org/repo/icon/fdroid-icon.png")
     public String getRepoIconUrl() {
         return getAppIconUrl(getIcon());
     }
@@ -268,8 +271,8 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
         return getTimestamp();
     }
 
-    @Schema(description = "Date, when the Repo-Catalog-download-file was downloaded.",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo-Catalog"),
+    @Schema(description = "Date, when the [Repo-Catalog]-download-file was downloaded.",
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Repo-Catalog"),
             example = "2022-06-09")
 
     public String getLastUsedDownloadDateTimeUtcDate() {

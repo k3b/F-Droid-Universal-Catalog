@@ -34,7 +34,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import de.k3b.fdroid.domain.entity.Repo;
-import de.k3b.fdroid.domain.entity.common.WebReferences;
+import de.k3b.fdroid.domain.entity.common.ExtDoc;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.service.RepoIconService;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -42,7 +42,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Controller
 @Tag(name = "Repo(s)", description = "Get available Repositories where Android Apps can be downloaded from",
-        externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo"))
+        externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Repo"))
 @SuppressWarnings("unused")
 public class RepoController {
     private final RepoIconService iconService;
@@ -63,7 +63,6 @@ public class RepoController {
         return "Repo/repo_overview";
     }
 
-
     @ResponseBody
     @GetMapping(value = WebConfig.API_ROOT + "/repo", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Repo> repoList() {
@@ -79,16 +78,14 @@ public class RepoController {
         return "Repo/repo_detail";
     }
 
-
-    @GetMapping(value = "/Repo/repo/icon/repo_{id}.png", produces = MediaType.IMAGE_PNG_VALUE)
-    public @ResponseBody
-    byte[] appIcon(@PathVariable int id) {
+    @GetMapping(value = "/Repo/repo/icons/repo_{id}.png", produces = MediaType.IMAGE_PNG_VALUE)
+    public @ResponseBody byte[] appIcon(@PathVariable int id) {
         File file = iconService.getOrDownloadLocalImageFile(repoRepository.findById(id));
         if (file != null) {
             try (InputStream in = new FileInputStream(file)) {
                 return IOUtils.toByteArray(in);
-            } catch (Exception ignore) {
-                ignore.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
         return null;

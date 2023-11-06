@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -31,20 +31,20 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 @SuppressWarnings("unused")
 public class LocalizedCommon extends EntityCommon {
-    @Schema(description = "Localized app name.",
+    @Schema(description = "Localized [App] name.",
             example = "A Photo Manager (Manejador de fotos)")
     private String name;
-    @Schema(description = "Localized description summary of the app.",
+    @Schema(description = "Localized description summary of the [App].",
             example = "Verwalte lokale Photos: Suchen/Kopieren/Exif bearbeiten/Gallerie/Landkarte.")
     private String summary;
     @Column(length = MAX_LEN_AGGREGATED)
-    @Schema(description = "Localized description of the app.",
+    @Schema(description = "Localized description of the [App].",
             example = "Merkmale: Schnelle Bildsuche per Tags(Suchbegriffe), ...")
     private String description;
     private String icon;
     private String video;
     @Column(length = MAX_LEN_AGGREGATED)
-    @Schema(description = "Localized 'What is new' info of the app.",
+    @Schema(description = "Localized 'What is new' info of the [App].",
             example = "#168: Bugfix crash in  ...")
     private String whatsNew;
 

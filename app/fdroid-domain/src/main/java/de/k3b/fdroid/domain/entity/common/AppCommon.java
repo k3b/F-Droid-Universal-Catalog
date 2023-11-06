@@ -30,41 +30,41 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 @SuppressWarnings("unused")
 public class AppCommon extends EntityCommon {
-    @Schema(description = "Unique package name of the app.",
+    @Schema(description = "Unique package name of the [App].",
             example = "de.k3b.android.androFotoFinder")
     private String packageName;
-    @Schema(description = "Url where you can see the change history of the app.",
+    @Schema(description = "Url where you can see the change history of the [App].",
             example = "https://github.com/k3b/APhotoManager/wiki/History")
     private String changelog;
-    @Schema(description = "Most recent (stable) Version-Name of the app.",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Version"),
+    @Schema(description = "Most recent (stable) [Version]-Name of the [App].",
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Version"),
             example = "0.8.3.200315")
     private String suggestedVersionName;
-    @Schema(description = "Most recent (stable) Version-Code of the app.",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Version"),
+    @Schema(description = "Most recent (stable) Version-Code of the [App].",
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Version"),
             example = "47")
     private String suggestedVersionCode;
-    @Schema(description = "Url where you can see the open issues of the app.",
+    @Schema(description = "Url where you can see the open issues of the [App].",
             example = "https://github.com/k3b/APhotoManager/issues")
     private String issueTracker;
-    @Schema(description = "License of the app.",
+    @Schema(description = "License of the [App].",
             example = "GPL-3.0-only")
     private String license;
-    @Schema(description = "Url where you can download the sourcecode of the app.",
+    @Schema(description = "Url where you can download the sourcecode of the [App].",
             example = "https://github.com/k3b/APhotoManager")
     private String sourceCode;
-    @Schema(description = "Url of the website of the app.",
+    @Schema(description = "Url of the website of the [App].",
             example = "https://github.com/k3b/APhotoManager/wiki")
     private String webSite;
-    @Schema(description = "When the app was added to the Repo in internal numeric format.",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo"),
+    @Schema(description = "When the app was added to the [Repo] in internal numeric format.",
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Repo"),
             example = "1438214400000")
     private long added;
-    @Schema(description = "Relative url of the icon of the app.",
+    @Schema(description = "Relative url of the [App]-icon.",
             example = "de.k3b.android.androFotoFinder.44.png")
     private String icon;
-    @Schema(description = "When the app was last updated in the Repo in internal numeric format.",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo"),
+    @Schema(description = "When the [App] was last updated in the [Repo] in internal numeric format.",
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Repo"),
             example = "1584144000000")
     private long lastUpdated;
 
@@ -146,8 +146,8 @@ public class AppCommon extends EntityCommon {
         this.added = added;
     }
 
-    @Schema(description = "When the app was added to the Repo.",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo"),
+    @Schema(description = "When the app was added to the [Repo].",
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Repo"),
             example = "2015-07-30")
     public String getAddedDate() {
         return EntityCommon.asDateString(added);
@@ -169,8 +169,8 @@ public class AppCommon extends EntityCommon {
         this.lastUpdated = lastUpdated;
     }
 
-    @Schema(description = "When the app was last updated in the Repo.",
-            externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Repo"),
+    @Schema(description = "When the app was last updated in the [Repo].",
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Repo"),
             example = "2020-03-14")
     public String getLastUpdatedDate() {
         return asDateString(lastUpdated);

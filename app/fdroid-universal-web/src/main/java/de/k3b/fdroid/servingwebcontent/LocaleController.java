@@ -27,14 +27,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 import de.k3b.fdroid.domain.entity.Locale;
-import de.k3b.fdroid.domain.entity.common.WebReferences;
+import de.k3b.fdroid.domain.entity.common.ExtDoc;
 import de.k3b.fdroid.domain.repository.LocaleRepository;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @Controller
 @Tag(name = "Locale(s) or languages", description = "Get available locales/language-translations for Android Apps",
-        externalDocs = @ExternalDocumentation(url = WebReferences.GLOSSAR_URL + "Localized"))
+        externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Localized"))
 @SuppressWarnings("unused")
 public class LocaleController {
     private final LocaleRepository localeRepository;

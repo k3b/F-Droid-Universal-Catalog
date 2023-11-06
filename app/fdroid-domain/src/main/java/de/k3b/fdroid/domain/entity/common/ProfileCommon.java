@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -43,7 +43,7 @@ public class ProfileCommon extends EntityCommon {
     @Schema(description = "Name of the apk version.",
             example = "0.8.1.200212")
     private String versionName;
-    @Schema(description = "Date when the version of the app added the Repo in internal numeric format.",
+    @Schema(description = "Date when the version of the [App] added the [Repo] in internal numeric format.",
             example = "1581465600000")
     private long added;
     @Schema(description = "Apk size in Bytes.",
@@ -70,7 +70,7 @@ public class ProfileCommon extends EntityCommon {
         this.added = added;
     }
 
-    @Schema(description = "Date when the version of the app added the Repo.",
+    @Schema(description = "Date when the version of the [App] added the [Repo].",
             example = "2020-02-12")
     public String getAddedDate() {
         return asDateString(added);

@@ -18,9 +18,11 @@
  */
 package de.k3b.fdroid.domain.entity.common;
 
-public class WebReferences {
+public class ExtDoc {
     /**
      * where docs for io.swagger.v3.oas.annotations.ExternalDocumentation are loaded from
      */
     public static final String GLOSSAR_URL = "https://github.com/k3b/F-Droid-Universal-Catalog/wiki/Glossar#";
+    public static final String PARAM_MINSDK_DESCRIPTION = "Optional device compatibility: minVersionSdk = 'Minimal Required Android SDK API Version'.";
+    public static final String PARAM_LOKALES_DESCRIPTION = "Optional locales or languages of the result.";
 }
