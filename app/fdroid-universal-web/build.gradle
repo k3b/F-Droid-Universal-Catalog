@@ -1,8 +1,10 @@
 plugins {
-	// id 'org.springframework.boot' version '2.7.0-M2'
-	// id 'org.springframework.boot' version '3.0.0-M2'
-	id 'org.springframework.boot' version '3.1.5'  // '2.7.0'
+	id 'org.springframework.boot' version '2.6.6' // runs with java 8
+	// id 'org.springframework.boot' version '3.1.5'  // requires java 17 not working
+
+	//* id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'io.spring.dependency-management' version '1.1.3'
+
 	id 'java'
 	id 'maven-publish' // required for jitpack
 	id 'org.springdoc.openapi-gradle-plugin' version '1.8.0'
@@ -14,8 +16,8 @@ ext {
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
+	sourceCompatibility = JavaVersion.VERSION_11
+	targetCompatibility = JavaVersion.VERSION_11
 }
 
 configurations {
@@ -43,9 +45,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
 	def HSQLDB_VERSION = rootProject.ext.HSQLDB_VERSION
-//	runtimeOnly 'org.hsqldb:hsqldb'
+	// runtimeOnly 'org.hsqldb:hsqldb'
 	implementation "org.hsqldb:hsqldb:$HSQLDB_VERSION"
 
+	implementation 'commons-io:commons-io:2.8.0'
 	// implementation 'commons-io:commons-io:2.15.0'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

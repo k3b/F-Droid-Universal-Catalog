@@ -1,6 +1,10 @@
 plugins {
-    // id 'org.springframework.boot' version '2.7.17'
+    id 'org.springframework.boot' version '2.6.6' // runs with java 8
+    // id 'org.springframework.boot' version '3.1.5'  // requires java 17 not working
+
+    //* id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'io.spring.dependency-management' version '1.1.3'
+
     id 'java-library'
     id 'maven-publish' // required for jitpack
 }
@@ -19,23 +23,28 @@ dependencies {
     // api project(path: ':app:room-annotations')
     implementation project(path: ':app:fdroid-domain')
 
-    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.google.code.gson:gson:2.9.1'
+    // implementation 'com.google.code.gson:gson:2.10.1'
+
     implementation 'javax.annotation:javax.annotation-api:1.3.2'
     implementation 'org.jetbrains:annotations:13.0'
     implementation("com.google.code.findbugs:jsr305:3.0.2")
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.hamcrest:hamcrest:2.2'
+
     testImplementation('org.mockito:mockito-core:4.4.0')
     // testImplementation('org.mockito:mockito-core:5.7.0')
     // testImplementation('org.mockito:mockito-core:4.5.1') // cannot mock java.security.cert.Certificate
+
     implementation 'javax.persistence:javax.persistence-api:2.2'
 
     def SPRING_BOOT_VERSION = rootProject.ext.SPRING_BOOT_VERSION
     implementation "org.springframework:spring-beans:$SPRING_BOOT_VERSION" // @Value
     implementation "org.springframework:spring-context:$SPRING_BOOT_VERSION" // @Service
 
-    implementation 'commons-codec:commons-codec:1.16.0' // Hex.en/decodeHex
+    implementation 'commons-codec:commons-codec:1.15' // Hex.en/decodeHex
+    // implementation 'commons-codec:commons-codec:1.16.0'
 
     def SLF4J_VERSION = rootProject.ext.SLF4J_VERSION
     implementation "org.slf4j:slf4j-api:$SLF4J_VERSION"

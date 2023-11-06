@@ -1,6 +1,10 @@
 plugins {
-    id 'org.springframework.boot' version '3.1.5'  // '2.7.0' // 2.6.6
+    id 'org.springframework.boot' version '2.6.6' // runs with java 8
+    // id 'org.springframework.boot' version '3.1.5'  // requires java 17 not working
+
+    //* id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'io.spring.dependency-management' version '1.1.3'
+
     id 'java-library'
     id 'maven-publish' // required for jitpack
 }
@@ -10,8 +14,8 @@ ext {
     PUBLISH_MODUL_DESCRIPTION = 'JPA Repository implementation'
 }
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 test {
@@ -28,19 +32,20 @@ dependencies {
     implementation 'javax.persistence:javax.persistence-api:2.2'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'com.samskivert:jmustache:1.15'
-    // https://github.com/samskivert/jmustache to generate html from template
 
-    //!!!
+    // https://github.com/samskivert/jmustache to generate html from template
+    implementation 'com.samskivert:jmustache:1.15'
+
     // implementation 'org.flywaydb:flyway-core:10.0.0' does not work
     implementation 'org.flywaydb:flyway-core:8.5.7'
 
-    def HSQLDB_VERSION = rootProject.ext.HSQLDB_VERSION
-    // runtimeOnly "org.hsqldb:hsqldb:$HSQLDB_VERSION"
-    runtimeOnly "org.hsqldb:hsqldb"
+    runtimeOnly 'org.hsqldb:hsqldb'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure:3.1.5'
+
+    // 2.7.x not working; 3.x requires java-17
+    testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure:2.6.6'
+    // last working version.
 
     def JUNIT_VERSION = rootProject.ext.JUNIT_VERSION
     testImplementation "org.junit.jupiter:junit-jupiter-api:$JUNIT_VERSION"

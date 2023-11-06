@@ -8,12 +8,14 @@ plugins {
 // required for jitpack
 ext {
     ROOM_VERSION = "2.4.2"
-//  SLF4J_VERSION = '1.7.36' // last 1.x version
-    SLF4J_VERSION = '2.0.7'
+
+    SLF4J_VERSION = '1.7.36' // last 1.x version
+    // SLF4J_VERSION = '2.0.7'
     // not available at org.slf4j:slf4j-api but at uk.uuid.slf4j:slf4j-android
-//  SLF4J_VERSION = '2.0.9' // has no support for android yet
+    //  SLF4J_VERSION = '2.0.9' // has no support for android yet
 
     JUNIT_VERSION = '5.8.2'
+    // 4.13.2
     // JUNIT_VERSION = '5.10.1' // currently does not work
 
     HSQLDB_VERSION = '2.6.1'
@@ -21,6 +23,9 @@ ext {
 
 //  SPRING_BOOT_VERSION = '6.0.13' // requires Java17
     SPRING_BOOT_VERSION = '5.3.29' // requires Java8
+
+// ---
+
     PUBLISH_GROUP_ID = 'com.github.k3b'
     PUBLISH_VERSION = "L1.0.0"
     SOURCES = 'github.com/k3b/f-droid-api'
