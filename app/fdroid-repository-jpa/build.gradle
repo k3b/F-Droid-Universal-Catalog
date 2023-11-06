@@ -1,6 +1,6 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.6'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '3.1.5'  // '2.7.0' // 2.6.6
+    id 'io.spring.dependency-management' version '1.1.3'
     id 'java-library'
     id 'maven-publish' // required for jitpack
 }
@@ -10,8 +10,8 @@ ext {
     PUBLISH_MODUL_DESCRIPTION = 'JPA Repository implementation'
 }
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 test {
@@ -22,7 +22,7 @@ dependencies {
     // implementation 'androidx.room:room-common:2.6.0'
 
     implementation (project(path: ':app:fdroid-domain'))
-    implementation (project(path: ':app:fdroid-v1'))
+    implementation(project(path: ':app:fdroid-v1'))
     // implementation (project(path: ':app:fdroid-html'))
 
     implementation 'javax.persistence:javax.persistence-api:2.2'
@@ -32,12 +32,20 @@ dependencies {
     // https://github.com/samskivert/jmustache to generate html from template
 
     //!!!
-    implementation 'org.flywaydb:flyway-core:10.0.0'
-    runtimeOnly 'org.hsqldb:hsqldb'
+    // implementation 'org.flywaydb:flyway-core:10.0.0' does not work
+    implementation 'org.flywaydb:flyway-core:8.5.7'
+
+    def HSQLDB_VERSION = rootProject.ext.HSQLDB_VERSION
+    // runtimeOnly "org.hsqldb:hsqldb:$HSQLDB_VERSION"
+    runtimeOnly "org.hsqldb:hsqldb"
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure:3.1.5'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
+
+    def JUNIT_VERSION = rootProject.ext.JUNIT_VERSION
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$JUNIT_VERSION"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$JUNIT_VERSION"
+
     testImplementation 'org.hamcrest:hamcrest:2.2'
 }
 

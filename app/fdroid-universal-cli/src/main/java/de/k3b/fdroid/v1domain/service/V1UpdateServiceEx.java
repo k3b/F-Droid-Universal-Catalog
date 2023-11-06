@@ -22,8 +22,7 @@ package de.k3b.fdroid.v1domain.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.repository.AppCategoryRepository;
