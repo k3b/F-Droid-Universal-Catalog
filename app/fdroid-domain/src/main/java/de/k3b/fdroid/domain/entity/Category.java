@@ -19,8 +19,6 @@
 package de.k3b.fdroid.domain.entity;
 
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Comparator;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
@@ -41,7 +39,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 @SuppressWarnings("unused")
 @ExternalDocumentation(description = "Category of an [App]", url = ExtDoc.GLOSSAR_URL + "Category")
-public class Category extends EntityCommon implements DatabaseEntityWithId<Integer> {
+public class Category extends EntityCommon implements DatabaseEntityWithId {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @androidx.room.PrimaryKey(autoGenerate = true)
@@ -67,9 +65,8 @@ public class Category extends EntityCommon implements DatabaseEntityWithId<Integ
         super.toStringBuilder(sb);
     }
 
-    @NotNull
     @Override
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 

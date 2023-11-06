@@ -18,8 +18,6 @@
  */
 package de.k3b.fdroid.domain.entity;
 
-import org.jetbrains.annotations.NotNull;
-
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.domain.entity.common.ExtDoc;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
@@ -68,9 +66,8 @@ public class AppCategory extends EntityCommon implements AppDetail {
         super.toStringBuilder(sb);
     }
 
-    @NotNull
     @Override
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 

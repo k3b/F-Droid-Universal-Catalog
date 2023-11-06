@@ -18,8 +18,6 @@
  */
 package de.k3b.fdroid.domain.entity;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 
@@ -78,9 +76,8 @@ public class AppHardware extends EntityCommon implements AppDetail {
         this.hardwareProfileId = hardwareProfileId;
     }
 
-    @NotNull
     @Override
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 

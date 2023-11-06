@@ -30,8 +30,6 @@ import androidx.room.ForeignKey;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.entity.common.AppCommon;
@@ -136,9 +134,8 @@ public class App extends AppCommon implements AppDetail {
         toStringBuilder(sb, "searchSigner", this.searchSigner, 14);
     }
 
-    @NotNull
     @Override
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 

@@ -350,4 +350,10 @@ public class LanguageService extends CacheService<String, Locale> {
         return item;
 
     }
+
+    @NotNull
+    @Override
+    protected String getId(Locale item) {
+        return item.getId();
+    }
 }

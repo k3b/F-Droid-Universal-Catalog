@@ -18,11 +18,13 @@
  */
 package de.k3b.fdroid.domain.service;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 
-public class CacheServiceInteger<T extends DatabaseEntityWithId<Integer>> extends CacheService<Integer, T> {
+public class CacheServiceInteger<T extends DatabaseEntityWithId> extends CacheService<Integer, T> {
     public CacheServiceInteger() {
     }
 
@@ -35,4 +37,11 @@ public class CacheServiceInteger<T extends DatabaseEntityWithId<Integer>> extend
         T item = (itemId == null || itemId.intValue() == 0) ? null : id2Item.get(itemId);
         return item;
     }
+
+    @NotNull
+    @Override
+    protected Integer getId(T item) {
+        return item.getId();
+    }
+
 }

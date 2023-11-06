@@ -24,7 +24,6 @@ import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.domain.entity.common.ExtDoc;
-import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -40,7 +39,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 @SuppressWarnings("unused")
 @ExternalDocumentation(description = "Locale or Language of Translation of an [App]", url = ExtDoc.GLOSSAR_URL + "Locale")
-public class Locale extends EntityCommon implements DatabaseEntityWithId<String> {
+public class Locale extends EntityCommon {
     @javax.persistence.Id
     @androidx.room.PrimaryKey
     @NotNull
@@ -76,7 +75,7 @@ public class Locale extends EntityCommon implements DatabaseEntityWithId<String>
      * locale-language-code. Usually two-letter-lowercase. i.e. it for italian
      */
     @NotNull
-    @Override
+    // @Override
     public String getId() {
         return id;
     }

@@ -21,7 +21,7 @@ package de.k3b.fdroid.domain.interfaces;
 /**
  * A Detail one-to-many-detail that belongs to {@link de.k3b.fdroid.domain.entity.App}
  */
-public interface AppDetail extends DatabaseEntityWithId<Integer> {
+public interface AppDetail extends DatabaseEntityWithId {
 
     int getAppId();
 }

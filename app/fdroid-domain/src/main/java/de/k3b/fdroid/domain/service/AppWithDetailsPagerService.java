@@ -181,7 +181,7 @@ public class AppWithDetailsPagerService {
 
     private App findByAppId(@NotNull List<App> apps, int appId) {
         for (App app : apps) {
-            if (appId == app.getId().intValue()) return app;
+            if (appId == app.getId()) return app;
         }
         return null;
     }

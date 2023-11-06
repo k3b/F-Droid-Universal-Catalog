@@ -57,8 +57,7 @@ public class AppWithDetails extends EntityCommon implements AppDetail, Aggregate
     }
 
     @Override
-    @NotNull
-    public Integer getId() {
+    public int getId() {
         return getApp().getId();
     }
 

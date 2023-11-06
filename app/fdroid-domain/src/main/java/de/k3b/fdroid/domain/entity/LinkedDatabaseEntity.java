@@ -18,12 +18,10 @@
  */
 package de.k3b.fdroid.domain.entity;
 
-import org.jetbrains.annotations.NotNull;
-
 import de.k3b.fdroid.domain.interfaces.AppDetail;
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 
-public class LinkedDatabaseEntity<LINK extends AppDetail, ITEM extends DatabaseEntityWithId<Integer>> implements AppDetail {
+public class LinkedDatabaseEntity<LINK extends AppDetail, ITEM extends DatabaseEntityWithId> implements AppDetail {
     private final LINK link;
     private final ITEM item;
 
@@ -46,8 +44,7 @@ public class LinkedDatabaseEntity<LINK extends AppDetail, ITEM extends DatabaseE
     }
 
     @Override
-    @NotNull
-    public Integer getId() {
+    public int getId() {
         return link.getId();
     }
 }

@@ -99,9 +99,8 @@ public class Localized extends LocalizedCommon implements AppDetail {
         toStringBuilder(sb, "phoneScreenshots", phoneScreenshots, 20);
     }
 
-    @NotNull
     @Override
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 

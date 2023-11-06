@@ -20,8 +20,6 @@ package de.k3b.fdroid.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.jetbrains.annotations.NotNull;
-
 import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.entity.common.ExtDoc;
@@ -53,7 +51,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
         description = "An Android [App] Repository that contains a catalogue of Android apps. " +
                 "A [Repo] allows to download APK-File in one or more [Version]-s")
 @SuppressWarnings("unused")
-public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
+public class Repo extends RepoCommon implements DatabaseEntityWithId {
     public static final String STATE_BUSY = "busy"; // while downloding. bg-color=yellow
     public static final String STATE_ERROR = "error"; // download failed bg-color=red
     public static final String STATE_ENABLED = "enabled"; // bg-color=green
@@ -139,9 +137,8 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId<Integer> {
         return getUrl(server, V1_JAR_NAME);
     }
 
-    @NotNull
     @Override
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 

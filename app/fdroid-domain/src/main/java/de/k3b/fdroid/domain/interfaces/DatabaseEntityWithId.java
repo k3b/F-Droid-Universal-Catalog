@@ -18,8 +18,6 @@
  */
 package de.k3b.fdroid.domain.interfaces;
 
-import org.jetbrains.annotations.NotNull;
-
 import de.k3b.fdroid.domain.entity.AppWithDetails;
 import de.k3b.fdroid.domain.repository.Repository;
 
@@ -37,13 +35,12 @@ import de.k3b.fdroid.domain.repository.Repository;
  * There is also a {@link de.k3b.fdroid.domain.service.AppWithDetailsPagerService} that implements paging with
  * load-on-demand.
  */
-public interface DatabaseEntityWithId<KEY> extends Enitity {
-    static <T extends DatabaseEntityWithId<Integer>> boolean sameId(T lhs, T rhs) {
+public interface DatabaseEntityWithId extends Enitity {
+    static <T extends DatabaseEntityWithId> boolean sameId(T lhs, T rhs) {
         int lhsId = lhs == null ? -1 : lhs.getId();
         int rhsId = rhs == null ? -1 : rhs.getId();
         return lhsId == rhsId;
     }
 
-    @NotNull
-    KEY getId();
+    int getId();
 }

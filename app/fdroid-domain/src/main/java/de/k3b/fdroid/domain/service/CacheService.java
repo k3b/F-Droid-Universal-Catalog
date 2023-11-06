@@ -18,13 +18,13 @@
  */
 package de.k3b.fdroid.domain.service;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
-
-public abstract class CacheService<KEY, T extends DatabaseEntityWithId<KEY>> {
+public abstract class CacheService<KEY, T> {
     protected Map<KEY, T> id2Item = null;
 
     public CacheService() {
@@ -42,8 +42,11 @@ public abstract class CacheService<KEY, T extends DatabaseEntityWithId<KEY>> {
     }
 
     protected void init(T item) {
-        id2Item.put(item.getId(), item);
+        id2Item.put(getId(item), item);
     }
+
+    @NotNull
+    abstract protected KEY getId(T item);
 
     abstract public T getItemById(KEY itemId);
 }
