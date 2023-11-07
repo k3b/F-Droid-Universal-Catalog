@@ -99,6 +99,10 @@ dependencies {
     implementation 'javax.persistence:javax.persistence-api:2.2'
     implementation 'androidx.appcompat:appcompat:1.6.1'
 
+    // Domain-inline-documentation
+    // https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.18'
+
     def work_version = '2.8.1'
     // def work_version = "2.8.1" // requires targetSdk 33
 
