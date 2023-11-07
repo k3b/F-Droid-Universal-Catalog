@@ -43,7 +43,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.10.0'
     implementation 'com.samskivert:jmustache:1.15'
 
-    implementation 'com.google.code.gson:gson:2.9.1'
+    implementation 'com.google.code.gson:gson:2.10.1'
 
     // jpa entity annotations that are not used by android but must exisit
     implementation 'javax.persistence:javax.persistence-api:2.2'
@@ -52,7 +52,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.hamcrest:hamcrest:2.2'
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     // androidTestImplementation 'androidx.test.ext:junit:1.1.5'
 
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

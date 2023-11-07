@@ -37,14 +37,14 @@ dependencies {
     implementation 'com.samskivert:jmustache:1.15'
 
     // implementation 'org.flywaydb:flyway-core:10.0.0' does not work
-    implementation 'org.flywaydb:flyway-core:8.5.7'
+    implementation 'org.flywaydb:flyway-core:10.0.0'
 
     runtimeOnly 'org.hsqldb:hsqldb'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // 2.7.x not working; 3.x requires java-17
-    testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure:2.6.6'
+    testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure:3.1.5'
     // last working version.
 
     def JUNIT_VERSION = rootProject.ext.JUNIT_VERSION

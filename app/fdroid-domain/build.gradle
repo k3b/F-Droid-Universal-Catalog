@@ -34,7 +34,7 @@ dependencies {
     // ---------------
 
     // for android independant "Nullable license Apache 2.0"
-    implementation 'com.google.code.gson:gson:2.9.1'
+    implementation 'com.google.code.gson:gson:2.10.1'
 
     // https://github.com/samskivert/jmustache to generate html from template
     // implementation 'com.samskivert:jmustache:1.15'
