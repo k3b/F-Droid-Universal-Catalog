@@ -73,9 +73,9 @@ android {
 dependencies {
     implementation 'io.swagger.core.v3:swagger-annotations:2.2.18'
 
-    implementation(project(path: ':app:fdroid-domain')) { transitive = false }
-    implementation(project(path: ':app:fdroid-v1')) { transitive = false }
-    implementation(project(path: ':app:fdroid-html')) { transitive = false }
+    implementation(project(path: ':app:fdroid-domain'))
+    implementation(project(path: ':app:fdroid-v1'))
+    implementation(project(path: ':app:fdroid-html'))
     implementation project(path: ':app:fdroid-repository-android')
 
     implementation 'javax.persistence:javax.persistence-api:2.2'
@@ -119,7 +119,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.hamcrest:hamcrest:2.2'
-    testImplementation(project(path: ':app:fdroid-v1')) { transitive = false }
+    testImplementation(project(path: ':app:fdroid-v1'))
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     //     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
