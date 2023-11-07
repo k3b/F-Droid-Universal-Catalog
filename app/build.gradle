@@ -71,9 +71,11 @@ android {
 }
 
 dependencies {
-    implementation (project(path: ':app:fdroid-domain')) {transitive=false}
-    implementation (project(path: ':app:fdroid-v1')) {transitive=false}
-    implementation (project(path: ':app:fdroid-html')) {transitive=false}
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.18'
+
+    implementation(project(path: ':app:fdroid-domain')) { transitive = false }
+    implementation(project(path: ':app:fdroid-v1')) { transitive = false }
+    implementation(project(path: ':app:fdroid-html')) { transitive = false }
     implementation project(path: ':app:fdroid-repository-android')
 
     implementation 'javax.persistence:javax.persistence-api:2.2'
