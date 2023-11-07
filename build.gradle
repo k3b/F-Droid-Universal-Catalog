@@ -1,13 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
-    id 'com.android.application' version '7.4.2' apply false
-    id 'com.android.library' version '7.4.2' apply false
+    id 'com.android.application' version '8.1.1' apply false
+    id 'com.android.library' version '8.1.1' apply false
     // id 'maven-publish' apply false // required for jitpack
 }
 
 // required for jitpack
 ext {
-    ROOM_VERSION = "2.4.2"
+    ROOM_VERSION = '2.6.0'
     // ROOM_VERSION = "2.6.0" // requires targetsdk
 
     SLF4J_VERSION = '1.7.36' // last 1.x version

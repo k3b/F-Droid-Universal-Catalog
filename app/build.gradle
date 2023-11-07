@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 34
 
     defaultConfig {
         applicationId "de.k3b.android.fdroid.universalcatalog"
@@ -63,8 +63,8 @@ android {
         // Flag to enable support for the new language APIs
         coreLibraryDesugaringEnabled true
         // See https://developer.android.com/build/jdks#compileSdk
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     buildFeatures {
@@ -81,7 +81,7 @@ dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
 
     // For AGP 7.4+
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
     // For AGP 7.3
     // coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.3'
     // For AGP 4.0 to 7.2
@@ -91,25 +91,25 @@ dependencies {
     implementation(project(path: ':app:fdroid-v1'))
     implementation(project(path: ':app:fdroid-html'))
     implementation project(path: ':app:fdroid-repository-android')
-    implementation 'com.google.code.gson:gson:2.9.1'
+    implementation 'com.google.code.gson:gson:2.10.1'
 
     implementation 'commons-io:commons-io:2.8.0'
 
 
     implementation 'javax.persistence:javax.persistence-api:2.2'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
 
-    def work_version = "2.7.1"
+    def work_version = '2.8.1'
     // def work_version = "2.8.1" // requires targetSdk 33
 
     // (Java only)
     implementation "androidx.work:work-runtime:$work_version"
 
-    implementation "androidx.recyclerview:recyclerview:1.2.1"
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
 
-    implementation("androidx.lifecycle:lifecycle-viewmodel:2.4.1")
+    implementation('androidx.lifecycle:lifecycle-viewmodel:2.6.2')
 
-    implementation 'com.google.code.gson:gson:2.9.1'
+    implementation 'com.google.code.gson:gson:2.10.1'
     // implementation 'com.google.code.gson:gson:2.10.1'
 
     // implementation 'commons-codec:commons-codec:1.16.0' // Hex.en/decodeHex
@@ -117,7 +117,7 @@ dependencies {
 
     implementation 'com.samskivert:jmustache:1.15'
     // https://github.com/samskivert/jmustache to generate html
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'com.google.android.material:material:1.10.0'
 
     // implementation 'commons-io:commons-io:2.15.0'
     implementation 'commons-io:commons-io:2.8.0'
@@ -142,7 +142,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     //     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
 
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation "androidx.work:work-testing:$work_version"
 
 }

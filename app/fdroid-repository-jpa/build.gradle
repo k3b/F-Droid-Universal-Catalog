@@ -14,8 +14,8 @@ ext {
     PUBLISH_MODUL_DESCRIPTION = 'JPA Repository implementation'
 }
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 test {
@@ -57,7 +57,4 @@ dependencies {
 springBoot {
     mainClass = 'de.k3b.fdroid.jpa.repository.ThereIsNoMainClass'
 }
-
-// required for jitpack
-apply from: "${rootProject.projectDir}/publish-module2.gradle"
 

@@ -15,8 +15,8 @@ ext {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 dependencies {
@@ -50,6 +50,3 @@ dependencies {
     implementation "org.slf4j:slf4j-api:$SLF4J_VERSION"
 
 }
-
-// required for jitpack
-apply from: "${rootProject.projectDir}/publish-module2.gradle"

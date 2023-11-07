@@ -16,8 +16,8 @@ ext {
 }
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_11
-	targetCompatibility = JavaVersion.VERSION_11
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
 }
 
 configurations {
@@ -63,6 +63,3 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
-// required for jitpack
-apply from: "${rootProject.projectDir}/publish-module2.gradle"
