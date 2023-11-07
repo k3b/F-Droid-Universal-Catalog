@@ -8,6 +8,7 @@ plugins {
 // required for jitpack
 ext {
     ROOM_VERSION = "2.4.2"
+    // ROOM_VERSION = "2.6.0" // requires targetsdk
 
     SLF4J_VERSION = '1.7.36' // last 1.x version
     // SLF4J_VERSION = '2.0.7'

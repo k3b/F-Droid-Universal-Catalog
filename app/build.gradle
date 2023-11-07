@@ -16,6 +16,10 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
+        // because app contains more than 65535 methods
+        // Required when setting minSdkVersion to 20 or lower
+        multiDexEnabled true
+
         // https://stackoverflow.com/questions/44322178/room-schema-export-directory-is-not-provided-to-the-annotation-processor-so-we/519334#519334
         javaCompileOptions {
             annotationProcessorOptions {
@@ -56,10 +60,12 @@ android {
          */
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
+        // See https://developer.android.com/build/jdks#compileSdk
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
-
 
     buildFeatures {
         viewBinding = true
@@ -71,10 +77,24 @@ android {
 }
 
 dependencies {
-    implementation (project(path: ':app:fdroid-domain')) {transitive=false}
-    implementation (project(path: ':app:fdroid-v1')) {transitive=false}
-    implementation (project(path: ':app:fdroid-html')) {transitive=false}
+    // because app contains more than 65535 methods
+    implementation 'androidx.multidex:multidex:2.0.1'
+
+    // For AGP 7.4+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
+    // For AGP 7.3
+    // coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.3'
+    // For AGP 4.0 to 7.2
+    // coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.9'
+
+    implementation(project(path: ':app:fdroid-domain'))
+    implementation(project(path: ':app:fdroid-v1'))
+    implementation(project(path: ':app:fdroid-html'))
     implementation project(path: ':app:fdroid-repository-android')
+    implementation 'com.google.code.gson:gson:2.9.1'
+
+    implementation 'commons-io:commons-io:2.8.0'
+
 
     implementation 'javax.persistence:javax.persistence-api:2.2'
     implementation 'androidx.appcompat:appcompat:1.4.1'

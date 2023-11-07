@@ -9,35 +9,37 @@ ext {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
 }
 
 dependencies {
-    // api(project(path: ':app:room-annotations'))
+    // ---------------
+    // --- annotations only (can be os specific) ---
 
-    // from https://developer.android.com/jetpack/androidx/releases/room
-    // Optionally, for non-Android libraries (i.e. Java or Kotlin only Gradle modules) you can
-    // depend on androidx.room:room-common to use Room annotations.
-    // https://mvnrepository.com/artifact/androidx.room/room-common
-    api 'androidx.room:room-common:2.6.0'
-
-    api 'javax.persistence:javax.persistence-api:2.2'
-    api 'org.jetbrains:annotations:13.0'
+    // androidx room annotations.
+    compileOnly "androidx.room:room-common:$ROOM_VERSION"
+    implementation 'javax.persistence:javax.persistence-api:2.2'
+    implementation 'org.jetbrains:annotations:13.0'
 
     // Domain-inline-documentation
     // https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations
-    api 'io.swagger.core.v3:swagger-annotations:2.2.18'
-
-    // for android independant Nullable license Apache 2.0
-    api 'com.google.code.gson:gson:2.9.1'
-    api 'com.samskivert:jmustache:1.15'
-    // https://github.com/samskivert/jmustache to generate html from template
-
-    api 'commons-io:commons-io:2.8.0'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.2.18'
 
     // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
-    api 'com.fasterxml.jackson.core:jackson-annotations:2.13.5'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.13.5'
+
+    // ---------------
+    // --- os independant code must be compatible with java-8
+    // ---------------
+
+    // for android independant "Nullable license Apache 2.0"
+    implementation 'com.google.code.gson:gson:2.9.1'
+
+    // https://github.com/samskivert/jmustache to generate html from template
+    // implementation 'com.samskivert:jmustache:1.15'
+
+    implementation 'commons-io:commons-io:2.8.0'
 
     def SLF4J_VERSION = rootProject.ext.SLF4J_VERSION
     implementation "org.slf4j:slf4j-api:$SLF4J_VERSION"
