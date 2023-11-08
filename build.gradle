@@ -21,6 +21,15 @@ ext {
     ANDROID_MIN_SDK = 14
     // compileSdk 31 java 8 or 11 // todo is the app still working with api 14 ? Maybe need api 16
 
+    APPCOMPAT_VERSION = '1.4.1'
+    // APPCOMPAT_VERSION = '1.6.1' // TODO
+
+    ESPRESSO_VERSION = '3.4.0' // TODO
+    // ESPRESSO_VERSION = '3.5.1' // TODO
+
+    ANDROIDX_JUNIT = '1.1.3' // TODO
+    // ANDROIDX_JUNIT = '1.1.5' // TODO
+
     if (!USE_API_34) {
         COMPILER_VERSION_COMMON = JavaVersion.VERSION_1_8 // android compileSdk 31 java 8 or 11
         COMPILER_VERSION_PC = JavaVersion.VERSION_11  // SPRING_BOOT_VERSION = 5.x.y
@@ -30,7 +39,7 @@ ext {
         ANDROID_COMPILE_SDK = 31 // compileSdk 31 java 8 or 11
         ROOM_VERSION = "2.4.2"
         WORK_VERSION = "2.7.1"
-        MATERIAL_VERSION = '1.5.0'
+        MATERIAL_VERSION = '1.5.0' // TODO
     } else {
         COMPILER_VERSION_COMMON = JavaVersion.VERSION_17 // android compileSdk 34 java 17
         COMPILER_VERSION_PC = JavaVersion.VERSION_17 // SPRING_BOOT_VERSION = 6.x.y

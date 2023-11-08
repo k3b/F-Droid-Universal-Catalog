@@ -135,10 +135,6 @@ dependencies {
     testImplementation 'org.hamcrest:hamcrest:2.2'
 
     androidTestImplementation "androidx.work:work-testing:$rootProject.ext.WORK_VERSION"
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-
-    //     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-
+    androidTestImplementation "androidx.test.ext:junit:$rootProject.ext.ANDROIDX_JUNIT"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.ext.ESPRESSO_VERSION"
 }
