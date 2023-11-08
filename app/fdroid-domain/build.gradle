@@ -1,3 +1,4 @@
+// fdroid-domain
 plugins {
     id 'java-library'
     id 'maven-publish' // required for jitpack
@@ -9,41 +10,29 @@ ext {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = rootProject.ext.COMPILER_VERSION_COMMON
+    targetCompatibility = rootProject.ext.COMPILER_VERSION_COMMON
 }
 
 dependencies {
-    // implementation(project(path: ':app:room-annotations'))
-
-    // from https://developer.android.com/jetpack/androidx/releases/room
-    // Optionally, for non-Android libraries (i.e. Java or Kotlin only Gradle modules) you can
-    // depend on androidx.room:room-common to use Room annotations.
-    // https://mvnrepository.com/artifact/androidx.room/room-common
-    implementation 'androidx.room:room-common:2.6.0'
-
-    implementation 'javax.persistence:javax.persistence-api:2.2'
-    implementation 'org.jetbrains:annotations:13.0'
-
-    // Domain-inline-documentation
-    // https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations
+    // -------
+    // os-dependent annotations
+    // -------
+    implementation "androidx.room:room-common:$rootProject.ext.ROOM_VERSION"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:2.13.5"
     implementation 'io.swagger.core.v3:swagger-annotations:2.2.18'
+    implementation 'javax.persistence:javax.persistence-api:2.2'
+    implementation "org.jetbrains:annotations:$rootProject.ext.JETBRAINS_ANNOTATIONS_VERSION"
 
-    // for android independant Nullable license Apache 2.0
-    implementation 'com.google.code.gson:gson:2.9.1'
-    implementation 'com.samskivert:jmustache:1.15'
+    // -------
+
+    implementation "com.google.code.gson:gson:$rootProject.ext.GSON_VERSION"
+    implementation "commons-io:commons-io:$rootProject.ext.COMMONS_IO_VERSION"
+
     // https://github.com/samskivert/jmustache to generate html from template
-
-    implementation 'commons-io:commons-io:2.8.0'
-
-    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-annotations
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.13.5'
-
-    def SLF4J_VERSION = rootProject.ext.SLF4J_VERSION
-    implementation "org.slf4j:slf4j-api:$SLF4J_VERSION"
+    implementation 'com.samskivert:jmustache:1.15'
+    implementation "org.slf4j:slf4j-api:$rootProject.ext.SLF4J_VERSION"
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.hamcrest:hamcrest:2.2'
 }
-// required for jitpack
-apply from: "${rootProject.projectDir}/publish-module2.gradle"

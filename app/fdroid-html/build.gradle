@@ -9,22 +9,25 @@ ext {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = rootProject.ext.COMPILER_VERSION_COMMON
+    targetCompatibility = rootProject.ext.COMPILER_VERSION_COMMON
 }
 
 dependencies {
     implementation project(path: ':app:fdroid-domain')
-    // api project(path: ':app:room-annotations')
-    // implementation 'com.google.code.gson:gson:2.9.1'
+
+    // -------
+    // os-dependent annotations
+    // -------
     implementation 'javax.persistence:javax.persistence-api:2.2'
 
-    implementation 'com.samskivert:jmustache:1.15'
+
     // https://github.com/samskivert/jmustache to generate html
+    implementation 'com.samskivert:jmustache:1.15'
+
+    implementation "org.slf4j:slf4j-api:$rootProject.ext.SLF4J_VERSION"
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.hamcrest:hamcrest:2.2'
 
-    def SLF4J_VERSION = rootProject.ext.SLF4J_VERSION
-    implementation "org.slf4j:slf4j-api:$SLF4J_VERSION"
 }

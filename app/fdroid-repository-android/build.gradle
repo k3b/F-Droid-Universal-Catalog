@@ -9,13 +9,11 @@ ext {
 }
 
 android {
-    compileSdk 31
+    compileSdk rootProject.ext.ANDROID_COMPILE_SDK
 
     defaultConfig {
-        minSdk 14 // TODO iw api 14 also working?
-//        minSdk 16
-        targetSdk 31
-        // targetSdk 33 required by androidx.work:work-runtime:2.8.1, androidx.room:room-runtime:2.5.0, androidx.sqlite:sqlite-framework:2.3.0, androidx.sqlite:sqlite:2.3.0
+        minSdk rootProject.ext.ANDROID_MIN_SDK
+        targetSdk rootProject.ext.ANDROID_TARGET_SDK
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -28,8 +26,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility rootProject.ext.COMPILER_VERSION_COMMON
+        targetCompatibility rootProject.ext.COMPILER_VERSION_COMMON
     }
     namespace 'de.k3b.fdroid.android.repository'
 }
@@ -40,7 +38,7 @@ dependencies {
     implementation (project(path: ':app:fdroid-html')) {transitive=false}
 
     implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'com.google.android.material:material:1.5.0'
+    implementation "com.google.android.material:material:$rootProject.ext.MATERIAL_VERSION"
     implementation 'com.samskivert:jmustache:1.15'
     // https://github.com/samskivert/jmustache to generate html from template
 
@@ -57,9 +55,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     def room_version = rootProject.ext.ROOM_VERSION
-
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 }
-// required for jitpack
-apply from: "${rootProject.projectDir}/publish-module2.gradle"

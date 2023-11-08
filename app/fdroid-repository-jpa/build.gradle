@@ -1,9 +1,6 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.6' // runs with java 8
-    // id 'org.springframework.boot' version '3.1.5'  // requires java 17 not working
-
-    //* id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-    id 'io.spring.dependency-management' version '1.1.3'
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
 
     id 'java-library'
     id 'maven-publish' // required for jitpack
@@ -13,9 +10,10 @@ plugins {
 ext {
     PUBLISH_MODUL_DESCRIPTION = 'JPA Repository implementation'
 }
+
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    sourceCompatibility = rootProject.ext.COMPILER_VERSION_PC
+    targetCompatibility = rootProject.ext.COMPILER_VERSION_PC
 }
 
 test {
@@ -23,8 +21,6 @@ test {
 }
 
 dependencies {
-    // implementation 'androidx.room:room-common:2.6.0'
-
     implementation (project(path: ':app:fdroid-domain'))
     implementation(project(path: ':app:fdroid-v1'))
     // implementation (project(path: ':app:fdroid-html'))
@@ -57,7 +53,4 @@ dependencies {
 springBoot {
     mainClass = 'de.k3b.fdroid.jpa.repository.ThereIsNoMainClass'
 }
-
-// required for jitpack
-apply from: "${rootProject.projectDir}/publish-module2.gradle"
 
