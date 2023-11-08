@@ -21,14 +21,11 @@ ext {
     ANDROID_MIN_SDK = 14
     // compileSdk 31 java 8 or 11 // todo is the app still working with api 14 ? Maybe need api 16
 
-    APPCOMPAT_VERSION = '1.4.1'
-    // APPCOMPAT_VERSION = '1.6.1' // TODO
+    //-ESPRESSO_VERSION = '3.4.0' // TODO
+    ESPRESSO_VERSION = '3.5.1' // TODO
 
-    ESPRESSO_VERSION = '3.4.0' // TODO
-    // ESPRESSO_VERSION = '3.5.1' // TODO
-
-    ANDROIDX_JUNIT = '1.1.3' // TODO
-    // ANDROIDX_JUNIT = '1.1.5' // TODO
+    //-ANDROIDX_JUNIT = '1.1.3' // TODO
+    ANDROIDX_JUNIT = '1.1.5' // TODO
 
     if (!USE_API_34) {
         COMPILER_VERSION_COMMON = JavaVersion.VERSION_1_8 // android compileSdk 31 java 8 or 11
@@ -39,7 +36,12 @@ ext {
         ANDROID_COMPILE_SDK = 31 // compileSdk 31 java 8 or 11
         ROOM_VERSION = "2.4.2"
         WORK_VERSION = "2.7.1"
-        MATERIAL_VERSION = '1.5.0' // TODO
+        //-MATERIAL_VERSION = '1.5.0' // TODO
+        MATERIAL_VERSION = '1.6.0' // compiles
+        // MATERIAL_VERSION = '1.7.0' // requires api >= 32
+        // MATERIAL_VERSION = '1.10.0' // depends on api > 31
+
+        APPCOMPAT_VERSION = '1.4.1'
     } else {
         COMPILER_VERSION_COMMON = JavaVersion.VERSION_17 // android compileSdk 34 java 17
         COMPILER_VERSION_PC = JavaVersion.VERSION_17 // SPRING_BOOT_VERSION = 6.x.y
@@ -50,6 +52,7 @@ ext {
         ROOM_VERSION = "2.6.0"
         WORK_VERSION = "2.8.1" // requires api 33
         MATERIAL_VERSION = '1.10.0'
+        APPCOMPAT_VERSION = '1.6.1' // requires api 33
     }
 
     SLF4J_VERSION = '1.7.36' // last 1.x version
@@ -66,22 +69,23 @@ ext {
     HSQLDB_VERSION = '2.6.1'
     // HSQLDB_VERSION = '2.7.2' currently not installed
 
-    GSON_VERSION = '2.9.1'
-//  GSON_VERSION = '2.10.1' // TODO test
+    //-GSON_VERSION = '2.9.1'
+    GSON_VERSION = '2.10.1' // TODO test
 
 //--- new 
-    JETBRAINS_ANNOTATIONS_VERSION = '13.0'
-//	JETBRAINS_ANNOTATIONS_VERSION = '24.0.1'
+    //-JETBRAINS_ANNOTATIONS_VERSION = '13.0'
+    JETBRAINS_ANNOTATIONS_VERSION = '24.0.1'
 
     MOCKITO_VERSION = '4.4.0' // working with java-8
     // MOCKITO_VERSION = '4.5.1' // cannot mock java.security.cert.Certificate with java-8
     // MOCKITO_VERSION = '5.7.0'
 
-    COMMONS_CODEC_VERSION = '1.15'
-    // COMMONS_CODEC_VERSION = '1.16.0' // TODO test
+    //-COMMONS_CODEC_VERSION = '1.15'
+    COMMONS_CODEC_VERSION = '1.16.0' // TODO test
 
-    COMMONS_IO_VERSION = '2.8.0'
-    // COMMONS_IO_VERSION = '2.15.0' ??
+    //-COMMONS_IO_VERSION = '2.8.0'
+    COMMONS_IO_VERSION = '2.14.0' // TODO
+    // COMMONS_IO_VERSION = '2.15.0' // api change String.Length
 // ---
 
     PUBLISH_GROUP_ID = 'com.github.k3b'
