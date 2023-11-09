@@ -1,0 +1,21 @@
+@startuml
+class fdroid_v2.V2DownloadAndImportService
+
+class fdroid_v2.Entity <<JsonEntity>>
+class fdroid_v2.Service
+
+fdroid_v2.Service --> fdroid_v2.Entity : uses
+
+fdroid_v2.V2DownloadAndImportService --> fdroid_v2.Service : uses
+fdroid_v2.V2DownloadAndImportService --> fdroid_v2.Entity : uses
+
+fdroid_v2.V2DownloadAndImportService --> fdroid_domain.model : uses
+
+class fdroid_domain.Repository <<interface>>
+class fdroid_domain.Entity <<DatabaseEntity>>
+class fdroid_domain.Service
+
+fdroid_domain.Service --> fdroid_domain.Entity : uses
+fdroid_domain.Service -> fdroid_domain.Repository : uses
+fdroid_domain.Repository --> fdroid_domain.Entity : uses
+@enduml

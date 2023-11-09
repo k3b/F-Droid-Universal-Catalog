@@ -1,0 +1,47 @@
+// fdroid-v2
+plugins {
+    id 'org.springframework.boot'
+    id 'io.spring.dependency-management'
+
+    id 'java-library'
+    id 'maven-publish' // required for jitpack
+}
+
+// required for jitpack
+ext {
+    PUBLISH_MODUL_DESCRIPTION = 'FDroid-v2-catalog import support'
+}
+
+java {
+    sourceCompatibility = rootProject.ext.COMPILER_VERSION_COMMON
+    targetCompatibility = rootProject.ext.COMPILER_VERSION_COMMON
+}
+
+dependencies {
+    implementation project(path: ':app:fdroid-domain')
+
+    // -------
+    // os-dependent annotations
+    // -------
+    implementation "com.google.code.gson:gson:$rootProject.ext.GSON_VERSION"
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+    implementation 'javax.persistence:javax.persistence-api:2.2'
+    implementation "org.jetbrains:annotations:$rootProject.ext.JETBRAINS_ANNOTATIONS_VERSION"
+
+
+    implementation("com.google.code.findbugs:jsr305:3.0.2")
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+
+    testImplementation "org.mockito:mockito-core:$rootProject.ext.MOCKITO_VERSION"
+
+    def SPRING_BOOT_VERSION = rootProject.ext.SPRING_BOOT_VERSION
+    implementation "org.springframework:spring-beans:$SPRING_BOOT_VERSION" // @Value
+    implementation "org.springframework:spring-context:$SPRING_BOOT_VERSION" // @Service
+
+    implementation "commons-codec:commons-codec:$rootProject.ext.COMMONS_CODEC_VERSION"
+    // Hex.en/decodeHex
+
+    implementation "org.slf4j:slf4j-api:$rootProject.ext.SLF4J_VERSION"
+}

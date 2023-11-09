@@ -1,0 +1,59 @@
+@startuml
+note "Like a Supermarket\nwhere app-s can be\ndownloaded from" as NoteRepo
+class fdroid_v2.RepoV2 <<AggregatRoot>><<JsonEntity>> {
+    name[language]
+    description[language]
+    icon[language]
+    address
+    webBaseUrl
+    mirrors[]
+    timestamp
+    antiFeatures[][language]
+    categories[][language]
+    releaseChannels[]
+}
+
+note "An App with\nTranslation" as fdroid_v2.NoteLocalized
+class fdroid_v2.PackageV2_MetadataV2 <<JsonEntity>> {
+  added
+  lastUpdated
+  icon
+  categories[]
+
+  whatsNew
+  name
+  summary
+  description
+  icon
+  phoneScreenshots[]
+}
+
+note "Compatibility Info\n+ APK Download" as NoteVersion
+class fdroid_v2.PackageVersionV2 <<JsonEntity>> {
+    added
+    file
+    src
+    releaseChannels[]
+    antiFeatures[]
+    whatsNew[language]
+
+    manifest.versionName
+    manifest.versionCode
+    manifest.usesSdk.minSdkVersion
+    manifest.usesSdk.targetSdkVersion
+    manifest.maxSdkVersion
+    manifest.signer
+    manifest.usesPermission[]
+    manifest.usesPermissionSdk23[]
+    manifest.nativecode[]
+    manifest.features
+}
+
+fdroid_v2.RepoV2 *-- fdroid_v2.PackageV2_MetadataV2
+fdroid_v2.PackageV2_MetadataV2 o-- fdroid_v2.PackageVersionV2
+fdroid_v2.PackageV2_MetadataV2 - fdroid_v2.NoteLocalized
+fdroid_v2.RepoV2 *-- fdroid_v2.PackageVersionV2
+
+fdroid_v2.RepoV2 . NoteRepo
+fdroid_v2.PackageVersionV2 - NoteVersion
+@enduml
