@@ -1,0 +1,49 @@
+/*
+ * Copyright (c) 2023 by k3b.
+ *
+ * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>
+ */
+
+package de.k3b.fdroid.v2domain.service;
+
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+import de.k3b.fdroid.v2domain.entity.packagev2.IndexV2;
+import de.k3b.fdroid.v2domain.entity.packagev2.MetadataV2;
+import de.k3b.fdroid.v2domain.entity.packagev2.PackageV2;
+import de.k3b.fdroid.v2domain.entity.packagev2.PackageVersionV2;
+
+public class V2TestData {
+    public static final IndexV2 indexV2;
+    public static final PackageV2 packageV2;
+    public static final MetadataV2 metadata;
+    public static final PackageVersionV2 versionV2;
+
+    static {
+        try (InputStreamReader is = new InputStreamReader(V2TestData.class.getClassLoader().getResourceAsStream("exampledata/example-index-v2-formatted.json"))) {
+            Gson gson = new Gson();
+            indexV2 = gson.fromJson(is, IndexV2.class);
+            packageV2 = indexV2.getPackages().entrySet().iterator().next().getValue();
+            metadata = packageV2.getMetadata();
+            versionV2 = packageV2.getVersions().entrySet().iterator().next().getValue();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}

@@ -1,17 +1,36 @@
+/*
+ * Copyright (c) 2023 by k3b.
+ *
+ * This file is part of de.k3b.fdroid.v2domain the fdroid json catalog-format-v2 parser.
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>
+ */
+
 package de.k3b.fdroid.v2domain.entity.packagev2;
 
 // MetadataV2.java
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+import java.util.Map;
+
+import de.k3b.fdroid.domain.entity.common.IAppCommon;
 import de.k3b.fdroid.v2domain.entity.repo.FileV2;
 
-public final class MetadataV2 {
+public final class MetadataV2 implements IAppCommon {
     @Nullable
     private final Map<String, String> name;
     @Nullable
@@ -113,151 +132,161 @@ public final class MetadataV2 {
         this.screenshots = screenshots;
     }
 
+    public static String getIconName(FileV2 icon) {
+        String iconName = (icon == null) ? null : icon.getName();
+        if (iconName != null) {
+            //  && iconName.startsWith("/"))
+            int lastSeperator = iconName.lastIndexOf("/");
+            iconName = iconName.substring(lastSeperator + 1);
+        }
+        return iconName;
+    }
+
     @Nullable
-    public final Map<String, String> getName() {
+    public Map<String, String> getName() {
         return this.name;
     }
 
     @Nullable
-    public final Map<String, String> getSummary() {
+    public Map<String, String> getSummary() {
         return this.summary;
     }
 
     @Nullable
-    public final Map<String, String> getDescription() {
+    public Map<String, String> getDescription() {
         return this.description;
     }
 
-    public final long getAdded() {
+    public long getAdded() {
         return this.added;
     }
 
-    public final long getLastUpdated() {
+    public long getLastUpdated() {
         return this.lastUpdated;
     }
 
     @Nullable
-    public final String getWebSite() {
+    public String getWebSite() {
         return this.webSite;
     }
 
     @Nullable
-    public final String getChangelog() {
+    public String getChangelog() {
         return this.changelog;
     }
 
     @Nullable
-    public final String getLicense() {
+    public String getLicense() {
         return this.license;
     }
 
     @Nullable
-    public final String getSourceCode() {
+    public String getSourceCode() {
         return this.sourceCode;
     }
 
     @Nullable
-    public final String getIssueTracker() {
+    public String getIssueTracker() {
         return this.issueTracker;
     }
 
     @Nullable
-    public final String getTranslation() {
+    public String getTranslation() {
         return this.translation;
     }
 
     @Nullable
-    public final String getPreferredSigner() {
+    public String getPreferredSigner() {
         return this.preferredSigner;
     }
 
     @NotNull
-    public final List<String> getCategories() {
+    public List<String> getCategories() {
         return this.categories;
     }
 
     @Nullable
-    public final String getAuthorName() {
+    public String getAuthorName() {
         return this.authorName;
     }
 
     @Nullable
-    public final String getAuthorEmail() {
+    public String getAuthorEmail() {
         return this.authorEmail;
     }
 
     @Nullable
-    public final String getAuthorWebSite() {
+    public String getAuthorWebSite() {
         return this.authorWebSite;
     }
 
     @Nullable
-    public final String getAuthorPhone() {
+    public String getAuthorPhone() {
         return this.authorPhone;
     }
 
     @NotNull
-    public final List<String> getDonate() {
+    public List<String> getDonate() {
         return this.donate;
     }
 
     @Nullable
-    public final String getLiberapayID() {
+    public String getLiberapayID() {
         return this.liberapayID;
     }
 
     @Nullable
-    public final String getLiberapay() {
+    public String getLiberapay() {
         return this.liberapay;
     }
 
     @Nullable
-    public final String getOpenCollective() {
+    public String getOpenCollective() {
         return this.openCollective;
     }
 
     @Nullable
-    public final String getBitcoin() {
+    public String getBitcoin() {
         return this.bitcoin;
     }
 
     @Nullable
-    public final String getLitecoin() {
+    public String getLitecoin() {
         return this.litecoin;
     }
 
     @Nullable
-    public final String getFlattrID() {
+    public String getFlattrID() {
         return this.flattrID;
     }
 
     @Nullable
-    public final Map<String, FileV2> getIcon() {
+    public Map<String, FileV2> getIcon() {
         return this.icon;
     }
 
     @Nullable
-    public final Map<String, FileV2> getFeatureGraphic() {
+    public Map<String, FileV2> getFeatureGraphic() {
         return this.featureGraphic;
     }
 
     @Nullable
-    public final Map<String, FileV2> getPromoGraphic() {
+    public Map<String, FileV2> getPromoGraphic() {
         return this.promoGraphic;
     }
 
     @Nullable
-    public final Map<String, FileV2> getTvBanner() {
+    public Map<String, FileV2> getTvBanner() {
         return this.tvBanner;
     }
 
     @Nullable
-    public final Map<String, String> getVideo() {
+    public Map<String, String> getVideo() {
         return this.video;
     }
 
     @Nullable
-    public final Screenshots getScreenshots() {
+    public Screenshots getScreenshots() {
         return this.screenshots;
     }
 

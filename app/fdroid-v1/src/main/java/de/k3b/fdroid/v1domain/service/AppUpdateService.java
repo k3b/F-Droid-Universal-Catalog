@@ -66,6 +66,11 @@ public class AppUpdateService implements UpdateService, ProgressObservable {
         progressCountdown = 0;
     }
 
+    protected static void update(de.k3b.fdroid.domain.entity.App roomApp, App v1App) {
+        AppCommon.copyCommon(roomApp, v1App, v1App);
+        roomApp.setSearchCategory(StringUtil.toCsvStringOrNull(v1App.getCategories()));
+    }
+
     public de.k3b.fdroid.domain.entity.App update(int repoId, App v1App)
             throws PersistenceException {
         String packageName = v1App.getPackageName();
@@ -77,8 +82,7 @@ public class AppUpdateService implements UpdateService, ProgressObservable {
                 progressChar = "+";
                 roomApp = new de.k3b.fdroid.domain.entity.App();
             }
-            AppCommon.copyCommon(roomApp, v1App);
-            roomApp.setSearchCategory(StringUtil.toCsvStringOrNull(v1App.getCategories()));
+            update(roomApp, v1App);
             appRepository.save(roomApp);
 
             progressCounter++;

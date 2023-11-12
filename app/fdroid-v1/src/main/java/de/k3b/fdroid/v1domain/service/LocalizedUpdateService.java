@@ -19,6 +19,7 @@
 
 package de.k3b.fdroid.v1domain.service;
 
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +37,7 @@ import de.k3b.fdroid.domain.repository.LocalizedRepository;
 import de.k3b.fdroid.domain.service.LanguageService;
 import de.k3b.fdroid.domain.service.LocalizedService;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
+import de.k3b.fdroid.domain.util.Java8Util;
 import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.v1domain.entity.UpdateService;
 
@@ -45,15 +47,18 @@ import de.k3b.fdroid.v1domain.entity.UpdateService;
  */
 public class LocalizedUpdateService implements UpdateService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
+    @Nullable
     private final LocalizedRepository localizedRepository;
+    @Nullable
     private final LanguageService languageService;
+    @Nullable
     private final LocalizedService localizedService;
 
-    public LocalizedUpdateService(LocalizedRepository localizedRepository,
-                                  LanguageService languageService) {
+    public LocalizedUpdateService(@Nullable LocalizedRepository localizedRepository,
+                                  @Nullable LanguageService languageService) {
         this.localizedRepository = localizedRepository;
         this.languageService = languageService;
-        this.localizedService = new LocalizedService(languageService);
+        this.localizedService = (languageService == null) ? null : new LocalizedService(languageService);
     }
 
     public LocalizedUpdateService init() {
@@ -61,38 +66,49 @@ public class LocalizedUpdateService implements UpdateService {
         return this;
     }
 
+    protected int update(int appId,
+                         List<Localized> roomLocalizedList,
+                         Map<String, de.k3b.fdroid.v1domain.entity.Localized> v1LocalizedMap,
+                         Java8Util.OutParam<Localized> exceptionContext) {
+        Localized currentRoomLocalized = null;
+        int phoneScreenshotCount = 0;
+        for (Map.Entry<String, de.k3b.fdroid.v1domain.entity.Localized> v1Entry : v1LocalizedMap.entrySet()) {
+            String localeId = v1Entry.getKey();
+            if (languageService != null) languageService.getOrCreateLocaleByCode(localeId);
+
+            if (languageService == null || !languageService.isHidden(localeId)) {
+                de.k3b.fdroid.v1domain.entity.Localized v1Localized = v1Entry.getValue();
+                currentRoomLocalized = LanguageService.findByLocaleId(roomLocalizedList, localeId);
+                if (currentRoomLocalized == null) {
+                    currentRoomLocalized = new Localized(appId, localeId);
+                    roomLocalizedList.add(currentRoomLocalized);
+                }
+                exceptionContext.setValue(currentRoomLocalized);
+
+                phoneScreenshotCount += v1Localized.getPhoneScreenshotCount();
+
+                copy(currentRoomLocalized, v1Localized);
+
+                if (localizedRepository != null) localizedRepository.save(currentRoomLocalized);
+            } // if not hidden
+        } // for each v1 language
+        return phoneScreenshotCount;
+    }
+
     public List<Localized> update(
             int repoId, int appId, App roomApp,
             Map<String, de.k3b.fdroid.v1domain.entity.Localized> v1LocalizedMap)
             throws PersistenceException {
-        Localized roomLocalized = null;
         String packageName = null;
         if (roomApp != null) packageName = roomApp.getPackageName();
+        Java8Util.OutParam<Localized> exceptionContext = new Java8Util.OutParam<>(null);
         try {
             List<Localized> roomLocalizedList = localizedRepository.findByAppId(appId);
             List<Localized> deleted = localizedService.deleteHidden(roomLocalizedList);
             // deleteRemoved(roomLocalizedList, v1LocalizedMap);
 
-            int phoneScreenshotCount = 0;
-            for (Map.Entry<String, de.k3b.fdroid.v1domain.entity.Localized> v1Entry : v1LocalizedMap.entrySet()) {
-                String localeId = v1Entry.getKey();
-                languageService.getOrCreateLocaleByCode(localeId);
 
-                if (!languageService.isHidden(localeId)) {
-                    de.k3b.fdroid.v1domain.entity.Localized v1Localized = v1Entry.getValue();
-                    roomLocalized = LanguageService.findByLocaleId(roomLocalizedList, localeId);
-                    if (roomLocalized == null) {
-                        roomLocalized = new Localized(appId, localeId);
-                        roomLocalizedList.add(roomLocalized);
-                    }
-
-                    phoneScreenshotCount += v1Localized.getPhoneScreenshotCount();
-
-                    copy(roomLocalized, v1Localized);
-
-                    localizedRepository.save(roomLocalized);
-                } // if not hidden
-            } // for each v1 language
+            int phoneScreenshotCount = update(appId, roomLocalizedList, v1LocalizedMap, exceptionContext);
 
             if (roomApp != null) {
                 if (repoId != 0 && (roomApp.getResourceRepoId() == null || phoneScreenshotCount > 0)) {
@@ -103,6 +119,8 @@ public class LocalizedUpdateService implements UpdateService {
             deleteAll(deleted);
             return roomLocalizedList;
         } catch (Exception ex) {
+            Localized roomLocalized = exceptionContext.getValue();
+
             // thrown by j2se hibernate database problem
             // hibernate DataIntegrityViolationException -> NestedRuntimeException
             // hibernate org.hibernate.exception.DataException inherits from PersistenceException

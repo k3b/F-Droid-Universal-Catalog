@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -39,7 +39,7 @@ public class CopyCommonTest {
     public void appCommon() {
         AppCommon src = TestDataGenerator.fill(new AppCommon(), 4, true);
         AppCommon dest = new AppCommon();
-        AppCommon.copyCommon(dest, src);
+        AppCommon.copyCommon(dest, src, src);
 
         assertEquals(dest.toString(), src.toString());
     }

@@ -1,4 +1,6 @@
 {
+  // note the gson parser can handle comments in json files
+  // Testdata for ...\F-Droid-Universal-Catalog\app\fdroid-v2\src\test\de.k3b.fdroid.v2domain.service.V2UpdateServiceTest.java
   "repo": {
     "name": {
       "cs": "F-Droid",
@@ -8465,6 +8467,98 @@
     }
   },
   "packages": {
+    "my.test.app": {
+      "metadata": {
+        "added": 1588982400000,
+        "categories": [
+          "my-cat1",
+          "my-cat2"
+        ],
+        "changelog": "my-changelog",
+        "issueTracker": "my-issueTracker",
+        "lastUpdated": 1584144000000,
+        "license": "my-license",
+        "sourceCode": "my-sourceCode",
+        "translation": "my-translation",
+        "webSite": "my-webSite",
+        "screenshots": {
+          "phone": {
+            "en-US": [
+              {
+                "name": "my-en-phone1-name",
+                "sha256": "my-en-phone1-sha256",
+                "size": 748867
+              },
+              {
+                "name": "my-en-phone2-name",
+                "sha256": "my-en-phone2-sha256",
+                "size": 142049
+              }
+            ]
+          }
+        },
+        "name": {
+          "en-US": "my-en-name-app",
+          "de": "my-de-name-app"
+        },
+        "summary": {
+          "en-US": "my-en-summary-app",
+          "de": "my-de-summary-app"
+        },
+        "description": {
+          "en-US": "my-en-description-app",
+          "de": "my-de-description-app"
+        },
+        "donate": [
+          "my-donate"
+        ],
+        "icon": {
+          "en-US": {
+            "name": "/icons/my-en-icon-name.png",
+            "sha256": "my-en-icon-sha256",
+            "size": 671
+          }
+        },
+        "preferredSigner": "666d4e095d70b606629a0697f3da15b66fa08a03c620b3a6feb9e19407be31a5"
+      },
+      "versions": {
+        "77bf8dd6a6d97e718dd29d64256a8fea513d7974156f0887c5c19c455a7d4179": {
+          "added": 1584144000000,
+          "file": {
+            "name": "/my.test.app._47.apk",
+            "sha256": "77bf8dd6a6d97e718dd29d64256a8fea513d7974156f0887c5c19c455a7d4179",
+            "size": 1493080
+          },
+          "src": {
+            "name": "/my.test.app._47.tar.gz",
+            "sha256": "9456a1394aa87b1a3b3d6e6e30e974e3f28a9dd55cfe0d20bce820f85d411ea5",
+            "size": 4444755
+          },
+          "manifest": {
+            "versionName": "1.2.3",
+            "maxSdkVersion": 28,
+            "versionCode": 123,
+            "usesSdk": {
+              "minSdkVersion": 14,
+              "targetSdkVersion": 21
+            },
+            "signer": {
+              "sha256": [
+                "666d4e095d70b606629a0697f3da15b66fa08a03c620b3a6feb9e19407be31a5"
+              ]
+            },
+            "usesPermission": [
+              {
+                "name": "android.permission.READ_EXTERNAL_STORAGE"
+              }
+            ]
+          },
+          "whatsNew": {
+            "en-US": "my-en-whatsNew"
+          }
+        }
+      }
+    },
     "de.k3b.android.androFotoFinder": {
       "metadata": {
         "added": 1438214400000,

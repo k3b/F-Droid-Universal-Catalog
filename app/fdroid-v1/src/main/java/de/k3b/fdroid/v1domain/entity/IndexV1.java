@@ -17,38 +17,40 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-package de.k3b.fdroid.v2domain.entity.packagev2;
+package de.k3b.fdroid.v1domain.entity;
 
-// IndexV2.java
-
-import org.jetbrains.annotations.NotNull;
-
+import java.util.List;
 import java.util.Map;
 
-import de.k3b.fdroid.v2domain.entity.repo.RepoV2;
+public class IndexV1 implements V1JsonEntity {
+    private Repo repo;
+    private List<App> apps;
 
-public final class IndexV2 {
-    @NotNull
-    private final RepoV2 repo;
-    @NotNull
-    private final Map<String, PackageV2> packages;
+    private Map<String, List<Version>> packages;
 
-    public IndexV2(@NotNull RepoV2 repo, @NotNull Map<String, PackageV2> packages) {
+    public Repo getRepo() {
+        return repo;
+    }
+
+    public void setRepo(Repo repo) {
         this.repo = repo;
+    }
+
+
+    public List<App> getApps() {
+        return apps;
+    }
+
+    public void setApps(List<App> apps) {
+        this.apps = apps;
+    }
+
+    public Map<String, List<Version>> getPackages() {
+        return packages;
+    }
+
+    public void setPackages(Map<String, List<Version>> packages) {
         this.packages = packages;
     }
 
-    @NotNull
-    public RepoV2 getRepo() {
-        return this.repo;
-    }
-
-    @NotNull
-    public Map<String, PackageV2> getPackages() {
-        return this.packages;
-    }
-
-    public String toString() {
-        return "IndexV2{repo=" + this.repo + ", packages=" + this.packages + "}";
-    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -34,12 +34,15 @@ public interface AppRepository extends Repository, AppRepositoryFindDynamic {
     void update(App app);
 
     default void save(App app) {
-        Integer id = app.getId();
-        if (id == null || id.intValue() == 0) {
+        if (mustInsert(app)) {
             insert(app);
         } else {
             update(app);
         }
+    }
+
+    default boolean mustInsert(App app) {
+        return app.getId() == 0;
     }
 
     void delete(App app);

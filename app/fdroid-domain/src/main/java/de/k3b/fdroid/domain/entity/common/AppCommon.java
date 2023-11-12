@@ -29,7 +29,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * as these are Gson/Android-Room-Database specific.
  */
 @SuppressWarnings("unused")
-public class AppCommon extends EntityCommon {
+public class AppCommon extends EntityCommon implements IAppCommon {
     @Schema(description = "Unique package name of the [App].",
             example = "de.k3b.android.androFotoFinder")
     private String packageName;
@@ -68,20 +68,24 @@ public class AppCommon extends EntityCommon {
             example = "1584144000000")
     private long lastUpdated;
 
-    public static void copyCommon(AppCommon dest, AppCommon src) {
-        dest.setIcon(ifNotNull(src.getIcon(), dest.getIcon()));
-        dest.setPackageName(ifNotNull(src.getPackageName(), dest.getPackageName()));
+    public static void copyCommon(AppCommon dest, IAppCommon src, AppCommon src2) {
         dest.setChangelog(ifNotNull(src.getChangelog(), dest.getChangelog()));
-        dest.setSuggestedVersionName(ifNotNull(src.getSuggestedVersionName(), dest.getSuggestedVersionName()));
-        dest.setSuggestedVersionCode(ifNotNull(src.getSuggestedVersionCode(), dest.getSuggestedVersionCode()));
         dest.setIssueTracker(ifNotNull(src.getIssueTracker(), dest.getIssueTracker()));
         dest.setLicense(ifNotNull(src.getLicense(), dest.getLicense()));
-        dest.setSourceCode(ifNotNull(src.getSourceCode(),dest.getSourceCode()));
-        dest.setWebSite(ifNotNull(src.getWebSite(),dest.getWebSite()));
-        dest.setAdded(ifNotNull(src.getAdded(),dest.getAdded()));
+        dest.setSourceCode(ifNotNull(src.getSourceCode(), dest.getSourceCode()));
+        dest.setWebSite(ifNotNull(src.getWebSite(), dest.getWebSite()));
+        dest.setAdded(ifNotNull(src.getAdded(), dest.getAdded()));
         dest.setLastUpdated(ifNotNull(src.getLastUpdated(), dest.getLastUpdated()));
+
+        if (src2 != null) {
+            dest.setIcon(ifNotNull(src2.getIcon(), dest.getIcon()));
+            dest.setPackageName(ifNotNull(src2.getPackageName(), dest.getPackageName()));
+            dest.setSuggestedVersionName(ifNotNull(src2.getSuggestedVersionName(), dest.getSuggestedVersionName()));
+            dest.setSuggestedVersionCode(ifNotNull(src2.getSuggestedVersionCode(), dest.getSuggestedVersionCode()));
+        }
     }
 
+    @Override
     public String getChangelog() {
         return changelog;
     }
@@ -106,6 +110,7 @@ public class AppCommon extends EntityCommon {
         this.suggestedVersionCode = maxlen(suggestedVersionCode);
     }
 
+    @Override
     public String getIssueTracker() {
         return issueTracker;
     }
@@ -114,6 +119,7 @@ public class AppCommon extends EntityCommon {
         this.issueTracker = maxlen(issueTracker);
     }
 
+    @Override
     public String getLicense() {
         return license;
     }
@@ -122,6 +128,7 @@ public class AppCommon extends EntityCommon {
         this.license = maxlen(license);
     }
 
+    @Override
     public String getSourceCode() {
         return sourceCode;
     }
@@ -130,6 +137,7 @@ public class AppCommon extends EntityCommon {
         this.sourceCode = maxlen(sourceCode);
     }
 
+    @Override
     public String getWebSite() {
         return webSite;
     }
@@ -138,6 +146,7 @@ public class AppCommon extends EntityCommon {
         this.webSite = maxlen(webSite);
     }
 
+    @Override
     public long getAdded() {
         return added;
     }
@@ -161,6 +170,7 @@ public class AppCommon extends EntityCommon {
         this.icon = maxlen(icon);
     }
 
+    @Override
     public long getLastUpdated() {
         return lastUpdated;
     }

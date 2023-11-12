@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import de.k3b.fdroid.domain.entity.Locale;
 import de.k3b.fdroid.domain.entity.Localized;
@@ -49,6 +50,7 @@ public class LanguageService extends CacheService<String, Locale> {
     public static final int LANGUAGE_PRIORITY_HIDDEN = -1;
 
     private static final Map<String, String> LANGUAGE_DEFINITIONS = defineLanguages();
+    public static final String FALLBACK_LOCALE = "en";
 
     /**
      * used to guess language priority. Calculated on demand by {@link #getMyLocale()}.
@@ -112,6 +114,22 @@ public class LanguageService extends CacheService<String, Locale> {
     }
 
     /**
+     * Replace locale-key in map with it-s canonical counterpart.
+     * Preserves order, removes duplicates (first wins), keeps null-values
+     */
+    public static <T> Map<String, T> getCanonicalLocale(Map<String, T> localeMap) {
+        if (localeMap == null || localeMap.isEmpty()) return localeMap;
+
+        Map<String, T> result = new TreeMap<>(); // Treemap to preserve item order
+        for (Map.Entry<String, T> entry : localeMap.entrySet()) {
+            String key = getCanonicalLocale(entry.getKey());
+            if (!result.containsKey(key)) result.put(key, entry.getValue());
+        }
+
+        return result;
+    }
+
+    /**
      * create a canonical Locale :
      * en, en-AU, en-GB, en-US, en-rUS, en-us and en_US will all be mapped to "en"
      */
@@ -133,7 +151,7 @@ public class LanguageService extends CacheService<String, Locale> {
 
             String normalizedLowerCase = normalized.toLowerCase(java.util.Locale.ROOT);
 
-
+            // length >= 3
             if (normalized.charAt(2) == '-' && !normalizedLowerCase.startsWith("zh-")) {
                 // chinese mainland zh-CN and taiwan zh-TW use different symbols: no canonical
 
@@ -143,6 +161,8 @@ public class LanguageService extends CacheService<String, Locale> {
                 // ie "en-US" => "en"
                 return normalizedLowerCase.substring(0, 2);
             }
+
+            if (normalizedLowerCase.compareTo("zh-hans") == 0) return "zh-CN";
 
             // indonesian: differenece between java-language and iso-language
             if (normalized.startsWith("in")) return "id";
@@ -340,7 +360,7 @@ public class LanguageService extends CacheService<String, Locale> {
      * 99 (highest priority) is used for system.display language of the operation system.
      */
     private int getLanguagePriorityNewItem(String localeCode) {
-        if (localeCode.equals("en")) return 1;
+        if (localeCode.equals(FALLBACK_LOCALE)) return 1;
         if (localeCode.equals(getMyLocale())) return 99;
         return languagePriorityNewItem;
     }
