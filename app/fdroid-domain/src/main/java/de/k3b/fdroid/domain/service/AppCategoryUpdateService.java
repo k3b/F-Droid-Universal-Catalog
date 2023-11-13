@@ -16,11 +16,14 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.v1domain.service;
+package de.k3b.fdroid.domain.service;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.PersistenceException;
@@ -28,27 +31,28 @@ import javax.persistence.PersistenceException;
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.entity.AppCategory;
 import de.k3b.fdroid.domain.repository.AppCategoryRepository;
-import de.k3b.fdroid.domain.service.CategoryService;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
-import de.k3b.fdroid.v1domain.entity.UpdateService;
 
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
-public class AppCategoryUpdateService implements UpdateService {
+public class AppCategoryUpdateService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
 
+    @NotNull
     private final CategoryService categoryService;
+    @Nullable
     private final AppCategoryRepository appCategoryRepository;
-
-    public AppCategoryUpdateService(CategoryService categoryService, AppCategoryRepository appCategoryRepository) {
-        this.categoryService = categoryService;
-        this.appCategoryRepository = appCategoryRepository;
-    }
+    private int mockId = 10000;
 
     public AppCategoryUpdateService init() {
         categoryService.init();
         return this;
+    }
+
+    public AppCategoryUpdateService(@NotNull CategoryService categoryService, @Nullable AppCategoryRepository appCategoryRepository) {
+        this.categoryService = categoryService;
+        this.appCategoryRepository = appCategoryRepository;
     }
 
     public void update(int appId, List<String> v1Categories)
@@ -57,7 +61,9 @@ public class AppCategoryUpdateService implements UpdateService {
         int categoryId = 0;
         String categoryName = "";
         try {
-            roomAppCategories = appCategoryRepository.findByAppId(appId);
+            roomAppCategories = (appCategoryRepository == null)
+                    ? new ArrayList<>()
+                    : appCategoryRepository.findByAppId(appId);
 
             deleteRemoved(roomAppCategories, v1Categories);
             for (String v1Category : v1Categories) {
@@ -67,7 +73,11 @@ public class AppCategoryUpdateService implements UpdateService {
                 AppCategory roomAppCategory = findByCategoryId(roomAppCategories, categoryId);
                 if (roomAppCategory == null) {
                     roomAppCategory = new AppCategory(appId, categoryId);
-                    appCategoryRepository.insert(roomAppCategory);
+                    if (appCategoryRepository != null) {
+                        appCategoryRepository.insert(roomAppCategory);
+                    } else {
+                        roomAppCategory.setId(mockId++);
+                    }
                     roomAppCategories.add(roomAppCategory);
                 } else {
                     // category already assigned. Nothing to do
@@ -101,7 +111,8 @@ public class AppCategoryUpdateService implements UpdateService {
             if (roomAppCategory != null) {
                 String categoryName = categoryService.getCategoryName(roomAppCategory.getCategoryId());
                 if (categoryName != null && !v1Categories.contains(categoryName)) {
-                    appCategoryRepository.delete(roomAppCategory);
+                    if (appCategoryRepository != null)
+                        appCategoryRepository.delete(roomAppCategory);
                     roomAppCategories.remove(i);
                 }
             }

@@ -19,10 +19,12 @@
 
 package de.k3b.fdroid.v1domain.service;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,50 +51,21 @@ public class LocalizedUpdateService implements UpdateService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
     @Nullable
     private final LocalizedRepository localizedRepository;
-    @Nullable
+    @NotNull
     private final LanguageService languageService;
-    @Nullable
+    @NotNull
     private final LocalizedService localizedService;
 
     public LocalizedUpdateService(@Nullable LocalizedRepository localizedRepository,
-                                  @Nullable LanguageService languageService) {
+                                  @NotNull LanguageService languageService) {
         this.localizedRepository = localizedRepository;
         this.languageService = languageService;
-        this.localizedService = (languageService == null) ? null : new LocalizedService(languageService);
+        this.localizedService = new LocalizedService(languageService);
     }
 
     public LocalizedUpdateService init() {
         languageService.init();
         return this;
-    }
-
-    protected int update(int appId,
-                         List<Localized> roomLocalizedList,
-                         Map<String, de.k3b.fdroid.v1domain.entity.Localized> v1LocalizedMap,
-                         Java8Util.OutParam<Localized> exceptionContext) {
-        Localized currentRoomLocalized = null;
-        int phoneScreenshotCount = 0;
-        for (Map.Entry<String, de.k3b.fdroid.v1domain.entity.Localized> v1Entry : v1LocalizedMap.entrySet()) {
-            String localeId = v1Entry.getKey();
-            if (languageService != null) languageService.getOrCreateLocaleByCode(localeId);
-
-            if (languageService == null || !languageService.isHidden(localeId)) {
-                de.k3b.fdroid.v1domain.entity.Localized v1Localized = v1Entry.getValue();
-                currentRoomLocalized = LanguageService.findByLocaleId(roomLocalizedList, localeId);
-                if (currentRoomLocalized == null) {
-                    currentRoomLocalized = new Localized(appId, localeId);
-                    roomLocalizedList.add(currentRoomLocalized);
-                }
-                exceptionContext.setValue(currentRoomLocalized);
-
-                phoneScreenshotCount += v1Localized.getPhoneScreenshotCount();
-
-                copy(currentRoomLocalized, v1Localized);
-
-                if (localizedRepository != null) localizedRepository.save(currentRoomLocalized);
-            } // if not hidden
-        } // for each v1 language
-        return phoneScreenshotCount;
     }
 
     public List<Localized> update(
@@ -103,20 +76,20 @@ public class LocalizedUpdateService implements UpdateService {
         if (roomApp != null) packageName = roomApp.getPackageName();
         Java8Util.OutParam<Localized> exceptionContext = new Java8Util.OutParam<>(null);
         try {
-            List<Localized> roomLocalizedList = localizedRepository.findByAppId(appId);
-            List<Localized> deleted = localizedService.deleteHidden(roomLocalizedList);
-            // deleteRemoved(roomLocalizedList, v1LocalizedMap);
-
+            List<Localized> roomLocalizedList = (localizedRepository == null)
+                    ? new ArrayList<>()
+                    : localizedRepository.findByAppId(appId);
 
             int phoneScreenshotCount = update(appId, roomLocalizedList, v1LocalizedMap, exceptionContext);
 
+            List<Localized> deleted = localizedService.deleteHidden(roomLocalizedList);
             if (roomApp != null) {
                 if (repoId != 0 && (roomApp.getResourceRepoId() == null || phoneScreenshotCount > 0)) {
                     roomApp.setResourceRepoId(repoId);
                 }
                 localizedService.recalculateSearchFields(repoId, roomApp, roomLocalizedList);
             }
-            deleteAll(deleted);
+            if (localizedRepository != null) localizedRepository.deleteAll(deleted);
             return roomLocalizedList;
         } catch (Exception ex) {
             Localized roomLocalized = exceptionContext.getValue();
@@ -141,20 +114,42 @@ public class LocalizedUpdateService implements UpdateService {
 
     }
 
+    // Persistence free entrypoint for unittest
+    protected int update(int appId,
+                         List<Localized> roomLocalizedList,
+                         Map<String, de.k3b.fdroid.v1domain.entity.Localized> v1LocalizedMap,
+                         Java8Util.OutParam<Localized> exceptionContext) {
+        Localized currentRoomLocalized = null;
+        int phoneScreenshotCount = 0;
+        for (Map.Entry<String, de.k3b.fdroid.v1domain.entity.Localized> v1Entry : v1LocalizedMap.entrySet()) {
+            String localeId = v1Entry.getKey();
+            languageService.getOrCreateLocaleByCode(localeId);
+
+            if (!languageService.isHidden(localeId)) {
+                de.k3b.fdroid.v1domain.entity.Localized v1Localized = v1Entry.getValue();
+                currentRoomLocalized = LanguageService.findByLocaleId(roomLocalizedList, localeId);
+                if (currentRoomLocalized == null) {
+                    currentRoomLocalized = new Localized(appId, localeId);
+                    roomLocalizedList.add(currentRoomLocalized);
+                }
+                exceptionContext.setValue(currentRoomLocalized);
+
+                phoneScreenshotCount += v1Localized.getPhoneScreenshotCount();
+
+                copy(currentRoomLocalized, v1Localized);
+
+                if (localizedRepository != null) localizedRepository.save(currentRoomLocalized);
+            } // if not hidden
+        } // for each v1 language
+        return phoneScreenshotCount;
+    }
+
     private void copy(Localized roomDest, de.k3b.fdroid.v1domain.entity.Localized v1Src) {
         LocalizedCommon.copyCommon(roomDest, v1Src);
         String phoneScreenshots = StringUtil.toCsvStringOrNull(v1Src.getPhoneScreenshots());
         if (!StringUtil.isEmpty(phoneScreenshots)) {
             roomDest.setPhoneScreenshots(StringUtil.maxLen(phoneScreenshots, EntityCommon.MAX_LEN_AGGREGATED, "phoneScreenshots"));
             roomDest.setPhoneScreenshotDir(v1Src.getPhoneScreenshotDir());
-        }
-    }
-
-    private void deleteAll(List<Localized> deleted) {
-        for (Localized l : deleted) {
-            if (l.getId() != 0) {
-                localizedRepository.delete(l);
-            }
         }
     }
 

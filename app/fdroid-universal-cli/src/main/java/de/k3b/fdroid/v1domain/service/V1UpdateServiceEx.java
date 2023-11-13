@@ -51,7 +51,7 @@ public class V1UpdateServiceEx extends V1UpdateService {
                              AppHardwareRepository appHardwareRepository,
                              LanguageService languageService) {
         super(repoRepository, appRepository, categoryService, appCategoryRepository,
-                versionRepository, localizedRepository, localeRepository, hardwareProfileRepository, appHardwareRepository, languageService);
+                versionRepository, localizedRepository, hardwareProfileRepository, appHardwareRepository, languageService);
         setProgressObserver(new ConsoleProgressUpdateObserver());
     }
 

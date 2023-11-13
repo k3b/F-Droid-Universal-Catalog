@@ -45,7 +45,7 @@ public class V1UpdateServiceAndroid extends V1UpdateService {
             LocaleRepository localeRepository, HardwareProfileRepository hardwareProfileRepository,
             AppHardwareRepository appHardwareRepository, LanguageService languageService) {
         super(repoRepository, appRepository, categoryService, appCategoryRepository,
-                versionRepository, localizedRepository, localeRepository, hardwareProfileRepository,
+                versionRepository, localizedRepository, hardwareProfileRepository,
                 appHardwareRepository, languageService);
     }
 

@@ -20,6 +20,7 @@
 package de.k3b.fdroid.domain.service;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,6 +59,7 @@ public class LanguageService extends CacheService<String, Locale> {
      */
     private static String myLocale = null;
 
+    @Nullable
     private final LocaleRepository localeRepository;
 
     /* See {@link #getLanguagePriorityNewItem(String)} */
@@ -65,7 +67,7 @@ public class LanguageService extends CacheService<String, Locale> {
 
     Map<String, Locale> code2Locale = null;
 
-    public LanguageService(LocaleRepository localeRepository) {
+    public LanguageService(@Nullable LocaleRepository localeRepository) {
         this.localeRepository = localeRepository;
     }
 
@@ -87,11 +89,12 @@ public class LanguageService extends CacheService<String, Locale> {
     }
 
     public LanguageService init() {
-        init(localeRepository.findAll());
+        List<Locale> all = (localeRepository == null) ? null : localeRepository.findAll();
+        init(all);
         return this;
     }
 
-    protected void init(List<Locale> itemList) {
+    protected void init(@Nullable List<Locale> itemList) {
         code2Locale = new HashMap<>();
         super.init(itemList);
     }
@@ -326,10 +329,12 @@ public class LanguageService extends CacheService<String, Locale> {
             if (locale == null) {
                 // create on demand
                 locale = createNewLocale(localeCode);
-                localeRepository.insert(locale);
+                if (localeRepository != null) {
+                    localeRepository.insert(locale);
+                }
                 init(locale);
             } else if (StringUtil.isEmpty(locale.getNameEnglish())) {
-                if (setTranslations(localeCode, locale)) {
+                if (setTranslations(localeCode, locale) && localeRepository != null) {
                     localeRepository.update(locale);
                 }
             }

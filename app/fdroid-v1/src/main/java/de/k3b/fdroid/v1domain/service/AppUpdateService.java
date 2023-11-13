@@ -19,8 +19,11 @@
 
 package de.k3b.fdroid.v1domain.service;
 
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Objects;
 
 import javax.persistence.PersistenceException;
 
@@ -29,6 +32,7 @@ import de.k3b.fdroid.domain.entity.common.AppCommon;
 import de.k3b.fdroid.domain.interfaces.ProgressObservable;
 import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.domain.repository.AppRepository;
+import de.k3b.fdroid.domain.service.AppCategoryUpdateService;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.v1domain.entity.App;
@@ -43,36 +47,37 @@ public class AppUpdateService implements UpdateService, ProgressObservable {
 
     private static final int PROGRESS_INTERVALL = 100;
 
+    @Nullable
     private final AppRepository appRepository;
+    @Nullable
     private final AppCategoryUpdateService appCategoryUpdateService;
+    @Nullable
     private final LocalizedUpdateService localizedUpdateService;
 
     private ProgressObserver progressObserver = null;
     private int progressCounter = 0;
     private int progressCountdown = 0;
 
-    public AppUpdateService(AppRepository appRepository,
-                            AppCategoryUpdateService appCategoryUpdateService,
-                            LocalizedUpdateService localizedUpdateService) {
+    public AppUpdateService(
+            @Nullable AppRepository appRepository,
+            @Nullable LocalizedUpdateService localizedUpdateService,
+            @Nullable AppCategoryUpdateService appCategoryUpdateService) {
         this.appRepository = appRepository;
         this.appCategoryUpdateService = appCategoryUpdateService;
         this.localizedUpdateService = localizedUpdateService;
     }
 
-    public void init() {
-        this.appCategoryUpdateService.init();
-        this.localizedUpdateService.init();
+    public AppUpdateService init() {
+        if (appCategoryUpdateService != null) this.appCategoryUpdateService.init();
+        if (localizedUpdateService != null) this.localizedUpdateService.init();
         progressCounter = 0;
         progressCountdown = 0;
-    }
-
-    protected static void update(de.k3b.fdroid.domain.entity.App roomApp, App v1App) {
-        AppCommon.copyCommon(roomApp, v1App, v1App);
-        roomApp.setSearchCategory(StringUtil.toCsvStringOrNull(v1App.getCategories()));
+        return this;
     }
 
     public de.k3b.fdroid.domain.entity.App update(int repoId, App v1App)
             throws PersistenceException {
+        Objects.requireNonNull(appRepository, "appRepository is not initialized");
         String packageName = v1App.getPackageName();
         de.k3b.fdroid.domain.entity.App roomApp = null;
         try {
@@ -85,18 +90,7 @@ public class AppUpdateService implements UpdateService, ProgressObservable {
             update(roomApp, v1App);
             appRepository.save(roomApp);
 
-            progressCounter++;
-            if (progressObserver != null && (--progressCountdown) <= 0) {
-                progressObserver.onProgress(progressCounter, progressChar, roomApp.getPackageName());
-                progressCountdown = PROGRESS_INTERVALL;
-            }
-
-            if (appCategoryUpdateService != null)
-                appCategoryUpdateService.update(roomApp.getId(), v1App.getCategories());
-            if (localizedUpdateService != null) {
-                localizedUpdateService.update(repoId, roomApp.getId(), roomApp, v1App.getLocalized());
-                appRepository.update(roomApp);
-            }
+            updateDetails(repoId, roomApp, v1App, progressChar);
             return roomApp;
         } catch (Exception ex) {
             // thrown by j2se hibernate database problem
@@ -111,6 +105,30 @@ public class AppUpdateService implements UpdateService, ProgressObservable {
             throw new PersistenceException(message, ex);
         }
 
+    }
+
+    // Entrypoint for unittest
+    protected void update(de.k3b.fdroid.domain.entity.App roomApp, App v1App) {
+        AppCommon.copyCommon(roomApp, v1App, v1App);
+        roomApp.setSearchCategory(StringUtil.toCsvStringOrNull(v1App.getCategories()));
+    }
+
+    protected void updateDetails(int repoId, de.k3b.fdroid.domain.entity.App roomApp, App v1App, String progressChar) {
+        progressCounter++;
+        if (progressObserver != null && (--progressCountdown) <= 0) {
+            progressObserver.onProgress(progressCounter, progressChar, roomApp.getPackageName());
+            progressCountdown = PROGRESS_INTERVALL;
+        }
+
+        if (appCategoryUpdateService != null) {
+            appCategoryUpdateService.update(roomApp.getId(), v1App.getCategories());
+        }
+        if (localizedUpdateService != null) {
+            localizedUpdateService.update(repoId, roomApp.getId(), roomApp, v1App.getLocalized());
+        }
+        if (appRepository != null) {
+            appRepository.update(roomApp);
+        }
     }
 
     @Override

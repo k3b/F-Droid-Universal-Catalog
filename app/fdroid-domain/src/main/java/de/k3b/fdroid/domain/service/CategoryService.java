@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.domain.service;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,20 +32,25 @@ import de.k3b.fdroid.domain.repository.CategoryRepository;
  */
 
 public class CategoryService extends CacheServiceInteger<Category> {
+    @Nullable
     private final CategoryRepository categoryRepository;
 
     Map<String, Category> name2Category;
 
-    public CategoryService(CategoryRepository categoryRepository) {
+    // used to generate fake category-id-s if categoryRepository is null
+    private int mockId = 12100;
+
+    public CategoryService(@Nullable CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 
     public CategoryService init() {
-        init(categoryRepository.findAll());
+        List<Category> all = (categoryRepository == null) ? null : categoryRepository.findAll();
+        init(all);
         return this;
     }
 
-    protected void init(List<Category> itemList) {
+    protected void init(@Nullable List<Category> itemList) {
         name2Category = new HashMap<>();
         super.init(itemList);
     }
@@ -65,7 +72,11 @@ public class CategoryService extends CacheServiceInteger<Category> {
                 // create on demand
                 category = new Category();
                 category.setName(categoryName);
-                categoryRepository.insert(category);
+                if (categoryRepository != null) {
+                    categoryRepository.insert(category);
+                } else {
+                    category.setId(mockId++);
+                }
                 init(category);
             }
             return category.getId();

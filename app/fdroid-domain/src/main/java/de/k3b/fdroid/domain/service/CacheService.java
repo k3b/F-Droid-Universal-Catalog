@@ -19,6 +19,7 @@
 package de.k3b.fdroid.domain.service;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,14 +31,16 @@ public abstract class CacheService<KEY, T> {
     public CacheService() {
     }
 
-    public CacheService(List<T> itemList) {
+    public CacheService(@Nullable List<T> itemList) {
         init(itemList);
     }
 
-    protected void init(List<T> itemList) {
+    protected void init(@Nullable List<T> itemList) {
         id2Item = new HashMap<>();
-        for (T item : itemList) {
-            init(item);
+        if (itemList != null) {
+            for (T item : itemList) {
+                init(item);
+            }
         }
     }
 

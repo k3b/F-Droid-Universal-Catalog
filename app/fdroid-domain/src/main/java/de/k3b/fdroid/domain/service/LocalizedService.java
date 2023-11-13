@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.domain.service;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -35,9 +37,10 @@ public class LocalizedService {
     public static final String SEPERATOR_SUMMARY = "\n";
     public static final String SEPERATOR_DESCRIPTION = "\n\n------------\n\n";
     public static final String SEPERATOR_WHATS_NEW = "\n\n------------\n\n";
+    @NotNull
     private final LanguageService languageService;
 
-    public LocalizedService(LanguageService languageService) {
+    public LocalizedService(@NotNull LanguageService languageService) {
         this.languageService = languageService;
     }
 
@@ -87,6 +90,7 @@ public class LocalizedService {
 
     public boolean isHidden(Localized roomLocalized) {
         if (roomLocalized == null) return true;
+        if (languageService == null) return false;
 
         Locale locale = languageService.getItemById(roomLocalized.getLocaleId());
         return (LanguageService.isHidden(locale));

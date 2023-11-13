@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -32,10 +32,10 @@ import de.k3b.fdroid.domain.repository.AppCategoryRepository;
 import de.k3b.fdroid.domain.repository.AppHardwareRepository;
 import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.repository.HardwareProfileRepository;
-import de.k3b.fdroid.domain.repository.LocaleRepository;
 import de.k3b.fdroid.domain.repository.LocalizedRepository;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.repository.VersionRepository;
+import de.k3b.fdroid.domain.service.AppCategoryUpdateService;
 import de.k3b.fdroid.domain.service.CategoryService;
 import de.k3b.fdroid.domain.service.HardwareProfileService;
 import de.k3b.fdroid.domain.service.LanguageService;
@@ -68,7 +68,6 @@ public abstract class V1UpdateService implements UpdateService, ProgressObservab
                            AppCategoryRepository appCategoryRepository,
                            VersionRepository versionRepository,
                            LocalizedRepository localizedRepository,
-                           LocaleRepository localeRepository,
                            HardwareProfileRepository hardwareProfileRepository,
                            AppHardwareRepository appHardwareRepository,
                            LanguageService languageService) {
@@ -78,7 +77,7 @@ public abstract class V1UpdateService implements UpdateService, ProgressObservab
                 categoryService, appCategoryRepository);
         LocalizedUpdateService localizedUpdateService = new LocalizedUpdateService(
                 localizedRepository, languageService);
-        appUpdateService = new AppUpdateService(appRepository, appCategoryUpdateService, localizedUpdateService);
+        appUpdateService = new AppUpdateService(appRepository, localizedUpdateService, appCategoryUpdateService);
 
         hardwareProfileService = new HardwareProfileService(appRepository, hardwareProfileRepository, appHardwareRepository);
         versionUpdateService = new VersionUpdateService(appRepository, versionRepository, hardwareProfileService);

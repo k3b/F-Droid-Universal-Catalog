@@ -23,80 +23,147 @@ import static de.k3b.fdroid.domain.entity.common.EntityCommon.ifNotNull;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Map;
+import java.util.Objects;
 
+import javax.persistence.PersistenceException;
+
+import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.common.AppCommon;
+import de.k3b.fdroid.domain.interfaces.ProgressObservable;
+import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.domain.repository.AppRepository;
+import de.k3b.fdroid.domain.service.AppCategoryUpdateService;
 import de.k3b.fdroid.domain.service.LanguageService;
+import de.k3b.fdroid.domain.util.ExceptionUtils;
+import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.v2domain.entity.packagev2.ManifestV2;
 import de.k3b.fdroid.v2domain.entity.packagev2.MetadataV2;
 import de.k3b.fdroid.v2domain.entity.packagev2.PackageV2;
 import de.k3b.fdroid.v2domain.entity.packagev2.PackageVersionV2;
 import de.k3b.fdroid.v2domain.entity.repo.FileV2;
 
-public class V2AppUpdateService {
+public class V2AppUpdateService implements ProgressObservable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
+
+    private static final int PROGRESS_INTERVALL = 100;
+
+    @Nullable
     private final AppRepository appRepository;
     @Nullable
     private final V2LocalizedUpdateService v2LocalizedUpdateService;
+    @Nullable
+    private final AppCategoryUpdateService appCategoryUpdateService;
 
-    public V2AppUpdateService(AppRepository appRepository, @Nullable V2LocalizedUpdateService v2LocalizedUpdateService) {
+    private ProgressObserver progressObserver = null;
+    private int progressCounter = 0;
+    private int progressCountdown = 0;
+
+    public V2AppUpdateService(
+            @Nullable AppRepository appRepository,
+            @Nullable V2LocalizedUpdateService v2LocalizedUpdateService,
+            @Nullable AppCategoryUpdateService appCategoryUpdateService) {
         this.appRepository = appRepository;
         this.v2LocalizedUpdateService = v2LocalizedUpdateService;
+        this.appCategoryUpdateService = appCategoryUpdateService;
+
     }
 
     private static String getIconName(MetadataV2 metadata, String locale) {
         Map<String, FileV2> iconMap = LanguageService.getCanonicalLocale(metadata.getIcon());
-        FileV2 icon = (iconMap == null) ? null : iconMap.get(LanguageService.FALLBACK_LOCALE);
+        FileV2 icon = (iconMap == null) ? null : iconMap.get(locale);
         return MetadataV2.getIconName(icon);
     }
 
-    public App update(@NotNull String packageName, @NotNull PackageV2 packageV2) {
-        App app = getOrCreateApp(packageName);
-        update(app, packageV2);
-        appRepository.save(app);
-
-        return app;
-        // if (v2LocalizedUpdateService != null) v2LocalizedUpdateService.
+    public V2AppUpdateService init() {
+        if (v2LocalizedUpdateService != null) this.v2LocalizedUpdateService.init();
+        if (appCategoryUpdateService != null) this.appCategoryUpdateService.init();
+        // if (localizedUpdateService != null) this.localizedUpdateService.init();
+        progressCounter = 0;
+        progressCountdown = 0;
+        return this;
     }
 
-    private App update(App app, PackageV2 packageV2) {
+    public App update(int repoId, @NotNull String packageName, @NotNull PackageV2 packageV2) {
+        Objects.requireNonNull(appRepository, "appRepository is not initialized");
+        App roomApp = null;
+        try {
+            App roomApp1 = appRepository.findByPackageName(packageName);
+            String progressChar = ".";
+            if (roomApp1 == null) {
+                progressChar = "+";
+                roomApp1 = new App(packageName);
+                appRepository.insert(roomApp1);
+                if (roomApp1.getAppId() == 0)
+                    throw new RuntimeException("appRepository.insert(roomApp) did not generate appId");
+            }
+            roomApp = roomApp1;
+            update(roomApp, packageV2);
+            appRepository.save(roomApp);
+            updateDetails(repoId, roomApp, packageV2, progressChar);
+
+            return roomApp;
+        } catch (Exception ex) {
+            // thrown by j2se hibernate database problem
+            // hibernate DataIntegrityViolationException -> NestedRuntimeException
+            // hibernate org.hibernate.exception.DataException inherits from PersistenceException
+            String message = "PersistenceException in " + getClass().getSimpleName() + ".update(repo="
+                    + repoId + ", app("
+                    + (roomApp == null ? "?" : roomApp.getAppId())
+                    + ")=" + packageName + ") "
+                    + ExceptionUtils.getParentCauseMessage(ex, PersistenceException.class);
+            LOGGER.error(message + "\n\tPackageV2=" + packageV2, ex);
+            throw new PersistenceException(message, ex);
+        }
+    }
+
+    protected App update(App roomApp, PackageV2 packageV2) {
         Map<String, PackageVersionV2> versions = packageV2.getVersions();
         PackageVersionV2 version = (versions == null || versions.isEmpty()) ? null : versions.entrySet().iterator().next().getValue();
-        update(app, packageV2.getMetadata(), version);
-        if (v2LocalizedUpdateService != null) v2LocalizedUpdateService.update(app, packageV2);
-        return app;
+        update(roomApp, packageV2.getMetadata(), version);
+        return roomApp;
     }
 
-    protected App update(App app, MetadataV2 metadata, PackageVersionV2 version) {
+    // Entrypoint for unittest
+    protected App update(App roomApp, MetadataV2 metadata, PackageVersionV2 version) {
         if (metadata != null) {
-            AppCommon.copyCommon(app, metadata, null);
+            AppCommon.copyCommon(roomApp, metadata, null);
 
             String iconName = getIconName(metadata, LanguageService.FALLBACK_LOCALE);
             if (iconName != null) {
-                app.setIcon(iconName);
+                roomApp.setIcon(iconName);
             }
+            roomApp.setSearchCategory(StringUtil.toCsvStringOrNull(metadata.getCategories()));
         }
 
         ManifestV2 versionManifest = (version == null) ? null : version.getManifest();
         if (versionManifest != null) {
-            app.setSuggestedVersionName(ifNotNull(versionManifest.getVersionName(), app.getSuggestedVersionName()));
+            roomApp.setSuggestedVersionName(ifNotNull(versionManifest.getVersionName(), roomApp.getSuggestedVersionName()));
 
             long versionCode = versionManifest.getVersionCode();
-            if (versionCode != 0) app.setSuggestedVersionCode("" + versionCode);
+            if (versionCode != 0) roomApp.setSuggestedVersionCode("" + versionCode);
         }
-        return app;
+        return roomApp;
     }
 
-    private App getOrCreateApp(String packageName) {
-        App app = appRepository.findByPackageName(packageName);
-        if (app == null) {
-            app = new App(packageName);
-            appRepository.insert(app);
-            if (app.getAppId() == 0)
-                throw new RuntimeException("appRepository.insert(app) did not generate appId");
+    protected void updateDetails(int repoId, App roomApp, PackageV2 packageV2, String progressChar) {
+        progressCounter++;
+        if (progressObserver != null && (--progressCountdown) <= 0) {
+            progressObserver.onProgress(progressCounter, progressChar, roomApp.getPackageName());
+            progressCountdown = PROGRESS_INTERVALL;
         }
-        return app;
+
+        if (v2LocalizedUpdateService != null)
+            v2LocalizedUpdateService.update(repoId, roomApp, packageV2);
+    }
+
+
+    @Override
+    public void setProgressObserver(ProgressObserver progressObserver) {
+        this.progressObserver = progressObserver;
     }
 }

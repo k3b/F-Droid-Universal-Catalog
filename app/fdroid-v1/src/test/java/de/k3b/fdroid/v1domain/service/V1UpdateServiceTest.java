@@ -30,37 +30,74 @@ import java.util.Map;
 
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.Localized;
+import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.service.AppCategoryUpdateService;
+import de.k3b.fdroid.domain.service.CategoryService;
+import de.k3b.fdroid.domain.service.LanguageService;
 import de.k3b.fdroid.domain.util.Java8Util;
 
 /**
- * create testdata for import tests from
- * ...\F-Droid-Universal-Catalog\app\fdroid-v1\src\test\resources\exampledata\index-v1.small.json
+ * This test uses json data form
+ * ...\F-Droid-Universal-Catalog\app\fdroid-v1\src\test\resources\exampledata\V1TestData-index-v1.json
  */
 public class V1UpdateServiceTest {
+    Repo repo;
     App app;
 
     @Before
     public void setup() {
+        repo = new Repo("unittest", "https://www.fdroid.org/testrepo", null);
+        repo.setId(4712);
         app = new App("my.test.app");
         app.setId(4711);
 
     }
 
     @Test
-    public void updateApp() {
-        // arrange
-        AppUpdateService sut = new AppUpdateService(null, null, null);
+    public void updateAppWithDetails() {
+        AppUpdateService sut = new AppUpdateService(
+                null,
+                new LocalizedUpdateService(null, new LanguageService(null)),
+                new AppCategoryUpdateService(
+                        new CategoryService(null),
+                        null)
+        ).init();
 
         // act
-        AppUpdateService.update(app, V1TestData.app);
+        sut.update(app, V1TestData.app);
+        sut.updateDetails(repo.getId(), app, V1TestData.app, "+");
 
-        // assert
+        // assert: v1import and v2import shoud create the same result
+        String expected = "App[id=4711,resourceRepoId=4712,packageName=my.test.app," +
+                "changelog=my-changelog,suggestedVersionName=1.2.3,suggestedVersionCode=123," +
+                "issueTracker=my-issueTracker,license=my-license,sourceCode=my-sourceCode," +
+                "webSite=my-webSite,added=2020-05-09,lastUpdated=2020-03-14," +
+                "icon=my-en-icon-name.png,searchCategory=my-cat1,my-cat2,searchName=:en-US: my...ame-app," +
+                "searchSummary=:en-US: my...ary-app," +
+                "searchDescription=:en-US: my...ion-app," +
+                "searchWhatsNew=:en-US: my...hatsNew]";
+
+        assertEquals(expected, app.toString());
+    }
+
+    @Test
+    public void updateApp() {
+        // arrange
+        AppUpdateService sut = new AppUpdateService(
+                null,
+                null,
+                null).init();
+
+        // act
+        sut.update(app, V1TestData.app);
+
+        // assert: v1import and v2import shout create the same result
         String expected = "App[id=4711,packageName=my.test.app,changelog=my-changelog," +
-                "suggestedVersionName=1.2.3,suggestedVersionCode=123," + //!!! new
+                "suggestedVersionName=1.2.3,suggestedVersionCode=123," +
                 "issueTracker=my-issueTracker,license=my-license,sourceCode=my-sourceCode,webSite=my-webSite," +
                 "added=2020-05-09," + "lastUpdated=2020-03-14" +
-                ",icon=my-en-icon-name.png,searchCategory=my-cat1,my-cat2]"; // !! new
-        // todo ?translation,categories,?donate,preferredSigner
+                ",icon=my-en-icon-name.png,searchCategory=my-cat1,my-cat2]";
+        // todo ?translation,?donate,preferredSigner
 
         assertEquals(expected, app.toString());
     }
@@ -71,7 +108,9 @@ public class V1UpdateServiceTest {
         List<Localized> roomLocalizedList = new ArrayList<>();
 
         Map<String, de.k3b.fdroid.v1domain.entity.Localized> localizedMap = V1TestData.app.getLocalized();
-        LocalizedUpdateService sut = new LocalizedUpdateService(null, null);
+        LocalizedUpdateService sut = new LocalizedUpdateService(
+                null,
+                new LanguageService(null).init());
         Java8Util.OutParam<Localized> exceptionContext = new Java8Util.OutParam<>(null);
 
         // act

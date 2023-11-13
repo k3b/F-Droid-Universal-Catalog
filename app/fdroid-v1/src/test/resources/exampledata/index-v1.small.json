@@ -1,6 +1,4 @@
 {
-    // note the gson parser can handle comments in json files
-    // Testdata for ...\F-Droid-Universal-Catalog\app\fdroid-v1\src\test\de.k3b.fdroid.v1domain.service.V1UpdateServiceTest.java
     "repo": {
         "timestamp": 1644169232000,
         "version": 20001,
@@ -65,77 +63,77 @@
             }
         },
         {
-            "categories": [
-                "Games"
-            ],
-            "changelog": "https://github.com/LonamiWebs/Klooni1010/releases",
-            "suggestedVersionName": "0.8.6",
-            "suggestedVersionCode": "860",
-            "issueTracker": "https://github.com/LonamiWebs/Klooni1010/issues",
-            "license": "GPL-3.0-or-later",
-            "sourceCode": "https://github.com/LonamiWebs/Klooni1010",
-            "webSite": "https://lonamiwebs.github.io/klooni",
-            "added": 1588982400000,
-            "icon": "dev.lonami.klooni.860.png",
-            "packageName": "dev.lonami.klooni",
-            "lastUpdated": 1598918400000,
-            "localized": {
-                "en-US": {
-                    "description": "Introducing Klooni\n------------------\n\n1010! Klooni is a free, libre and open source klooni of\nthe original minimalistic puzzle game by Gram Games.\n\n\nFill Up the Board\n-----------------\n\nDrag the pieces on the board and try to clear as many\nstrips as you can! Beware though, it is not that easy o:)\n\n\nHack It\n-------\n\nMake the game yours! Collaborate! Add new themes, pieces,\nsounds or even explosions!\n\n\nHave Fun :)\n-----------\n\nOverall, remember to have fun while playing the game. Also\nshare the love with the original developers if you like it!\n",
-                    "name": " 1010! Klooni",
-                    "phoneScreenshots": [
-                        "1-game.jpg",
-                        "2-pause.jpg",
-                        "3-themes.jpg"
-                    ],
-                    "summary": "A libGDX game based on 1010"
-                },
-                "es-ES": {
-                    "description": "Introduciendo Klooni\n--------------------\n\n1010! Klooni es un versi\u00f3n klooni libre y gratuita del\noriginal juego de puzles minimalista por Gram Games.\n\n\nLlena el Tablero\n----------------\n\n\u00a1Arrastra las piezas en el tablero e intenta limpiar tantas\nfilas como puedas! Aunque te aviso, no es tan f\u00e1cil o:)\n\n\nHack\u00e9alo\n--------\n\n\u00a1Haz el juego tuyo! \u00a1Colabora! A\u00f1ade tus nuevos temas,\npiezas, sonidos \u00a1o incluso explosiones!\n\n\nDivi\u00e9rtete\n----------\n\nSobre todo, recuerda divertirte mientras juegas. \u00a1No te olvides\nde compartir tu amor con el juego y los desarrolladores originales\nsi te ha gustado!\n",
-                    "summary": "Un juego libGDX basado en 1010!"
-                },
-                "fr-FR": {
-                    "description": "Pr\u00e9sentation de 1010! Klooni\n----------------------\n\n1010! Klooni est un jeu gratuit, libre et open-source \nrepoduisant les m\u00e9canismes du jeu puzzle minimaliste \noriginal \u00e9crit par Gram Games.\n\n\nRemplissez le Plateau de Jeu\n----------------------------\n\nGlissez et d\u00e9posez les pi\u00e8ces sur le plateau de jeu et \ntentez de r\u00e9aliser le maximum de lignes possible !\nAttention, ce n'est pas si facile que cela en a l'air o:)\n\n\nHackez le Jeu\n-------------\n\nPersonnlisez le jeu ! Vous pouvez collaborer \u00e0 ce jeu \nen ajoutant de nouveaux th\u00e8mes, pi\u00e8ces, sons ou encore \ndes explosions!\n\n\nFaites-vous plaisir :)\n----------------------\n\nN'oubliez de vous amuser pendant que vous jouez \u00e0 ce jeu ! \nN'h\u00e9sitez pas non plus \u00e0 faire un petit coucou au d\u00e9velopeur \noriginal pour le remercier si vous aimez ce jeu !\n",
-                    "summary": "Un clone de 1010 \u00e9crit avec libGDX"
-                },
-                "tr-TR": {
-                    "description": "Klooni Tan\u0131t\u0131m\u0131\n------------------\n\n1010! Klooni, Gram Games'in orijinal minimalist bulmaca oyununun \n\u00fccretsiz, \u00f6zg\u00fcr ve a\u00e7\u0131k kaynakl\u0131 bir kopyas\u0131d\u0131r.\n\n\nTahtay\u0131 Doldur\n-----------------\n\nBloklar\u0131 tahtaya s\u00fcr\u00fckleyin ve m\u00fcmk\u00fcn oldu\u011funca \u00e7ok say\u0131da\n\u015feridi temizlemeye \u00e7al\u0131\u015f\u0131n! G\u00f6r\u00fcnd\u00fc\u011f\u00fc kadar kolay de\u011fil :)\n\n\nGeli\u015ftir\n-------\n\nOyunu \u00f6zelle\u015ftir! \u0130\u015fbirli\u011fi yap! Yeni temalar,\npar\u00e7alar, sesler ve hatta patlamalar ekle!\n\n\n\u0130yi e\u011flenceler :)\n-----------\n\nGenel olarak, oyunu oynarken e\u011flenmeyi unutmay\u0131n.\n\u0130sterseniz hayranl\u0131\u011f\u0131n\u0131z\u0131 orijinal geli\u015ftiricilerle payla\u015f\u0131n!\n",
-                    "summary": "1010 tabanl\u0131 bir libGDX oyunu"
-                }
+          "packageName": "dev.lonami.klooni",
+          "categories": [
+            "Games"
+          ],
+          "changelog": "https://github.com/LonamiWebs/Klooni1010/releases",
+          "suggestedVersionName": "0.8.6",
+          "suggestedVersionCode": "860",
+          "issueTracker": "https://github.com/LonamiWebs/Klooni1010/issues",
+          "license": "GPL-3.0-or-later",
+          "sourceCode": "https://github.com/LonamiWebs/Klooni1010",
+          "webSite": "https://lonamiwebs.github.io/klooni",
+          "added": 1588982400000,
+          "icon": "dev.lonami.klooni.860.png",
+          "lastUpdated": 1598918400000,
+          "localized": {
+            "en-US": {
+              "description": "Introducing Klooni\n------------------\n\n1010! Klooni is a free, libre and open source klooni of\nthe original minimalistic puzzle game by Gram Games.\n\n\nFill Up the Board\n-----------------\n\nDrag the pieces on the board and try to clear as many\nstrips as you can! Beware though, it is not that easy o:)\n\n\nHack It\n-------\n\nMake the game yours! Collaborate! Add new themes, pieces,\nsounds or even explosions!\n\n\nHave Fun :)\n-----------\n\nOverall, remember to have fun while playing the game. Also\nshare the love with the original developers if you like it!\n",
+              "name": " 1010! Klooni",
+              "phoneScreenshots": [
+                "1-game.jpg",
+                "2-pause.jpg",
+                "3-themes.jpg"
+              ],
+              "summary": "A libGDX game based on 1010"
+            },
+            "es-ES": {
+              "description": "Introduciendo Klooni\n--------------------\n\n1010! Klooni es un versi\u00f3n klooni libre y gratuita del\noriginal juego de puzles minimalista por Gram Games.\n\n\nLlena el Tablero\n----------------\n\n\u00a1Arrastra las piezas en el tablero e intenta limpiar tantas\nfilas como puedas! Aunque te aviso, no es tan f\u00e1cil o:)\n\n\nHack\u00e9alo\n--------\n\n\u00a1Haz el juego tuyo! \u00a1Colabora! A\u00f1ade tus nuevos temas,\npiezas, sonidos \u00a1o incluso explosiones!\n\n\nDivi\u00e9rtete\n----------\n\nSobre todo, recuerda divertirte mientras juegas. \u00a1No te olvides\nde compartir tu amor con el juego y los desarrolladores originales\nsi te ha gustado!\n",
+              "summary": "Un juego libGDX basado en 1010!"
+            },
+            "fr-FR": {
+              "description": "Pr\u00e9sentation de 1010! Klooni\n----------------------\n\n1010! Klooni est un jeu gratuit, libre et open-source \nrepoduisant les m\u00e9canismes du jeu puzzle minimaliste \noriginal \u00e9crit par Gram Games.\n\n\nRemplissez le Plateau de Jeu\n----------------------------\n\nGlissez et d\u00e9posez les pi\u00e8ces sur le plateau de jeu et \ntentez de r\u00e9aliser le maximum de lignes possible !\nAttention, ce n'est pas si facile que cela en a l'air o:)\n\n\nHackez le Jeu\n-------------\n\nPersonnlisez le jeu ! Vous pouvez collaborer \u00e0 ce jeu \nen ajoutant de nouveaux th\u00e8mes, pi\u00e8ces, sons ou encore \ndes explosions!\n\n\nFaites-vous plaisir :)\n----------------------\n\nN'oubliez de vous amuser pendant que vous jouez \u00e0 ce jeu ! \nN'h\u00e9sitez pas non plus \u00e0 faire un petit coucou au d\u00e9velopeur \noriginal pour le remercier si vous aimez ce jeu !\n",
+              "summary": "Un clone de 1010 \u00e9crit avec libGDX"
+            },
+            "tr-TR": {
+              "description": "Klooni Tan\u0131t\u0131m\u0131\n------------------\n\n1010! Klooni, Gram Games'in orijinal minimalist bulmaca oyununun \n\u00fccretsiz, \u00f6zg\u00fcr ve a\u00e7\u0131k kaynakl\u0131 bir kopyas\u0131d\u0131r.\n\n\nTahtay\u0131 Doldur\n-----------------\n\nBloklar\u0131 tahtaya s\u00fcr\u00fckleyin ve m\u00fcmk\u00fcn oldu\u011funca \u00e7ok say\u0131da\n\u015feridi temizlemeye \u00e7al\u0131\u015f\u0131n! G\u00f6r\u00fcnd\u00fc\u011f\u00fc kadar kolay de\u011fil :)\n\n\nGeli\u015ftir\n-------\n\nOyunu \u00f6zelle\u015ftir! \u0130\u015fbirli\u011fi yap! Yeni temalar,\npar\u00e7alar, sesler ve hatta patlamalar ekle!\n\n\n\u0130yi e\u011flenceler :)\n-----------\n\nGenel olarak, oyunu oynarken e\u011flenmeyi unutmay\u0131n.\n\u0130sterseniz hayranl\u0131\u011f\u0131n\u0131z\u0131 orijinal geli\u015ftiricilerle payla\u015f\u0131n!\n",
+              "summary": "1010 tabanl\u0131 bir libGDX oyunu"
             }
+          }
         },
-        {
-            "categories": [
-                "Time"
+      {
+        "packageName": "com.chancehorizon.just24hoursplus",
+        "categories": [
+          "Time"
+        ],
+        "suggestedVersionName": "1.4.1",
+        "suggestedVersionCode": "10401",
+        "description": "When all you need is to know what time it is, only the actual time matters.\n\nThere are many wonderful clock applications available for Android devices.\nMany have have lots of great features. Choice in applications is a good\nthing.\n\nWhen one wishes to choose a simple clock application that just displays the\ntime of day in as large numbers as can fit on the screen's device, Just 24\nHours is here!\n\n<b>Features:</b>\n\nJust 24 Hours will display the time of day in 24 hour format in a big\nnumbers as will fit on the screen. For those that were corrective lenses,\nit can be challenging to read small numbers when just waking up. Big\nnumbers are required. No matter what size screen your Android device has,\nJust 24 Hours will use as big a text size that will fit on the screen.\n\nThat is all. No alarm settings. No typeface settings. No colour settings.\n\nJust a big clock to see what time of day it is.\n\nOf course, this is not what everyone wants in a clock application. This is\nokay. There are dozens of clock applications available on Google Play. Most\n(maybe all!) are great applications. We are certain that there will be one\nthat will satisfy one's desired features. For those that just want the\ntime, Just 24 Hours is here!",
+        "issueTracker": "https://gitlab.com/pardomi/just-24-hours/-/issues",
+        "license": "MIT",
+        "sourceCode": "https://gitlab.com/pardomi/just-24-hours",
+        "webSite": "https://chancehorizon.ca/",
+        "added": 1594857600000,
+        "lastUpdated": 1641155207000,
+        "localized": {
+          "de": {
+            "summary": "Gro\u00dfe Digitaluhr im 24-Stunden-Format"
+          },
+          "en-US": {
+            "description": "When all you need is to know what time it is, only the actual time matters.\n\nThere are many wonderful clock applications available for Android devices.\nMany have have lots of great features. Choice in applications is a good\nthing.\n\nWhen one wishes to choose a simple clock application that just displays the\ntime of day in as large numbers as can fit on the screen's device, Just 24\nHours is here!\n\n'''Features:'''\n\nJust 24 Hours will display the time of day in 24 hour format in a big\nnumbers as will fit on the screen. For those that were corrective lenses,\nit can be challenging to read small numbers when just waking up. Big\nnumbers are required. No matter what size screen your Android device has,\nJust 24 Hours will use as big a text size that will fit on the screen.\n\nThat is all. No alarm settings. No typeface settings. No colour settings.\n\nJust a big clock to see what time of day it is.\n\nOf course, this is not what everyone wants in a clock application. This is\nokay. There are dozens of clock applications available for Android. Most\n(maybe all!) are great applications. We are certain that there will be one\nthat will satisfy one's desired features. For those that just want the\ntime, Just 24 Hours is here!\n",
+            "icon": "icon_w5LWs6lXUmZb8sdyXWM3JSposi6s9DJb0NW62YEkEzw=.png",
+            "name": " Just 24 Hours",
+            "phoneScreenshots": [
+              "brightClock.png",
+              "dimClock.png",
+              "invertClock.png",
+              "medClock.png"
             ],
-            "suggestedVersionName": "1.4.1",
-            "suggestedVersionCode": "10401",
-            "description": "When all you need is to know what time it is, only the actual time matters.\n\nThere are many wonderful clock applications available for Android devices.\nMany have have lots of great features. Choice in applications is a good\nthing.\n\nWhen one wishes to choose a simple clock application that just displays the\ntime of day in as large numbers as can fit on the screen's device, Just 24\nHours is here!\n\n<b>Features:</b>\n\nJust 24 Hours will display the time of day in 24 hour format in a big\nnumbers as will fit on the screen. For those that were corrective lenses,\nit can be challenging to read small numbers when just waking up. Big\nnumbers are required. No matter what size screen your Android device has,\nJust 24 Hours will use as big a text size that will fit on the screen.\n\nThat is all. No alarm settings. No typeface settings. No colour settings.\n\nJust a big clock to see what time of day it is.\n\nOf course, this is not what everyone wants in a clock application. This is\nokay. There are dozens of clock applications available on Google Play. Most\n(maybe all!) are great applications. We are certain that there will be one\nthat will satisfy one's desired features. For those that just want the\ntime, Just 24 Hours is here!",
-            "issueTracker": "https://gitlab.com/pardomi/just-24-hours/-/issues",
-            "license": "MIT",
-            "sourceCode": "https://gitlab.com/pardomi/just-24-hours",
-            "webSite": "https://chancehorizon.ca/",
-            "added": 1594857600000,
-            "packageName": "com.chancehorizon.just24hoursplus",
-            "lastUpdated": 1641155207000,
-            "localized": {
-                "de": {
-                    "summary": "Gro\u00dfe Digitaluhr im 24-Stunden-Format"
-                },
-                "en-US": {
-                    "description": "When all you need is to know what time it is, only the actual time matters.\n\nThere are many wonderful clock applications available for Android devices.\nMany have have lots of great features. Choice in applications is a good\nthing.\n\nWhen one wishes to choose a simple clock application that just displays the\ntime of day in as large numbers as can fit on the screen's device, Just 24\nHours is here!\n\n'''Features:'''\n\nJust 24 Hours will display the time of day in 24 hour format in a big\nnumbers as will fit on the screen. For those that were corrective lenses,\nit can be challenging to read small numbers when just waking up. Big\nnumbers are required. No matter what size screen your Android device has,\nJust 24 Hours will use as big a text size that will fit on the screen.\n\nThat is all. No alarm settings. No typeface settings. No colour settings.\n\nJust a big clock to see what time of day it is.\n\nOf course, this is not what everyone wants in a clock application. This is\nokay. There are dozens of clock applications available for Android. Most\n(maybe all!) are great applications. We are certain that there will be one\nthat will satisfy one's desired features. For those that just want the\ntime, Just 24 Hours is here!\n",
-                    "icon": "icon_w5LWs6lXUmZb8sdyXWM3JSposi6s9DJb0NW62YEkEzw=.png",
-                    "name": " Just 24 Hours",
-                    "phoneScreenshots": [
-                        "brightClock.png",
-                        "dimClock.png",
-                        "invertClock.png",
-                        "medClock.png"
-                    ],
-                    "summary": "Large digital clock in 24 hour format",
-                    "video": " ",
-                    "whatsNew": "Fixed:\n - hide navigation bar on some devices\n"
-                },
+            "summary": "Large digital clock in 24 hour format",
+            "video": " ",
+            "whatsNew": "Fixed:\n - hide navigation bar on some devices\n"
+          },
                 "eo": {
                     "summary": "Granda cifera horlo\u011do en 24-hora formato"
                 },
@@ -316,6 +314,5 @@
                 "versionName": "0.8.4"
             }
         ]
-
     }
 }

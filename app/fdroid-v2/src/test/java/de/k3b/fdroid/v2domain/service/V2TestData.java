@@ -22,7 +22,9 @@ package de.k3b.fdroid.v2domain.service;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 import de.k3b.fdroid.v2domain.entity.packagev2.IndexV2;
 import de.k3b.fdroid.v2domain.entity.packagev2.MetadataV2;
@@ -30,13 +32,16 @@ import de.k3b.fdroid.v2domain.entity.packagev2.PackageV2;
 import de.k3b.fdroid.v2domain.entity.packagev2.PackageVersionV2;
 
 public class V2TestData {
+    public static final String UNITTEST_TEST_DATA = "exampledata/V2TestData-index-v2.json";
+
     public static final IndexV2 indexV2;
     public static final PackageV2 packageV2;
     public static final MetadataV2 metadata;
     public static final PackageVersionV2 versionV2;
 
     static {
-        try (InputStreamReader is = new InputStreamReader(V2TestData.class.getClassLoader().getResourceAsStream("exampledata/example-index-v2-formatted.json"))) {
+        try (InputStream resourceAsStream = V2TestData.class.getClassLoader().getResourceAsStream(UNITTEST_TEST_DATA);
+             InputStreamReader is = new InputStreamReader(Objects.requireNonNull(resourceAsStream, "Cannot read json from " + UNITTEST_TEST_DATA))) {
             Gson gson = new Gson();
             indexV2 = gson.fromJson(is, IndexV2.class);
             packageV2 = indexV2.getPackages().entrySet().iterator().next().getValue();

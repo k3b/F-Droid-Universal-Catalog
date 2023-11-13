@@ -29,38 +29,79 @@ import java.util.TreeMap;
 
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.Localized;
+import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.service.AppCategoryUpdateService;
+import de.k3b.fdroid.domain.service.CategoryService;
+import de.k3b.fdroid.domain.service.LanguageService;
+import de.k3b.fdroid.domain.util.Java8Util;
 
 /**
- * create testdata for import tests from
- * ...\F-Droid-Universal-Catalog\app\fdroid-v2\src\test\resources\exampledata\example-index-v2-formatted.json
+ * This test uses json data form
+ * ...\F-Droid-Universal-Catalog\app\fdroid-v2\src\test\resources\exampledata\V2TestData-index-v2.json
  */
 public class V2UpdateServiceTest {
+    Repo repo;
     App app;
 
     @Before
     public void setup() {
+        repo = new Repo("unittest", "https://www.fdroid.org/testrepo", null);
+        repo.setId(4712);
         app = new App("my.test.app");
         app.setId(4711);
 
     }
 
     @Test
+    public void updateAppWithDetails() {
+        V2AppUpdateService sut = new V2AppUpdateService(
+                null,
+                new V2LocalizedUpdateService(null, new LanguageService(null)),
+                new AppCategoryUpdateService(
+                        new CategoryService(null),
+                        null)
+        ).init();
+
+        // act
+        sut.update(app, V2TestData.packageV2);
+
+        // int repoId, App roomApp, PackageV2 packageV2, String progressChar) {
+        sut.updateDetails(repo.getId(), app, V2TestData.packageV2, "+");
+
+        // assert: v1import and v2import shoud create the same result
+        String expected = "App[id=4711,resourceRepoId=4712,packageName=my.test.app," +
+                "changelog=my-changelog,suggestedVersionName=1.2.3,suggestedVersionCode=123," +
+                "issueTracker=my-issueTracker,license=my-license,sourceCode=my-sourceCode," +
+                "webSite=my-webSite,added=2020-05-09,lastUpdated=2020-03-14," +
+                "icon=my-en-icon-name.png,searchCategory=my-cat1,my-cat2,searchName=:en-US: my...ame-app," +
+                "searchSummary=:en-US: my...ary-app," +
+                "searchDescription=:en-US: my...ion-app," +
+                "searchWhatsNew=:en-US: my...hatsNew]";
+
+        assertEquals(expected, app.toString());
+    }
+
+    @Test
     public void updateApp() {
         // arrange
-        V2AppUpdateService sut = new V2AppUpdateService(null, null);
+        V2AppUpdateService sut = new V2AppUpdateService(
+                null,
+                null,
+                null
+        );
 
         // act
         sut.update(app, V2TestData.metadata, V2TestData.versionV2);
 
-        // assert
+        // assert: v1import and v2import shout create the same result
         String expected = "App[id=4711,packageName=my.test.app,changelog=my-changelog," +
                 "suggestedVersionName=1.2.3,suggestedVersionCode=123," +
                 "issueTracker=my-issueTracker,license=my-license,sourceCode=my-sourceCode,webSite=my-webSite," +
                 "added=2020-05-09," + "lastUpdated=2020-03-14" +
                 ",icon=my-en-icon-name.png" +
-                // ",searchCategory=my-cat1,my-cat2" + // !! new
+                ",searchCategory=my-cat1,my-cat2" +
                 "]";
-        // todo ?translation,categories,?donate,preferredSigner
+        // todo ?translation,?donate,preferredSigner
 
         assertEquals(expected, app.toString());
     }
@@ -75,10 +116,13 @@ public class V2UpdateServiceTest {
         localizedMap.put(lde.getLocaleId(), lde);
         localizedMap.put(len.getLocaleId(), len);
 
-        V2LocalizedUpdateService sut = new V2LocalizedUpdateService(null);
+        V2LocalizedUpdateService sut = new V2LocalizedUpdateService(
+                null,
+                new LanguageService(null).init());
 
         // act
-        sut.update(app, localizedMap, V2TestData.metadata, V2TestData.versionV2);
+        Java8Util.OutParam<Localized> exceptionContext = new Java8Util.OutParam<>(null);
+        sut.update(app, localizedMap, V2TestData.metadata, V2TestData.versionV2, exceptionContext);
 
         // assert
         String expectedDe = "Localized[appId=4711,localeId=de,name=my-de-name-app,summary=my-de-summary-app,description=my-de-description-app]";

@@ -22,19 +22,24 @@ package de.k3b.fdroid.v1domain.service;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Objects;
 
 import de.k3b.fdroid.v1domain.entity.App;
 import de.k3b.fdroid.v1domain.entity.IndexV1;
 import de.k3b.fdroid.v1domain.entity.Version;
 
 public class V1TestData {
+    public static final String UNITTEST_TEST_DATA = "exampledata/V1TestData-index-v1.json";
+
     public static final IndexV1 indexV1;
     public static final App app;
     public static final Version version;
 
     static {
-        try (InputStreamReader is = new InputStreamReader(V1TestData.class.getClassLoader().getResourceAsStream("exampledata/index-v1.small.json"))) {
+        try (InputStream resourceAsStream = V1TestData.class.getClassLoader().getResourceAsStream(UNITTEST_TEST_DATA);
+             InputStreamReader is = new InputStreamReader(Objects.requireNonNull(resourceAsStream, "Cannot read json from " + UNITTEST_TEST_DATA))) {
             Gson gson = new Gson();
             indexV1 = gson.fromJson(is, IndexV1.class);
             app = indexV1.getApps().get(0);
@@ -43,5 +48,4 @@ public class V1TestData {
             throw new RuntimeException(e);
         }
     }
-
 }

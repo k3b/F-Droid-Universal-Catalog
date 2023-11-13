@@ -35,7 +35,7 @@ public interface LocalizedRepository extends Repository {
 
     default void save(Localized localized) {
         Integer id = localized.getId();
-        if (id == null || id.intValue() == 0) {
+        if (id == null || id == 0) {
             insert(localized);
         } else {
             update(localized);
@@ -43,6 +43,14 @@ public interface LocalizedRepository extends Repository {
     }
 
     void delete(Localized localized);
+
+    default void deleteAll(List<Localized> deleted) {
+        for (Localized l : deleted) {
+            if (l.getId() != 0) {
+                delete(l);
+            }
+        }
+    }
 
     List<Localized> findByAppId(int appId);
 

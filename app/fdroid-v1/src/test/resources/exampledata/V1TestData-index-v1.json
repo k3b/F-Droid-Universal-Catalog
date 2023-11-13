@@ -1,0 +1,84 @@
+{
+  // note the gson parser can handle comments in json files
+  // V1TestData-index-v1.small.json
+  // note: the first apps[0] with packagename="my.test.app" together with packages[packagename="my.test.app"] is used as
+  // Testdata for ...\F-Droid-Universal-Catalog\app\fdroid-v1\src\test\de.k3b.fdroid.v1domain.service.V1UpdateServiceTest.java
+  "repo": {
+    "timestamp": 1644169232000,
+    "version": 20001,
+    "maxage": 14,
+    "name": "F-Droid",
+    "icon": "fdroid-icon.png",
+    "address": "https://f-droid.org/repo",
+    "description": "\nThe official F-Droid Free Software repository.  Everything in this\nrepository is always built from the source code.\n",
+    "mirrors": [
+      "https://ftp.fau.de/fdroid/repo",
+      "https://mirror.cyberbits.eu/fdroid/repo",
+      "https://fdroid.tetaneutral.net/fdroid/repo",
+      "https://ftp.lysator.liu.se/pub/fdroid/repo",
+      "https://plug-mirror.rcac.purdue.edu/fdroid/repo"
+    ]
+  },
+  "requests": {
+    "install": [],
+    "uninstall": []
+  },
+  "apps": [
+    {
+      "packageName": "my.test.app",
+      "categories": [
+        "my-cat1",
+        "my-cat2"
+      ],
+      "changelog": "my-changelog",
+      "issueTracker": "my-issueTracker",
+      "license": "my-license",
+      "sourceCode": "my-sourceCode",
+      "webSite": "my-webSite",
+      "added": 1588982400000,
+      "lastUpdated": 1584144000000,
+      "icon": "my-en-icon-name.png",
+      "suggestedVersionName": "1.2.3",
+      "suggestedVersionCode": "123",
+      "translation": "my-translation (new in v2)",
+      "localized": {
+        "en-US": {
+          "description": "my-en-description-app",
+          "name": "my-en-name-app",
+          "phoneScreenshots": [
+            "1-game.jpg",
+            "2-pause.jpg",
+            "3-themes.jpg"
+          ],
+          "summary": "my-en-summary-app",
+          "video": "my-en-video",
+          "whatsNew": "my-en-whatsNew"
+        },
+        "de-DE": {
+          "description": "my-de-description-app",
+          "name": "my-de-name-app",
+          "summary": "my-de-summary-app"
+        }
+      }
+    }
+  ],
+  "packages": {
+    "my.test.app": [
+      {
+        "added": 1584144000000,
+        "apkName": "/my.test.app._47.apk",
+        "hash": "77bf8dd6a6d97e718dd29d64256a8fea513d7974156f0887c5c19c455a7d4179",
+        "hashType": "sha256",
+        "minSdkVersion": 14,
+        "packageName": "my.test.app",
+        "sig": "c6c0dcfd07de00b325a93acd93e1c4cf",
+        "signer": "666d4e095d70b606629a0697f3da15b66fa08a03c620b3a6feb9e19407be31a5",
+        "size": 1493080,
+        "srcname": "com.chancehorizon.just24hoursplus_10401_src.tar.gz",
+        "targetSdkVersion": 21,
+        "versionCode": 123,
+        "versionName": "1.2.3"
+      }
+    ]
+  }
+}
