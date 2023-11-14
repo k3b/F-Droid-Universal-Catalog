@@ -38,9 +38,11 @@ public class V1FixLocaleServiceTest {
 
         new V1FixLocaleService().fix(v1App);
 
-        String expected = "V1App[localized={ar:Localized[name=ar-SA]" +
-                ",de:Localized[name=de-rDE],en:Localized[name=en-us]" +
-                ",zh-TW:Localized[name=zh-TW]}]";
+        String expected = "V1App[localized={" +
+                "ar:V1Localized[name=ar-SA]," +
+                "de:V1Localized[name=de-rDE]," +
+                "en:V1Localized[name=en-us]," +
+                "zh-TW:V1Localized[name=zh-TW]}]";
         Assert.assertEquals(expected, v1App.toString());
     }
 

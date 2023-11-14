@@ -37,8 +37,8 @@ import java.util.zip.ZipEntry;
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
 import de.k3b.fdroid.domain.util.NoCloseInputStream;
-import de.k3b.fdroid.v2domain.entity.packagev2.PackageV2;
-import de.k3b.fdroid.v2domain.entity.repo.RepoV2;
+import de.k3b.fdroid.v2domain.entity.packagev2.V2App;
+import de.k3b.fdroid.v2domain.entity.repo.V2Repo;
 
 public abstract class V2FDroidCatalogJsonStreamParserBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
@@ -46,7 +46,7 @@ public abstract class V2FDroidCatalogJsonStreamParserBase {
 
     /**
      * parse the FDroid-Catalog-v1-Json into a stream of calls to consuming
-     * {@link #onRepo(RepoV2)}, {@link #onPackage(String, PackageV2)}
+     * {@link #onRepo(V2Repo)}, {@link #onPackage(String, V2App)}
      *
      * @param jsonInputStream uncompressed Json inputstream
      * @throws IOException if there are errors in the InputStream or the JSON v1 format.
@@ -72,7 +72,7 @@ public abstract class V2FDroidCatalogJsonStreamParserBase {
 
     /**
      * parse the compressed/signed jar file into a stream of calls to consuming
-     * {@link #onRepo(RepoV2)}, {@link #onPackage(String, PackageV2)}
+     * {@link #onRepo(V2Repo)}, {@link #onPackage(String, V2App)}
      *
      * @param jarInputStream jar-/zip-compressed inputstream containing json data
      * @throws IOException if there are errors in the InputStream, the jar-compression or the JSON v1 format.
@@ -119,12 +119,12 @@ public abstract class V2FDroidCatalogJsonStreamParserBase {
         reader.skipValue();
     }
 
-    protected RepoV2 repoFromJson(Gson gson, JsonReader reader) throws IOException {
-        return gson.fromJson(reader, RepoV2.class);
+    protected V2Repo repoFromJson(Gson gson, JsonReader reader) throws IOException {
+        return gson.fromJson(reader, V2Repo.class);
     }
 
-    protected PackageV2 packageFromJson(Gson gson, JsonReader reader) throws IOException {
-        return gson.fromJson(reader, PackageV2.class);
+    protected V2App packageFromJson(Gson gson, JsonReader reader) throws IOException {
+        return gson.fromJson(reader, V2App.class);
     }
 
     private void readPackages(Gson gson, JsonReader reader) throws IOException {
@@ -191,13 +191,13 @@ public abstract class V2FDroidCatalogJsonStreamParserBase {
     protected abstract String log(String s);
 
     /**
-     * Stream event, when a {@link RepoV2} was read
+     * Stream event, when a {@link V2Repo} was read
      */
-    protected abstract void onRepo(RepoV2 repo);
+    protected abstract void onRepo(V2Repo repo);
 
     /**
-     * Stream event, when a {@link PackageV2} was read
+     * Stream event, when a {@link V2App} was read
      */
-    protected abstract void onPackage(String name, PackageV2 packageV2);
+    protected abstract void onPackage(String name, V2App v2App);
 
 }

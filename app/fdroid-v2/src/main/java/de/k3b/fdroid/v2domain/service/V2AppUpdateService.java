@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2023 by k3b.
  *
- * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
+ * This file is part of de.k3b.fdroid.v2domain the fdroid json catalog-format-v2 parser.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -43,8 +43,8 @@ import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.v2domain.entity.packagev2.ManifestV2;
 import de.k3b.fdroid.v2domain.entity.packagev2.MetadataV2;
-import de.k3b.fdroid.v2domain.entity.packagev2.PackageV2;
 import de.k3b.fdroid.v2domain.entity.packagev2.PackageVersionV2;
+import de.k3b.fdroid.v2domain.entity.packagev2.V2App;
 import de.k3b.fdroid.v2domain.entity.repo.FileV2;
 
 public class V2AppUpdateService implements ProgressObservable {
@@ -88,7 +88,7 @@ public class V2AppUpdateService implements ProgressObservable {
         return this;
     }
 
-    public App update(int repoId, @NotNull String packageName, @NotNull PackageV2 packageV2) {
+    public App update(int repoId, @NotNull String packageName, @NotNull V2App v2App) {
         Objects.requireNonNull(appRepository, "appRepository is not initialized");
         App roomApp = null;
         try {
@@ -102,9 +102,9 @@ public class V2AppUpdateService implements ProgressObservable {
                     throw new RuntimeException("appRepository.insert(roomApp) did not generate appId");
             }
             roomApp = roomApp1;
-            update(roomApp, packageV2);
+            update(roomApp, v2App);
             appRepository.save(roomApp);
-            updateDetails(repoId, roomApp, packageV2, progressChar);
+            updateDetails(repoId, roomApp, v2App, progressChar);
 
             return roomApp;
         } catch (Exception ex) {
@@ -116,15 +116,15 @@ public class V2AppUpdateService implements ProgressObservable {
                     + (roomApp == null ? "?" : roomApp.getAppId())
                     + ")=" + packageName + ") "
                     + ExceptionUtils.getParentCauseMessage(ex, PersistenceException.class);
-            LOGGER.error(message + "\n\tPackageV2=" + packageV2, ex);
+            LOGGER.error(message + "\n\tV2App=" + v2App, ex);
             throw new PersistenceException(message, ex);
         }
     }
 
-    protected App update(App roomApp, PackageV2 packageV2) {
-        Map<String, PackageVersionV2> versions = packageV2.getVersions();
+    protected App update(App roomApp, V2App v2App) {
+        Map<String, PackageVersionV2> versions = v2App.getVersions();
         PackageVersionV2 version = (versions == null || versions.isEmpty()) ? null : versions.entrySet().iterator().next().getValue();
-        update(roomApp, packageV2.getMetadata(), version);
+        update(roomApp, v2App.getMetadata(), version);
         return roomApp;
     }
 
@@ -150,7 +150,7 @@ public class V2AppUpdateService implements ProgressObservable {
         return roomApp;
     }
 
-    protected void updateDetails(int repoId, App roomApp, PackageV2 packageV2, String progressChar) {
+    protected void updateDetails(int repoId, App roomApp, V2App v2App, String progressChar) {
         progressCounter++;
         if (progressObserver != null && (--progressCountdown) <= 0) {
             progressObserver.onProgress(progressCounter, progressChar, roomApp.getPackageName());
@@ -158,7 +158,7 @@ public class V2AppUpdateService implements ProgressObservable {
         }
 
         if (v2LocalizedUpdateService != null)
-            v2LocalizedUpdateService.update(repoId, roomApp, packageV2);
+            v2LocalizedUpdateService.update(repoId, roomApp, v2App);
     }
 
 

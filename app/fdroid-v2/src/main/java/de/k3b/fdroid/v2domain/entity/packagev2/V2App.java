@@ -19,36 +19,36 @@
 
 package de.k3b.fdroid.v2domain.entity.packagev2;
 
-// IndexV2.java
+// V2App.java
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-import de.k3b.fdroid.v2domain.entity.repo.RepoV2;
-
-public final class IndexV2 {
+public final class V2App {
     @NotNull
-    private final RepoV2 repo;
+    private final MetadataV2 metadata;
     @NotNull
-    private final Map<String, PackageV2> packages;
+    private final Map<String, PackageVersionV2> versions;
 
-    public IndexV2(@NotNull RepoV2 repo, @NotNull Map<String, PackageV2> packages) {
-        this.repo = repo;
-        this.packages = packages;
+
+    public V2App(@NotNull MetadataV2 metadata, @NotNull Map<String, PackageVersionV2> versions) {
+        this.metadata = metadata;
+        this.versions = versions;
     }
 
     @NotNull
-    public RepoV2 getRepo() {
-        return this.repo;
+    public MetadataV2 getMetadata() {
+        return this.metadata;
     }
 
     @NotNull
-    public Map<String, PackageV2> getPackages() {
-        return this.packages;
+    public Map<String, PackageVersionV2> getVersions() {
+        return this.versions;
     }
 
+    @NotNull
     public String toString() {
-        return "IndexV2{repo=" + this.repo + ", packages=" + this.packages + "}";
+        return "V2App(metadata=" + this.metadata + ", versions=" + this.versions + ")";
     }
 }

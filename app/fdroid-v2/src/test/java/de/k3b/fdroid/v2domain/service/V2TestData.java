@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2023 by k3b.
  *
- * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
+ * This file is part of de.k3b.fdroid.v2domain the fdroid json catalog-format-v2 parser.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -26,16 +26,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
-import de.k3b.fdroid.v2domain.entity.packagev2.IndexV2;
 import de.k3b.fdroid.v2domain.entity.packagev2.MetadataV2;
-import de.k3b.fdroid.v2domain.entity.packagev2.PackageV2;
 import de.k3b.fdroid.v2domain.entity.packagev2.PackageVersionV2;
+import de.k3b.fdroid.v2domain.entity.packagev2.V2App;
+import de.k3b.fdroid.v2domain.entity.packagev2.V2AppCatalog;
 
 public class V2TestData {
     public static final String UNITTEST_TEST_DATA = "exampledata/V2TestData-index-v2.json";
 
-    public static final IndexV2 indexV2;
-    public static final PackageV2 packageV2;
+    public static final V2AppCatalog indexV2;
+    public static final V2App packageV2;
     public static final MetadataV2 metadata;
     public static final PackageVersionV2 versionV2;
 
@@ -43,7 +43,7 @@ public class V2TestData {
         try (InputStream resourceAsStream = V2TestData.class.getClassLoader().getResourceAsStream(UNITTEST_TEST_DATA);
              InputStreamReader is = new InputStreamReader(Objects.requireNonNull(resourceAsStream, "Cannot read json from " + UNITTEST_TEST_DATA))) {
             Gson gson = new Gson();
-            indexV2 = gson.fromJson(is, IndexV2.class);
+            indexV2 = gson.fromJson(is, V2AppCatalog.class);
             packageV2 = indexV2.getPackages().entrySet().iterator().next().getValue();
             metadata = packageV2.getMetadata();
             versionV2 = packageV2.getVersions().entrySet().iterator().next().getValue();

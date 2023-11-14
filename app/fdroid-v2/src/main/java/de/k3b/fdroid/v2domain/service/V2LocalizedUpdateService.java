@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2023 by k3b.
  *
- * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
+ * This file is part of de.k3b.fdroid.v2domain the fdroid json catalog-format-v2 parser.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -41,9 +41,9 @@ import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.Java8Util;
 import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.v2domain.entity.packagev2.MetadataV2;
-import de.k3b.fdroid.v2domain.entity.packagev2.PackageV2;
 import de.k3b.fdroid.v2domain.entity.packagev2.PackageVersionV2;
 import de.k3b.fdroid.v2domain.entity.packagev2.Screenshots;
+import de.k3b.fdroid.v2domain.entity.packagev2.V2App;
 import de.k3b.fdroid.v2domain.entity.repo.FileV2;
 
 public class V2LocalizedUpdateService {
@@ -90,8 +90,8 @@ public class V2LocalizedUpdateService {
     }
 
     public List<Localized> update(
-            int repoId, App roomApp, PackageV2 packageV2) {
-        return update(repoId, roomApp, packageV2.getMetadata(), getLastVersion(packageV2.getVersions()));
+            int repoId, App roomApp, V2App v2App) {
+        return update(repoId, roomApp, v2App.getMetadata(), getLastVersion(v2App.getVersions()));
     }
 
     private PackageVersionV2 getLastVersion(Map<String, PackageVersionV2> versions) {

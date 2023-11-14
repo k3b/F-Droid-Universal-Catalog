@@ -18,15 +18,15 @@
  */
 package de.k3b.fdroid.v2domain.entity.repo;
 
-// RepoV2.java
-
-import java.util.List;
-import java.util.Map;
+// V2Repo.java
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class RepoV2 {
+import java.util.List;
+import java.util.Map;
+
+public final class V2Repo {
     @NotNull
     private final Map<String, String> name;
     @NotNull
@@ -47,7 +47,7 @@ public final class RepoV2 {
     @NotNull
     private final Map<String, ReleaseChannelV2> releaseChannels;
 
-    public RepoV2(@NotNull Map<String, String> name, @NotNull Map<String, FileV2> icon, @NotNull String address, @Nullable String webBaseUrl,
+    public V2Repo(@NotNull Map<String, String> name, @NotNull Map<String, FileV2> icon, @NotNull String address, @Nullable String webBaseUrl,
                   @NotNull Map<String, String> description, @NotNull List<MirrorV2> mirrors, long timestamp,
                   @NotNull Map<String, AntiFeatureV2> antiFeatures, @NotNull Map<String, CategoryV2> categories, @NotNull Map<String, ReleaseChannelV2> releaseChannels) {
         this.name = name;
@@ -63,56 +63,56 @@ public final class RepoV2 {
     }
 
     @NotNull
-    public final Map<String, String> getName() {
+    public Map<String, String> getName() {
         return this.name;
     }
 
     @NotNull
-    public final Map<String, FileV2> getIcon() {
+    public Map<String, FileV2> getIcon() {
         return this.icon;
     }
 
     @NotNull
-    public final String getAddress() {
+    public String getAddress() {
         return this.address;
     }
 
     @Nullable
-    public final String getWebBaseUrl() {
+    public String getWebBaseUrl() {
         return this.webBaseUrl;
     }
 
     @NotNull
-    public final Map<String, String> getDescription() {
+    public Map<String, String> getDescription() {
         return this.description;
     }
 
     @NotNull
-    public final List<MirrorV2> getMirrors() {
+    public List<MirrorV2> getMirrors() {
         return this.mirrors;
     }
 
-    public final long getTimestamp() {
+    public long getTimestamp() {
         return this.timestamp;
     }
 
     @NotNull
-    public final Map<String, AntiFeatureV2> getAntiFeatures() {
+    public Map<String, AntiFeatureV2> getAntiFeatures() {
         return this.antiFeatures;
     }
 
     @NotNull
-    public final Map<String, CategoryV2> getCategories() {
+    public Map<String, CategoryV2> getCategories() {
         return this.categories;
     }
 
     @NotNull
-    public final Map<String, ReleaseChannelV2> getReleaseChannels() {
+    public Map<String, ReleaseChannelV2> getReleaseChannels() {
         return this.releaseChannels;
     }
 
     @NotNull
     public String toString() {
-        return "RepoV2{name=" + this.name + ", icon=" + this.icon + ", address=" + this.address + ", webBaseUrl=" + this.webBaseUrl + ", description=" + this.description + ", mirrors=" + this.mirrors + ", timestamp=" + this.timestamp + ", antiFeatures=" + this.antiFeatures + ", categories=" + this.categories + ", releaseChannels=" + this.releaseChannels + "}";
+        return "V2Repo{name=" + this.name + ", icon=" + this.icon + ", address=" + this.address + ", webBaseUrl=" + this.webBaseUrl + ", description=" + this.description + ", mirrors=" + this.mirrors + ", timestamp=" + this.timestamp + ", antiFeatures=" + this.antiFeatures + ", categories=" + this.categories + ", releaseChannels=" + this.releaseChannels + "}";
     }
 }

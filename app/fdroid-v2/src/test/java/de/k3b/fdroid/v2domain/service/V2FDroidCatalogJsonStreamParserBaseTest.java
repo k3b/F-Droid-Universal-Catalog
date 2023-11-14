@@ -18,15 +18,13 @@
  */
 package de.k3b.fdroid.v2domain.service;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import de.k3b.fdroid.v2domain.entity.packagev2.PackageV2;
-import de.k3b.fdroid.v2domain.entity.repo.RepoV2;
+import de.k3b.fdroid.v2domain.entity.packagev2.V2App;
+import de.k3b.fdroid.v2domain.entity.repo.V2Repo;
 
 public class V2FDroidCatalogJsonStreamParserBaseTest {
     @Test
@@ -51,13 +49,13 @@ public class V2FDroidCatalogJsonStreamParserBaseTest {
         }
 
         @Override
-        protected void onRepo(RepoV2 repo) {
+        protected void onRepo(V2Repo repo) {
             System.out.println(repo.getAddress());
 
         }
 
         @Override
-        protected void onPackage(String name, PackageV2 packageV2) {
+        protected void onPackage(String name, V2App v2App) {
             System.out.println(name);
         }
     }
