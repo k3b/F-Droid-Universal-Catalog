@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022 by k3b.
  *
- * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
+ * This file is part of org.fdroid project.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -20,6 +20,8 @@
 package de.k3b.fdroid.domain.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -38,30 +40,30 @@ public class HardwareProfileServiceTest {
     public void isCompatible() {
         HardwareProfile profile = new HardwareProfile("test profile", 14, "8080,z80");
 
-        assertEquals("all ok", true, HardwareProfileService.isCompatible(profile,
+        assertTrue("all ok", HardwareProfileService.isCompatible(profile,
                 new Version(10, 15, 16, "6502,z80")));
-        assertEquals("wrong nativecode", false, HardwareProfileService.isCompatible(profile,
+        assertFalse("wrong nativecode", HardwareProfileService.isCompatible(profile,
                 new Version(10, 15, 16, "6502,8ß85")));
-        assertEquals("wrong sdk", false, HardwareProfileService.isCompatible(profile,
+        assertFalse("wrong sdk", HardwareProfileService.isCompatible(profile,
                 new Version(15, 15, 16, "6502,8ß85")));
     }
 
     @Test
     public void isCompatibleSdk() {
-        assertEquals("00", true, HardwareProfileService.isCompatibleSdk(15, 0, 0));
-        assertEquals("all same", true, HardwareProfileService.isCompatibleSdk(15, 15, 15));
-        assertEquals("<", false, HardwareProfileService.isCompatibleSdk(15, 16, 0));
-        assertEquals(">", false, HardwareProfileService.isCompatibleSdk(15, 0, 14));
+        assertTrue("00", HardwareProfileService.isCompatibleSdk(15, 0, 0));
+        assertTrue("all same", HardwareProfileService.isCompatibleSdk(15, 15, 15));
+        assertFalse("<", HardwareProfileService.isCompatibleSdk(15, 16, 0));
+        assertFalse(">", HardwareProfileService.isCompatibleSdk(15, 0, 14));
     }
 
     @Test
     public void isCompatibleNativecode() {
-        assertEquals("null null", true, HardwareProfileService.isCompatibleNativecode(null, null));
-        assertEquals("z80 null", true, HardwareProfileService.isCompatibleNativecode(
+        assertTrue("null null", HardwareProfileService.isCompatibleNativecode(null, null));
+        assertTrue("z80 null", HardwareProfileService.isCompatibleNativecode(
                 StringUtil.toStringArray("8080,z80"), null));
-        assertEquals("z80 match", true, HardwareProfileService.isCompatibleNativecode(
+        assertTrue("z80 match", HardwareProfileService.isCompatibleNativecode(
                 StringUtil.toStringArray("8080,z80"), StringUtil.toStringArray("6502,z80")));
-        assertEquals("z80 mis-match", false, HardwareProfileService.isCompatibleNativecode(
+        assertFalse("z80 mis-match", HardwareProfileService.isCompatibleNativecode(
                 StringUtil.toStringArray("8080,z80"), StringUtil.toStringArray("6502,8085")));
     }
 
@@ -69,7 +71,7 @@ public class HardwareProfileServiceTest {
     public void isCompatibleNativecode_armeCpu_compatible_armAppVersion() {
         HardwareProfile profile = new HardwareProfile();
         profile.setNativecode("armeabi-v7a");
-        assertEquals("armeabi-v7a device is compatible with armabi-v7a app", true, HardwareProfileService.isCompatibleNativecode(
+        assertTrue("armeabi-v7a device is compatible with armabi-v7a app", HardwareProfileService.isCompatibleNativecode(
                 StringUtil.toStringArray("armabi-v7a"), profile.getNativecodeArray()));
     }
 

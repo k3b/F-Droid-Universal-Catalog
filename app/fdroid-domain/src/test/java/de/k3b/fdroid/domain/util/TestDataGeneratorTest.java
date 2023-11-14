@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022 by k3b.
  *
- * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
+ * This file is part of org.fdroid project.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -45,9 +45,7 @@ public class TestDataGeneratorTest {
 
         @Override
         public String toString() {
-            StringBuilder result = new StringBuilder();
-            result.append("inherited=").append(inherited).append(", ");
-            return result.toString();
+            return "inherited=" + inherited + ", ";
         }
     }
 
@@ -70,22 +68,21 @@ public class TestDataGeneratorTest {
 
         @Override
         public String toString() {
-            StringBuilder result = new StringBuilder();
-            result.append("b=").append(b).append(", ");
-            result.append("bb=").append(bb).append(", ");
-            result.append("by=").append(by).append(", ");
-            result.append("byby=").append(byby).append(", ");
-            result.append("i=").append(i).append(", ");
-            result.append("ii=").append(ii).append(", ");
-            result.append("l=").append(l).append(", ");
-            result.append("ll=").append(ll).append(", ");
-            result.append("bi=").append(bi).append(", ");
-            result.append("c=").append(c).append(", ");
-            result.append("cc=").append(cc).append(", ");
-            result.append("s=").append(s).append(", ");
-            result.append("o=").append(o).append(", ");
-            result.append(super.toString());
-            return result.toString();
+            String result = "b=" + b + ", " +
+                    "bb=" + bb + ", " +
+                    "by=" + by + ", " +
+                    "byby=" + byby + ", " +
+                    "i=" + i + ", " +
+                    "ii=" + ii + ", " +
+                    "l=" + l + ", " +
+                    "ll=" + ll + ", " +
+                    "bi=" + bi + ", " +
+                    "c=" + c + ", " +
+                    "cc=" + cc + ", " +
+                    "s=" + s + ", " +
+                    "o=" + o + ", " +
+                    super.toString();
+            return result;
         }
     }
 
