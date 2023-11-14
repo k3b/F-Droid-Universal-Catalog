@@ -33,11 +33,11 @@ import de.k3b.fdroid.v1domain.entity.Version;
 public class V1TestData {
     public static final String UNITTEST_TEST_DATA = "exampledata/V1TestData-index-v1.json";
 
-    public static final IndexV1 indexV1;
-    public static final App app;
-    public static final Version version;
+    public final IndexV1 indexV1;
+    public final App app;
+    public final Version version;
 
-    static {
+    public V1TestData() {
         try (InputStream resourceAsStream = V1TestData.class.getClassLoader().getResourceAsStream(UNITTEST_TEST_DATA);
              InputStreamReader is = new InputStreamReader(Objects.requireNonNull(resourceAsStream, "Cannot read json from " + UNITTEST_TEST_DATA))) {
             Gson gson = new Gson();

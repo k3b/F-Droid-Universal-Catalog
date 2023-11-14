@@ -42,7 +42,7 @@ import de.k3b.fdroid.v1domain.entity.UpdateService;
  * {@link UpdateService} that updates {@link de.k3b.fdroid.domain.entity.App}
  * from {@link App} using a {@link AppRepository}
  */
-public class AppUpdateService implements UpdateService, ProgressObservable {
+public class V1AppUpdateService implements UpdateService, ProgressObservable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
 
     private static final int PROGRESS_INTERVALL = 100;
@@ -52,24 +52,28 @@ public class AppUpdateService implements UpdateService, ProgressObservable {
     @Nullable
     private final AppCategoryUpdateService appCategoryUpdateService;
     @Nullable
-    private final LocalizedUpdateService localizedUpdateService;
+    private final V1LocalizedUpdateService v1LocalizedUpdateService;
+    @Nullable
+    private final FixLocaleService fixLocaleService;
 
     private ProgressObserver progressObserver = null;
     private int progressCounter = 0;
     private int progressCountdown = 0;
 
-    public AppUpdateService(
+    public V1AppUpdateService(
             @Nullable AppRepository appRepository,
-            @Nullable LocalizedUpdateService localizedUpdateService,
-            @Nullable AppCategoryUpdateService appCategoryUpdateService) {
+            @Nullable V1LocalizedUpdateService v1LocalizedUpdateService,
+            @Nullable AppCategoryUpdateService appCategoryUpdateService,
+            @Nullable FixLocaleService fixLocaleService) {
         this.appRepository = appRepository;
         this.appCategoryUpdateService = appCategoryUpdateService;
-        this.localizedUpdateService = localizedUpdateService;
+        this.v1LocalizedUpdateService = v1LocalizedUpdateService;
+        this.fixLocaleService = fixLocaleService;
     }
 
-    public AppUpdateService init() {
+    public V1AppUpdateService init() {
         if (appCategoryUpdateService != null) this.appCategoryUpdateService.init();
-        if (localizedUpdateService != null) this.localizedUpdateService.init();
+        if (v1LocalizedUpdateService != null) this.v1LocalizedUpdateService.init();
         progressCounter = 0;
         progressCountdown = 0;
         return this;
@@ -86,6 +90,9 @@ public class AppUpdateService implements UpdateService, ProgressObservable {
             if (roomApp == null) {
                 progressChar = "+";
                 roomApp = new de.k3b.fdroid.domain.entity.App();
+            }
+            if (fixLocaleService != null) {
+                v1App = fixLocaleService.fix(v1App);
             }
             update(roomApp, v1App);
             appRepository.save(roomApp);
@@ -110,7 +117,10 @@ public class AppUpdateService implements UpdateService, ProgressObservable {
     // Entrypoint for unittest
     protected void update(de.k3b.fdroid.domain.entity.App roomApp, App v1App) {
         AppCommon.copyCommon(roomApp, v1App, v1App);
-        roomApp.setSearchCategory(StringUtil.toCsvStringOrNull(v1App.getCategories()));
+        String searchCategory = StringUtil.toCsvStringOrNull(v1App.getCategories());
+        if (searchCategory != null) {
+            roomApp.setSearchCategory(searchCategory);
+        }
     }
 
     protected void updateDetails(int repoId, de.k3b.fdroid.domain.entity.App roomApp, App v1App, String progressChar) {
@@ -123,8 +133,8 @@ public class AppUpdateService implements UpdateService, ProgressObservable {
         if (appCategoryUpdateService != null) {
             appCategoryUpdateService.update(roomApp.getId(), v1App.getCategories());
         }
-        if (localizedUpdateService != null) {
-            localizedUpdateService.update(repoId, roomApp.getId(), roomApp, v1App.getLocalized());
+        if (v1LocalizedUpdateService != null) {
+            v1LocalizedUpdateService.update(repoId, roomApp.getId(), roomApp, v1App.getLocalized());
         }
         if (appRepository != null) {
             appRepository.update(roomApp);

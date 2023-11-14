@@ -23,14 +23,16 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.Localized;
 import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.service.AppCategoryUpdateService;
 import de.k3b.fdroid.domain.service.CategoryService;
 import de.k3b.fdroid.domain.service.LanguageService;
@@ -41,8 +43,10 @@ import de.k3b.fdroid.domain.util.Java8Util;
  * ...\F-Droid-Universal-Catalog\app\fdroid-v1\src\test\resources\exampledata\V1TestData-index-v1.json
  */
 public class V1UpdateServiceTest {
-    Repo repo;
-    App app;
+    private Repo repo;
+    private App app;
+
+    private V1TestData v1TestData;
 
     @Before
     public void setup() {
@@ -51,45 +55,50 @@ public class V1UpdateServiceTest {
         app = new App("my.test.app");
         app.setId(4711);
 
+        v1TestData = new V1TestData();
     }
 
     @Test
-    public void updateAppWithDetails() {
-        AppUpdateService sut = new AppUpdateService(
-                null,
-                new LocalizedUpdateService(null, new LanguageService(null)),
+    public void updateAppWithDetailsIntegrationsTest() {
+        AppRepository appRepository = Mockito.mock(AppRepository.class);
+        Mockito.when(appRepository.findByPackageName(app.getPackageName())).thenReturn(app);
+
+        V1AppUpdateService sut = new V1AppUpdateService(
+                appRepository,
+                new V1LocalizedUpdateService(null, new LanguageService(null)),
                 new AppCategoryUpdateService(
                         new CategoryService(null),
-                        null)
+                        null),
+                new FixLocaleService()
         ).init();
 
         // act
-        sut.update(app, V1TestData.app);
-        sut.updateDetails(repo.getId(), app, V1TestData.app, "+");
+        sut.update(repo.getId(), v1TestData.app);
 
         // assert: v1import and v2import shoud create the same result
         String expected = "App[id=4711,resourceRepoId=4712,packageName=my.test.app," +
                 "changelog=my-changelog,suggestedVersionName=1.2.3,suggestedVersionCode=123," +
                 "issueTracker=my-issueTracker,license=my-license,sourceCode=my-sourceCode," +
                 "webSite=my-webSite,added=2020-05-09,lastUpdated=2020-03-14," +
-                "icon=my-en-icon-name.png,searchCategory=my-cat1,my-cat2,searchName=:en-US: my...ame-app," +
-                "searchSummary=:en-US: my...ary-app," +
-                "searchDescription=:en-US: my...ion-app," +
-                "searchWhatsNew=:en-US: my...hatsNew]";
-
+                "icon=my-en-icon-name.png,searchCategory=my-cat1,my-cat2," +
+                "searchName=:de: my-de...ame-app," +
+                "searchSummary=:de: my-de...ary-app," +
+                "searchDescription=:de: my-de...ion-app,searchWhatsNew=:en: my-en-whatsNew" +
+                "]";
         assertEquals(expected, app.toString());
     }
 
     @Test
     public void updateApp() {
         // arrange
-        AppUpdateService sut = new AppUpdateService(
+        V1AppUpdateService sut = new V1AppUpdateService(
+                null,
                 null,
                 null,
                 null).init();
 
         // act
-        sut.update(app, V1TestData.app);
+        sut.update(app, v1TestData.app);
 
         // assert: v1import and v2import shout create the same result
         String expected = "App[id=4711,packageName=my.test.app,changelog=my-changelog," +
@@ -105,29 +114,32 @@ public class V1UpdateServiceTest {
     @Test
     public void updateLocalized() {
         // arrange
-        List<Localized> roomLocalizedList = new ArrayList<>();
+        Localized lde = new Localized(app.getAppId(), "de");
+        Localized len = new Localized(app.getAppId(), "en");
+        List<Localized> roomLocalizedList = Arrays.asList(lde, len);
 
-        Map<String, de.k3b.fdroid.v1domain.entity.Localized> localizedMap = V1TestData.app.getLocalized();
-        LocalizedUpdateService sut = new LocalizedUpdateService(
+        // convert en-US -> en
+        de.k3b.fdroid.v1domain.entity.App v1App = new FixLocaleService().fix(v1TestData.app);
+
+        Map<String, de.k3b.fdroid.v1domain.entity.Localized> localizedMap = v1App.getLocalized();
+        V1LocalizedUpdateService sut = new V1LocalizedUpdateService(
                 null,
-                new LanguageService(null).init());
+                new LanguageService(null)).init();
         Java8Util.OutParam<Localized> exceptionContext = new Java8Util.OutParam<>(null);
 
         // act
         sut.update(app.getAppId(), roomLocalizedList, localizedMap, exceptionContext);
 
-        /*
-        LanguageService.
-
-        Localized lde =  new Localized(app.getAppId(), "de");
-        Localized len = new Localized(app.getAppId(), "en");
-
-        // assert
+        // assert: v1import and v2import shoud create the same result
         String expectedDe = "Localized[appId=4711,localeId=de,name=my-de-name-app,summary=my-de-summary-app,description=my-de-description-app]";
         assertEquals(expectedDe, lde.toString());
+
         String expectedEn = "Localized[appId=4711,localeId=en,name=my-en-name-app,summary=my-en-summary-app,description=my-en-description-app" +
                 ",icon=my-en-icon-name.png,whatsNew=my-en-whatsNew,phoneScreenshots=my-en-phon...e2-name]";
+        String s = "Localized[appId=4711,localeId=en,name=my-en-name-app,summary=my-en-summary-app,description=my-en-description-app" +
+                ",video=my-en-video" +
+                ",whatsNew=my-en-whatsNew" +
+                ",phoneScreenshotDir=my.test.app/en-US/phoneScreenshots/,phoneScreenshots=1-game.jpg...mes.jpg]";
         assertEquals(expectedEn, len.toString());
-         */
     }
 }

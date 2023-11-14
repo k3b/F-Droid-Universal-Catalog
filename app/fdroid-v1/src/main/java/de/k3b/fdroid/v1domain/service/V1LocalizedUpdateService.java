@@ -47,7 +47,7 @@ import de.k3b.fdroid.v1domain.entity.UpdateService;
  * {@link UpdateService} that updates {@link Localized}
  * from {@link de.k3b.fdroid.v1domain.entity.Localized} using a {@link LocalizedRepository}
  */
-public class LocalizedUpdateService implements UpdateService {
+public class V1LocalizedUpdateService implements UpdateService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
     @Nullable
     private final LocalizedRepository localizedRepository;
@@ -56,14 +56,14 @@ public class LocalizedUpdateService implements UpdateService {
     @NotNull
     private final LocalizedService localizedService;
 
-    public LocalizedUpdateService(@Nullable LocalizedRepository localizedRepository,
-                                  @NotNull LanguageService languageService) {
+    public V1LocalizedUpdateService(@Nullable LocalizedRepository localizedRepository,
+                                    @NotNull LanguageService languageService) {
         this.localizedRepository = localizedRepository;
         this.languageService = languageService;
         this.localizedService = new LocalizedService(languageService);
     }
 
-    public LocalizedUpdateService init() {
+    public V1LocalizedUpdateService init() {
         languageService.init();
         return this;
     }
@@ -82,14 +82,7 @@ public class LocalizedUpdateService implements UpdateService {
 
             int phoneScreenshotCount = update(appId, roomLocalizedList, v1LocalizedMap, exceptionContext);
 
-            List<Localized> deleted = localizedService.deleteHidden(roomLocalizedList);
-            if (roomApp != null) {
-                if (repoId != 0 && (roomApp.getResourceRepoId() == null || phoneScreenshotCount > 0)) {
-                    roomApp.setResourceRepoId(repoId);
-                }
-                localizedService.recalculateSearchFields(repoId, roomApp, roomLocalizedList);
-            }
-            if (localizedRepository != null) localizedRepository.deleteAll(deleted);
+            updateDetails(repoId, roomApp, roomLocalizedList, phoneScreenshotCount);
             return roomLocalizedList;
         } catch (Exception ex) {
             Localized roomLocalized = exceptionContext.getValue();
@@ -142,6 +135,17 @@ public class LocalizedUpdateService implements UpdateService {
             } // if not hidden
         } // for each v1 language
         return phoneScreenshotCount;
+    }
+
+    private void updateDetails(int repoId, App roomApp, List<Localized> roomLocalizedList, int phoneScreenshotCount) {
+        List<Localized> deleted = localizedService.deleteHidden(roomLocalizedList);
+        if (roomApp != null) {
+            if (repoId != 0 && (roomApp.getResourceRepoId() == null || phoneScreenshotCount > 0)) {
+                roomApp.setResourceRepoId(repoId);
+            }
+            localizedService.recalculateSearchFields(repoId, roomApp, roomLocalizedList);
+        }
+        if (localizedRepository != null) localizedRepository.deleteAll(deleted);
     }
 
     private void copy(Localized roomDest, de.k3b.fdroid.v1domain.entity.Localized v1Src) {

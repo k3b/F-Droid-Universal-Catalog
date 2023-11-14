@@ -55,10 +55,8 @@ public abstract class V1UpdateService implements UpdateService, ProgressObservab
     RepoUpdateService repoUpdateService;
     private ProgressObserver progressObserver;
 
-    AppUpdateService appUpdateService;
+    V1AppUpdateService v1AppUpdateService;
     VersionUpdateService versionUpdateService;
-
-    FixLocaleService fixLocaleService = new FixLocaleService();
 
     private de.k3b.fdroid.domain.entity.Repo roomRepo;
     private int currentRepoId = 0;
@@ -75,9 +73,13 @@ public abstract class V1UpdateService implements UpdateService, ProgressObservab
 
         AppCategoryUpdateService appCategoryUpdateService = new AppCategoryUpdateService(
                 categoryService, appCategoryRepository);
-        LocalizedUpdateService localizedUpdateService = new LocalizedUpdateService(
+        V1LocalizedUpdateService v1LocalizedUpdateService = new V1LocalizedUpdateService(
                 localizedRepository, languageService);
-        appUpdateService = new AppUpdateService(appRepository, localizedUpdateService, appCategoryUpdateService);
+        v1AppUpdateService = new V1AppUpdateService(
+                appRepository,
+                v1LocalizedUpdateService,
+                appCategoryUpdateService,
+                new FixLocaleService());
 
         hardwareProfileService = new HardwareProfileService(appRepository, hardwareProfileRepository, appHardwareRepository);
         versionUpdateService = new VersionUpdateService(appRepository, versionRepository, hardwareProfileService);
@@ -96,7 +98,7 @@ public abstract class V1UpdateService implements UpdateService, ProgressObservab
     }
 
     public JsonStreamParser init() {
-        appUpdateService.init();
+        v1AppUpdateService.init();
         versionUpdateService.init();
         jsonStreamParser = new JsonStreamParser();
         return jsonStreamParser;
@@ -114,7 +116,7 @@ public abstract class V1UpdateService implements UpdateService, ProgressObservab
 
     public void setProgressObserver(@Nullable ProgressObserver progressObserver) {
         this.progressObserver = progressObserver;
-        this.appUpdateService.setProgressObserver(progressObserver);
+        this.v1AppUpdateService.setProgressObserver(progressObserver);
         this.versionUpdateService.setProgressObserver(progressObserver);
         this.hardwareProfileService.setProgressObserver(progressObserver);
     }
@@ -154,8 +156,7 @@ public abstract class V1UpdateService implements UpdateService, ProgressObservab
 
                 lastAppCount++;
 
-                fixLocaleService.fix(v1App);
-                appUpdateService.update(currentRepoId, v1App);
+                v1AppUpdateService.update(currentRepoId, v1App);
             }
         }
 
