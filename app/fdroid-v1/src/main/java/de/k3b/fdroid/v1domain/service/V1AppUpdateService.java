@@ -35,12 +35,12 @@ import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.service.AppCategoryUpdateService;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.StringUtil;
-import de.k3b.fdroid.v1domain.entity.App;
 import de.k3b.fdroid.v1domain.entity.UpdateService;
+import de.k3b.fdroid.v1domain.entity.V1App;
 
 /**
  * {@link UpdateService} that updates {@link de.k3b.fdroid.domain.entity.App}
- * from {@link App} using a {@link AppRepository}
+ * from {@link V1App} using a {@link AppRepository}
  */
 public class V1AppUpdateService implements UpdateService, ProgressObservable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
@@ -54,7 +54,7 @@ public class V1AppUpdateService implements UpdateService, ProgressObservable {
     @Nullable
     private final V1LocalizedUpdateService v1LocalizedUpdateService;
     @Nullable
-    private final FixLocaleService fixLocaleService;
+    private final V1FixLocaleService v1FixLocaleService;
 
     private ProgressObserver progressObserver = null;
     private int progressCounter = 0;
@@ -64,11 +64,11 @@ public class V1AppUpdateService implements UpdateService, ProgressObservable {
             @Nullable AppRepository appRepository,
             @Nullable V1LocalizedUpdateService v1LocalizedUpdateService,
             @Nullable AppCategoryUpdateService appCategoryUpdateService,
-            @Nullable FixLocaleService fixLocaleService) {
+            @Nullable V1FixLocaleService v1FixLocaleService) {
         this.appRepository = appRepository;
         this.appCategoryUpdateService = appCategoryUpdateService;
         this.v1LocalizedUpdateService = v1LocalizedUpdateService;
-        this.fixLocaleService = fixLocaleService;
+        this.v1FixLocaleService = v1FixLocaleService;
     }
 
     public V1AppUpdateService init() {
@@ -79,7 +79,7 @@ public class V1AppUpdateService implements UpdateService, ProgressObservable {
         return this;
     }
 
-    public de.k3b.fdroid.domain.entity.App update(int repoId, App v1App)
+    public de.k3b.fdroid.domain.entity.App update(int repoId, V1App v1App)
             throws PersistenceException {
         Objects.requireNonNull(appRepository, "appRepository is not initialized");
         String packageName = v1App.getPackageName();
@@ -91,8 +91,8 @@ public class V1AppUpdateService implements UpdateService, ProgressObservable {
                 progressChar = "+";
                 roomApp = new de.k3b.fdroid.domain.entity.App();
             }
-            if (fixLocaleService != null) {
-                v1App = fixLocaleService.fix(v1App);
+            if (v1FixLocaleService != null) {
+                v1App = v1FixLocaleService.fix(v1App);
             }
             update(roomApp, v1App);
             appRepository.save(roomApp);
@@ -115,7 +115,7 @@ public class V1AppUpdateService implements UpdateService, ProgressObservable {
     }
 
     // Entrypoint for unittest
-    protected void update(de.k3b.fdroid.domain.entity.App roomApp, App v1App) {
+    protected void update(de.k3b.fdroid.domain.entity.App roomApp, V1App v1App) {
         AppCommon.copyCommon(roomApp, v1App, v1App);
         String searchCategory = StringUtil.toCsvStringOrNull(v1App.getCategories());
         if (searchCategory != null) {
@@ -123,7 +123,7 @@ public class V1AppUpdateService implements UpdateService, ProgressObservable {
         }
     }
 
-    protected void updateDetails(int repoId, de.k3b.fdroid.domain.entity.App roomApp, App v1App, String progressChar) {
+    protected void updateDetails(int repoId, de.k3b.fdroid.domain.entity.App roomApp, V1App v1App, String progressChar) {
         progressCounter++;
         if (progressObserver != null && (--progressCountdown) <= 0) {
             progressObserver.onProgress(progressCounter, progressChar, roomApp.getPackageName());

@@ -38,6 +38,7 @@ import de.k3b.fdroid.domain.service.AppCategoryUpdateService;
 import de.k3b.fdroid.domain.service.CategoryService;
 import de.k3b.fdroid.domain.service.LanguageService;
 import de.k3b.fdroid.domain.util.Java8Util;
+import de.k3b.fdroid.v1domain.entity.V1App;
 
 /**
  * This test uses json data form
@@ -70,7 +71,7 @@ public class V1UpdateServiceTest {
                 new AppCategoryUpdateService(
                         new CategoryService(null),
                         null),
-                new FixLocaleService()
+                new V1FixLocaleService()
         ).init();
 
         // act
@@ -121,7 +122,7 @@ public class V1UpdateServiceTest {
         List<Localized> roomLocalizedList = Arrays.asList(lde, len);
 
         // convert en-US -> en
-        de.k3b.fdroid.v1domain.entity.App v1App = new FixLocaleService().fix(v1TestData.app);
+        V1App v1App = new V1FixLocaleService().fix(v1TestData.app);
 
         Map<String, de.k3b.fdroid.v1domain.entity.Localized> localizedMap = v1App.getLocalized();
         V1LocalizedUpdateService sut = new V1LocalizedUpdateService(

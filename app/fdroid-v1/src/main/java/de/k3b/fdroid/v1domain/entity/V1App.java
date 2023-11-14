@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -31,11 +31,11 @@ import de.k3b.fdroid.domain.entity.common.AppCommon;
 /**
  * Data for an android app (read from FDroid-Catalog-v1-Json format).
  * <p>
- * The {@link V1JsonEntity} {@link App} correspond to the
+ * The {@link V1JsonEntity} {@link V1App} correspond to the
  * {@link de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId} {@link de.k3b.fdroid.domain.App}.
  */
 @Generated("jsonschema2pojo")
-public class App extends AppCommon implements V1JsonEntity {
+public class V1App extends AppCommon implements V1JsonEntity {
 
     // redundant fallback if there is no localized (converted to locale)
     private String summary;

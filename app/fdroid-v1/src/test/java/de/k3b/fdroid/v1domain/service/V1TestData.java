@@ -26,7 +26,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
-import de.k3b.fdroid.v1domain.entity.App;
+import de.k3b.fdroid.v1domain.entity.V1App;
 import de.k3b.fdroid.v1domain.entity.V1AppCatalog;
 import de.k3b.fdroid.v1domain.entity.Version;
 
@@ -34,7 +34,7 @@ public class V1TestData {
     public static final String UNITTEST_TEST_DATA = "exampledata/V1TestData-index-v1.json";
 
     public final V1AppCatalog v1AppCatalog;
-    public final App app;
+    public final V1App app;
     public final Version version;
 
     public V1TestData() {

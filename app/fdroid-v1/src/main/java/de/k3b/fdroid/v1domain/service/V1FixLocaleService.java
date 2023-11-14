@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -21,21 +21,21 @@ package de.k3b.fdroid.v1domain.service;
 
 import java.util.Map;
 
-import de.k3b.fdroid.v1domain.entity.App;
 import de.k3b.fdroid.v1domain.entity.Localized;
+import de.k3b.fdroid.v1domain.entity.V1App;
 
-public class FixLocaleService extends de.k3b.fdroid.domain.service.FixLocaleService {
-    public App fix(App app) {
-        Map<String, Localized> localesOld = (app == null) ? null : app.getLocalized();
+public class V1FixLocaleService extends de.k3b.fdroid.domain.service.FixLocaleService {
+    public V1App fix(V1App v1App) {
+        Map<String, Localized> localesOld = (v1App == null) ? null : v1App.getLocalized();
         if (localesOld != null) {
-            convertIcons(app.getPackageName(), localesOld);
+            convertIcons(v1App.getPackageName(), localesOld);
             Map<String, Localized> localesNew = fix(localesOld);
 
-            addEnLocaleIfneccessary(localesNew, app.getSummary(), app.getDescription(), Localized.class);
-            app.setLocalized(localesNew);
+            addEnLocaleIfneccessary(localesNew, v1App.getSummary(), v1App.getDescription(), Localized.class);
+            v1App.setLocalized(localesNew);
         }
 
-        return app;
+        return v1App;
     }
 
     private void convertIcons(String packageName, Map<String, Localized> localesOld) {

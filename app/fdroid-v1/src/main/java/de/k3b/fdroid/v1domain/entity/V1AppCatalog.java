@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class V1AppCatalog implements V1JsonEntity {
     private V1Repo repo;
-    private List<App> apps;
+    private List<V1App> apps;
 
     private Map<String, List<Version>> packages;
 
@@ -37,11 +37,11 @@ public class V1AppCatalog implements V1JsonEntity {
     }
 
 
-    public List<App> getApps() {
+    public List<V1App> getApps() {
         return apps;
     }
 
-    public void setApps(List<App> apps) {
+    public void setApps(List<V1App> apps) {
         this.apps = apps;
     }
 

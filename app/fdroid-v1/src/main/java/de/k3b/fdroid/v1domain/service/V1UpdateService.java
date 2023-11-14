@@ -39,8 +39,8 @@ import de.k3b.fdroid.domain.service.AppCategoryUpdateService;
 import de.k3b.fdroid.domain.service.CategoryService;
 import de.k3b.fdroid.domain.service.HardwareProfileService;
 import de.k3b.fdroid.domain.service.LanguageService;
-import de.k3b.fdroid.v1domain.entity.App;
 import de.k3b.fdroid.v1domain.entity.UpdateService;
+import de.k3b.fdroid.v1domain.entity.V1App;
 import de.k3b.fdroid.v1domain.entity.V1Repo;
 import de.k3b.fdroid.v1domain.entity.Version;
 import de.k3b.fdroid.v1domain.util.JarUtilities;
@@ -79,7 +79,7 @@ public abstract class V1UpdateService implements UpdateService, ProgressObservab
                 appRepository,
                 v1LocalizedUpdateService,
                 appCategoryUpdateService,
-                new FixLocaleService());
+                new V1FixLocaleService());
 
         hardwareProfileService = new HardwareProfileService(appRepository, hardwareProfileRepository, appHardwareRepository);
         versionUpdateService = new VersionUpdateService(appRepository, versionRepository, hardwareProfileService);
@@ -145,10 +145,10 @@ public abstract class V1UpdateService implements UpdateService, ProgressObservab
         }
 
         /**
-         * Stream event, when a {@link App} was read
+         * Stream event, when a {@link V1App} was read
          */
         @Override
-        protected void onApp(App v1App) {
+        protected void onApp(V1App v1App) {
             if (v1App != null) {
                 if (lastAppCount == 0 && progressObserver != null) {
                     progressObserver.setProgressContext("🗃 " + roomRepo.getName() + " : ", " / " + roomRepo.getLastAppCount());

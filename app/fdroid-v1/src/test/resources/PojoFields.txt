@@ -1,5 +1,5 @@
 toString() - Properties of Entities
-de.k3b.fdroid.v1domain.entity.App
+de.k3b.fdroid.v1domain.entity.V1App
 	added
 	changelog(4)
 	description(2)

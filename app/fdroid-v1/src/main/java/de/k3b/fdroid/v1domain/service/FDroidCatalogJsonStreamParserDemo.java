@@ -29,8 +29,8 @@ import java.util.Set;
 
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
-import de.k3b.fdroid.v1domain.entity.App;
 import de.k3b.fdroid.v1domain.entity.Localized;
+import de.k3b.fdroid.v1domain.entity.V1App;
 import de.k3b.fdroid.v1domain.entity.V1Repo;
 import de.k3b.fdroid.v1domain.entity.Version;
 import de.k3b.fdroid.v1domain.util.LocalizedStatistics;
@@ -41,7 +41,7 @@ import de.k3b.fdroid.v1domain.util.LocalizedStatistics;
 public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamParserBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
 
-    FixLocaleService fixLocaleService = new FixLocaleService();
+    V1FixLocaleService v1FixLocaleService = new V1FixLocaleService();
 
     private final StringBuilder appWithNoLocale = new StringBuilder();
     private final StringBuilder appWithNoEnLocale = new StringBuilder();
@@ -62,20 +62,20 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
     }
 
     @Override
-    protected void onApp(App app) {
-        if (app != null) {
+    protected void onApp(V1App v1App) {
+        if (v1App != null) {
             numberOfApps++;
-            // Map<String, Localized> oldLocales = app.getLocalized();
-            fixLocaleService.fix(app);
+            // Map<String, Localized> oldLocales = v1App.getLocalized();
+            v1FixLocaleService.fix(v1App);
             StringBuilder nameWithLocales = new StringBuilder();
-            String lastUpdated = EntityCommon.asDateString(app.getLastUpdated());
+            String lastUpdated = EntityCommon.asDateString(v1App.getLastUpdated());
             if (lastUpdated != null) {
                 nameWithLocales.append(lastUpdated).append(" ");
             }
 
-            nameWithLocales.append(app.getPackageName());
+            nameWithLocales.append(v1App.getPackageName());
 
-            Map<String, Localized> locales = app.getLocalized();
+            Map<String, Localized> locales = v1App.getLocalized();
             if (locales != null && !locales.isEmpty()) {
                 Set<String> localeNames = locales.keySet();
                 for (String locale : localeNames) {
@@ -83,10 +83,10 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
                     statistics.addStatistics(locale, locales.get(locale));
                 }
                 if (!locales.containsKey("en")) {
-                    appWithNoEnLocale.append(app.getPackageName()).append("\n\t").append(app).append("\n");
+                    appWithNoEnLocale.append(v1App.getPackageName()).append("\n\t").append(v1App).append("\n");
                 }
             } else {
-                appWithNoLocale.append(app.getPackageName()).append("\n\t").append(app).append("\n");
+                appWithNoLocale.append(v1App.getPackageName()).append("\n\t").append(v1App).append("\n");
             }
             log("onApp(" + nameWithLocales + ")");
         }

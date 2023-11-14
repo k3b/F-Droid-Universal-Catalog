@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -24,24 +24,24 @@ import org.junit.Test;
 
 import java.util.Map;
 
-import de.k3b.fdroid.v1domain.entity.App;
 import de.k3b.fdroid.v1domain.entity.Localized;
+import de.k3b.fdroid.v1domain.entity.V1App;
 
-public class FixLocaleServiceTest {
+public class V1FixLocaleServiceTest {
 
     @Test
     public void fix() {
-        App app = new App();
-        addLocalized(app.getLocalized(),
+        V1App v1App = new V1App();
+        addLocalized(v1App.getLocalized(),
                 "ar-SA", "zh-TW",
                 "de", "en-us", "de-DE", "de-rDE");
 
-        new FixLocaleService().fix(app);
+        new V1FixLocaleService().fix(v1App);
 
         String expected = "App[localized={ar:Localized[name=ar-SA]" +
                 ",de:Localized[name=de-rDE],en:Localized[name=en-us]" +
                 ",zh-TW:Localized[name=zh-TW]}]";
-        Assert.assertEquals(expected, app.toString());
+        Assert.assertEquals(expected, v1App.toString());
     }
 
     private void addLocalized(Map<String, Localized> localized, String... locales) {
