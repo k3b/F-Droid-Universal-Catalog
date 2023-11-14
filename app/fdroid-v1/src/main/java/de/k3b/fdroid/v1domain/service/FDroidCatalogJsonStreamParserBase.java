@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -38,7 +38,7 @@ import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
 import de.k3b.fdroid.domain.util.NoCloseInputStream;
 import de.k3b.fdroid.v1domain.entity.App;
-import de.k3b.fdroid.v1domain.entity.Repo;
+import de.k3b.fdroid.v1domain.entity.V1Repo;
 import de.k3b.fdroid.v1domain.entity.Version;
 
 /**
@@ -47,7 +47,7 @@ import de.k3b.fdroid.v1domain.entity.Version;
  * * Only the data of one app is kept in memory at a time.
  * <p>
  * To implement overwrite the abstract methods
- * {@link #onRepo(Repo)}, {@link #onApp(App)}, {@link #onVersion(String, Version)}
+ * {@link #onRepo(V1Repo)}, {@link #onApp(App)}, {@link #onVersion(String, Version)}
  */
 public abstract class FDroidCatalogJsonStreamParserBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
@@ -55,7 +55,7 @@ public abstract class FDroidCatalogJsonStreamParserBase {
 
     /**
      * parse the FDroid-Catalog-v1-Json into a stream of calls to consuming
-     * {@link #onRepo(Repo)}, {@link #onApp(App)}, {@link #onVersion(String, Version)}
+     * {@link #onRepo(V1Repo)}, {@link #onApp(App)}, {@link #onVersion(String, Version)}
      *
      * @param jsonInputStream uncompressed Json inputstream
      * @throws IOException if there are errors in the InputStream or the JSON v1 format.
@@ -81,7 +81,7 @@ public abstract class FDroidCatalogJsonStreamParserBase {
 
     /**
      * parse the compressed/signed jar file into a stream of calls to consuming
-     * {@link #onRepo(Repo)}, {@link #onApp(App)}, {@link #onVersion(String, Version)}
+     * {@link #onRepo(V1Repo)}, {@link #onApp(App)}, {@link #onVersion(String, Version)}
      *
      * @param jarInputStream jar-/zip-compressed inputstream containing json data
      * @throws IOException if there are errors in the InputStream, the jar-compression or the JSON v1 format.
@@ -131,8 +131,8 @@ public abstract class FDroidCatalogJsonStreamParserBase {
         reader.skipValue();
     }
 
-    protected Repo repoFromJson(Gson gson, JsonReader reader) throws IOException {
-        return gson.fromJson(reader, Repo.class);
+    protected V1Repo repoFromJson(Gson gson, JsonReader reader) throws IOException {
+        return gson.fromJson(reader, V1Repo.class);
     }
 
     protected App appFromJson(Gson gson, JsonReader reader) throws IOException {
@@ -233,9 +233,9 @@ public abstract class FDroidCatalogJsonStreamParserBase {
     protected abstract String log(String s);
 
     /**
-     * Stream event, when a {@link Repo} was read
+     * Stream event, when a {@link V1Repo} was read
      */
-    protected abstract void onRepo(Repo repo);
+    protected abstract void onRepo(V1Repo v1Repo);
 
     /**
      * Stream event, when a {@link App} was read

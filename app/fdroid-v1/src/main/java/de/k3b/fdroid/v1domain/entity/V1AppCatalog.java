@@ -22,18 +22,18 @@ package de.k3b.fdroid.v1domain.entity;
 import java.util.List;
 import java.util.Map;
 
-public class IndexV1 implements V1JsonEntity {
-    private Repo repo;
+public class V1AppCatalog implements V1JsonEntity {
+    private V1Repo repo;
     private List<App> apps;
 
     private Map<String, List<Version>> packages;
 
-    public Repo getRepo() {
+    public V1Repo getRepo() {
         return repo;
     }
 
-    public void setRepo(Repo repo) {
-        this.repo = repo;
+    public void setRepo(V1Repo v1Repo) {
+        this.repo = v1Repo;
     }
 
 

@@ -27,13 +27,13 @@ import java.io.InputStreamReader;
 import java.util.Objects;
 
 import de.k3b.fdroid.v1domain.entity.App;
-import de.k3b.fdroid.v1domain.entity.IndexV1;
+import de.k3b.fdroid.v1domain.entity.V1AppCatalog;
 import de.k3b.fdroid.v1domain.entity.Version;
 
 public class V1TestData {
     public static final String UNITTEST_TEST_DATA = "exampledata/V1TestData-index-v1.json";
 
-    public final IndexV1 indexV1;
+    public final V1AppCatalog v1AppCatalog;
     public final App app;
     public final Version version;
 
@@ -41,9 +41,9 @@ public class V1TestData {
         try (InputStream resourceAsStream = V1TestData.class.getClassLoader().getResourceAsStream(UNITTEST_TEST_DATA);
              InputStreamReader is = new InputStreamReader(Objects.requireNonNull(resourceAsStream, "Cannot read json from " + UNITTEST_TEST_DATA))) {
             Gson gson = new Gson();
-            indexV1 = gson.fromJson(is, IndexV1.class);
-            app = indexV1.getApps().get(0);
-            version = indexV1.getPackages().get(app.getPackageName()).get(0);
+            v1AppCatalog = gson.fromJson(is, V1AppCatalog.class);
+            app = v1AppCatalog.getApps().get(0);
+            version = v1AppCatalog.getPackages().get(app.getPackageName()).get(0);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

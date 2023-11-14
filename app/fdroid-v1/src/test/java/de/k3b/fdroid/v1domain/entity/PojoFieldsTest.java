@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -31,7 +31,7 @@ import de.k3b.fdroid.domain.entity.common.ProfileCommon;
 public class PojoFieldsTest {
     @Test
     public void entityReport() throws Exception {
-        Class<?>[] classes = new Class<?>[]{App.class, Localized.class, ProfileCommon.class, Repo.class,
+        Class<?>[] classes = new Class<?>[]{App.class, Localized.class, ProfileCommon.class, V1Repo.class,
                 Version.class};
         EntityCommon.createPojoFieldsFile(classes);
     }

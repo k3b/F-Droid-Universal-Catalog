@@ -44,7 +44,7 @@ public class V1ImportIntegrationTest {
         // update existing
         importer.readFromJar(getDemoInStream(), null);
 
-        List<Repo> repoList = repoRepository.findAll();
+        List<V1Repo> repoList = repoRepository.findAll();
         assertThat(repoList.size(), equalTo(1));
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -31,7 +31,7 @@ import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.v1domain.entity.App;
 import de.k3b.fdroid.v1domain.entity.Localized;
-import de.k3b.fdroid.v1domain.entity.Repo;
+import de.k3b.fdroid.v1domain.entity.V1Repo;
 import de.k3b.fdroid.v1domain.entity.Version;
 import de.k3b.fdroid.v1domain.util.LocalizedStatistics;
 
@@ -57,8 +57,8 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
     }
 
     @Override
-    protected void onRepo(Repo repo) {
-        log("onRepo(" + repo.getName() + ")");
+    protected void onRepo(V1Repo v1Repo) {
+        log("onRepo(" + v1Repo.getName() + ")");
     }
 
     @Override

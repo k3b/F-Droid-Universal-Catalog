@@ -40,8 +40,8 @@ import de.k3b.fdroid.domain.service.CategoryService;
 import de.k3b.fdroid.domain.service.HardwareProfileService;
 import de.k3b.fdroid.domain.service.LanguageService;
 import de.k3b.fdroid.v1domain.entity.App;
-import de.k3b.fdroid.v1domain.entity.Repo;
 import de.k3b.fdroid.v1domain.entity.UpdateService;
+import de.k3b.fdroid.v1domain.entity.V1Repo;
 import de.k3b.fdroid.v1domain.entity.Version;
 import de.k3b.fdroid.v1domain.util.JarUtilities;
 
@@ -134,14 +134,14 @@ public abstract class V1UpdateService implements UpdateService, ProgressObservab
         }
 
         /**
-         * Stream event, when a {@link Repo} was read
+         * Stream event, when a {@link V1Repo} was read
          */
         @Override
-        protected void onRepo(Repo v1Repo) {
+        protected void onRepo(V1Repo v1Repo) {
             roomRepo = repoUpdateService.update(v1Repo, roomRepo);
             currentRepoId = roomRepo.getId();
-            lastAppCount=0;
-            lastVersionCount=0;
+            lastAppCount = 0;
+            lastVersionCount = 0;
         }
 
         /**

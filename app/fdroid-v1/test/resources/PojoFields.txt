@@ -27,7 +27,7 @@ de.k3b.fdroid.domain.entity.common.ProfileCommon
 	size(05)
 	versionCode(02)
 	versionName(3)
-de.k3b.fdroid.v1domain.entity.Repo
+de.k3b.fdroid.v1domain.entity.V1Repo
 	address(6)
 	description(7)
 	icon(5)

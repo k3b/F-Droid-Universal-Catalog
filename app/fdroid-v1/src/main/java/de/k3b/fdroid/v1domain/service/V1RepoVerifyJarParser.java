@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -34,6 +34,7 @@ import de.k3b.fdroid.domain.entity.common.RepoCommon;
 import de.k3b.fdroid.domain.interfaces.ProgressObservable;
 import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.v1domain.entity.App;
+import de.k3b.fdroid.v1domain.entity.V1Repo;
 import de.k3b.fdroid.v1domain.entity.Version;
 import de.k3b.fdroid.v1domain.util.JarUtilities;
 
@@ -44,7 +45,7 @@ import de.k3b.fdroid.v1domain.util.JarUtilities;
 public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase implements ProgressObservable {
     @NonNull
     private final Repo repoInDatabase;
-    private de.k3b.fdroid.v1domain.entity.Repo repoInJar = null;
+    private V1Repo repoInJar = null;
     private int lastAppCount = 0;
     private int lastVersionCount = 0;
     private ProgressObserver progressObserver;
@@ -61,8 +62,8 @@ public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase imp
     }
 
     @Override
-    protected void onRepo(de.k3b.fdroid.v1domain.entity.Repo repo) {
-        this.repoInJar = repo;
+    protected void onRepo(V1Repo v1Repo) {
+        this.repoInJar = v1Repo;
         lastAppCount = 0;
         lastVersionCount = 0;
     }

@@ -31,10 +31,11 @@ import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.v1domain.entity.UpdateService;
+import de.k3b.fdroid.v1domain.entity.V1Repo;
 
 /**
  * {@link UpdateService} that updates {@link Repo}
- * from {@link de.k3b.fdroid.v1domain.entity.Repo} using a {@link RepoRepository}
+ * from {@link V1Repo} using a {@link RepoRepository}
  */
 public class RepoUpdateService implements UpdateService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
@@ -45,7 +46,7 @@ public class RepoUpdateService implements UpdateService {
         this.repoRepository = repoRepository;
     }
 
-    public Repo update(de.k3b.fdroid.v1domain.entity.Repo v1Repo, Repo roomRepoOrNull)
+    public Repo update(V1Repo v1Repo, Repo roomRepoOrNull)
             throws PersistenceException {
         Repo roomRepo = roomRepoOrNull;
         try {
@@ -72,7 +73,7 @@ public class RepoUpdateService implements UpdateService {
         }
     }
 
-    private void copy(Repo dest, de.k3b.fdroid.v1domain.entity.Repo src) {
+    private void copy(Repo dest, V1Repo src) {
         RepoCommon.copyCommon(dest, src);
 
         dest.setMirrors(StringUtil.toCsvStringOrNull(src.getMirrors()));
