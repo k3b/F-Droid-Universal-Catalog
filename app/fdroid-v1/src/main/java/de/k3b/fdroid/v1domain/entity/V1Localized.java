@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022-2023 by k3b.
  *
- * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
+ * This file is part of org.fdroid.v1domain the fdroid json catalog-format-v1 parser.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by

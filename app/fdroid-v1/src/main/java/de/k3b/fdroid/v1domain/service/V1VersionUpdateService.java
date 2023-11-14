@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022-2023 by k3b.
  *
- * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
+ * This file is part of org.fdroid.v1domain the fdroid json catalog-format-v1 parser.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -41,14 +41,14 @@ import de.k3b.fdroid.domain.service.HardwareProfileService;
 import de.k3b.fdroid.domain.service.VersionService;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.StringUtil;
-import de.k3b.fdroid.v1domain.entity.UpdateService;
+import de.k3b.fdroid.v1domain.entity.IV1UpdateService;
 import de.k3b.fdroid.v1domain.entity.V1Version;
 
 /**
- * {@link UpdateService} that updates {@link Version}
+ * {@link IV1UpdateService} that updates {@link Version}
  * from {@link V1Version} using a {@link VersionRepository}
  */
-public class VersionUpdateService implements UpdateService, ProgressObservable {
+public class V1VersionUpdateService implements IV1UpdateService, ProgressObservable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
 
     private static final int PROGRESS_INTERVALL = 100;
@@ -64,9 +64,9 @@ public class VersionUpdateService implements UpdateService, ProgressObservable {
     private int progressCounter = 0;
     private int progressCountdown = 0;
 
-    public VersionUpdateService(AppRepository appRepository,
-                                VersionRepository versionRepository,
-                                HardwareProfileService hardwareProfileService) {
+    public V1VersionUpdateService(AppRepository appRepository,
+                                  VersionRepository versionRepository,
+                                  HardwareProfileService hardwareProfileService) {
         this.appRepository = appRepository;
         this.versionRepository = versionRepository;
         this.hardwareProfileService = hardwareProfileService;
@@ -210,7 +210,7 @@ public class VersionUpdateService implements UpdateService, ProgressObservable {
         public void update(int repoId, String packageName, V1Version v1Version) {
             if (v1VersionList.size() > 0 && (packageName == null || packageName.compareTo(lastPackageName) != 0)) {
                 // packagename null or changed : Process collected versons
-                VersionUpdateService.this.updateCorrespondingApp(repoId, lastPackageName, v1VersionList);
+                V1VersionUpdateService.this.updateCorrespondingApp(repoId, lastPackageName, v1VersionList);
 
                 v1VersionList = new ArrayList<>();
             }

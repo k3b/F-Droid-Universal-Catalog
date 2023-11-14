@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022-2023 by k3b.
  *
- * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
+ * This file is part of org.fdroid.v1domain the fdroid json catalog-format-v1 parser.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ import de.k3b.fdroid.domain.service.AppCategoryUpdateService;
 import de.k3b.fdroid.domain.service.CategoryService;
 import de.k3b.fdroid.domain.service.HardwareProfileService;
 import de.k3b.fdroid.domain.service.LanguageService;
-import de.k3b.fdroid.v1domain.entity.UpdateService;
+import de.k3b.fdroid.v1domain.entity.IV1UpdateService;
 import de.k3b.fdroid.v1domain.entity.V1App;
 import de.k3b.fdroid.v1domain.entity.V1Repo;
 import de.k3b.fdroid.v1domain.entity.V1Version;
@@ -48,15 +48,15 @@ import de.k3b.fdroid.v1domain.util.JarUtilities;
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
-public abstract class V1UpdateService implements UpdateService, ProgressObservable {
+public abstract class V1UpdateService implements IV1UpdateService, ProgressObservable {
     private final RepoRepository repoRepository;
     private final HardwareProfileService hardwareProfileService;
     JsonStreamParser jsonStreamParser;
-    RepoUpdateService repoUpdateService;
+    V1RepoUpdateService repoUpdateService;
     private ProgressObserver progressObserver;
 
     V1AppUpdateService v1AppUpdateService;
-    VersionUpdateService versionUpdateService;
+    V1VersionUpdateService versionUpdateService;
 
     private de.k3b.fdroid.domain.entity.Repo roomRepo;
     private int currentRepoId = 0;
@@ -69,7 +69,7 @@ public abstract class V1UpdateService implements UpdateService, ProgressObservab
                            HardwareProfileRepository hardwareProfileRepository,
                            AppHardwareRepository appHardwareRepository,
                            LanguageService languageService) {
-        repoUpdateService = new RepoUpdateService(repoRepository);
+        repoUpdateService = new V1RepoUpdateService(repoRepository);
 
         AppCategoryUpdateService appCategoryUpdateService = new AppCategoryUpdateService(
                 categoryService, appCategoryRepository);
@@ -82,7 +82,7 @@ public abstract class V1UpdateService implements UpdateService, ProgressObservab
                 new V1FixLocaleService());
 
         hardwareProfileService = new HardwareProfileService(appRepository, hardwareProfileRepository, appHardwareRepository);
-        versionUpdateService = new VersionUpdateService(appRepository, versionRepository, hardwareProfileService);
+        versionUpdateService = new V1VersionUpdateService(appRepository, versionRepository, hardwareProfileService);
         this.repoRepository = repoRepository;
     }
 

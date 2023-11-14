@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022-2023 by k3b.
  *
- * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
+ * This file is part of org.fdroid.v1domain the fdroid json catalog-format-v1 parser.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -41,14 +41,14 @@ import de.k3b.fdroid.domain.service.LocalizedService;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.Java8Util;
 import de.k3b.fdroid.domain.util.StringUtil;
-import de.k3b.fdroid.v1domain.entity.UpdateService;
+import de.k3b.fdroid.v1domain.entity.IV1UpdateService;
 import de.k3b.fdroid.v1domain.entity.V1Localized;
 
 /**
- * {@link UpdateService} that updates {@link Localized}
+ * {@link IV1UpdateService} that updates {@link Localized}
  * from {@link V1Localized} using a {@link LocalizedRepository}
  */
-public class V1LocalizedUpdateService implements UpdateService {
+public class V1LocalizedUpdateService implements IV1UpdateService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
     @Nullable
     private final LocalizedRepository localizedRepository;

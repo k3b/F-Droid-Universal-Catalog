@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022-2023 by k3b.
  *
- * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
+ * This file is part of org.fdroid.v1domain the fdroid json catalog-format-v1 parser.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -35,14 +35,14 @@ import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.service.AppCategoryUpdateService;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.StringUtil;
-import de.k3b.fdroid.v1domain.entity.UpdateService;
+import de.k3b.fdroid.v1domain.entity.IV1UpdateService;
 import de.k3b.fdroid.v1domain.entity.V1App;
 
 /**
- * {@link UpdateService} that updates {@link de.k3b.fdroid.domain.entity.App}
+ * {@link IV1UpdateService} that updates {@link de.k3b.fdroid.domain.entity.App}
  * from {@link V1App} using a {@link AppRepository}
  */
-public class V1AppUpdateService implements UpdateService, ProgressObservable {
+public class V1AppUpdateService implements IV1UpdateService, ProgressObservable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
 
     private static final int PROGRESS_INTERVALL = 100;

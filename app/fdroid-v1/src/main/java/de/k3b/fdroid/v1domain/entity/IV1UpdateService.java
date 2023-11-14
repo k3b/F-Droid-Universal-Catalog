@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022 by k3b.
  *
- * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
+ * This file is part of org.fdroid.v1domain the fdroid json catalog-format-v1 parser.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ import de.k3b.fdroid.domain.interfaces.Enitity;
  * F-Drdoid Catalog Data in the "V1" json format.
  * <p>
  * Each Xxx{@link V1JsonEntity} has a corresponding Xxx{@link DatabaseEntityWithId}
- * and there is a Xxx{@link UpdateService} that updates Xxx{@link DatabaseEntityWithId} from {@link V1JsonEntity}
+ * and there is a Xxx{@link IV1UpdateService} that updates Xxx{@link DatabaseEntityWithId} from {@link V1JsonEntity}
  */
-public interface UpdateService {
+public interface IV1UpdateService {
 }
