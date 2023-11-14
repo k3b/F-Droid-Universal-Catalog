@@ -16,37 +16,31 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.v2domain.entity.repo;
+package de.k3b.fdroid.v2domain.entity.packagev2;
 
-import java.util.Map;
-import java.util.Objects;
+// V2UsesSdk.java
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public final class ReleaseChannelV2 {
-    @NotNull
-    private final Map<String, String> name;
-    @NotNull
-    private final Map<String, String> description;
+public final class V2UsesSdk {
+    private final int minSdkVersion;
+    private final int targetSdkVersion;
 
-    public ReleaseChannelV2(@NotNull Map<String, String> name, @NotNull Map<String, String> description) {
-        this.name = name;
-        this.description = description;
+    public V2UsesSdk(int minSdkVersion, int targetSdkVersion) {
+        this.minSdkVersion = minSdkVersion;
+        this.targetSdkVersion = targetSdkVersion;
     }
 
-    @NotNull
-    public final Map<String, String> getName() {
-        return this.name;
+    public int getMinSdkVersion() {
+        return this.minSdkVersion;
     }
 
-    @NotNull
-    public final Map<String, String> getDescription() {
-        return this.description;
+    public int getTargetSdkVersion() {
+        return this.targetSdkVersion;
     }
 
     @NotNull
     public String toString() {
-        return "ReleaseChannelV2{name=" + this.name + ", description=" + this.description + "}";
+        return "V2UsesSdk{minSdkVersion=" + this.minSdkVersion + ", targetSdkVersion=" + this.targetSdkVersion + "}";
     }
 }

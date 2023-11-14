@@ -16,32 +16,36 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.v2domain.entity.packagev2;
+package de.k3b.fdroid.v2domain.entity.repo;
 
-// UsesSdkV2.java
+// V2Mirror.java
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class UsesSdkV2 {
-    private final int minSdkVersion;
-    private final int targetSdkVersion;
+public final class V2Mirror {
+    @NotNull
+    private final String url;
+    @Nullable
+    private final String location;
 
-    public UsesSdkV2(int minSdkVersion, int targetSdkVersion) {
-        this.minSdkVersion = minSdkVersion;
-        this.targetSdkVersion = targetSdkVersion;
+    public V2Mirror(@NotNull String url, @Nullable String location) {
+        this.url = url;
+        this.location = location;
     }
 
-    public final int getMinSdkVersion() {
-        return this.minSdkVersion;
+    @NotNull
+    public String getUrl() {
+        return this.url;
     }
 
-    public final int getTargetSdkVersion() {
-        return this.targetSdkVersion;
+    @Nullable
+    public String getLocation() {
+        return this.location;
     }
 
     @NotNull
     public String toString() {
-        return "UsesSdkV2{minSdkVersion=" + this.minSdkVersion + ", targetSdkVersion=" + this.targetSdkVersion + "}";
+        return "V2Mirror{url=" + this.url + ", location=" + this.location + "}";
     }
 }

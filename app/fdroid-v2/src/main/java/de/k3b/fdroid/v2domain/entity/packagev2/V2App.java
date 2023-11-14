@@ -27,23 +27,23 @@ import java.util.Map;
 
 public final class V2App {
     @NotNull
-    private final MetadataV2 metadata;
+    private final V2Metadata metadata;
     @NotNull
-    private final Map<String, PackageVersionV2> versions;
+    private final Map<String, V2PackageVersion> versions;
 
 
-    public V2App(@NotNull MetadataV2 metadata, @NotNull Map<String, PackageVersionV2> versions) {
+    public V2App(@NotNull V2Metadata metadata, @NotNull Map<String, V2PackageVersion> versions) {
         this.metadata = metadata;
         this.versions = versions;
     }
 
     @NotNull
-    public MetadataV2 getMetadata() {
+    public V2Metadata getMetadata() {
         return this.metadata;
     }
 
     @NotNull
-    public Map<String, PackageVersionV2> getVersions() {
+    public Map<String, V2PackageVersion> getVersions() {
         return this.versions;
     }
 

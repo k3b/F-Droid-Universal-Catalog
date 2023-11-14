@@ -16,38 +16,54 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.v2domain.entity.packagev2;
+package de.k3b.fdroid.v2domain.entity.repo;
 
-// PermissionV2.java
+// V2File.java
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
+import de.k3b.fdroid.v2domain.entity.common.IV2IndexFile;
 
-public final class PermissionV2 {
+public final class V2File implements IV2IndexFile {
     @NotNull
     private final String name;
     @Nullable
-    private final Integer maxSdkVersion;
+    private final String sha256;
+    @Nullable
+    private final Long size;
+    @Nullable
+    private final String ipfsCIDv1;
 
-    public PermissionV2(@NotNull String name, @Nullable Integer maxSdkVersion) {
+    public V2File(@NotNull String name, @Nullable String sha256, @Nullable Long size, @Nullable String ipfsCIDv1) {
         this.name = name;
-        this.maxSdkVersion = maxSdkVersion;
+        this.sha256 = sha256;
+        this.size = size;
+        this.ipfsCIDv1 = ipfsCIDv1;
     }
 
     @NotNull
-    public final String getName() {
+    public String getName() {
         return this.name;
     }
 
     @Nullable
-    public final Integer getMaxSdkVersion() {
-        return this.maxSdkVersion;
+    public String getSha256() {
+        return this.sha256;
+    }
+
+    @Nullable
+    public Long getSize() {
+        return this.size;
+    }
+
+    @Nullable
+    public String getIpfsCidV1() {
+        return this.ipfsCIDv1;
     }
 
     @NotNull
     public String toString() {
-        return "PermissionV2{name=" + this.name + ", maxSdkVersion=" + this.maxSdkVersion + "}";
+        return "V2File{name=" + this.getName() + ", sha256=" + this.getSha256() + ", size=" + this.getSize() + ", ipfsCIDv1=" + this.getIpfsCidV1() + "}";
     }
 }

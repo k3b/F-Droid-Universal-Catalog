@@ -1,14 +1,14 @@
 package de.k3b.fdroid.v2domain.entity.packagev2;
 
-// ManifestV2.java
-
-import java.util.List;
-import java.util.stream.Collectors;
+// V2Manifest.java
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class ManifestV2 implements PackageManifest {
+import java.util.List;
+import java.util.stream.Collectors;
+
+public final class V2Manifest implements IV2PackageManifest {
     @Nullable
     private final Integer minSdkVersion;
     @NotNull
@@ -17,24 +17,24 @@ public final class ManifestV2 implements PackageManifest {
     private final String versionName;
     private final long versionCode;
     @Nullable
-    private final UsesSdkV2 usesSdk;
+    private final V2UsesSdk usesSdk;
     @Nullable
     private final Integer maxSdkVersion;
     @Nullable
-    private final SignerV2 signer;
+    private final V2Signer signer;
     @NotNull
-    private final List<PermissionV2> usesPermission;
+    private final List<V2Permission> usesPermission;
     @NotNull
-    private final List<PermissionV2> usesPermissionSdk23;
+    private final List<V2Permission> usesPermissionSdk23;
     @NotNull
     private final List<String> nativecode;
     @NotNull
-    private final List<FeatureV2> features;
+    private final List<V2Feature> features;
 
-    public ManifestV2(@NotNull String versionName, long versionCode, @Nullable UsesSdkV2 usesSdk, @Nullable Integer maxSdkVersion,
-                      @Nullable SignerV2 signer, @NotNull List<PermissionV2> usesPermission, @NotNull List<PermissionV2> usesPermissionSdk23,
+    public V2Manifest(@NotNull String versionName, long versionCode, @Nullable V2UsesSdk usesSdk, @Nullable Integer maxSdkVersion,
+                      @Nullable V2Signer signer, @NotNull List<V2Permission> usesPermission, @NotNull List<V2Permission> usesPermissionSdk23,
                       @NotNull List<String> nativecode,
-                      @NotNull List<FeatureV2> features) {
+                      @NotNull List<V2Feature> features) {
         this.versionName = versionName;
         this.versionCode = versionCode;
         this.usesSdk = usesSdk;
@@ -61,16 +61,16 @@ public final class ManifestV2 implements PackageManifest {
     }
 
     @NotNull
-    public final String getVersionName() {
+    public String getVersionName() {
         return this.versionName;
     }
 
-    public final long getVersionCode() {
+    public long getVersionCode() {
         return this.versionCode;
     }
 
     @Nullable
-    public final UsesSdkV2 getUsesSdk() {
+    public V2UsesSdk getUsesSdk() {
         return this.usesSdk;
     }
 
@@ -80,17 +80,17 @@ public final class ManifestV2 implements PackageManifest {
     }
 
     @Nullable
-    public final SignerV2 getSigner() {
+    public V2Signer getSigner() {
         return this.signer;
     }
 
     @NotNull
-    public final List<PermissionV2> getUsesPermission() {
+    public List<V2Permission> getUsesPermission() {
         return this.usesPermission;
     }
 
     @NotNull
-    public final List<PermissionV2> getUsesPermissionSdk23() {
+    public List<V2Permission> getUsesPermissionSdk23() {
         return this.usesPermissionSdk23;
     }
 
@@ -100,12 +100,12 @@ public final class ManifestV2 implements PackageManifest {
     }
 
     @NotNull
-    public final List<FeatureV2> getFeatures() {
+    public List<V2Feature> getFeatures() {
         return this.features;
     }
 
     @NotNull
     public String toString() {
-        return "ManifestV2{versionName=" + this.versionName + ", versionCode=" + this.versionCode + ", usesSdk=" + this.usesSdk + ", maxSdkVersion=" + this.getMaxSdkVersion() + ", signer=" + this.signer + ", usesPermission=" + this.usesPermission + ", usesPermissionSdk23=" + this.usesPermissionSdk23 + ", nativecode=" + this.getNativecode() + ", features=" + this.features + "}";
+        return "V2Manifest{versionName=" + this.versionName + ", versionCode=" + this.versionCode + ", usesSdk=" + this.usesSdk + ", maxSdkVersion=" + this.getMaxSdkVersion() + ", signer=" + this.signer + ", usesPermission=" + this.usesPermission + ", usesPermissionSdk23=" + this.usesPermissionSdk23 + ", nativecode=" + this.getNativecode() + ", features=" + this.features + "}";
     }
 }

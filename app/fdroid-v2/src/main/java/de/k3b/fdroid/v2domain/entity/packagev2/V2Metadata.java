@@ -19,7 +19,7 @@
 
 package de.k3b.fdroid.v2domain.entity.packagev2;
 
-// MetadataV2.java
+// V2Metadata.java
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -28,9 +28,9 @@ import java.util.List;
 import java.util.Map;
 
 import de.k3b.fdroid.domain.entity.common.IAppCommon;
-import de.k3b.fdroid.v2domain.entity.repo.FileV2;
+import de.k3b.fdroid.v2domain.entity.repo.V2File;
 
-public final class MetadataV2 implements IAppCommon {
+public final class V2Metadata implements IAppCommon {
     @Nullable
     private final Map<String, String> name;
     @Nullable
@@ -78,28 +78,28 @@ public final class MetadataV2 implements IAppCommon {
     @Nullable
     private final String flattrID;
     @Nullable
-    private final Map<String, FileV2> icon;
+    private final Map<String, V2File> icon;
     @Nullable
-    private final Map<String, FileV2> featureGraphic;
+    private final Map<String, V2File> featureGraphic;
     @Nullable
-    private final Map<String, FileV2> promoGraphic;
+    private final Map<String, V2File> promoGraphic;
     @Nullable
-    private final Map<String, FileV2> tvBanner;
+    private final Map<String, V2File> tvBanner;
     @Nullable
     private final Map<String, String> video;
     @Nullable
-    private final Screenshots screenshots;
+    private final V2Screenshots screenshots;
 
-    public MetadataV2(@Nullable Map<String, String> name, @Nullable Map<String, String> summary, @Nullable Map<String, String> description,
+    public V2Metadata(@Nullable Map<String, String> name, @Nullable Map<String, String> summary, @Nullable Map<String, String> description,
                       long added, long lastUpdated, @Nullable String webSite, @Nullable String changelog, @Nullable String license,
                       @Nullable String sourceCode, @Nullable String issueTracker, @Nullable String translation,
                       @Nullable String preferredSigner, @NotNull List<String> categories, @Nullable String authorName,
                       @Nullable String authorEmail, @Nullable String authorWebSite, @Nullable String authorPhone,
                       @NotNull List<String> donate, @Nullable String liberapayID, @Nullable String liberapay,
                       @Nullable String openCollective, @Nullable String bitcoin, @Nullable String litecoin,
-                      @Nullable String flattrID, @Nullable Map<String, FileV2> icon, @Nullable
-                      Map<String, FileV2> featureGraphic, @Nullable Map<String, FileV2> promoGraphic, @Nullable Map<String, FileV2> tvBanner,
-                      @Nullable Map<String, String> video, @Nullable Screenshots screenshots) {
+                      @Nullable String flattrID, @Nullable Map<String, V2File> icon, @Nullable
+                      Map<String, V2File> featureGraphic, @Nullable Map<String, V2File> promoGraphic, @Nullable Map<String, V2File> tvBanner,
+                      @Nullable Map<String, String> video, @Nullable V2Screenshots screenshots) {
         this.name = name;
         this.summary = summary;
         this.description = description;
@@ -132,7 +132,7 @@ public final class MetadataV2 implements IAppCommon {
         this.screenshots = screenshots;
     }
 
-    public static String getIconName(FileV2 icon) {
+    public static String getIconName(V2File icon) {
         String iconName = (icon == null) ? null : icon.getName();
         if (iconName != null) {
             //  && iconName.startsWith("/"))
@@ -261,22 +261,22 @@ public final class MetadataV2 implements IAppCommon {
     }
 
     @Nullable
-    public Map<String, FileV2> getIcon() {
+    public Map<String, V2File> getIcon() {
         return this.icon;
     }
 
     @Nullable
-    public Map<String, FileV2> getFeatureGraphic() {
+    public Map<String, V2File> getFeatureGraphic() {
         return this.featureGraphic;
     }
 
     @Nullable
-    public Map<String, FileV2> getPromoGraphic() {
+    public Map<String, V2File> getPromoGraphic() {
         return this.promoGraphic;
     }
 
     @Nullable
-    public Map<String, FileV2> getTvBanner() {
+    public Map<String, V2File> getTvBanner() {
         return this.tvBanner;
     }
 
@@ -286,12 +286,12 @@ public final class MetadataV2 implements IAppCommon {
     }
 
     @Nullable
-    public Screenshots getScreenshots() {
+    public V2Screenshots getScreenshots() {
         return this.screenshots;
     }
 
     @NotNull
     public String toString() {
-        return "MetadataV2{name=" + this.name + ", summary=" + this.summary + ", description=" + this.description + ", added=" + this.added + ", lastUpdated=" + this.lastUpdated + ", webSite=" + this.webSite + ", changelog=" + this.changelog + ", license=" + this.license + ", sourceCode=" + this.sourceCode + ", issueTracker=" + this.issueTracker + ", translation=" + this.translation + ", preferredSigner=" + this.preferredSigner + ", categories=" + this.categories + ", authorName=" + this.authorName + ", authorEmail=" + this.authorEmail + ", authorWebSite=" + this.authorWebSite + ", authorPhone=" + this.authorPhone + ", donate=" + this.donate + ", liberapayID=" + this.liberapayID + ", liberapay=" + this.liberapay + ", openCollective=" + this.openCollective + ", bitcoin=" + this.bitcoin + ", litecoin=" + this.litecoin + ", flattrID=" + this.flattrID + ", icon=" + this.icon + ", featureGraphic=" + this.featureGraphic + ", promoGraphic=" + this.promoGraphic + ", tvBanner=" + this.tvBanner + ", video=" + this.video + ", screenshots=" + this.screenshots + "}";
+        return "V2Metadata{name=" + this.name + ", summary=" + this.summary + ", description=" + this.description + ", added=" + this.added + ", lastUpdated=" + this.lastUpdated + ", webSite=" + this.webSite + ", changelog=" + this.changelog + ", license=" + this.license + ", sourceCode=" + this.sourceCode + ", issueTracker=" + this.issueTracker + ", translation=" + this.translation + ", preferredSigner=" + this.preferredSigner + ", categories=" + this.categories + ", authorName=" + this.authorName + ", authorEmail=" + this.authorEmail + ", authorWebSite=" + this.authorWebSite + ", authorPhone=" + this.authorPhone + ", donate=" + this.donate + ", liberapayID=" + this.liberapayID + ", liberapay=" + this.liberapay + ", openCollective=" + this.openCollective + ", bitcoin=" + this.bitcoin + ", litecoin=" + this.litecoin + ", flattrID=" + this.flattrID + ", icon=" + this.icon + ", featureGraphic=" + this.featureGraphic + ", promoGraphic=" + this.promoGraphic + ", tvBanner=" + this.tvBanner + ", video=" + this.video + ", screenshots=" + this.screenshots + "}";
     }
 }

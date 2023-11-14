@@ -1,11 +1,11 @@
 package de.k3b.fdroid.v2domain.entity.packagev2;
-// PackageManifest.java
-
-import java.util.List;
+// IV2PackageManifest.java
 
 import org.jetbrains.annotations.Nullable;
 
-public interface PackageManifest {
+import java.util.List;
+
+public interface IV2PackageManifest {
     @Nullable
     Integer getMinSdkVersion();
 

@@ -17,45 +17,43 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 package de.k3b.fdroid.v2domain.entity.repo;
-// CategoryV2.java
-
-import java.util.Map;
-import java.util.Objects;
+// V2Category.java
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public final class CategoryV2 {
+import java.util.Map;
+
+public final class V2Category {
     @NotNull
-    private final Map<String, FileV2> icon;
+    private final Map<String, V2File> icon;
     @NotNull
     private final Map<String, String> name;
     @NotNull
     private final Map<String, String> description;
 
-    public CategoryV2(@NotNull Map<String, FileV2> icon, @NotNull Map<String, String> name, @NotNull Map<String, String> description) {
+    public V2Category(@NotNull Map<String, V2File> icon, @NotNull Map<String, String> name, @NotNull Map<String, String> description) {
         this.icon = icon;
         this.name = name;
         this.description = description;
     }
 
     @NotNull
-    public final Map<String, FileV2> getIcon() {
+    public Map<String, V2File> getIcon() {
         return this.icon;
     }
 
     @NotNull
-    public final Map<String, String> getName() {
+    public Map<String, String> getName() {
         return this.name;
     }
 
     @NotNull
-    public final Map<String, String> getDescription() {
+    public Map<String, String> getDescription() {
         return this.description;
     }
 
     @NotNull
     public String toString() {
-        return "CategoryV2{icon=" + this.icon + ", name=" + this.name + ", description=" + this.description + "}";
+        return "V2Category{icon=" + this.icon + ", name=" + this.name + ", description=" + this.description + "}";
     }
 }

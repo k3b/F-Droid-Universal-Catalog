@@ -30,7 +30,7 @@ public final class V2Repo {
     @NotNull
     private final Map<String, String> name;
     @NotNull
-    private final Map<String, FileV2> icon;
+    private final Map<String, V2File> icon;
     @NotNull
     private final String address;
     @Nullable
@@ -38,18 +38,18 @@ public final class V2Repo {
     @NotNull
     private final Map<String, String> description;
     @NotNull
-    private final List<MirrorV2> mirrors;
+    private final List<V2Mirror> mirrors;
     private final long timestamp;
     @NotNull
-    private final Map<String, AntiFeatureV2> antiFeatures;
+    private final Map<String, V2AntiFeature> antiFeatures;
     @NotNull
-    private final Map<String, CategoryV2> categories;
+    private final Map<String, V2Category> categories;
     @NotNull
-    private final Map<String, ReleaseChannelV2> releaseChannels;
+    private final Map<String, V2ReleaseChannel> releaseChannels;
 
-    public V2Repo(@NotNull Map<String, String> name, @NotNull Map<String, FileV2> icon, @NotNull String address, @Nullable String webBaseUrl,
-                  @NotNull Map<String, String> description, @NotNull List<MirrorV2> mirrors, long timestamp,
-                  @NotNull Map<String, AntiFeatureV2> antiFeatures, @NotNull Map<String, CategoryV2> categories, @NotNull Map<String, ReleaseChannelV2> releaseChannels) {
+    public V2Repo(@NotNull Map<String, String> name, @NotNull Map<String, V2File> icon, @NotNull String address, @Nullable String webBaseUrl,
+                  @NotNull Map<String, String> description, @NotNull List<V2Mirror> mirrors, long timestamp,
+                  @NotNull Map<String, V2AntiFeature> antiFeatures, @NotNull Map<String, V2Category> categories, @NotNull Map<String, V2ReleaseChannel> releaseChannels) {
         this.name = name;
         this.icon = icon;
         this.address = address;
@@ -68,7 +68,7 @@ public final class V2Repo {
     }
 
     @NotNull
-    public Map<String, FileV2> getIcon() {
+    public Map<String, V2File> getIcon() {
         return this.icon;
     }
 
@@ -88,7 +88,7 @@ public final class V2Repo {
     }
 
     @NotNull
-    public List<MirrorV2> getMirrors() {
+    public List<V2Mirror> getMirrors() {
         return this.mirrors;
     }
 
@@ -97,17 +97,17 @@ public final class V2Repo {
     }
 
     @NotNull
-    public Map<String, AntiFeatureV2> getAntiFeatures() {
+    public Map<String, V2AntiFeature> getAntiFeatures() {
         return this.antiFeatures;
     }
 
     @NotNull
-    public Map<String, CategoryV2> getCategories() {
+    public Map<String, V2Category> getCategories() {
         return this.categories;
     }
 
     @NotNull
-    public Map<String, ReleaseChannelV2> getReleaseChannels() {
+    public Map<String, V2ReleaseChannel> getReleaseChannels() {
         return this.releaseChannels;
     }
 

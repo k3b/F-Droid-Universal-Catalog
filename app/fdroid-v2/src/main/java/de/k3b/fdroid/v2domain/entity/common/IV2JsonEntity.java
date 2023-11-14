@@ -22,13 +22,13 @@ import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 import de.k3b.fdroid.domain.interfaces.Enitity;
 
 /**
- * A FDroid-Catalog-v2-Json format {@link Enitity} used to read
+ * A FDroid-Catalog-v2-Json format {@link Enitity} used to import
  * F-Drdoid Catalog Data in the "V2" json format.
  * <p>
- * Each Xxx{@link V2JsonEntity} has a corresponding
+ * Each Xxx{@link IV2JsonEntity} has a corresponding
  * Xxx{@link DatabaseEntityWithId}
- * and there is a Xxx{@link UpdateService} that updates
- * Xxx{@link DatabaseEntityWithId} from {@link V2JsonEntity}
+ * and there is a Xxx{@link IV2UpdateService} that transfers
+ * Xxx{@link IV2JsonEntity} to Xxx{@link DatabaseEntityWithId}
  */
-public interface UpdateService {
+public interface IV2JsonEntity extends Enitity {
 }

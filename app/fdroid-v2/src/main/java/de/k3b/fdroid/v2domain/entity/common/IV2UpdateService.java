@@ -16,38 +16,19 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.v2domain.entity.repo;
+package de.k3b.fdroid.v2domain.entity.common;
 
-// MirrorV2.java
+import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
+import de.k3b.fdroid.domain.interfaces.Enitity;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
-
-public final class MirrorV2 {
-    @NotNull
-    private final String url;
-    @Nullable
-    private final String location;
-
-    public MirrorV2(@NotNull String url, @Nullable String location) {
-        this.url = url;
-        this.location = location;
-    }
-
-    @NotNull
-    public final String getUrl() {
-        return this.url;
-    }
-
-    @Nullable
-    public final String getLocation() {
-        return this.location;
-    }
-
-    @NotNull
-    public String toString() {
-        return "MirrorV2{url=" + this.url + ", location=" + this.location + "}";
-    }
+/**
+ * A FDroid-Catalog-v2-Json format {@link Enitity} used to read
+ * F-Drdoid Catalog Data in the "V2" json format.
+ * <p>
+ * Each Xxx{@link IV2JsonEntity} has a corresponding
+ * Xxx{@link DatabaseEntityWithId}
+ * and there is a Xxx{@link IV2UpdateService} that updates
+ * Xxx{@link DatabaseEntityWithId} from {@link IV2JsonEntity}
+ */
+public interface IV2UpdateService {
 }

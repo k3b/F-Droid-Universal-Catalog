@@ -16,36 +16,35 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.v2domain.entity.packagev2;
-
-// SignerV2.java
-
-import java.util.List;
+package de.k3b.fdroid.v2domain.entity.repo;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public final class SignerV2 {
+import java.util.Map;
+
+public final class V2ReleaseChannel {
     @NotNull
-    private final List<String> sha256;
-    private final boolean hasMultipleSigners;
+    private final Map<String, String> name;
+    @NotNull
+    private final Map<String, String> description;
 
-    public SignerV2(@NotNull List<String> sha256, boolean hasMultipleSigners) {
-        this.sha256 = sha256;
-        this.hasMultipleSigners = hasMultipleSigners;
+    public V2ReleaseChannel(@NotNull Map<String, String> name, @NotNull Map<String, String> description) {
+        this.name = name;
+        this.description = description;
     }
 
     @NotNull
-    public final List<String> getSha256() {
-        return this.sha256;
+    public Map<String, String> getName() {
+        return this.name;
     }
 
-    public final boolean getHasMultipleSigners() {
-        return this.hasMultipleSigners;
+    @NotNull
+    public Map<String, String> getDescription() {
+        return this.description;
     }
 
     @NotNull
     public String toString() {
-        return "SignerV2{sha256=" + this.sha256 + ", hasMultipleSigners=" + this.hasMultipleSigners + "}";
+        return "V2ReleaseChannel{name=" + this.name + ", description=" + this.description + "}";
     }
 }

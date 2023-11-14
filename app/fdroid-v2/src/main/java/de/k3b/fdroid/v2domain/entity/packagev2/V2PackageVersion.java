@@ -1,29 +1,28 @@
 package de.k3b.fdroid.v2domain.entity.packagev2;
 
-// PackageVersionV2.java
-
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+// V2PackageVersion.java
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import de.k3b.fdroid.v2domain.entity.repo.FileV2;
+import java.util.List;
+import java.util.Map;
 
-public final class PackageVersionV2 implements PackageVersion {
+import de.k3b.fdroid.v2domain.entity.repo.V2File;
+
+public final class V2PackageVersion implements IV2PackageVersion {
     private final long versionCode;
     @Nullable
-    private final SignerV2 signer;
+    private final V2Signer signer;
     @NotNull
-    private final PackageManifest packageManifest;
+    private final IV2PackageManifest packageManifest;
     private final long added;
     @NotNull
-    private final FileV1 file;
+    private final V1File file;
     @Nullable
-    private final FileV2 src;
+    private final V2File src;
     @NotNull
-    private final ManifestV2 manifest;
+    private final V2Manifest manifest;
     @NotNull
     private final List<String> releaseChannels;
     @NotNull
@@ -31,7 +30,7 @@ public final class PackageVersionV2 implements PackageVersion {
     @NotNull
     private final Map<String, String> whatsNew;
 
-    public PackageVersionV2(long added, @NotNull FileV1 file, @Nullable FileV2 src, @NotNull ManifestV2 manifest, @NotNull List<String> releaseChannels, @NotNull Map<String, Map<String, String>> antiFeatures, @NotNull Map<String, String> whatsNew) {
+    public V2PackageVersion(long added, @NotNull V1File file, @Nullable V2File src, @NotNull V2Manifest manifest, @NotNull List<String> releaseChannels, @NotNull Map<String, Map<String, String>> antiFeatures, @NotNull Map<String, String> whatsNew) {
         this.added = added;
         this.file = file;
         this.src = src;
@@ -41,7 +40,7 @@ public final class PackageVersionV2 implements PackageVersion {
         this.whatsNew = whatsNew;
         this.versionCode = this.manifest.getVersionCode();
         this.signer = this.manifest.getSigner();
-        this.packageManifest = (PackageManifest) this.manifest;
+        this.packageManifest = this.manifest;
     }
 
     public long getVersionCode() {
@@ -49,12 +48,12 @@ public final class PackageVersionV2 implements PackageVersion {
     }
 
     @Nullable
-    public SignerV2 getSigner() {
+    public V2Signer getSigner() {
         return this.signer;
     }
 
     @NotNull
-    public PackageManifest getPackageManifest() {
+    public IV2PackageManifest getPackageManifest() {
         return this.packageManifest;
     }
 
@@ -62,22 +61,22 @@ public final class PackageVersionV2 implements PackageVersion {
         return this.antiFeatures.containsKey("KnownVuln");
     }
 
-    public final long getAdded() {
+    public long getAdded() {
         return this.added;
     }
 
     @NotNull
-    public final FileV1 getFile() {
+    public V1File getFile() {
         return this.file;
     }
 
     @Nullable
-    public final FileV2 getSrc() {
+    public V2File getSrc() {
         return this.src;
     }
 
     @NotNull
-    public final ManifestV2 getManifest() {
+    public V2Manifest getManifest() {
         return this.manifest;
     }
 
@@ -87,17 +86,17 @@ public final class PackageVersionV2 implements PackageVersion {
     }
 
     @NotNull
-    public final Map<String, Map<String, String>> getAntiFeatures() {
+    public Map<String, Map<String, String>> getAntiFeatures() {
         return this.antiFeatures;
     }
 
     @NotNull
-    public final Map<String, String> getWhatsNew() {
+    public Map<String, String> getWhatsNew() {
         return this.whatsNew;
     }
 
     @NotNull
     public String toString() {
-        return "PackageVersionV2{added=" + this.added + ", file=" + this.file + ", src=" + this.src + ", manifest=" + this.manifest + ", releaseChannels=" + this.getReleaseChannels() + ", antiFeatures=" + this.antiFeatures + ", whatsNew=" + this.whatsNew + "}";
+        return "V2PackageVersion{added=" + this.added + ", file=" + this.file + ", src=" + this.src + ", manifest=" + this.manifest + ", releaseChannels=" + this.getReleaseChannels() + ", antiFeatures=" + this.antiFeatures + ", whatsNew=" + this.whatsNew + "}";
     }
 }

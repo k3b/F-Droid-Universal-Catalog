@@ -17,31 +17,31 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 package de.k3b.fdroid.v2domain.entity.packagev2;
-// Screenshots.java
-
-import java.util.List;
-import java.util.Map;
+// V2Screenshots.java
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import de.k3b.fdroid.v2domain.entity.repo.FileV2;
+import java.util.List;
+import java.util.Map;
 
-public final class Screenshots {
-    @Nullable
-    private final Map<String, List<FileV2>> phone;
-    @Nullable
-    private final Map<String, List<FileV2>> sevenInch;
-    @Nullable
-    private final Map<String, List<FileV2>> tenInch;
-    @Nullable
-    private final Map<String, List<FileV2>> wear;
-    @Nullable
-    private final Map<String, List<FileV2>> tv;
+import de.k3b.fdroid.v2domain.entity.repo.V2File;
 
-    public Screenshots(@Nullable Map<String, List<FileV2>> phone, @Nullable Map<String, List<FileV2>> sevenInch,
-                       @Nullable Map<String, List<FileV2>> tenInch, @Nullable Map<String, List<FileV2>> wear,
-                       @Nullable Map<String, List<FileV2>> tv) {
+public final class V2Screenshots {
+    @Nullable
+    private final Map<String, List<V2File>> phone;
+    @Nullable
+    private final Map<String, List<V2File>> sevenInch;
+    @Nullable
+    private final Map<String, List<V2File>> tenInch;
+    @Nullable
+    private final Map<String, List<V2File>> wear;
+    @Nullable
+    private final Map<String, List<V2File>> tv;
+
+    public V2Screenshots(@Nullable Map<String, List<V2File>> phone, @Nullable Map<String, List<V2File>> sevenInch,
+                         @Nullable Map<String, List<V2File>> tenInch, @Nullable Map<String, List<V2File>> wear,
+                         @Nullable Map<String, List<V2File>> tv) {
         this.phone = phone;
         this.sevenInch = sevenInch;
         this.tenInch = tenInch;
@@ -49,37 +49,37 @@ public final class Screenshots {
         this.tv = tv;
     }
 
-    public final boolean isNull() {
+    public boolean isNull() {
         return this.phone == null && this.sevenInch == null && this.tenInch == null && this.wear == null && this.tv == null;
     }
 
     @Nullable
-    public final Map<String, List<FileV2>> getPhone() {
+    public Map<String, List<V2File>> getPhone() {
         return this.phone;
     }
 
     @Nullable
-    public final Map<String, List<FileV2>> getSevenInch() {
+    public Map<String, List<V2File>> getSevenInch() {
         return this.sevenInch;
     }
 
     @Nullable
-    public final Map<String, List<FileV2>> getTenInch() {
+    public Map<String, List<V2File>> getTenInch() {
         return this.tenInch;
     }
 
     @Nullable
-    public final Map<String, List<FileV2>> getWear() {
+    public Map<String, List<V2File>> getWear() {
         return this.wear;
     }
 
     @Nullable
-    public final Map<String, List<FileV2>> getTv() {
+    public Map<String, List<V2File>> getTv() {
         return this.tv;
     }
 
     @NotNull
     public String toString() {
-        return "Screenshots{phone=" + this.phone + ", sevenInch=" + this.sevenInch + ", tenInch=" + this.tenInch + ", wear=" + this.wear + ", tv=" + this.tv + "}";
+        return "V2Screenshots{phone=" + this.phone + ", sevenInch=" + this.sevenInch + ", tenInch=" + this.tenInch + ", wear=" + this.wear + ", tv=" + this.tv + "}";
     }
 }

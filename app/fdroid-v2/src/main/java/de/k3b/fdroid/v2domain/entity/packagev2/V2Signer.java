@@ -16,19 +16,35 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.v2domain.entity.common;
+package de.k3b.fdroid.v2domain.entity.packagev2;
 
-import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
-import de.k3b.fdroid.domain.interfaces.Enitity;
+// V2Signer.java
 
-/**
- * A FDroid-Catalog-v2-Json format {@link Enitity} used to import
- * F-Drdoid Catalog Data in the "V2" json format.
- * <p>
- * Each Xxx{@link V2JsonEntity} has a corresponding
- * Xxx{@link DatabaseEntityWithId}
- * and there is a Xxx{@link UpdateService} that transfers
- * Xxx{@link V2JsonEntity} to Xxx{@link DatabaseEntityWithId}
- */
-public interface V2JsonEntity extends Enitity {
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+
+public final class V2Signer {
+    @NotNull
+    private final List<String> sha256;
+    private final boolean hasMultipleSigners;
+
+    public V2Signer(@NotNull List<String> sha256, boolean hasMultipleSigners) {
+        this.sha256 = sha256;
+        this.hasMultipleSigners = hasMultipleSigners;
+    }
+
+    @NotNull
+    public List<String> getSha256() {
+        return this.sha256;
+    }
+
+    public boolean getHasMultipleSigners() {
+        return this.hasMultipleSigners;
+    }
+
+    @NotNull
+    public String toString() {
+        return "V2Signer{sha256=" + this.sha256 + ", hasMultipleSigners=" + this.hasMultipleSigners + "}";
+    }
 }

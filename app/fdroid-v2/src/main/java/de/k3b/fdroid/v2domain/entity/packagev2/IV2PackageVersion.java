@@ -1,23 +1,23 @@
 package de.k3b.fdroid.v2domain.entity.packagev2;
 
-// PackageVersion.java
-
-import java.util.List;
+// IV2PackageVersion.java
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public interface PackageVersion {
+import java.util.List;
+
+public interface IV2PackageVersion {
     long getVersionCode();
 
     @Nullable
-    SignerV2 getSigner();
+    V2Signer getSigner();
 
     @Nullable
     List<String> getReleaseChannels();
 
     @NotNull
-    PackageManifest getPackageManifest();
+    IV2PackageManifest getPackageManifest();
 
     boolean getHasKnownVulnerability();
 }

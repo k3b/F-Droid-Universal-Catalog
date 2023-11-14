@@ -1,29 +1,28 @@
-package de.k3b.fdroid.v2domain.entity.packagev2;
+package de.k3b.fdroid.v2domain.entity.entry;
 
-// FileV1.java
+// V2EntryFile.java
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
+import de.k3b.fdroid.v2domain.entity.common.IV2IndexFile;
 
-import de.k3b.fdroid.v2domain.entity.common.IndexFile;
-
-public final class FileV1 implements IndexFile {
+public final class V2EntryFile implements IV2IndexFile {
     @NotNull
     private final String name;
     @NotNull
     private final String sha256;
-    @Nullable
-    private final Long size;
+    private final long size;
     @Nullable
     private final String ipfsCIDv1;
+    private final int numPackages;
 
-    public FileV1(@NotNull String name, @NotNull String sha256, @Nullable Long size, @Nullable String ipfsCIDv1) {
+    public V2EntryFile(@NotNull String name, @NotNull String sha256, long size, @Nullable String ipfsCIDv1, int numPackages) {
         this.name = name;
         this.sha256 = sha256;
         this.size = size;
         this.ipfsCIDv1 = ipfsCIDv1;
+        this.numPackages = numPackages;
     }
 
     @NotNull
@@ -36,7 +35,7 @@ public final class FileV1 implements IndexFile {
         return this.sha256;
     }
 
-    @Nullable
+    @NotNull
     public Long getSize() {
         return this.size;
     }
@@ -46,8 +45,12 @@ public final class FileV1 implements IndexFile {
         return this.ipfsCIDv1;
     }
 
+    public int getNumPackages() {
+        return this.numPackages;
+    }
+
     @NotNull
     public String toString() {
-        return "FileV1{name=" + this.getName() + ", sha256=" + this.getSha256() + ", size=" + this.getSize() + ", ipfsCIDv1=" + this.getIpfsCidV1() + "}";
+        return "V2EntryFile(name=" + this.getName() + ", sha256=" + this.getSha256() + ", size=" + this.getSize() + ", ipfsCIDv1=" + this.getIpfsCidV1() + ", numPackages=" + this.numPackages + ")";
     }
 }

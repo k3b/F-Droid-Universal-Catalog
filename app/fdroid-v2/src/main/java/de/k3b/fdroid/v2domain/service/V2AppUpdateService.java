@@ -41,11 +41,11 @@ import de.k3b.fdroid.domain.service.AppCategoryUpdateService;
 import de.k3b.fdroid.domain.service.LanguageService;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.StringUtil;
-import de.k3b.fdroid.v2domain.entity.packagev2.ManifestV2;
-import de.k3b.fdroid.v2domain.entity.packagev2.MetadataV2;
-import de.k3b.fdroid.v2domain.entity.packagev2.PackageVersionV2;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2App;
-import de.k3b.fdroid.v2domain.entity.repo.FileV2;
+import de.k3b.fdroid.v2domain.entity.packagev2.V2Manifest;
+import de.k3b.fdroid.v2domain.entity.packagev2.V2Metadata;
+import de.k3b.fdroid.v2domain.entity.packagev2.V2PackageVersion;
+import de.k3b.fdroid.v2domain.entity.repo.V2File;
 
 public class V2AppUpdateService implements ProgressObservable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
@@ -73,10 +73,10 @@ public class V2AppUpdateService implements ProgressObservable {
 
     }
 
-    private static String getIconName(MetadataV2 metadata, String locale) {
-        Map<String, FileV2> iconMap = LanguageService.getCanonicalLocale(metadata.getIcon());
-        FileV2 icon = (iconMap == null) ? null : iconMap.get(locale);
-        return MetadataV2.getIconName(icon);
+    private static String getIconName(V2Metadata metadata, String locale) {
+        Map<String, V2File> iconMap = LanguageService.getCanonicalLocale(metadata.getIcon());
+        V2File icon = (iconMap == null) ? null : iconMap.get(locale);
+        return V2Metadata.getIconName(icon);
     }
 
     public V2AppUpdateService init() {
@@ -122,14 +122,14 @@ public class V2AppUpdateService implements ProgressObservable {
     }
 
     protected App update(App roomApp, V2App v2App) {
-        Map<String, PackageVersionV2> versions = v2App.getVersions();
-        PackageVersionV2 version = (versions == null || versions.isEmpty()) ? null : versions.entrySet().iterator().next().getValue();
+        Map<String, V2PackageVersion> versions = v2App.getVersions();
+        V2PackageVersion version = (versions == null || versions.isEmpty()) ? null : versions.entrySet().iterator().next().getValue();
         update(roomApp, v2App.getMetadata(), version);
         return roomApp;
     }
 
     // Entrypoint for unittest
-    protected App update(App roomApp, MetadataV2 metadata, PackageVersionV2 version) {
+    protected App update(App roomApp, V2Metadata metadata, V2PackageVersion version) {
         if (metadata != null) {
             AppCommon.copyCommon(roomApp, metadata, null);
 
@@ -140,7 +140,7 @@ public class V2AppUpdateService implements ProgressObservable {
             roomApp.setSearchCategory(StringUtil.toCsvStringOrNull(metadata.getCategories()));
         }
 
-        ManifestV2 versionManifest = (version == null) ? null : version.getManifest();
+        V2Manifest versionManifest = (version == null) ? null : version.getManifest();
         if (versionManifest != null) {
             roomApp.setSuggestedVersionName(ifNotNull(versionManifest.getVersionName(), roomApp.getSuggestedVersionName()));
 

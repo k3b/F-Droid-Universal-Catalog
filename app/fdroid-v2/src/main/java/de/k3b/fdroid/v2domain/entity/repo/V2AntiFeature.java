@@ -18,44 +18,43 @@
  */
 package de.k3b.fdroid.v2domain.entity.repo;
 
-// AntiFeatureV2.java
+// V2AntiFeature.java
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-public final class AntiFeatureV2 {
+public final class V2AntiFeature {
     @NotNull
-    private final Map<String, FileV2> icon;
+    private final Map<String, V2File> icon;
     @NotNull
     private final Map<String, String> name;
     @NotNull
     private final Map<String, String> description;
 
-    public AntiFeatureV2(@NotNull Map<String, FileV2> icon, @NotNull Map<String, String> name, @NotNull Map<String, String> description) {
+    public V2AntiFeature(@NotNull Map<String, V2File> icon, @NotNull Map<String, String> name, @NotNull Map<String, String> description) {
         this.icon = icon;
         this.name = name;
         this.description = description;
     }
 
     @NotNull
-    public final Map<String, FileV2> getIcon() {
+    public Map<String, V2File> getIcon() {
         return this.icon;
     }
 
     @NotNull
-    public final Map<String, String> getName() {
+    public Map<String, String> getName() {
         return this.name;
     }
 
     @NotNull
-    public final Map<String, String> getDescription() {
+    public Map<String, String> getDescription() {
         return this.description;
     }
 
     @NotNull
     public String toString() {
-        return "AntiFeatureV2{icon=" + this.icon + ", name=" + this.name + ", description=" + this.description + "}";
+        return "V2AntiFeature{icon=" + this.icon + ", name=" + this.name + ", description=" + this.description + "}";
     }
 }

@@ -40,11 +40,11 @@ import de.k3b.fdroid.domain.service.LocalizedService;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.Java8Util;
 import de.k3b.fdroid.domain.util.StringUtil;
-import de.k3b.fdroid.v2domain.entity.packagev2.MetadataV2;
-import de.k3b.fdroid.v2domain.entity.packagev2.PackageVersionV2;
-import de.k3b.fdroid.v2domain.entity.packagev2.Screenshots;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2App;
-import de.k3b.fdroid.v2domain.entity.repo.FileV2;
+import de.k3b.fdroid.v2domain.entity.packagev2.V2Metadata;
+import de.k3b.fdroid.v2domain.entity.packagev2.V2PackageVersion;
+import de.k3b.fdroid.v2domain.entity.packagev2.V2Screenshots;
+import de.k3b.fdroid.v2domain.entity.repo.V2File;
 
 public class V2LocalizedUpdateService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
@@ -63,13 +63,13 @@ public class V2LocalizedUpdateService {
         this.localizedService = new LocalizedService(languageService);
     }
 
-    // List<FileV2>, List<String>
-    private static Map<String, String> getFileNameListMap(Map<String, List<FileV2>> map) {
+    // List<V2File>, List<String>
+    private static Map<String, String> getFileNameListMap(Map<String, List<V2File>> map) {
         if (map == null) return null;
         Map<String, String> result = new TreeMap<>();
-        for (Map.Entry<String, List<FileV2>> entry : map.entrySet()) {
+        for (Map.Entry<String, List<V2File>> entry : map.entrySet()) {
             result.put(entry.getKey(), StringUtil.toCsvStringOrNull(Java8Util.reduce(entry.getValue(),
-                    FileV2::getName)));
+                    V2File::getName)));
         }
         return result;
     }
@@ -94,15 +94,15 @@ public class V2LocalizedUpdateService {
         return update(repoId, roomApp, v2App.getMetadata(), getLastVersion(v2App.getVersions()));
     }
 
-    private PackageVersionV2 getLastVersion(Map<String, PackageVersionV2> versions) {
+    private V2PackageVersion getLastVersion(Map<String, V2PackageVersion> versions) {
         if (versions == null || versions.isEmpty()) return null;
         return versions.entrySet().iterator().next().getValue();
     }
 
     private List<Localized> update(
             int repoId,
-            @NotNull App roomApp, @NotNull MetadataV2 metadata,
-            @Nullable PackageVersionV2 lastVersion) {
+            @NotNull App roomApp, @NotNull V2Metadata metadata,
+            @Nullable V2PackageVersion lastVersion) {
         Java8Util.OutParam<Localized> exceptionContext = new Java8Util.OutParam<>(null);
 
         String packageName = null;
@@ -145,15 +145,15 @@ public class V2LocalizedUpdateService {
             }
             message.append(") ").append(ExceptionUtils.getParentCauseMessage(ex, PersistenceException.class));
 
-            LOGGER.error(message + "\n\tMetadataV2=" + metadata
-                    + ",\n\tPackageVersionV2=" + lastVersion, ex);
+            LOGGER.error(message + "\n\tV2Metadata=" + metadata
+                    + ",\n\tV2PackageVersion=" + lastVersion, ex);
             throw new PersistenceException(message.toString(), ex);
         }
     }
 
     // Entrypoint for unittest
     protected List<Localized> update(App roomApp, Map<String, Localized> localizedMap,
-                                     MetadataV2 metadata, PackageVersionV2 lastVersion,
+                                     V2Metadata metadata, V2PackageVersion lastVersion,
                                      Java8Util.OutParam<Localized> exceptionContext) {
         Converter converter = new Converter(localizedMap, roomApp, exceptionContext);
         converter.convert(metadata.getName(), Localized::getName, Localized::setName);
@@ -162,12 +162,12 @@ public class V2LocalizedUpdateService {
 
         converter.convert(metadata.getVideo(), Localized::getVideo, Localized::setVideo);
 
-        converter.convert(Java8Util.getKeyValueMap(metadata.getIcon(), f -> MetadataV2.getIconName(f)),
+        converter.convert(Java8Util.getKeyValueMap(metadata.getIcon(), f -> V2Metadata.getIconName(f)),
                 Localized::getIcon, Localized::setIcon);
 
-        Screenshots screenshots = metadata.getScreenshots();
+        V2Screenshots screenshots = metadata.getScreenshots();
         if (screenshots != null) {
-            Map<String, List<FileV2>> phoneScreenshots = screenshots.getPhone();
+            Map<String, List<V2File>> phoneScreenshots = screenshots.getPhone();
             if (phoneScreenshots != null) {
                 converter.convert(getFileNameListMap(phoneScreenshots)
                         , Localized::getPhoneScreenshots, Localized::setPhoneScreenshots);
