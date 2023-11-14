@@ -46,11 +46,12 @@
           "description": "my-en-description-app",
           "name": "my-en-name-app",
           "phoneScreenshots": [
-            "1-game.jpg",
-            "2-pause.jpg",
-            "3-themes.jpg"
+            "my-en-phone1-name",
+            "my-en-phone2-name"
           ],
           "summary": "my-en-summary-app",
+          "featureGraphic": "my-en-featureGraphic.png",
+          "icon": "my-en-icon-name.png",
           "video": "my-en-video",
           "whatsNew": "my-en-whatsNew"
         },

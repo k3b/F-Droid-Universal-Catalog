@@ -22,7 +22,6 @@ package de.k3b.fdroid.v1domain.service;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -115,7 +114,6 @@ public class V1UpdateServiceTest {
     }
 
     @Test
-    @Ignore("WIP different results between v1 and v2")
     public void updateLocalized() {
         // arrange
         Localized lde = new Localized(app.getAppId(), "de");
@@ -139,11 +137,12 @@ public class V1UpdateServiceTest {
         assertEquals(expectedDe, lde.toString());
 
         String expectedEn = "Localized[appId=4711,localeId=en,name=my-en-name-app,summary=my-en-summary-app,description=my-en-description-app" +
-                ",icon=my-en-icon-name.png,whatsNew=my-en-whatsNew,phoneScreenshots=my-en-phon...e2-name]";
-        String s = "Localized[appId=4711,localeId=en,name=my-en-name-app,summary=my-en-summary-app,description=my-en-description-app" +
+                ",icon=my-en-icon-name.png" +
                 ",video=my-en-video" +
                 ",whatsNew=my-en-whatsNew" +
-                ",phoneScreenshotDir=my.test.app/en-US/phoneScreenshots/,phoneScreenshots=1-game.jpg...mes.jpg]";
+                ",phoneScreenshotDir=my.test.app/en-US/phoneScreenshots/" +
+                ",phoneScreenshots=my-en-phon...e2-name" +
+                "]";
         assertEquals(expectedEn, len.toString());
     }
 }
