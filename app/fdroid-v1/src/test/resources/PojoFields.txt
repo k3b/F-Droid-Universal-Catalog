@@ -13,7 +13,7 @@ de.k3b.fdroid.v1domain.entity.V1App
 	suggestedVersionName(5)
 	summary(1)
 	webSite(10)
-de.k3b.fdroid.v1domain.entity.Localized
+de.k3b.fdroid.v1domain.entity.V1Localized
 	description(3)
 	icon(4)
 	name(1)

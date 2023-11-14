@@ -24,8 +24,8 @@ import org.junit.Test;
 
 import java.util.Map;
 
-import de.k3b.fdroid.v1domain.entity.Localized;
 import de.k3b.fdroid.v1domain.entity.V1App;
+import de.k3b.fdroid.v1domain.entity.V1Localized;
 
 public class V1FixLocaleServiceTest {
 
@@ -38,15 +38,15 @@ public class V1FixLocaleServiceTest {
 
         new V1FixLocaleService().fix(v1App);
 
-        String expected = "App[localized={ar:Localized[name=ar-SA]" +
+        String expected = "V1App[localized={ar:Localized[name=ar-SA]" +
                 ",de:Localized[name=de-rDE],en:Localized[name=en-us]" +
                 ",zh-TW:Localized[name=zh-TW]}]";
         Assert.assertEquals(expected, v1App.toString());
     }
 
-    private void addLocalized(Map<String, Localized> localized, String... locales) {
-        for(String locale : locales) {
-            Localized l = new Localized();
+    private void addLocalized(Map<String, V1Localized> localized, String... locales) {
+        for (String locale : locales) {
+            V1Localized l = new V1Localized();
             l.setName(locale);
             localized.put(locale, l);
         }

@@ -42,10 +42,11 @@ import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.Java8Util;
 import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.v1domain.entity.UpdateService;
+import de.k3b.fdroid.v1domain.entity.V1Localized;
 
 /**
  * {@link UpdateService} that updates {@link Localized}
- * from {@link de.k3b.fdroid.v1domain.entity.Localized} using a {@link LocalizedRepository}
+ * from {@link V1Localized} using a {@link LocalizedRepository}
  */
 public class V1LocalizedUpdateService implements UpdateService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
@@ -70,7 +71,7 @@ public class V1LocalizedUpdateService implements UpdateService {
 
     public List<Localized> update(
             int repoId, int appId, App roomApp,
-            Map<String, de.k3b.fdroid.v1domain.entity.Localized> v1LocalizedMap)
+            Map<String, V1Localized> v1LocalizedMap)
             throws PersistenceException {
         String packageName = null;
         if (roomApp != null) packageName = roomApp.getPackageName();
@@ -110,16 +111,16 @@ public class V1LocalizedUpdateService implements UpdateService {
     // Persistence free entrypoint for unittest
     protected int update(int appId,
                          List<Localized> roomLocalizedList,
-                         Map<String, de.k3b.fdroid.v1domain.entity.Localized> v1LocalizedMap,
+                         Map<String, V1Localized> v1LocalizedMap,
                          Java8Util.OutParam<Localized> exceptionContext) {
         Localized currentRoomLocalized = null;
         int phoneScreenshotCount = 0;
-        for (Map.Entry<String, de.k3b.fdroid.v1domain.entity.Localized> v1Entry : v1LocalizedMap.entrySet()) {
+        for (Map.Entry<String, V1Localized> v1Entry : v1LocalizedMap.entrySet()) {
             String localeId = v1Entry.getKey();
             languageService.getOrCreateLocaleByCode(localeId);
 
             if (!languageService.isHidden(localeId)) {
-                de.k3b.fdroid.v1domain.entity.Localized v1Localized = v1Entry.getValue();
+                V1Localized v1Localized = v1Entry.getValue();
                 currentRoomLocalized = LanguageService.findByLocaleId(roomLocalizedList, localeId);
                 if (currentRoomLocalized == null) {
                     currentRoomLocalized = new Localized(appId, localeId);
@@ -148,7 +149,7 @@ public class V1LocalizedUpdateService implements UpdateService {
         if (localizedRepository != null) localizedRepository.deleteAll(deleted);
     }
 
-    private void copy(Localized roomDest, de.k3b.fdroid.v1domain.entity.Localized v1Src) {
+    private void copy(Localized roomDest, V1Localized v1Src) {
         LocalizedCommon.copyCommon(roomDest, v1Src);
         String phoneScreenshots = StringUtil.toCsvStringOrNull(v1Src.getPhoneScreenshots());
         if (!StringUtil.isEmpty(phoneScreenshots)) {

@@ -43,7 +43,7 @@ public class V1App extends AppCommon implements V1JsonEntity {
 
     private List<String> categories = new ArrayList<>();
     // preserve insertion order
-    private Map<String, Localized> localized = new TreeMap<>();
+    private Map<String, V1Localized> localized = new TreeMap<>();
 
     public String getSummary() {
         return summary;
@@ -69,10 +69,11 @@ public class V1App extends AppCommon implements V1JsonEntity {
         this.categories = categories;
     }
 
-    public Map<String, Localized> getLocalized() {
+    public Map<String, V1Localized> getLocalized() {
         return localized;
     }
-    public void setLocalized(Map<String, Localized> localized) {
+
+    public void setLocalized(Map<String, V1Localized> localized) {
         this.localized = localized;
     }
 
@@ -87,7 +88,7 @@ public class V1App extends AppCommon implements V1JsonEntity {
         if (localized != null && !localized.isEmpty()) {
             sb.append("localized");
             sb.append("={");
-            for (Map.Entry<String, Localized> l : localized.entrySet()) {
+            for (Map.Entry<String, V1Localized> l : localized.entrySet()) {
                 sb.append(l.getKey()).append(":").append(l.getValue()).append(",");
             }
             if (sb.charAt((sb.length() - 1)) == ',') {

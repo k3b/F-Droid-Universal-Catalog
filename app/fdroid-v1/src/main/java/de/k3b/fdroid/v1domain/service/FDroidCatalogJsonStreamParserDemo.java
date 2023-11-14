@@ -29,11 +29,11 @@ import java.util.Set;
 
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
-import de.k3b.fdroid.v1domain.entity.Localized;
 import de.k3b.fdroid.v1domain.entity.V1App;
+import de.k3b.fdroid.v1domain.entity.V1Localized;
 import de.k3b.fdroid.v1domain.entity.V1Repo;
 import de.k3b.fdroid.v1domain.entity.V1Version;
-import de.k3b.fdroid.v1domain.util.LocalizedStatistics;
+import de.k3b.fdroid.v1domain.util.V1LocalizedStatistics;
 
 /**
  * json stream praser demo für FDroid.org index v1 format that logs found data to the console.
@@ -46,7 +46,7 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
     private final StringBuilder appWithNoLocale = new StringBuilder();
     private final StringBuilder appWithNoEnLocale = new StringBuilder();
     // statistics
-    LocalizedStatistics statistics = new LocalizedStatistics();
+    V1LocalizedStatistics statistics = new V1LocalizedStatistics();
     private int numberOfApps = 0;
 
     @Override
@@ -65,7 +65,7 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
     protected void onApp(V1App v1App) {
         if (v1App != null) {
             numberOfApps++;
-            // Map<String, Localized> oldLocales = v1App.getLocalized();
+            // Map<String, V1Localized> oldLocales = v1App.getLocalized();
             v1FixLocaleService.fix(v1App);
             StringBuilder nameWithLocales = new StringBuilder();
             String lastUpdated = EntityCommon.asDateString(v1App.getLastUpdated());
@@ -75,7 +75,7 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
 
             nameWithLocales.append(v1App.getPackageName());
 
-            Map<String, Localized> locales = v1App.getLocalized();
+            Map<String, V1Localized> locales = v1App.getLocalized();
             if (locales != null && !locales.isEmpty()) {
                 Set<String> localeNames = locales.keySet();
                 for (String locale : localeNames) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -21,18 +21,18 @@ package de.k3b.fdroid.v1domain.util;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import de.k3b.fdroid.v1domain.entity.Localized;
+import de.k3b.fdroid.v1domain.entity.V1Localized;
 
 /**
  * Count how many translations exist per language/locale
  */
-public class LocalizedStatistics {
+public class V1LocalizedStatistics {
     private final HashMap<String, Integer> locale2summaryCount = new HashMap<>();
     private final HashMap<String, Integer> locale2descriptionCount = new HashMap<>();
 
-    public void addStatistics(String locale, Localized localized) {
-        addStatistics(locale2summaryCount, locale, localized.getSummary());
-        addStatistics(locale2descriptionCount, locale, localized.getDescription());
+    public void addStatistics(String locale, V1Localized v1Localized) {
+        addStatistics(locale2summaryCount, locale, v1Localized.getSummary());
+        addStatistics(locale2descriptionCount, locale, v1Localized.getDescription());
     }
 
     private void addStatistics(HashMap<String, Integer> map, String locale, String value) {

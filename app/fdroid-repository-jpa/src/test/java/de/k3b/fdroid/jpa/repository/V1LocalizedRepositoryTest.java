@@ -34,7 +34,7 @@ import de.k3b.fdroid.domain.repository.LocalizedRepository;
 import de.k3b.fdroid.domain.service.LanguageService;
 
 @DataJpaTest
-public class LocalizedRepositoryTest {
+public class V1LocalizedRepositoryTest {
     private static final String MY_Summary = "my.package.name";
     private static final String MY_ICON = "myIcon.ico";
     private int appId;

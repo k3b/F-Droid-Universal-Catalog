@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1 the fdroid json catalog-format-v1 parser.
  *
@@ -28,11 +28,11 @@ import de.k3b.fdroid.domain.entity.common.LocalizedCommon;
 /**
  * Data for a Localisation (Translation) of an android app (read from FDroid-Catalog-v1-Json format).
  * <p>
- * The {@link V1JsonEntity} {@link Localized} correspond to the
+ * The {@link V1JsonEntity} {@link V1Localized} correspond to the
  * {@link de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId} {@link de.k3b.fdroid.domain.entity.Localized}.
  */
 @Generated("jsonschema2pojo")
-public class Localized extends LocalizedCommon implements V1JsonEntity {
+public class V1Localized extends LocalizedCommon implements V1JsonEntity {
     private String phoneScreenshotDir;
     private List<String> phoneScreenshots = null;
 

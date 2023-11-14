@@ -21,34 +21,34 @@ package de.k3b.fdroid.v1domain.service;
 
 import java.util.Map;
 
-import de.k3b.fdroid.v1domain.entity.Localized;
 import de.k3b.fdroid.v1domain.entity.V1App;
+import de.k3b.fdroid.v1domain.entity.V1Localized;
 
 public class V1FixLocaleService extends de.k3b.fdroid.domain.service.FixLocaleService {
     public V1App fix(V1App v1App) {
-        Map<String, Localized> localesOld = (v1App == null) ? null : v1App.getLocalized();
+        Map<String, V1Localized> localesOld = (v1App == null) ? null : v1App.getLocalized();
         if (localesOld != null) {
             convertIcons(v1App.getPackageName(), localesOld);
-            Map<String, Localized> localesNew = fix(localesOld);
+            Map<String, V1Localized> localesNew = fix(localesOld);
 
-            addEnLocaleIfneccessary(localesNew, v1App.getSummary(), v1App.getDescription(), Localized.class);
+            addEnLocaleIfneccessary(localesNew, v1App.getSummary(), v1App.getDescription(), V1Localized.class);
             v1App.setLocalized(localesNew);
         }
 
         return v1App;
     }
 
-    private void convertIcons(String packageName, Map<String, Localized> localesOld) {
-        for (Map.Entry<String, Localized> entry : localesOld.entrySet()) {
+    private void convertIcons(String packageName, Map<String, V1Localized> localesOld) {
+        for (Map.Entry<String, V1Localized> entry : localesOld.entrySet()) {
             String locale = entry.getKey();
-            Localized localized = entry.getValue();
-            String icon = localized.getIcon();
+            V1Localized v1Localized = entry.getValue();
+            String icon = v1Localized.getIcon();
             if (icon != null && icon.startsWith("icon_") && icon.endsWith("=.png")) {
-                localized.setIcon("../" + packageName + "/" + locale + "/icon.png");
+                v1Localized.setIcon("../" + packageName + "/" + locale + "/icon.png");
             }
 
-            if (localized.getPhoneScreenshotCount() > 0) {
-                localized.setPhoneScreenshotDir(packageName + "/" + locale + "/phoneScreenshots/");
+            if (v1Localized.getPhoneScreenshotCount() > 0) {
+                v1Localized.setPhoneScreenshotDir(packageName + "/" + locale + "/phoneScreenshots/");
             }
         }
     }
