@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public final class V2ReleaseChannel {
+public class V2ReleaseChannel {
     @NotNull
     private final Map<String, String> name;
     @NotNull

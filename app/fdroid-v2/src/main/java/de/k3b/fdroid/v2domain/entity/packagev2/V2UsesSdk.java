@@ -22,14 +22,9 @@ package de.k3b.fdroid.v2domain.entity.packagev2;
 
 import org.jetbrains.annotations.NotNull;
 
-public final class V2UsesSdk {
-    private final int minSdkVersion;
-    private final int targetSdkVersion;
-
-    public V2UsesSdk(int minSdkVersion, int targetSdkVersion) {
-        this.minSdkVersion = minSdkVersion;
-        this.targetSdkVersion = targetSdkVersion;
-    }
+public class V2UsesSdk {
+    private int minSdkVersion;
+    private int targetSdkVersion;
 
     public int getMinSdkVersion() {
         return this.minSdkVersion;

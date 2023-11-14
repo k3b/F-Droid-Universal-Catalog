@@ -25,21 +25,18 @@ import org.jetbrains.annotations.Nullable;
 
 import de.k3b.fdroid.v2domain.entity.common.IV2IndexFile;
 
-public final class V2File implements IV2IndexFile {
+public class V2File implements IV2IndexFile {
     @NotNull
     private final String name;
     @Nullable
-    private final String sha256;
+    private String sha256;
     @Nullable
-    private final Long size;
+    private Long size;
     @Nullable
-    private final String ipfsCIDv1;
+    private String ipfsCIDv1;
 
-    public V2File(@NotNull String name, @Nullable String sha256, @Nullable Long size, @Nullable String ipfsCIDv1) {
+    public V2File(@NotNull String name) {
         this.name = name;
-        this.sha256 = sha256;
-        this.size = size;
-        this.ipfsCIDv1 = ipfsCIDv1;
     }
 
     @NotNull

@@ -23,15 +23,14 @@ package de.k3b.fdroid.v2domain.entity.repo;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class V2Mirror {
+public class V2Mirror {
     @NotNull
     private final String url;
     @Nullable
-    private final String location;
+    private String location;
 
-    public V2Mirror(@NotNull String url, @Nullable String location) {
+    public V2Mirror(@NotNull String url) {
         this.url = url;
-        this.location = location;
     }
 
     @NotNull

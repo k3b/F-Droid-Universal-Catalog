@@ -20,21 +20,20 @@ package de.k3b.fdroid.v2domain.entity.repo;
 // V2Category.java
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-public final class V2Category {
-    @NotNull
-    private final Map<String, V2File> icon;
+public class V2Category {
+    @Nullable
+    private Map<String, V2File> icon;
     @NotNull
     private final Map<String, String> name;
-    @NotNull
-    private final Map<String, String> description;
+    @Nullable
+    private Map<String, String> description;
 
-    public V2Category(@NotNull Map<String, V2File> icon, @NotNull Map<String, String> name, @NotNull Map<String, String> description) {
-        this.icon = icon;
+    public V2Category(@NotNull Map<String, String> name) {
         this.name = name;
-        this.description = description;
     }
 
     @NotNull

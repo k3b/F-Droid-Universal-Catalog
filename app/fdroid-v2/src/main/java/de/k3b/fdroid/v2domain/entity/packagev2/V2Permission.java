@@ -23,15 +23,14 @@ package de.k3b.fdroid.v2domain.entity.packagev2;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class V2Permission {
+public class V2Permission {
     @NotNull
     private final String name;
     @Nullable
-    private final Integer maxSdkVersion;
+    private Integer maxSdkVersion;
 
-    public V2Permission(@NotNull String name, @Nullable Integer maxSdkVersion) {
+    public V2Permission(@NotNull String name) {
         this.name = name;
-        this.maxSdkVersion = maxSdkVersion;
     }
 
     @NotNull

@@ -24,14 +24,13 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public final class V2Signer {
+public class V2Signer {
     @NotNull
     private final List<String> sha256;
-    private final boolean hasMultipleSigners;
+    private boolean hasMultipleSigners;
 
-    public V2Signer(@NotNull List<String> sha256, boolean hasMultipleSigners) {
+    public V2Signer(@NotNull List<String> sha256) {
         this.sha256 = sha256;
-        this.hasMultipleSigners = hasMultipleSigners;
     }
 
     @NotNull

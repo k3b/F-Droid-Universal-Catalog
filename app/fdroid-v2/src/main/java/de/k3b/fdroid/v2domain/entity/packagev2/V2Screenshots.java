@@ -27,27 +27,17 @@ import java.util.Map;
 
 import de.k3b.fdroid.v2domain.entity.repo.V2File;
 
-public final class V2Screenshots {
+public class V2Screenshots {
     @Nullable
-    private final Map<String, List<V2File>> phone;
+    private Map<String, List<V2File>> phone;
     @Nullable
-    private final Map<String, List<V2File>> sevenInch;
+    private Map<String, List<V2File>> sevenInch;
     @Nullable
-    private final Map<String, List<V2File>> tenInch;
+    private Map<String, List<V2File>> tenInch;
     @Nullable
-    private final Map<String, List<V2File>> wear;
+    private Map<String, List<V2File>> wear;
     @Nullable
-    private final Map<String, List<V2File>> tv;
-
-    public V2Screenshots(@Nullable Map<String, List<V2File>> phone, @Nullable Map<String, List<V2File>> sevenInch,
-                         @Nullable Map<String, List<V2File>> tenInch, @Nullable Map<String, List<V2File>> wear,
-                         @Nullable Map<String, List<V2File>> tv) {
-        this.phone = phone;
-        this.sevenInch = sevenInch;
-        this.tenInch = tenInch;
-        this.wear = wear;
-        this.tv = tv;
-    }
+    private Map<String, List<V2File>> tv;
 
     public boolean isNull() {
         return this.phone == null && this.sevenInch == null && this.tenInch == null && this.wear == null && this.tv == null;
