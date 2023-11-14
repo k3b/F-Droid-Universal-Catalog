@@ -32,7 +32,7 @@ import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.v1domain.entity.Localized;
 import de.k3b.fdroid.v1domain.entity.V1App;
 import de.k3b.fdroid.v1domain.entity.V1Repo;
-import de.k3b.fdroid.v1domain.entity.Version;
+import de.k3b.fdroid.v1domain.entity.V1Version;
 import de.k3b.fdroid.v1domain.util.LocalizedStatistics;
 
 /**
@@ -93,10 +93,10 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
     }
 
     @Override
-    protected void onVersion(String name, Version version) {
-        if (version != null) {
+    protected void onVersion(String name, V1Version v1Version) {
+        if (v1Version != null) {
             log("onVersion(" + name +
-                    "," + version.getVersionName() + "," + EntityCommon.asDateString(version.getAdded()) +
+                    "," + v1Version.getVersionName() + "," + EntityCommon.asDateString(v1Version.getAdded()) +
                     ")");
         }
     }

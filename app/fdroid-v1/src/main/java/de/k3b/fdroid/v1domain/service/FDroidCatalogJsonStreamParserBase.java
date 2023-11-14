@@ -39,7 +39,7 @@ import de.k3b.fdroid.domain.entity.common.RepoCommon;
 import de.k3b.fdroid.domain.util.NoCloseInputStream;
 import de.k3b.fdroid.v1domain.entity.V1App;
 import de.k3b.fdroid.v1domain.entity.V1Repo;
-import de.k3b.fdroid.v1domain.entity.Version;
+import de.k3b.fdroid.v1domain.entity.V1Version;
 
 /**
  * Abstract Json-Stream-Parser for FDroid-Catalog-v1 format.
@@ -47,7 +47,7 @@ import de.k3b.fdroid.v1domain.entity.Version;
  * * Only the data of one app is kept in memory at a time.
  * <p>
  * To implement overwrite the abstract methods
- * {@link #onRepo(V1Repo)}, {@link #onApp(V1App)}, {@link #onVersion(String, Version)}
+ * {@link #onRepo(V1Repo)}, {@link #onApp(V1App)}, {@link #onVersion(String, V1Version)}
  */
 public abstract class FDroidCatalogJsonStreamParserBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
@@ -55,7 +55,7 @@ public abstract class FDroidCatalogJsonStreamParserBase {
 
     /**
      * parse the FDroid-Catalog-v1-Json into a stream of calls to consuming
-     * {@link #onRepo(V1Repo)}, {@link #onApp(V1App)}, {@link #onVersion(String, Version)}
+     * {@link #onRepo(V1Repo)}, {@link #onApp(V1App)}, {@link #onVersion(String, V1Version)}
      *
      * @param jsonInputStream uncompressed Json inputstream
      * @throws IOException if there are errors in the InputStream or the JSON v1 format.
@@ -81,7 +81,7 @@ public abstract class FDroidCatalogJsonStreamParserBase {
 
     /**
      * parse the compressed/signed jar file into a stream of calls to consuming
-     * {@link #onRepo(V1Repo)}, {@link #onApp(V1App)}, {@link #onVersion(String, Version)}
+     * {@link #onRepo(V1Repo)}, {@link #onApp(V1App)}, {@link #onVersion(String, V1Version)}
      *
      * @param jarInputStream jar-/zip-compressed inputstream containing json data
      * @throws IOException if there are errors in the InputStream, the jar-compression or the JSON v1 format.
@@ -139,8 +139,8 @@ public abstract class FDroidCatalogJsonStreamParserBase {
         return gson.fromJson(reader, V1App.class);
     }
 
-    protected Version versionFromJson(Gson gson, JsonReader reader) throws IOException {
-        return gson.fromJson(reader, Version.class);
+    protected V1Version versionFromJson(Gson gson, JsonReader reader) throws IOException {
+        return gson.fromJson(reader, V1Version.class);
     }
 
     private void readPackagesArray(Gson gson, JsonReader reader) throws IOException {
@@ -243,7 +243,7 @@ public abstract class FDroidCatalogJsonStreamParserBase {
     protected abstract void onApp(V1App v1App);
 
     /**
-     * Stream event, when a {@link Version} was read
+     * Stream event, when a {@link V1Version} was read
      */
-    protected abstract void onVersion(String name, Version version);
+    protected abstract void onVersion(String name, V1Version v1Version);
 }

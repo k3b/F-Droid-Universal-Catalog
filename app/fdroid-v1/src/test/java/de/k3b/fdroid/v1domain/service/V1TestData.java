@@ -28,22 +28,22 @@ import java.util.Objects;
 
 import de.k3b.fdroid.v1domain.entity.V1App;
 import de.k3b.fdroid.v1domain.entity.V1AppCatalog;
-import de.k3b.fdroid.v1domain.entity.Version;
+import de.k3b.fdroid.v1domain.entity.V1Version;
 
 public class V1TestData {
     public static final String UNITTEST_TEST_DATA = "exampledata/V1TestData-index-v1.json";
 
     public final V1AppCatalog v1AppCatalog;
-    public final V1App app;
-    public final Version version;
+    public final V1App v1App;
+    public final V1Version v1Version;
 
     public V1TestData() {
         try (InputStream resourceAsStream = V1TestData.class.getClassLoader().getResourceAsStream(UNITTEST_TEST_DATA);
              InputStreamReader is = new InputStreamReader(Objects.requireNonNull(resourceAsStream, "Cannot read json from " + UNITTEST_TEST_DATA))) {
             Gson gson = new Gson();
             v1AppCatalog = gson.fromJson(is, V1AppCatalog.class);
-            app = v1AppCatalog.getApps().get(0);
-            version = v1AppCatalog.getPackages().get(app.getPackageName()).get(0);
+            v1App = v1AppCatalog.getApps().get(0);
+            v1Version = v1AppCatalog.getPackages().get(v1App.getPackageName()).get(0);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

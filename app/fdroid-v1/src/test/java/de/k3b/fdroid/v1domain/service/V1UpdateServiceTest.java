@@ -75,7 +75,7 @@ public class V1UpdateServiceTest {
         ).init();
 
         // act
-        sut.update(repo.getId(), v1TestData.app);
+        sut.update(repo.getId(), v1TestData.v1App);
 
         // assert: v1import and v2import shoud create the same result
         String expected = "App[id=4711,resourceRepoId=4712,packageName=my.test.app," +
@@ -100,7 +100,7 @@ public class V1UpdateServiceTest {
                 null).init();
 
         // act
-        sut.update(app, v1TestData.app);
+        sut.update(app, v1TestData.v1App);
 
         // assert: v1import and v2import shout create the same result
         String expected = "App[id=4711,packageName=my.test.app,changelog=my-changelog," +
@@ -122,7 +122,7 @@ public class V1UpdateServiceTest {
         List<Localized> roomLocalizedList = Arrays.asList(lde, len);
 
         // convert en-US -> en
-        V1App v1App = new V1FixLocaleService().fix(v1TestData.app);
+        V1App v1App = new V1FixLocaleService().fix(v1TestData.v1App);
 
         Map<String, de.k3b.fdroid.v1domain.entity.Localized> localizedMap = v1App.getLocalized();
         V1LocalizedUpdateService sut = new V1LocalizedUpdateService(

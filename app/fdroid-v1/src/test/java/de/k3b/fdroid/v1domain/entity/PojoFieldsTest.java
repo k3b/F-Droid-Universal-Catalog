@@ -32,7 +32,7 @@ public class PojoFieldsTest {
     @Test
     public void entityReport() throws Exception {
         Class<?>[] classes = new Class<?>[]{V1App.class, Localized.class, ProfileCommon.class, V1Repo.class,
-                Version.class};
+                V1Version.class};
         EntityCommon.createPojoFieldsFile(classes);
     }
 

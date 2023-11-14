@@ -28,11 +28,11 @@ import de.k3b.fdroid.domain.entity.common.VersionCommon;
 /**
  * Data for the program version of an android app (read from FDroid-Catalog-v1-Json format).
  * <p>
- * The {@link V1JsonEntity} {@link Version} correspond to the
+ * The {@link V1JsonEntity} {@link V1Version} correspond to the
  * {@link de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId} {@link de.k3b.fdroid.domain.entity.Version}.
  */
 @Generated("jsonschema2pojo")
-public class Version extends VersionCommon implements V1JsonEntity {
+public class V1Version extends VersionCommon implements V1JsonEntity {
     private List<String> nativecode = null;
 
     public List<String> getNativecode() {

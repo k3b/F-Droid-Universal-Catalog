@@ -35,7 +35,7 @@ import de.k3b.fdroid.domain.interfaces.ProgressObservable;
 import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.v1domain.entity.V1App;
 import de.k3b.fdroid.v1domain.entity.V1Repo;
-import de.k3b.fdroid.v1domain.entity.Version;
+import de.k3b.fdroid.v1domain.entity.V1Version;
 import de.k3b.fdroid.v1domain.util.JarUtilities;
 
 /**
@@ -97,7 +97,7 @@ public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase imp
     }
 
     @Override
-    protected Version versionFromJson(Gson gson, JsonReader reader) throws IOException {
+    protected V1Version versionFromJson(Gson gson, JsonReader reader) throws IOException {
         // save memory: we are not interested in this
         skipJsonValue(reader);
         return null;
@@ -109,7 +109,7 @@ public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase imp
     }
 
     @Override
-    protected void onVersion(String name, Version version) {
+    protected void onVersion(String name, V1Version v1Version) {
         lastVersionCount++;
     }
 

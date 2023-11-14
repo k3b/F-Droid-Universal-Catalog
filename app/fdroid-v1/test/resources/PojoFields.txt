@@ -35,7 +35,7 @@ de.k3b.fdroid.v1domain.entity.V1Repo
 	name(1)
 	timestamp
 	version(03)
-de.k3b.fdroid.v1domain.entity.Version
+de.k3b.fdroid.v1domain.entity.V1Version
 	added
 	apkName(9)
 	hash(4)

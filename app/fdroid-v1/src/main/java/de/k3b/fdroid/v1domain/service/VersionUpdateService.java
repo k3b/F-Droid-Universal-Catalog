@@ -42,10 +42,11 @@ import de.k3b.fdroid.domain.service.VersionService;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.v1domain.entity.UpdateService;
+import de.k3b.fdroid.v1domain.entity.V1Version;
 
 /**
  * {@link UpdateService} that updates {@link Version}
- * from {@link de.k3b.fdroid.v1domain.entity.Version} using a {@link VersionRepository}
+ * from {@link V1Version} using a {@link VersionRepository}
  */
 public class VersionUpdateService implements UpdateService, ProgressObservable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
@@ -80,14 +81,14 @@ public class VersionUpdateService implements UpdateService, ProgressObservable {
     }
 
     // update(repoId, packageName,v1Version) -> update(repoId, packageName,List<v1Version>)
-    public void updateCollectVersions(int repoId, String packageName, de.k3b.fdroid.v1domain.entity.Version v1Version) {
+    public void updateCollectVersions(int repoId, String packageName, V1Version v1Version) {
         packageCollector.update(repoId, packageName, v1Version);
     }
 
     // update(repoId, packageName,List<v1Version>) -> update(app,List<v1Version>)
     private void updateCorrespondingApp(
             int repoId, String packageName,
-            List<de.k3b.fdroid.v1domain.entity.Version> v1VersionList)
+            List<V1Version> v1VersionList)
             throws PersistenceException {
         App roomApp = null;
         try {
@@ -110,7 +111,7 @@ public class VersionUpdateService implements UpdateService, ProgressObservable {
 
     // most processing is done here
     private void update(int repoId, App app,
-                        List<de.k3b.fdroid.v1domain.entity.Version> v1VersionList) {
+                        List<V1Version> v1VersionList) {
         progressCounter++;
         if (progressObserver != null && (--progressCountdown) <= 0) {
             progressObserver.onProgress(progressCounter, ".", app.getPackageName());
@@ -138,7 +139,7 @@ public class VersionUpdateService implements UpdateService, ProgressObservable {
 
     }
 
-    private void updateMapV1ToDbContentent(int appId, int repoId, List<Version> roomVersionList, List<de.k3b.fdroid.v1domain.entity.Version> v1VersionList) {
+    private void updateMapV1ToDbContentent(int appId, int repoId, List<Version> roomVersionList, List<V1Version> v1VersionList) {
         Map<Integer, Version> roomCode2Version = new HashMap<>();
         for (Version roomVersion : roomVersionList) {
             if (roomVersion.getRepoId() == repoId) {
@@ -147,7 +148,7 @@ public class VersionUpdateService implements UpdateService, ProgressObservable {
         }
 
         Map<Integer, Version> roomCode2VersionRemaining = new HashMap<>(roomCode2Version);
-        for (de.k3b.fdroid.v1domain.entity.Version v1Version : v1VersionList) {
+        for (V1Version v1Version : v1VersionList) {
             int versionCode = v1Version.getVersionCode();
             Version roomVersion = roomCode2Version.get(versionCode);
             if (roomVersion == null) {
@@ -204,9 +205,9 @@ public class VersionUpdateService implements UpdateService, ProgressObservable {
 
     private class PackageCollector {
         private String lastPackageName = null;
-        private List<de.k3b.fdroid.v1domain.entity.Version> v1VersionList = new ArrayList<>();
+        private List<V1Version> v1VersionList = new ArrayList<>();
 
-        public void update(int repoId, String packageName, de.k3b.fdroid.v1domain.entity.Version v1Version) {
+        public void update(int repoId, String packageName, V1Version v1Version) {
             if (v1VersionList.size() > 0 && (packageName == null || packageName.compareTo(lastPackageName) != 0)) {
                 // packagename null or changed : Process collected versons
                 VersionUpdateService.this.updateCorrespondingApp(repoId, lastPackageName, v1VersionList);

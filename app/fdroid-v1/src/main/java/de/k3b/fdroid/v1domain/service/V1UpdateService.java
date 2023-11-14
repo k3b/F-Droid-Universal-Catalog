@@ -42,7 +42,7 @@ import de.k3b.fdroid.domain.service.LanguageService;
 import de.k3b.fdroid.v1domain.entity.UpdateService;
 import de.k3b.fdroid.v1domain.entity.V1App;
 import de.k3b.fdroid.v1domain.entity.V1Repo;
-import de.k3b.fdroid.v1domain.entity.Version;
+import de.k3b.fdroid.v1domain.entity.V1Version;
 import de.k3b.fdroid.v1domain.util.JarUtilities;
 
 /**
@@ -161,10 +161,10 @@ public abstract class V1UpdateService implements UpdateService, ProgressObservab
         }
 
         /**
-         * Stream event, when a {@link Version} was read
+         * Stream event, when a {@link V1Version} was read
          */
         @Override
-        protected void onVersion(String packageName, Version v1Version) {
+        protected void onVersion(String packageName, V1Version v1Version) {
             if (lastVersionCount == 0 && progressObserver != null) {
                 progressObserver.setProgressContext("🏬 " + roomRepo.getName() + " : ", " / " + roomRepo.getLastAppCount());
             }
