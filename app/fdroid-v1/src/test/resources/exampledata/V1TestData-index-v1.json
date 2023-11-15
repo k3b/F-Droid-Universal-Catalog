@@ -67,15 +67,16 @@
     "my.test.app": [
       {
         "added": 1584144000000,
-        "apkName": "/my.test.app._47.apk",
+        "apkName": "/my.test.app_47.apk",
         "hash": "77bf8dd6a6d97e718dd29d64256a8fea513d7974156f0887c5c19c455a7d4179",
         "hashType": "sha256",
         "minSdkVersion": 14,
+        "maxSdkVersion": 32,
         "packageName": "my.test.app",
         "sig": "c6c0dcfd07de00b325a93acd93e1c4cf",
         "signer": "666d4e095d70b606629a0697f3da15b66fa08a03c620b3a6feb9e19407be31a5",
         "size": 1493080,
-        "srcname": "com.chancehorizon.just24hoursplus_10401_src.tar.gz",
+        "srcname": "my.test.app_10401_src.tar.gz",
         "targetSdkVersion": 21,
         "versionCode": 123,
         "versionName": "1.2.3"

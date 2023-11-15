@@ -25,13 +25,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.Localized;
 import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.entity.Version;
 import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.service.AppCategoryUpdateService;
 import de.k3b.fdroid.domain.service.CategoryService;
@@ -39,6 +42,7 @@ import de.k3b.fdroid.domain.service.LanguageService;
 import de.k3b.fdroid.domain.util.Java8Util;
 import de.k3b.fdroid.v1domain.entity.V1App;
 import de.k3b.fdroid.v1domain.entity.V1Localized;
+import de.k3b.fdroid.v1domain.entity.V1Version;
 
 /**
  * This test uses json data form
@@ -47,6 +51,7 @@ import de.k3b.fdroid.v1domain.entity.V1Localized;
 public class V1UpdateServiceTest {
     private Repo repo;
     private App app;
+    private Version version;
 
     private V1TestData v1TestData;
 
@@ -56,6 +61,9 @@ public class V1UpdateServiceTest {
         repo.setId(4712);
         app = new App("my.test.app");
         app.setId(4711);
+
+        version = new Version(app.getAppId(), repo.getId());
+        version.setId(4713);
 
         v1TestData = new V1TestData();
     }
@@ -111,6 +119,35 @@ public class V1UpdateServiceTest {
         // todo ?translation,?donate,preferredSigner
 
         assertEquals(expected, app.toString());
+    }
+
+    @Test
+    public void updateVerion() {
+        // arrange
+        V1VersionUpdateService sut = new V1VersionUpdateService(
+                null,
+                null,
+                null).init();
+
+        // act
+        // List<Version> roomVersionList = new ArrayList<>(Arrays.asList(version));
+        List<Version> roomVersionList = new ArrayList<>();
+
+        List<V1Version> v1VersionList = Collections.singletonList(v1TestData.v1Version);
+        sut.update(repo.getId(), app, roomVersionList, v1VersionList);
+        version = roomVersionList.get(0);
+
+        // assert: v1import and v2import shout create the same result
+        String expected = "App[id=4711,packageName=my.test.app,searchVersion=1.2.3(123)" +
+                ",searchSdk=[14,21,32],searchSigner=666d4e0...1a5 ]";
+        assertEquals(expected, app.toString());
+
+        expected = "Version[appId=4711,repoId=4712,apkName=/my.test.app_47.apk,added=2020-03-14" +
+                ",versionCode=123,versionName=1.2.3,size=1493080,minSdkVersion=14,targetSdkVersion=21" +
+                ",maxSdkVersion=32,srcname=my.test.app_10401_src.tar.gz,hash=77bf8dd...4179" +
+                ",hashType=sha256,sig=c6c0dcf...c4cf,signer=666d4e0...31a5" +
+                "]";
+        assertEquals(expected, version.toString());
     }
 
     @Test

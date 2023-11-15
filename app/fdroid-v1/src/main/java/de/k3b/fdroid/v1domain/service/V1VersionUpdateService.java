@@ -19,6 +19,7 @@
 
 package de.k3b.fdroid.v1domain.service;
 
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,31 +54,37 @@ public class V1VersionUpdateService implements IV1UpdateService, ProgressObserva
 
     private static final int PROGRESS_INTERVALL = 100;
 
+    @Nullable
     private final AppRepository appRepository;
+    @Nullable
     private final VersionRepository versionRepository;
 
     private final VersionService versionService = new VersionService();
 
     PackageCollector packageCollector = new PackageCollector();
+    @Nullable
     private final HardwareProfileService hardwareProfileService;
     ProgressObserver progressObserver = null;
     private int progressCounter = 0;
     private int progressCountdown = 0;
+    private int nextMockAppId = 142;
+    private int nextMockVersionId = 72;
 
-    public V1VersionUpdateService(AppRepository appRepository,
-                                  VersionRepository versionRepository,
-                                  HardwareProfileService hardwareProfileService) {
+    public V1VersionUpdateService(@Nullable AppRepository appRepository,
+                                  @Nullable VersionRepository versionRepository,
+                                  @Nullable HardwareProfileService hardwareProfileService) {
         this.appRepository = appRepository;
         this.versionRepository = versionRepository;
         this.hardwareProfileService = hardwareProfileService;
     }
 
-    public void init() {
+    public V1VersionUpdateService init() {
         if (this.hardwareProfileService != null) {
             this.hardwareProfileService.init();
         }
         progressCounter = 0;
         progressCountdown = 0;
+        return this;
     }
 
     // update(repoId, packageName,v1Version) -> update(repoId, packageName,List<v1Version>)
@@ -118,7 +125,22 @@ public class V1VersionUpdateService implements IV1UpdateService, ProgressObserva
             progressCountdown = PROGRESS_INTERVALL;
         }
 
-        List<Version> roomVersionList = versionRepository.findByAppId(app.getId());
+        List<Version> roomVersionList = (versionRepository == null)
+                ? new ArrayList<>()
+                : versionRepository.findByAppId(app.getId());
+        update(repoId, app, roomVersionList, v1VersionList);
+
+        saveAll(roomVersionList);
+
+        if (appRepository != null) appRepository.update(app);
+
+        if (this.hardwareProfileService != null) {
+            this.hardwareProfileService.updateAppProfiles(app, roomVersionList);
+        }
+
+    }
+
+    protected void update(int repoId, App app, List<Version> roomVersionList, List<V1Version> v1VersionList) {
         updateMapV1ToDbContentent(app.getId(), repoId, roomVersionList, v1VersionList);
 
         versionService.fixMaxSdk(roomVersionList);
@@ -128,15 +150,6 @@ public class V1VersionUpdateService implements IV1UpdateService, ProgressObserva
         }
 
         versionService.recalculateSearchFields(app, roomVersionList);
-
-        saveAll(roomVersionList);
-
-        appRepository.update(app);
-
-        if (this.hardwareProfileService != null) {
-            this.hardwareProfileService.updateAppProfiles(app, roomVersionList);
-        }
-
     }
 
     private void updateMapV1ToDbContentent(int appId, int repoId, List<Version> roomVersionList, List<V1Version> v1VersionList) {
@@ -165,35 +178,53 @@ public class V1VersionUpdateService implements IV1UpdateService, ProgressObserva
 
         for (Version roomVersion : roomCode2VersionRemaining.values()) {
             roomVersionList.remove(roomVersion);
-            versionRepository.delete(roomVersion);
+            if (versionRepository != null) versionRepository.delete(roomVersion);
         }
     }
 
     private App getOrCreateApp(String packageName) {
-        App app = appRepository.findByPackageName(packageName);
+        App app = null;
 
-        if (app == null) {
+        if (appRepository != null) {
+            app = appRepository.findByPackageName(packageName);
+
+            if (app == null) {
+                app = new App(packageName);
+                appRepository.insert(app);
+            }
+        } else {
             app = new App(packageName);
-            appRepository.insert(app);
+            app.setId(nextMockAppId++);
         }
         return app;
     }
 
     private void deleteAll(List<Version> roomVersionList) {
-        for (Version roomVersion : roomVersionList) {
-            if (roomVersion.getId() != 0) {
-                versionRepository.delete(roomVersion);
+        if (versionRepository != null) {
+            for (Version roomVersion : roomVersionList) {
+                if (roomVersion.getId() != 0) {
+                    versionRepository.delete(roomVersion);
+                }
             }
         }
     }
 
     private void saveAll(List<Version> roomVersionList) {
-        for (Version roomVersion : roomVersionList) {
-            if (roomVersion.getId() == 0) {
-                versionRepository.insert(roomVersion);
-            } else {
-                versionRepository.update(roomVersion);
+        if (versionRepository != null) {
+            for (Version roomVersion : roomVersionList) {
+                if (roomVersion.getId() == 0) {
+                    versionRepository.insert(roomVersion);
+                } else {
+                    versionRepository.update(roomVersion);
+                }
             }
+        } else {
+            for (Version roomVersion : roomVersionList) {
+                if (roomVersion.getId() == 0) {
+                    roomVersion.setId(nextMockVersionId++);
+                }
+            }
+
         }
     }
 

@@ -1,7 +1,8 @@
 todo
 
 > v2 import
-
+> v app, localized
+> version+profile
 * cascade delete
 
 v screenshots only from prefered locale(s)

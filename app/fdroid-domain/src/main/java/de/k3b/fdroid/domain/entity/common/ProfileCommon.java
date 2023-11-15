@@ -31,7 +31,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 @javax.persistence.MappedSuperclass
 @SuppressWarnings("unused")
-public class ProfileCommon extends EntityCommon {
+public class ProfileCommon extends EntityCommon implements IProfileCommon {
     private static final double MEGA_BYTE = 1024 * 1024;
 
     @Schema(description = "Filename of the apk version that will become part of the download url.",
@@ -50,7 +50,7 @@ public class ProfileCommon extends EntityCommon {
             example = "1492672")
     private int size;
 
-    public static void copyCommon(ProfileCommon dest, ProfileCommon src) {
+    public static void copyCommon(ProfileCommon dest, IProfileCommon src) {
         dest.setApkName(src.getApkName());
         dest.setSize(src.getSize());
         dest.setVersion(src.getVersionCode(), src.getVersionName(), src.getAdded());
@@ -62,6 +62,7 @@ public class ProfileCommon extends EntityCommon {
         setAdded(added);
     }
 
+    @Override
     public long getAdded() {
         return added;
     }
@@ -76,6 +77,7 @@ public class ProfileCommon extends EntityCommon {
         return asDateString(added);
     }
 
+    @Override
     public String getApkName() {
         return apkName;
     }
@@ -93,6 +95,7 @@ public class ProfileCommon extends EntityCommon {
         return "" + (m / 10.0) + " MB";
     }
 
+    @Override
     public int getSize() {
         return size;
     }
@@ -101,6 +104,7 @@ public class ProfileCommon extends EntityCommon {
         this.size = size;
     }
 
+    @Override
     public int getVersionCode() {
         return versionCode;
     }
@@ -109,6 +113,7 @@ public class ProfileCommon extends EntityCommon {
         this.versionCode = versionCode;
     }
 
+    @Override
     public String getVersionName() {
         return versionName;
     }

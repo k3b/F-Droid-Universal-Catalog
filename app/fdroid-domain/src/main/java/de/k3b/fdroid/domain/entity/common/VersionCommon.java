@@ -31,7 +31,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * as these are Gson/Android-Room-Database specific.
  */
 @SuppressWarnings("unused")
-public class VersionCommon extends ProfileCommon {
+public class VersionCommon extends ProfileCommon implements IVersionCommon {
 
     @Schema(description = "Device compatibility: minSdkVersion = 'Minimal Required Android SDK API Version'.",
             externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "MinSdk"),
@@ -54,7 +54,7 @@ public class VersionCommon extends ProfileCommon {
             example = "de.k3b.android.androFotoFinder_44_src.tar.gz")
     private String srcname;
 
-    public static void copyCommon(VersionCommon dest, VersionCommon src) {
+    public static void copyCommon(VersionCommon dest, IVersionCommon src) {
         ProfileCommon.copyCommon(dest, src);
         dest.setSrcname(src.getSrcname());
 
@@ -74,6 +74,7 @@ public class VersionCommon extends ProfileCommon {
         if (src != null) copyCommon(this, src);
     }
 
+    @Override
     public String getHash() {
         return hash;
     }
@@ -82,6 +83,7 @@ public class VersionCommon extends ProfileCommon {
         this.hash = maxlen(hash);
     }
 
+    @Override
     public String getHashType() {
         return hashType;
     }
@@ -90,6 +92,7 @@ public class VersionCommon extends ProfileCommon {
         this.hashType = maxlen(hashType);
     }
 
+    @Override
     public int getMinSdkVersion() {
         return minSdkVersion;
     }
@@ -98,6 +101,7 @@ public class VersionCommon extends ProfileCommon {
         this.minSdkVersion = minSdkVersion;
     }
 
+    @Override
     public int getMaxSdkVersion() {
         return maxSdkVersion;
     }
@@ -112,6 +116,7 @@ public class VersionCommon extends ProfileCommon {
         setMaxSdkVersion(maxSdkVersion);
     }
 
+    @Override
     public String getSig() {
         return sig;
     }
@@ -120,6 +125,7 @@ public class VersionCommon extends ProfileCommon {
         this.sig = maxlen(sig);
     }
 
+    @Override
     public String getSigner() {
         return signer;
     }
@@ -128,6 +134,7 @@ public class VersionCommon extends ProfileCommon {
         this.signer = maxlen(signer);
     }
 
+    @Override
     public String getSrcname() {
         return srcname;
     }
@@ -136,6 +143,7 @@ public class VersionCommon extends ProfileCommon {
         this.srcname = maxlen(srcname);
     }
 
+    @Override
     public int getTargetSdkVersion() {
         return targetSdkVersion;
     }
