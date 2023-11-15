@@ -34,12 +34,12 @@ import de.k3b.fdroid.v2domain.entity.packagev2.V2PackageVersion;
 public class V2TestData {
     public static final String UNITTEST_TEST_DATA = "exampledata/V2TestData-index-v2.json";
 
-    public static final V2AppCatalog indexV2;
-    public static final V2App packageV2;
-    public static final V2AppInfo metadata;
-    public static final V2PackageVersion versionV2;
+    public final V2AppCatalog indexV2;
+    public final V2App packageV2;
+    public final V2AppInfo metadata;
+    public final V2PackageVersion versionV2;
 
-    static {
+    public V2TestData() {
         try (InputStream resourceAsStream = V2TestData.class.getClassLoader().getResourceAsStream(UNITTEST_TEST_DATA);
              InputStreamReader is = new InputStreamReader(Objects.requireNonNull(resourceAsStream, "Cannot read json from " + UNITTEST_TEST_DATA))) {
             Gson gson = new Gson();

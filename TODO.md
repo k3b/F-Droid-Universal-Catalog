@@ -1,8 +1,12 @@
 todo
 
+> v2 import
+
+* cascade delete
+
 v screenshots only from prefered locale(s)
 v app-search with language picker
-> swagger gui for webservices
+v swagger gui for webservices
 ---------------
 
 v Rename existing url-parameter "-v(ersion)" to "-minSdk"

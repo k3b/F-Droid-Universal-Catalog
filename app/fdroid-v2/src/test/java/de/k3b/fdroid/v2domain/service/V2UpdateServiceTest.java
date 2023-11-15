@@ -42,11 +42,13 @@ import de.k3b.fdroid.domain.util.Java8Util;
  * ...\F-Droid-Universal-Catalog\app\fdroid-v2\src\test\resources\exampledata\V2TestData-index-v2.json
  */
 public class V2UpdateServiceTest {
+    V2TestData V2TestData;
     Repo repo;
     App app;
 
     @Before
     public void setup() {
+        V2TestData = new V2TestData();
         repo = new Repo("unittest", "https://www.fdroid.org/testrepo", null);
         repo.setId(4712);
         app = new App("my.test.app");
