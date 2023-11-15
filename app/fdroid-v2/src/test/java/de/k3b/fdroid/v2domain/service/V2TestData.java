@@ -34,19 +34,19 @@ import de.k3b.fdroid.v2domain.entity.packagev2.V2PackageVersion;
 public class V2TestData {
     public static final String UNITTEST_TEST_DATA = "exampledata/V2TestData-index-v2.json";
 
-    public final V2AppCatalog indexV2;
-    public final V2App packageV2;
-    public final V2AppInfo metadata;
-    public final V2PackageVersion versionV2;
+    public final V2AppCatalog appCatalog;
+    public final V2App app;
+    public final V2AppInfo appInfo;
+    public final V2PackageVersion version;
 
     public V2TestData() {
         try (InputStream resourceAsStream = V2TestData.class.getClassLoader().getResourceAsStream(UNITTEST_TEST_DATA);
              InputStreamReader is = new InputStreamReader(Objects.requireNonNull(resourceAsStream, "Cannot read json from " + UNITTEST_TEST_DATA))) {
             Gson gson = new Gson();
-            indexV2 = gson.fromJson(is, V2AppCatalog.class);
-            packageV2 = indexV2.getPackages().entrySet().iterator().next().getValue();
-            metadata = packageV2.getMetadata();
-            versionV2 = packageV2.getVersions().entrySet().iterator().next().getValue();
+            appCatalog = gson.fromJson(is, V2AppCatalog.class);
+            app = appCatalog.getPackages().entrySet().iterator().next().getValue();
+            appInfo = app.getMetadata();
+            version = app.getVersions().entrySet().iterator().next().getValue();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -1,71 +1,68 @@
+/*
+ * Copyright (c) 2023 by k3b.
+ *
+ * This file is part of de.k3b.fdroid.v2domain the fdroid json catalog-format-v2 parser.
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>
+ */
 package de.k3b.fdroid.v2domain.entity.packagev2;
 
 // V2Manifest.java
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-public final class V2Manifest implements IV2PackageManifest {
+public class V2Manifest {
     @Nullable
-    private final Integer minSdkVersion;
-    @NotNull
-    private final List<String> featureNames;
-    @NotNull
-    private final String versionName;
-    private final long versionCode;
+    private Integer minSdkVersion;
     @Nullable
-    private final V2UsesSdk usesSdk;
+    private List<String> featureNames;
     @Nullable
-    private final Integer maxSdkVersion;
+    private String versionName;
+    private int versionCode;
     @Nullable
-    private final V2Signer signer;
-    @NotNull
-    private final List<V2Permission> usesPermission;
-    @NotNull
-    private final List<V2Permission> usesPermissionSdk23;
-    @NotNull
-    private final List<String> nativecode;
-    @NotNull
-    private final List<V2Feature> features;
-
-    public V2Manifest(@NotNull String versionName, long versionCode, @Nullable V2UsesSdk usesSdk, @Nullable Integer maxSdkVersion,
-                      @Nullable V2Signer signer, @NotNull List<V2Permission> usesPermission, @NotNull List<V2Permission> usesPermissionSdk23,
-                      @NotNull List<String> nativecode,
-                      @NotNull List<V2Feature> features) {
-        this.versionName = versionName;
-        this.versionCode = versionCode;
-        this.usesSdk = usesSdk;
-        this.maxSdkVersion = maxSdkVersion;
-        this.signer = signer;
-        this.usesPermission = usesPermission;
-        this.usesPermissionSdk23 = usesPermissionSdk23;
-        this.nativecode = nativecode;
-        this.features = features;
-
-        this.minSdkVersion = usesSdk != null ? usesSdk.getMinSdkVersion() : null;
-
-        this.featureNames = features.stream().map(f -> f.getName()).collect(Collectors.toList());
-    }
+    private V2UsesSdk usesSdk;
+    @Nullable
+    private Integer maxSdkVersion;
+    @Nullable
+    private V2Signer signer;
+    @Nullable
+    private List<V2Permission> usesPermission;
+    @Nullable
+    private List<V2Permission> usesPermissionSdk23;
+    @Nullable
+    private List<String> nativecode;
+    @Nullable
+    private List<V2Feature> features;
 
     @Nullable
     public Integer getMinSdkVersion() {
         return this.minSdkVersion;
     }
 
-    @NotNull
+    @Nullable
     public List<String> getFeatureNames() {
         return this.featureNames;
     }
 
-    @NotNull
+    @Nullable
     public String getVersionName() {
         return this.versionName;
     }
 
-    public long getVersionCode() {
+    public int getVersionCode() {
         return this.versionCode;
     }
 
@@ -84,27 +81,27 @@ public final class V2Manifest implements IV2PackageManifest {
         return this.signer;
     }
 
-    @NotNull
+    @Nullable
     public List<V2Permission> getUsesPermission() {
         return this.usesPermission;
     }
 
-    @NotNull
+    @Nullable
     public List<V2Permission> getUsesPermissionSdk23() {
         return this.usesPermissionSdk23;
     }
 
-    @NotNull
+    @Nullable
     public List<String> getNativecode() {
         return this.nativecode;
     }
 
-    @NotNull
+    @Nullable
     public List<V2Feature> getFeatures() {
         return this.features;
     }
 
-    @NotNull
+    @Nullable
     public String toString() {
         return "V2Manifest{versionName=" + this.versionName + ", versionCode=" + this.versionCode + ", usesSdk=" + this.usesSdk + ", maxSdkVersion=" + this.getMaxSdkVersion() + ", signer=" + this.signer + ", usesPermission=" + this.usesPermission + ", usesPermissionSdk23=" + this.usesPermissionSdk23 + ", nativecode=" + this.getNativecode() + ", features=" + this.features + "}";
     }

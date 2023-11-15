@@ -1,73 +1,151 @@
+/*
+ * Copyright (c) 2023 by k3b.
+ *
+ * This file is part of de.k3b.fdroid.v2domain the fdroid json catalog-format-v2 parser.
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>
+ */
 package de.k3b.fdroid.v2domain.entity.packagev2;
 
 // V2PackageVersion.java
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
 
+import de.k3b.fdroid.domain.entity.common.IVersionCommon;
 import de.k3b.fdroid.v2domain.entity.repo.V2File;
 
-public final class V2PackageVersion implements IV2PackageVersion {
-    private final long versionCode;
-    @Nullable
-    private final V2Signer signer;
-    @NotNull
-    private final IV2PackageManifest packageManifest;
-    private final long added;
-    @NotNull
-    private final V1File file;
-    @Nullable
-    private final V2File src;
-    @NotNull
-    private final V2Manifest manifest;
-    @NotNull
-    private final List<String> releaseChannels;
-    @NotNull
-    private final Map<String, Map<String, String>> antiFeatures;
-    @NotNull
-    private final Map<String, String> whatsNew;
-
-    public V2PackageVersion(long added, @NotNull V1File file, @Nullable V2File src, @NotNull V2Manifest manifest, @NotNull List<String> releaseChannels, @NotNull Map<String, Map<String, String>> antiFeatures, @NotNull Map<String, String> whatsNew) {
-        this.added = added;
-        this.file = file;
-        this.src = src;
-        this.manifest = manifest;
-        this.releaseChannels = releaseChannels;
-        this.antiFeatures = antiFeatures;
-        this.whatsNew = whatsNew;
-        this.versionCode = this.manifest.getVersionCode();
-        this.signer = this.manifest.getSigner();
-        this.packageManifest = this.manifest;
-    }
-
-    public long getVersionCode() {
-        return this.versionCode;
-    }
+public class V2PackageVersion implements IVersionCommon {
+    // private int versionCode;
 
     @Nullable
-    public V2Signer getSigner() {
-        return this.signer;
+    private V2Manifest packageManifest;
+    private long added;
+    @Nullable
+    private V1File file;
+    @Nullable
+    private V2File src;
+    @Nullable
+    private V2Manifest manifest;
+    @Nullable
+    private List<String> releaseChannels;
+    @Nullable
+    private Map<String, Map<String, String>> antiFeatures;
+    @Nullable
+    private Map<String, String> whatsNew;
+
+    public int getVersionCode() {
+        return (manifest == null) ? 0 : manifest.getVersionCode();
+        // return this.versionCode;
     }
 
-    @NotNull
-    public IV2PackageManifest getPackageManifest() {
+    @Override
+    public String getVersionName() {
+        return (manifest == null) ? null : manifest.getVersionName();
+    }
+
+    public V2UsesSdk getUsesSdk() {
+        return (manifest == null) ? null : manifest.getUsesSdk();
+    }
+
+    @Override
+    public int getTargetSdkVersion() {
+        return (getUsesSdk() == null) ? 0 : getUsesSdk().getTargetSdkVersion();
+    }
+
+
+    @Override
+    public int getMinSdkVersion() {
+        return (getUsesSdk() == null) ? 0 : getUsesSdk().getMinSdkVersion();
+    }
+
+    @Override
+    public int getMaxSdkVersion() {
+        Integer integer = (manifest == null) ? null : manifest.getMaxSdkVersion();
+        return integer == null ? 0 : integer;
+    }
+
+    @Override
+    public String getSig() {
+        return null; // not available in v2
+    }
+
+    @Override
+    public String getSigner() {
+        V2Signer signer = getSignerObject();
+        return (signer == null) ? null : signer.getSha256().get(0);
+    }
+
+    @Nullable
+    // @JsonProperty("signer")
+    // @SerializedName("signer")
+    public V2Signer getSignerObject() {
+        V2Signer signer = (manifest == null) ? null : manifest.getSigner();
+        // if (signer == null) signer = this.signerObject;
+        return signer;
+    }
+
+    /*
+    // @JsonProperty("signer")
+    // @SerializedName("signer")
+    public void setSignerObject(@Nullable V2Signer signerObject) {
+        this.signerObject = signerObject;
+    }
+     */
+
+    @Nullable
+    public V2Manifest getPackageManifest() {
         return this.packageManifest;
     }
 
     public boolean getHasKnownVulnerability() {
-        return this.antiFeatures.containsKey("KnownVuln");
+        return antiFeatures != null && this.antiFeatures.containsKey("KnownVuln");
     }
 
     public long getAdded() {
         return this.added;
     }
 
-    @NotNull
-    public V1File getFile() {
-        return this.file;
+    @Nullable
+    public V2Manifest getManifest() {
+        return this.manifest;
+    }
+
+    @Nullable
+    public List<String> getReleaseChannels() {
+        return this.releaseChannels;
+    }
+
+    @Nullable
+    public Map<String, Map<String, String>> getAntiFeatures() {
+        return this.antiFeatures;
+    }
+
+    @Nullable
+    public Map<String, String> getWhatsNew() {
+        return this.whatsNew;
+    }
+
+    @Nullable
+    public String toString() {
+        return "V2PackageVersion{added=" + this.added + ", file=" + this.file + ", src=" + this.src + ", manifest=" + this.manifest + ", releaseChannels=" + this.getReleaseChannels() + ", antiFeatures=" + this.antiFeatures + ", whatsNew=" + this.whatsNew + "}";
+    }
+
+    public List<String> getNativecode() {
+        return (manifest == null) ? null : manifest.getNativecode();
     }
 
     @Nullable
@@ -75,28 +153,36 @@ public final class V2PackageVersion implements IV2PackageVersion {
         return this.src;
     }
 
-    @NotNull
-    public V2Manifest getManifest() {
-        return this.manifest;
+    @Override
+    public String getSrcname() {
+        return (src == null) ? null : src.getName();
     }
 
-    @NotNull
-    public List<String> getReleaseChannels() {
-        return this.releaseChannels;
+    @Nullable
+    public V1File getFile() {
+        return this.file;
     }
 
-    @NotNull
-    public Map<String, Map<String, String>> getAntiFeatures() {
-        return this.antiFeatures;
+    @Override
+    public String getApkName() {
+        return (file == null) ? null : file.getName();
     }
 
-    @NotNull
-    public Map<String, String> getWhatsNew() {
-        return this.whatsNew;
+    @Override
+    public int getSize() {
+        Long i = (file == null) ? null : file.getSize();
+        return (i == null) ? 0 : i.intValue();
     }
 
-    @NotNull
-    public String toString() {
-        return "V2PackageVersion{added=" + this.added + ", file=" + this.file + ", src=" + this.src + ", manifest=" + this.manifest + ", releaseChannels=" + this.getReleaseChannels() + ", antiFeatures=" + this.antiFeatures + ", whatsNew=" + this.whatsNew + "}";
+
+    @Override
+    public String getHash() {
+        return (file == null) ? null : file.getSha256();
     }
+
+    @Override
+    public String getHashType() {
+        return (file == null) ? null : "sha256";
+    }
+
 }
