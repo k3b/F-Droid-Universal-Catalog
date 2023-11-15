@@ -41,7 +41,7 @@ import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.Java8Util;
 import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2App;
-import de.k3b.fdroid.v2domain.entity.packagev2.V2Metadata;
+import de.k3b.fdroid.v2domain.entity.packagev2.V2AppInfo;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2PackageVersion;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2Screenshots;
 import de.k3b.fdroid.v2domain.entity.repo.V2File;
@@ -55,12 +55,16 @@ public class V2LocalizedUpdateService {
     private final LanguageService languageService;
     @NotNull
     private final LocalizedService localizedService;
+    @NotNull
+    private final V2FixPhoneScreenshotService v2FixPhoneScreenshotService;
 
     public V2LocalizedUpdateService(@Nullable LocalizedRepository localizedRepository,
-                                    @NotNull LanguageService languageService) {
+                                    @NotNull LanguageService languageService,
+                                    @NotNull V2FixPhoneScreenshotService v2FixPhoneScreenshotService) {
         this.localizedRepository = localizedRepository;
         this.languageService = languageService;
         this.localizedService = new LocalizedService(languageService);
+        this.v2FixPhoneScreenshotService = v2FixPhoneScreenshotService;
     }
 
     // List<V2File>, List<String>
@@ -76,6 +80,7 @@ public class V2LocalizedUpdateService {
 
     public V2LocalizedUpdateService init() {
         languageService.init();
+        v2FixPhoneScreenshotService.init();
         return this;
     }
 
@@ -101,7 +106,7 @@ public class V2LocalizedUpdateService {
 
     private List<Localized> update(
             int repoId,
-            @NotNull App roomApp, @NotNull V2Metadata metadata,
+            @NotNull App roomApp, @NotNull V2AppInfo v2AppInfo,
             @Nullable V2PackageVersion lastVersion) {
         Java8Util.OutParam<Localized> exceptionContext = new Java8Util.OutParam<>(null);
 
@@ -117,7 +122,7 @@ public class V2LocalizedUpdateService {
                     ? new ArrayList<>()
                     : localizedRepository.findByAppId(roomApp.getAppId());
 
-            roomLocalizedList = update(roomApp, toLocalizedMap(roomLocalizedList), metadata, lastVersion, exceptionContext);
+            roomLocalizedList = update(roomApp, toLocalizedMap(roomLocalizedList), v2AppInfo, lastVersion, exceptionContext);
 
             List<Localized> deleted = localizedService.deleteHidden(roomLocalizedList);
             if (roomApp != null) {
@@ -145,7 +150,7 @@ public class V2LocalizedUpdateService {
             }
             message.append(") ").append(ExceptionUtils.getParentCauseMessage(ex, PersistenceException.class));
 
-            LOGGER.error(message + "\n\tV2Metadata=" + metadata
+            LOGGER.error(message + "\n\tV2AppInfo=" + v2AppInfo
                     + ",\n\tV2PackageVersion=" + lastVersion, ex);
             throw new PersistenceException(message.toString(), ex);
         }
@@ -153,24 +158,27 @@ public class V2LocalizedUpdateService {
 
     // Entrypoint for unittest
     protected List<Localized> update(App roomApp, Map<String, Localized> localizedMap,
-                                     V2Metadata metadata, V2PackageVersion lastVersion,
+                                     V2AppInfo v2AppInfo, V2PackageVersion lastVersion,
                                      Java8Util.OutParam<Localized> exceptionContext) {
         Converter converter = new Converter(localizedMap, roomApp, exceptionContext);
-        converter.convert(metadata.getName(), Localized::getName, Localized::setName);
-        converter.convert(metadata.getDescription(), Localized::getDescription, Localized::setDescription);
-        converter.convert(metadata.getSummary(), Localized::getSummary, Localized::setSummary);
+        converter.convert(v2AppInfo.getName(), Localized::getName, Localized::setName);
+        converter.convert(v2AppInfo.getDescription(), Localized::getDescription, Localized::setDescription);
+        converter.convert(v2AppInfo.getSummary(), Localized::getSummary, Localized::setSummary);
 
-        converter.convert(metadata.getVideo(), Localized::getVideo, Localized::setVideo);
+        converter.convert(v2AppInfo.getVideo(), Localized::getVideo, Localized::setVideo);
 
-        converter.convert(Java8Util.getKeyValueMap(metadata.getIcon(), f -> V2Metadata.getIconName(f)),
+        converter.convert(Java8Util.getKeyValueMap(v2AppInfo.getIcon(), f -> V2AppInfo.getIconName(f)),
                 Localized::getIcon, Localized::setIcon);
 
-        V2Screenshots screenshots = metadata.getScreenshots();
+        V2Screenshots screenshots = v2AppInfo.getScreenshots();
         if (screenshots != null) {
             Map<String, List<V2File>> phoneScreenshots = screenshots.getPhone();
             if (phoneScreenshots != null) {
+                v2FixPhoneScreenshotService.fix(screenshots);
                 converter.convert(getFileNameListMap(phoneScreenshots)
                         , Localized::getPhoneScreenshots, Localized::setPhoneScreenshots);
+                converter.convert(screenshots.getPhoneDir()
+                        , Localized::getPhoneScreenshotDir, Localized::setPhoneScreenshotDir);
             }
         }
 

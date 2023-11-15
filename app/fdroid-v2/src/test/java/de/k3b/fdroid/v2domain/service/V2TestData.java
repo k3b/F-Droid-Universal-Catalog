@@ -28,7 +28,7 @@ import java.util.Objects;
 
 import de.k3b.fdroid.v2domain.entity.packagev2.V2App;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2AppCatalog;
-import de.k3b.fdroid.v2domain.entity.packagev2.V2Metadata;
+import de.k3b.fdroid.v2domain.entity.packagev2.V2AppInfo;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2PackageVersion;
 
 public class V2TestData {
@@ -36,7 +36,7 @@ public class V2TestData {
 
     public static final V2AppCatalog indexV2;
     public static final V2App packageV2;
-    public static final V2Metadata metadata;
+    public static final V2AppInfo metadata;
     public static final V2PackageVersion versionV2;
 
     static {

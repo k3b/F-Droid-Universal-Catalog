@@ -8486,12 +8486,12 @@
           "phone": {
             "en-US": [
               {
-                "name": "my-en-phone1-name",
+                "name": "/my.test.app/en-US/phoneScreenshots/my-en-phone1-name.png",
                 "sha256": "my-en-phone1-sha256",
                 "size": 748867
               },
               {
-                "name": "my-en-phone2-name",
+                "name": "/my.test.app/en-US/phoneScreenshots/my-en-phone2-name.png",
                 "sha256": "my-en-phone2-sha256",
                 "size": 142049
               }
@@ -8513,6 +8513,9 @@
         "donate": [
           "my-donate"
         ],
+        "video": {
+          "en-US": "my-en-video"
+        },
         "icon": {
           "en-US": {
             "name": "/icons/my-en-icon-name.png",

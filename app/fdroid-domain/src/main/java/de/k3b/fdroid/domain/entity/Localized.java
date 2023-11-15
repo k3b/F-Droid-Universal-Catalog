@@ -96,7 +96,7 @@ public class Localized extends LocalizedCommon implements AppDetail {
         toStringBuilder(sb, "localeId", this.localeId);
         super.toStringBuilder(sb);
         toStringBuilder(sb, "phoneScreenshotDir", phoneScreenshotDir);
-        toStringBuilder(sb, "phoneScreenshots", phoneScreenshots, 20);
+        toStringBuilder(sb, "phoneScreenshots", phoneScreenshots, 40);
     }
 
     @Override

@@ -28,6 +28,13 @@ import java.util.Map;
 import de.k3b.fdroid.v2domain.entity.repo.V2File;
 
 public class V2Screenshots {
+
+    /**
+     * phone Screenshot Dir per language (not part of v2-catalog but calculated during import)
+     */
+    @Nullable
+    private Map<String, String> phoneDir;
+
     @Nullable
     private Map<String, List<V2File>> phone;
     @Nullable
@@ -46,6 +53,19 @@ public class V2Screenshots {
     @Nullable
     public Map<String, List<V2File>> getPhone() {
         return this.phone;
+    }
+
+    public void setPhone(Map<String, List<V2File>> phone) {
+        this.phone = phone;
+    }
+
+    @Nullable
+    public Map<String, String> getPhoneDir() {
+        return this.phoneDir;
+    }
+
+    public void setPhoneDir(Map<String, String> phoneDir) {
+        this.phoneDir = phoneDir;
     }
 
     @Nullable

@@ -22,7 +22,6 @@ package de.k3b.fdroid.v2domain.service;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -55,34 +54,11 @@ public class V2UpdateServiceTest {
 
     }
 
-    @Test
-    public void updateAppWithDetailsIntegrationsTest() {
-        AppRepository appRepository = Mockito.mock(AppRepository.class);
-        Mockito.when(appRepository.findByPackageName(app.getPackageName())).thenReturn(app);
-
-        V2AppUpdateService sut = new V2AppUpdateService(
-                appRepository,
-                new V2LocalizedUpdateService(null, new LanguageService(null)),
-                new AppCategoryUpdateService(
-                        new CategoryService(null),
-                        null)
-        ).init();
-
-        // act
-        sut.update(repo.getId(), app.getPackageName(), V2TestData.packageV2);
-
-        // assert: v1import and v2import shoud create the same result
-        String expected = "App[id=4711,resourceRepoId=4712,packageName=my.test.app," +
-                "changelog=my-changelog,suggestedVersionName=1.2.3,suggestedVersionCode=123," +
-                "issueTracker=my-issueTracker,license=my-license,sourceCode=my-sourceCode," +
-                "webSite=my-webSite,added=2020-05-09,lastUpdated=2020-03-14," +
-                "icon=my-en-icon-name.png,searchCategory=my-cat1,my-cat2," +
-                "searchName=:de: my-de...ame-app," +
-                "searchSummary=:de: my-de...ary-app," +
-                "searchDescription=:de: my-de...ion-app,searchWhatsNew=:en: my-en-whatsNew" +
-                "]";
-
-        assertEquals(expected, app.toString());
+    private static V2LocalizedUpdateService createLocalizedUpdateService() {
+        return new V2LocalizedUpdateService(
+                null,
+                new LanguageService(null),
+                new V2FixPhoneScreenshotService());
     }
 
     @Test
@@ -111,7 +87,36 @@ public class V2UpdateServiceTest {
     }
 
     @Test
-    @Ignore("TODO: 2023-11-14 WIP different results between v1 and v2")
+    public void updateAppWithDetailsIntegrationsTest() {
+        AppRepository appRepository = Mockito.mock(AppRepository.class);
+        Mockito.when(appRepository.findByPackageName(app.getPackageName())).thenReturn(app);
+
+        V2AppUpdateService sut = new V2AppUpdateService(
+                appRepository,
+                createLocalizedUpdateService(),
+                new AppCategoryUpdateService(
+                        new CategoryService(null),
+                        null)
+        ).init();
+
+        // act
+        sut.update(repo.getId(), app.getPackageName(), V2TestData.packageV2);
+
+        // assert: v1import and v2import shoud create the same result
+        String expected = "App[id=4711,resourceRepoId=4712,packageName=my.test.app," +
+                "changelog=my-changelog,suggestedVersionName=1.2.3,suggestedVersionCode=123," +
+                "issueTracker=my-issueTracker,license=my-license,sourceCode=my-sourceCode," +
+                "webSite=my-webSite,added=2020-05-09,lastUpdated=2020-03-14," +
+                "icon=my-en-icon-name.png,searchCategory=my-cat1,my-cat2," +
+                "searchName=:de: my-de...ame-app," +
+                "searchSummary=:de: my-de...ary-app," +
+                "searchDescription=:de: my-de...ion-app,searchWhatsNew=:en: my-en-whatsNew" +
+                "]";
+
+        assertEquals(expected, app.toString());
+    }
+
+    @Test
     public void updateLocalized() {
         // arrange
         Localized lde = new Localized(app.getAppId(), "de");
@@ -121,9 +126,7 @@ public class V2UpdateServiceTest {
         localizedMap.put(lde.getLocaleId(), lde);
         localizedMap.put(len.getLocaleId(), len);
 
-        V2LocalizedUpdateService sut = new V2LocalizedUpdateService(
-                null,
-                new LanguageService(null).init());
+        V2LocalizedUpdateService sut = createLocalizedUpdateService().init();
 
         // act
         Java8Util.OutParam<Localized> exceptionContext = new Java8Util.OutParam<>(null);
@@ -133,7 +136,12 @@ public class V2UpdateServiceTest {
         String expectedDe = "Localized[appId=4711,localeId=de,name=my-de-name-app,summary=my-de-summary-app,description=my-de-description-app]";
         assertEquals(expectedDe, lde.toString());
         String expectedEn = "Localized[appId=4711,localeId=en,name=my-en-name-app,summary=my-en-summary-app,description=my-en-description-app" +
-                ",icon=my-en-icon-name.png,whatsNew=my-en-whatsNew,phoneScreenshots=my-en-phon...e2-name]";
+                ",icon=my-en-icon-name.png" +
+                ",video=my-en-video" +
+                ",whatsNew=my-en-whatsNew" +
+                ",phoneScreenshotDir=my.test.app/en-US/phoneScreenshots/" +
+                ",phoneScreenshots=my-en-phone1-name.pn...n-phone2-name.png" +
+                "]";
         assertEquals(expectedEn, len.toString());
     }
 }

@@ -27,7 +27,7 @@ import de.k3b.fdroid.v2domain.entity.common.IV2IndexFile;
 
 public class V2File implements IV2IndexFile {
     @NotNull
-    private final String name;
+    private String name;
     @Nullable
     private String sha256;
     @Nullable
@@ -36,12 +36,16 @@ public class V2File implements IV2IndexFile {
     private String ipfsCIDv1;
 
     public V2File(@NotNull String name) {
-        this.name = name;
+        setName(name);
     }
 
     @NotNull
     public String getName() {
         return this.name;
+    }
+
+    public void setName(@NotNull String name) {
+        this.name = name;
     }
 
     @Nullable

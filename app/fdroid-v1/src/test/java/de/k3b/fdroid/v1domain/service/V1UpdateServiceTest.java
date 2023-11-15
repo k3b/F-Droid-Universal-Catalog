@@ -141,7 +141,7 @@ public class V1UpdateServiceTest {
                 ",video=my-en-video" +
                 ",whatsNew=my-en-whatsNew" +
                 ",phoneScreenshotDir=my.test.app/en-US/phoneScreenshots/" +
-                ",phoneScreenshots=my-en-phon...e2-name" +
+                ",phoneScreenshots=my-en-phone1-name.pn...n-phone2-name.png" +
                 "]";
         assertEquals(expectedEn, len.toString());
     }

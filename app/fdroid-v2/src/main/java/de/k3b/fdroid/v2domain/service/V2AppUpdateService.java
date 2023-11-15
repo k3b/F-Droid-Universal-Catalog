@@ -42,8 +42,8 @@ import de.k3b.fdroid.domain.service.LanguageService;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.StringUtil;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2App;
+import de.k3b.fdroid.v2domain.entity.packagev2.V2AppInfo;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2Manifest;
-import de.k3b.fdroid.v2domain.entity.packagev2.V2Metadata;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2PackageVersion;
 import de.k3b.fdroid.v2domain.entity.repo.V2File;
 
@@ -73,10 +73,10 @@ public class V2AppUpdateService implements ProgressObservable {
 
     }
 
-    private static String getIconName(V2Metadata metadata, String locale) {
+    private static String getIconName(V2AppInfo metadata, String locale) {
         Map<String, V2File> iconMap = LanguageService.getCanonicalLocale(metadata.getIcon());
         V2File icon = (iconMap == null) ? null : iconMap.get(locale);
-        return V2Metadata.getIconName(icon);
+        return V2AppInfo.getIconName(icon);
     }
 
     public V2AppUpdateService init() {
@@ -129,7 +129,7 @@ public class V2AppUpdateService implements ProgressObservable {
     }
 
     // Entrypoint for unittest
-    protected App update(App roomApp, V2Metadata metadata, V2PackageVersion version) {
+    protected App update(App roomApp, V2AppInfo metadata, V2PackageVersion version) {
         if (metadata != null) {
             AppCommon.copyCommon(roomApp, metadata, null);
 
