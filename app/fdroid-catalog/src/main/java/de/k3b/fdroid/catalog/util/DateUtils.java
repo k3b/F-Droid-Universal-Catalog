@@ -25,7 +25,7 @@
  *
  */
 
-package de.k3b.fdroid.catalog.v1domain.util;
+package de.k3b.fdroid.catalog.util;
 
 import java.lang.ref.SoftReference;
 import java.text.ParsePosition;

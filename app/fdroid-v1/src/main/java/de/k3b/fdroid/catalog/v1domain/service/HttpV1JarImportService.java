@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1domain the fdroid json catalog-format-v1 parser.
  *
@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import de.k3b.fdroid.Global;
+import de.k3b.fdroid.catalog.CatalogJarException;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.domain.repository.RepoRepository;
@@ -65,7 +66,7 @@ public class HttpV1JarImportService extends HttpV1JarDownloadService
     }
 
     @Override // Implements V1DownloadAndImportServiceInterface
-    public Repo download(String downloadUrl, String jarSigningCertificateFingerprintOrNull, String taskId) throws V1JarException {
+    public Repo download(String downloadUrl, String jarSigningCertificateFingerprintOrNull, String taskId) throws CatalogJarException {
         Repo repo = new Repo("NewRepository", downloadUrl);
         repo.setLastUsedDownloadMirror(downloadUrl);
 
@@ -79,10 +80,10 @@ public class HttpV1JarImportService extends HttpV1JarDownloadService
     }
 
     @Override  // Implements V1DownloadAndImportServiceInterface
-    public Repo download(int repoId, String taskId) throws V1JarException {
+    public Repo download(int repoId, String taskId) throws CatalogJarException {
         Repo repo = repoRepository.findById(repoId);
         if (repo == null) {
-            throw new V1JarException("download(repoId=" + repoId + "): Repo not found");
+            throw new CatalogJarException("download(repoId=" + repoId + "): Repo not found");
         }
         repo.setDownloadTaskId(taskId);
         repo.setLastErrorMessage(null);
@@ -115,7 +116,7 @@ public class HttpV1JarImportService extends HttpV1JarDownloadService
 
         String message = "Error " + context + " " + repo.getV1Url();
         LOGGER.error(message + " (" + repo + ")", exception);
-        throw new V1JarException(message, exception);
+        throw new CatalogJarException(message, exception);
     }
 
 }

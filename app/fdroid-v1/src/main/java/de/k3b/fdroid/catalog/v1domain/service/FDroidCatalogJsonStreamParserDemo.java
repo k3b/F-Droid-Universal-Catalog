@@ -32,8 +32,8 @@ import de.k3b.fdroid.catalog.v1domain.entity.V1App;
 import de.k3b.fdroid.catalog.v1domain.entity.V1Localized;
 import de.k3b.fdroid.catalog.v1domain.entity.V1Repo;
 import de.k3b.fdroid.catalog.v1domain.entity.V1Version;
-import de.k3b.fdroid.catalog.v1domain.util.V1LocalizedStatistics;
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
+import de.k3b.fdroid.domain.util.LocalizedStatistics;
 
 /**
  * json stream praser demo für FDroid.org index v1 format that logs found data to the console.
@@ -46,7 +46,7 @@ public class FDroidCatalogJsonStreamParserDemo extends FDroidCatalogJsonStreamPa
     private final StringBuilder appWithNoLocale = new StringBuilder();
     private final StringBuilder appWithNoEnLocale = new StringBuilder();
     // statistics
-    V1LocalizedStatistics statistics = new V1LocalizedStatistics();
+    LocalizedStatistics statistics = new LocalizedStatistics();
     private int numberOfApps = 0;
 
     @Override

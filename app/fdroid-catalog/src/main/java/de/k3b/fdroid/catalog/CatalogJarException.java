@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1domain the fdroid json catalog-format-v1 parser.
  *
@@ -16,26 +16,26 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.catalog.v1domain.service;
+package de.k3b.fdroid.catalog;
 
 import de.k3b.fdroid.domain.entity.Repo;
 
-public class V1JarException extends RuntimeException {
+public class CatalogJarException extends RuntimeException {
     private static final long serialVersionUID = -108203133870545897L;
 
-    public V1JarException(String message) {
+    public CatalogJarException(String message) {
         super(message);
     }
 
-    public V1JarException(String message, Throwable cause) {
+    public CatalogJarException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public V1JarException(Repo repo, String message) {
+    public CatalogJarException(Repo repo, String message) {
         super(createMessage(repo, message));
     }
 
-    public V1JarException(Repo repo, String message, Throwable cause) {
+    public CatalogJarException(Repo repo, String message, Throwable cause) {
         super(createMessage(repo, message), cause);
     }
 

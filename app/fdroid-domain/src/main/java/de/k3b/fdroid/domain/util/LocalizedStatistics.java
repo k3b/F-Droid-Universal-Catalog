@@ -16,23 +16,23 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.catalog.v1domain.util;
+package de.k3b.fdroid.domain.util;
 
 import java.util.Arrays;
 import java.util.HashMap;
 
-import de.k3b.fdroid.catalog.v1domain.entity.V1Localized;
+import de.k3b.fdroid.domain.entity.common.ILocalizedCommon;
 
 /**
  * Count how many translations exist per language/locale
  */
-public class V1LocalizedStatistics {
+public class LocalizedStatistics {
     private final HashMap<String, Integer> locale2summaryCount = new HashMap<>();
     private final HashMap<String, Integer> locale2descriptionCount = new HashMap<>();
 
-    public void addStatistics(String locale, V1Localized v1Localized) {
-        addStatistics(locale2summaryCount, locale, v1Localized.getSummary());
-        addStatistics(locale2descriptionCount, locale, v1Localized.getDescription());
+    public void addStatistics(String locale, ILocalizedCommon localizedCommon) {
+        addStatistics(locale2summaryCount, locale, localizedCommon.getSummary());
+        addStatistics(locale2descriptionCount, locale, localizedCommon.getDescription());
     }
 
     private void addStatistics(HashMap<String, Integer> map, String locale, String value) {

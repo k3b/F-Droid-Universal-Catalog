@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1domain the fdroid json catalog-format-v1 parser.
  *
@@ -19,6 +19,7 @@
 
 package de.k3b.fdroid.catalog.v1domain.service;
 
+import de.k3b.fdroid.catalog.CatalogJarException;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.interfaces.ProgressObservable;
 
@@ -28,11 +29,11 @@ public interface V1DownloadAndImportServiceInterface extends ProgressObservable 
      * @param jarSigningCertificateFingerprintOrNull optional a fingerprint
      * @param taskId                                 optional info about task currently downloading.
      * @return info about the downloaded repo data. unsaved, (if something goes wrong)
-     * @throws V1JarException if something went wrong.
+     * @throws CatalogJarException if something went wrong.
      */
-    Repo download(String downloadUrl, String jarSigningCertificateFingerprintOrNull, String taskId) throws V1JarException;
+    Repo download(String downloadUrl, String jarSigningCertificateFingerprintOrNull, String taskId) throws CatalogJarException;
 
-    Repo download(int repoId, String taskId) throws V1JarException;
+    Repo download(int repoId, String taskId) throws CatalogJarException;
 
     Repo getLastRepo();
 }

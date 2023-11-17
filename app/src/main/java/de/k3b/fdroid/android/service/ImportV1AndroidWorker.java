@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid project.
  *
@@ -35,8 +35,8 @@ import java.util.UUID;
 
 import de.k3b.fdroid.android.FDroidApplication;
 import de.k3b.fdroid.android.Global;
+import de.k3b.fdroid.catalog.CatalogJarException;
 import de.k3b.fdroid.catalog.v1domain.service.V1DownloadAndImportServiceInterface;
-import de.k3b.fdroid.catalog.v1domain.service.V1JarException;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.domain.repository.RepoRepository;
@@ -119,7 +119,7 @@ public class ImportV1AndroidWorker extends Worker {
                 String jarSigningCertificateFingerprintOrNull = data.getString(KEY_JAR_SIGNING_CERTIFICATE_FINGERPRINT);
                 result = v1DownloadAndImportService.download(downloadUrl, jarSigningCertificateFingerprintOrNull, getId().toString());
             }
-        } catch (V1JarException ex) {
+        } catch (CatalogJarException ex) {
             Log.e(Global.LOG_TAG_IMPORT, ex.getMessage(), ex);
 
             // save repo errormessage

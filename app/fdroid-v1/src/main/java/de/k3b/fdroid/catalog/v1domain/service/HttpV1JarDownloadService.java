@@ -37,7 +37,7 @@ import java.net.URL;
 import java.util.Date;
 
 import de.k3b.fdroid.Global;
-import de.k3b.fdroid.catalog.v1domain.util.DateUtils;
+import de.k3b.fdroid.catalog.util.DateUtils;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
 import de.k3b.fdroid.domain.interfaces.ProgressObservable;

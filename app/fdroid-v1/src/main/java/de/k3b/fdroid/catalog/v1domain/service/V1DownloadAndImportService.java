@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid.v1domain the fdroid json catalog-format-v1 parser.
  *
@@ -30,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import de.k3b.fdroid.Global;
+import de.k3b.fdroid.catalog.CatalogJarException;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
 import de.k3b.fdroid.domain.interfaces.ProgressObserver;
@@ -62,9 +63,9 @@ public class V1DownloadAndImportService implements V1DownloadAndImportServiceInt
     }
 
     /**
-     * @throws V1JarException if security relevant properties differ
+     * @throws CatalogJarException if security relevant properties differ
      */
-    public static Repo copy(Repo dest, Repo src) throws V1JarException {
+    public static Repo copy(Repo dest, Repo src) throws CatalogJarException {
         dest.setJarSigningCertificate(replaceEmptySecure(
                 src.getJarSigningCertificate(), dest.getJarSigningCertificate(), "jarSigningCertificate"));
         dest.setJarSigningCertificateFingerprint(replaceEmptySecure(
@@ -85,14 +86,32 @@ public class V1DownloadAndImportService implements V1DownloadAndImportServiceInt
     }
 
     /**
+     * same as {@link StringUtil#replaceEmpty(String, String)} but throws {@link CatalogJarException}
+     * if both have values that are not the same.
+     *
+     * @param context ie "jarSigningCertificate" meaning that the certificate must be the same
+     * @throws CatalogJarException if security relevant properties differ
+     */
+    private static String replaceEmptySecure(String newValue, String emptyValueReplacement, String context) throws CatalogJarException {
+        if (StringUtil.isEmpty(newValue)) return emptyValueReplacement;
+
+        // dest not empty
+        if (!StringUtil.isEmpty(emptyValueReplacement) && 0 != newValue.compareToIgnoreCase(emptyValueReplacement)) {
+            throw new CatalogJarException(context + " values are not the same: " +
+                    newValue + " != " + emptyValueReplacement);
+        }
+        return newValue;
+    }
+
+    /**
      * @param downloadUrl                            where data comes from
      * @param jarSigningCertificateFingerprintOrNull optional a fingerprint
      * @param taskId                                 optional info about task currently downloading.
      * @return info about the downloaded repo data. unsaved, (if something goes wrong)
-     * @throws V1JarException if something went wrong.
+     * @throws CatalogJarException if something went wrong.
      */
     @Override
-    public Repo download(String downloadUrl, String jarSigningCertificateFingerprintOrNull, String taskId) throws V1JarException {
+    public Repo download(String downloadUrl, String jarSigningCertificateFingerprintOrNull, String taskId) throws CatalogJarException {
         String context = "downloading";
         Repo repo = new Repo("NewRepository", downloadUrl);
         repo.setLastUsedDownloadMirror(downloadUrl);
@@ -112,36 +131,12 @@ public class V1DownloadAndImportService implements V1DownloadAndImportServiceInt
     }
 
     @Override
-    public Repo download(int repoId, String taskId) throws V1JarException {
+    public Repo download(int repoId, String taskId) throws CatalogJarException {
         Repo repo = repoRepository.findById(repoId);
         if (repo == null)
-            throw new V1JarException("download(repoId=" + repoId + "): Repo not found");
+            throw new CatalogJarException("download(repoId=" + repoId + "): Repo not found");
         repo.setDownloadTaskId(taskId);
         return download(repo);
-    }
-
-    /**
-     * @param repo containing infos what to download.
-     * @return null if nothing changed since last download else updated/saved repo data.exception = {DataIntegrityViolationException@9551} "org.springframework.dao.DataIntegrityViolationException: could not execute statement; SQL [n/a]; nested exception is org.hibernate.exception.DataException: could not execute statement"
-     * @throws V1JarException if something went wrong.
-     */
-    public Repo download(@NonNull Repo repo) throws V1JarException {
-        String context = "downloading";
-        // assume no error yet
-        repo.setLastErrorMessage(null);
-        try {
-            File file = downloadService.downloadHttps(repo.getV1Url(), repo.getLastUsedDownloadDateTimeUtc(), repo);
-            context = "importing";
-            if (file != null) {
-                return importRepo(repo, file);
-            }
-        } catch (Throwable exception) {
-            onException(repo, exception, context);
-        } finally {
-            // always save
-            v1UpdateService.save(repo);
-        }
-        return repo;
     }
 
     private Repo fixRepo(Repo repoFromImport) {
@@ -174,20 +169,27 @@ public class V1DownloadAndImportService implements V1DownloadAndImportServiceInt
     }
 
     /**
-     * same as {@link StringUtil#replaceEmpty(String, String)} but throws {@link V1JarException}
-     * if both have values that are not the same.
-     * @param context ie "jarSigningCertificate" meaning that the certificate must be the same
-     * @throws V1JarException if security relevant properties differ
+     * @param repo containing infos what to download.
+     * @return null if nothing changed since last download else updated/saved repo data.exception = {DataIntegrityViolationException@9551} "org.springframework.dao.DataIntegrityViolationException: could not execute statement; SQL [n/a]; nested exception is org.hibernate.exception.DataException: could not execute statement"
+     * @throws CatalogJarException if something went wrong.
      */
-    private static String replaceEmptySecure(String newValue, String emptyValueReplacement, String context) throws V1JarException {
-        if (StringUtil.isEmpty(newValue)) return emptyValueReplacement;
-
-        // dest not empty
-        if (!StringUtil.isEmpty(emptyValueReplacement) && 0 != newValue.compareToIgnoreCase(emptyValueReplacement)) {
-            throw new V1JarException(context + " values are not the same: " +
-                    newValue + " != " + emptyValueReplacement);
+    public Repo download(@NonNull Repo repo) throws CatalogJarException {
+        String context = "downloading";
+        // assume no error yet
+        repo.setLastErrorMessage(null);
+        try {
+            File file = downloadService.downloadHttps(repo.getV1Url(), repo.getLastUsedDownloadDateTimeUtc(), repo);
+            context = "importing";
+            if (file != null) {
+                return importRepo(repo, file);
+            }
+        } catch (Throwable exception) {
+            onException(repo, exception, context);
+        } finally {
+            // always save
+            v1UpdateService.save(repo);
         }
-        return newValue;
+        return repo;
     }
 
     private Repo onException(Repo repo, Throwable exception, String context) {
@@ -197,7 +199,7 @@ public class V1DownloadAndImportService implements V1DownloadAndImportServiceInt
 
         String message = "Error " + context + " " + repo.getV1Url();
         LOGGER.error(message + " (" + repo + ")", exception);
-        throw new V1JarException(message, exception);
+        throw new CatalogJarException(message, exception);
     }
 
 

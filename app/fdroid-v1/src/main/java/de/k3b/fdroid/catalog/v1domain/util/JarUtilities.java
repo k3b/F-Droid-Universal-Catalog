@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.jar.JarEntry;
 
 import de.k3b.fdroid.Global;
-import de.k3b.fdroid.catalog.v1domain.service.V1JarException;
+import de.k3b.fdroid.catalog.CatalogJarException;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.util.StringUtil;
 
@@ -64,9 +64,9 @@ public class JarUtilities {
      * restrictions.
      *
      * @return null if there is no certificate
-     * @throws V1JarException if cert-info does not confrom to v1-fdroid-security-cert-restrictions.
+     * @throws CatalogJarException if cert-info does not confrom to v1-fdroid-security-cert-restrictions.
      */
-    public static X509Certificate getSigningCertFromJar(Repo repo, JarEntry jarEntry) throws V1JarException {
+    public static X509Certificate getSigningCertFromJar(Repo repo, JarEntry jarEntry) throws CatalogJarException {
         // https://developer.android.com/reference/java/util/jar/JarEntry#getCodeSigners() api since android-api 1
         // always returns null on android-4.2 and android-4.4 devices, works on android-7.0 and android-10
         //
@@ -116,7 +116,7 @@ public class JarUtilities {
      *
      * @param rawCertFromJar the {@link X509Certificate} embedded in the downloaded jar
      */
-    public static void verifyAndUpdateSigningCertificate(@NotNull Repo repo, @Nullable Certificate rawCertFromJar) throws V1JarException {
+    public static void verifyAndUpdateSigningCertificate(@NotNull Repo repo, @Nullable Certificate rawCertFromJar) throws CatalogJarException {
         if (repo == null) throw new NullPointerException();
 
         String certFromJar = null; // assume no cert
@@ -162,7 +162,7 @@ public class JarUtilities {
 
     private static void throwError(@NotNull Repo repo, String errorMessage, Throwable e) {
         repo.setLastErrorMessage(errorMessage);
-        throw new V1JarException(repo, errorMessage, e);
+        throw new CatalogJarException(repo, errorMessage, e);
     }
 
     /*

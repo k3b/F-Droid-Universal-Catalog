@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.security.cert.X509Certificate;
 import java.util.jar.JarEntry;
 
+import de.k3b.fdroid.catalog.CatalogJarException;
 import de.k3b.fdroid.catalog.v1domain.entity.V1App;
 import de.k3b.fdroid.catalog.v1domain.entity.V1Repo;
 import de.k3b.fdroid.catalog.v1domain.entity.V1Version;
@@ -40,7 +41,7 @@ import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 
 /**
  * Reads and verfies the jar.
- * throws {@link V1JarException} if something goes wrong.
+ * throws {@link CatalogJarException} if something goes wrong.
  */
 public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase implements ProgressObservable {
     @NonNull
@@ -72,10 +73,10 @@ public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase imp
     protected void afterJsonJarRead(JarEntry jarEntry) {
         super.afterJsonJarRead(jarEntry);
         if (this.repoInJar == null) {
-            throw new V1JarException(repoInDatabase, "Missing Repo-Json-Entry in downloaded " + RepoCommon.V1_JAR_NAME);
+            throw new CatalogJarException(repoInDatabase, "Missing Repo-Json-Entry in downloaded " + RepoCommon.V1_JAR_NAME);
         }
         if (repoInDatabase.getTimestamp() != 0 && repoInJar.getTimestamp() < repoInDatabase.getTimestamp()) {
-            throw new V1JarException("Downloaded " + RepoCommon.V1_JAR_NAME +
+            throw new CatalogJarException("Downloaded " + RepoCommon.V1_JAR_NAME +
                     " is older than current database index! "
                     + Repo.asDateString(repoInJar.getTimestamp()) + " < " + Repo.asDateString(repoInDatabase.getTimestamp()));
         }

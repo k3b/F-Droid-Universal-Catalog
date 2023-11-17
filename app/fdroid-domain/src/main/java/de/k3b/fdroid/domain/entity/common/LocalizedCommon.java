@@ -30,7 +30,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * as these are Gson/Android-Room-Database specific.
  */
 @SuppressWarnings("unused")
-public class LocalizedCommon extends EntityCommon {
+public class LocalizedCommon extends EntityCommon implements ILocalizedCommon {
     @Schema(description = "Localized [App] name.",
             example = "A Photo Manager (Manejador de fotos)")
     private String name;
@@ -59,6 +59,7 @@ public class LocalizedCommon extends EntityCommon {
         dest.setWhatsNew(ifNotNull(src.getWhatsNew(),dest.getWhatsNew()));
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -67,6 +68,7 @@ public class LocalizedCommon extends EntityCommon {
         this.name = maxlen(name);
     }
 
+    @Override
     public String getSummary() {
         return summary;
     }
@@ -75,6 +77,7 @@ public class LocalizedCommon extends EntityCommon {
         this.summary = maxlen(summary);
     }
 
+    @Override
     public String getDescription() {
         return description;
     }
@@ -83,6 +86,7 @@ public class LocalizedCommon extends EntityCommon {
         this.description = maxlen(description, MAX_LEN_AGGREGATED);
     }
 
+    @Override
     public String getIcon() {
         return icon;
     }
@@ -91,6 +95,7 @@ public class LocalizedCommon extends EntityCommon {
         this.icon = maxlen(icon);
     }
 
+    @Override
     public String getVideo() {
         return video;
     }
@@ -99,6 +104,7 @@ public class LocalizedCommon extends EntityCommon {
         this.video = maxlen(video);
     }
 
+    @Override
     public String getWhatsNew() {
         return whatsNew;
     }

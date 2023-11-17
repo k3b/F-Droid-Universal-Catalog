@@ -82,7 +82,9 @@ android {
 
 dependencies {
     implementation(project(path: ':app:fdroid-domain'))
+    implementation(project(path: ':app:fdroid-catalog'))
     implementation(project(path: ':app:fdroid-v1'))
+    implementation(project(path: ':app:fdroid-v2'))
     implementation(project(path: ':app:fdroid-html'))
     implementation(project(path: ':app:fdroid-repository-android'))
     testImplementation(project(path: ':app:fdroid-v1'))

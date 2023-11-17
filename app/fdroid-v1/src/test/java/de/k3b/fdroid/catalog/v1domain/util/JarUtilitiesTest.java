@@ -36,7 +36,7 @@ import java.security.cert.Certificate;
 import java.util.Arrays;
 import java.util.Collection;
 
-import de.k3b.fdroid.catalog.v1domain.service.V1JarException;
+import de.k3b.fdroid.catalog.CatalogJarException;
 import de.k3b.fdroid.domain.entity.Repo;
 
 @RunWith(Parameterized.class)
@@ -98,7 +98,7 @@ public class JarUtilitiesTest {
         repo.setJarSigningCertificateFingerprint(exampleDbFingerprint);
         try {
             verifyAndUpdateSigningCertificate(repo, exampleJarCert);
-        } catch (V1JarException ex) {
+        } catch (CatalogJarException ex) {
             // ignored. error is also set in repo
         }
         assertEquals(exampleErrorMessage, repo.getLastErrorMessage());
