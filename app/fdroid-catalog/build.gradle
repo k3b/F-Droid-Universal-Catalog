@@ -1,0 +1,35 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish' // required for jitpack
+}
+
+// required for jitpack
+ext {
+    PUBLISH_MODUL_DESCRIPTION = 'FDroid-Html generation support'
+}
+
+java {
+    sourceCompatibility = rootProject.ext.COMPILER_VERSION_COMMON
+    targetCompatibility = rootProject.ext.COMPILER_VERSION_COMMON
+}
+
+dependencies {
+    implementation project(path: ':app:fdroid-domain')
+
+    // implementation "androidx.room:room-common:$rootProject.ext.ROOM_VERSION"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:2.13.5"
+    // implementation 'io.swagger.core.v3:swagger-annotations:2.2.18'
+    implementation 'javax.persistence:javax.persistence-api:2.2'
+    implementation "org.jetbrains:annotations:$rootProject.ext.JETBRAINS_ANNOTATIONS_VERSION"
+
+    // -------
+
+    implementation "com.google.code.gson:gson:$rootProject.ext.GSON_VERSION"
+    implementation "commons-io:commons-io:$rootProject.ext.COMMONS_IO_VERSION"
+
+    implementation "org.slf4j:slf4j-api:$rootProject.ext.SLF4J_VERSION"
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+
+}
