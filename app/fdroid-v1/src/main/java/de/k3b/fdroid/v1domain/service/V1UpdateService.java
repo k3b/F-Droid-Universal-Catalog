@@ -138,7 +138,7 @@ public abstract class V1UpdateService implements IV1UpdateService, ProgressObser
          */
         @Override
         protected void onRepo(V1Repo v1Repo) {
-            roomRepo = repoUpdateService.update(v1Repo, roomRepo);
+            roomRepo = repoUpdateService.update(roomRepo, v1Repo);
             currentRepoId = roomRepo.getId();
             lastAppCount = 0;
             lastVersionCount = 0;

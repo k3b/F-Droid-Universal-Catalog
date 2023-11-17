@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2022-2023 by k3b.
  *
- * This file is part of org.fdroid.v1domain the fdroid json catalog-format-v1 parser.
+ * This file is part of org.fdroid.v2domain the fdroid json catalog-format-v2 parser.
  *
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by
@@ -17,7 +17,7 @@
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
 
-package de.k3b.fdroid.v1domain.service;
+package de.k3b.fdroid.v2domain.service;
 
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -30,15 +30,16 @@ import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
+import de.k3b.fdroid.domain.util.Java8Util;
 import de.k3b.fdroid.domain.util.StringUtil;
-import de.k3b.fdroid.v1domain.entity.IV1UpdateService;
-import de.k3b.fdroid.v1domain.entity.V1Repo;
+import de.k3b.fdroid.v2domain.entity.repo.V2Mirror;
+import de.k3b.fdroid.v2domain.entity.repo.V2Repo;
 
 /**
- * {@link IV1UpdateService} that updates {@link Repo}
- * from {@link V1Repo} using a {@link RepoRepository}
+ * Service that updates {@link Repo}
+ * from {@link V2Repo} using a {@link RepoRepository}
  */
-public class V1RepoUpdateService implements IV1UpdateService {
+public class V2RepoUpdateService {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
 
     @Nullable
@@ -46,27 +47,27 @@ public class V1RepoUpdateService implements IV1UpdateService {
 
     private int nextMockAppId = 200142;
 
-    public V1RepoUpdateService(@Nullable RepoRepository repoRepository) {
+    public V2RepoUpdateService(@Nullable RepoRepository repoRepository) {
         this.repoRepository = repoRepository;
     }
 
-    public Repo update(Repo roomRepoOrNull, V1Repo v1Repo)
+    public Repo update(Repo roomRepoOrNull, V2Repo v2Repo)
             throws PersistenceException {
         Repo roomRepo = roomRepoOrNull;
         try {
             if (roomRepo == null && repoRepository != null) {
-                roomRepo = repoRepository.findByAddress(v1Repo.getAddress());
+                roomRepo = repoRepository.findByAddress(v2Repo.getAddress());
             }
             if (roomRepo == null) {
                 roomRepo = new Repo();
-                copy(roomRepo, v1Repo);
+                copy(roomRepo, v2Repo);
                 if (repoRepository != null) {
                     repoRepository.insert(roomRepo);
                 } else {
                     roomRepo.setId(nextMockAppId++);
                 }
             } else {
-                copy(roomRepo, v1Repo);
+                copy(roomRepo, v2Repo);
                 if (repoRepository != null) repoRepository.update(roomRepo);
             }
             return roomRepo;
@@ -81,21 +82,21 @@ public class V1RepoUpdateService implements IV1UpdateService {
             }
             message.append(") ")
                     .append(ExceptionUtils.getParentCauseMessage(ex, PersistenceException.class));
-            LOGGER.error(message + "\n\tv1Repo=" + v1Repo, ex);
+            LOGGER.error(message + "\n\tv2Repo=" + v2Repo, ex);
             throw new PersistenceException(message.toString(), ex);
         }
     }
 
-    private void copy(Repo dest, V1Repo src) {
+    private void copy(Repo dest, V2Repo src) {
         RepoCommon.copyCommon(dest, src);
 
-        dest.setMirrors(StringUtil.toCsvStringOrNull(src.getMirrors()));
+        dest.setMirrors(StringUtil.toCsvStringOrNull(Java8Util.reduce(src.getMirrorsList(), V2Mirror::getUrl)));
         if (dest.getLastUsedDownloadDateTimeUtc() < src.getTimestamp()) {
             dest.setLastUsedDownloadDateTimeUtc(src.getTimestamp());
         }
     }
 
-    public V1RepoUpdateService init() {
+    public V2RepoUpdateService init() {
         return this;
     }
 }

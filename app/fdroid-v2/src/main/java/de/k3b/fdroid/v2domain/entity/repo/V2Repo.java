@@ -20,61 +20,64 @@ package de.k3b.fdroid.v2domain.entity.repo;
 
 // V2Repo.java
 
-import org.jetbrains.annotations.NotNull;
+import com.google.gson.annotations.SerializedName;
+
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
 
-public class V2Repo {
-    @NotNull
-    private final Map<String, String> name;
-    @NotNull
-    private final Map<String, V2File> icon;
-    @NotNull
-    private final String address;
+import de.k3b.fdroid.domain.entity.common.IRepoCommon;
+import de.k3b.fdroid.domain.service.LanguageService;
+import de.k3b.fdroid.v2domain.entity.V2IconUtil;
+
+public class V2Repo implements IRepoCommon {
+
+    /**
+     * to avoid naming conflict IRepoCommon.getName()
+     */
     @Nullable
-    private final String webBaseUrl;
-    @NotNull
-    private final Map<String, String> description;
-    @NotNull
-    private final List<V2Mirror> mirrors;
-    private final long timestamp;
-    @NotNull
-    private final Map<String, V2AntiFeature> antiFeatures;
-    @NotNull
-    private final Map<String, V2Category> categories;
-    @NotNull
-    private final Map<String, V2ReleaseChannel> releaseChannels;
+    @SerializedName("name")
+    private Map<String, String> nameMap;
+    @Nullable
+    @SerializedName("icon")
+    private Map<String, V2File> iconMap;
+    @Nullable
+    private String address;
+    @Nullable
+    private String webBaseUrl;
+    @Nullable
+    @SerializedName("description")
+    private Map<String, String> descriptionMap;
+    @Nullable
+    @SerializedName("mirrors")
+    private List<V2Mirror> mirrorsList;
+    private long timestamp;
+    @Nullable
+    private Map<String, V2AntiFeature> antiFeatures;
+    @Nullable
+    private Map<String, V2Category> categories;
+    @Nullable
+    private Map<String, V2ReleaseChannel> releaseChannels;
 
-    public V2Repo(@NotNull Map<String, String> name, @NotNull Map<String, V2File> icon, @NotNull String address, @Nullable String webBaseUrl,
-                  @NotNull Map<String, String> description, @NotNull List<V2Mirror> mirrors, long timestamp,
-                  @NotNull Map<String, V2AntiFeature> antiFeatures, @NotNull Map<String, V2Category> categories, @NotNull Map<String, V2ReleaseChannel> releaseChannels) {
-        this.name = name;
-        this.icon = icon;
-        this.address = address;
-        this.webBaseUrl = webBaseUrl;
-        this.description = description;
-        this.mirrors = mirrors;
-        this.timestamp = timestamp;
-        this.antiFeatures = antiFeatures;
-        this.categories = categories;
-        this.releaseChannels = releaseChannels;
+    @Nullable
+    public Map<String, String> getNameMap() {
+        return this.nameMap;
     }
 
-    @NotNull
-    public Map<String, String> getName() {
-        return this.name;
+    @Nullable
+    public Map<String, V2File> getIconMap() {
+        return this.iconMap;
     }
 
-    @NotNull
-    public Map<String, V2File> getIcon() {
-        return this.icon;
-    }
-
-    @NotNull
+    @Nullable
     public String getAddress() {
         return this.address;
+    }
+
+    @Override
+    public String getDescription() {
+        return (descriptionMap == null) ? null : LanguageService.getCanonicalLocale(descriptionMap).get(LanguageService.FALLBACK_LOCALE);
     }
 
     @Nullable
@@ -82,37 +85,61 @@ public class V2Repo {
         return this.webBaseUrl;
     }
 
-    @NotNull
-    public Map<String, String> getDescription() {
-        return this.description;
+    @Nullable
+    public Map<String, String> getDescriptionMap() {
+        return this.descriptionMap;
     }
 
-    @NotNull
-    public List<V2Mirror> getMirrors() {
-        return this.mirrors;
+    @Nullable
+    public List<V2Mirror> getMirrorsList() {
+        return this.mirrorsList;
+    }
+
+    @Nullable
+    @Override
+    public String getName() {
+        return (nameMap == null) ? null : LanguageService.getCanonicalLocale(nameMap).get(LanguageService.FALLBACK_LOCALE);
     }
 
     public long getTimestamp() {
         return this.timestamp;
     }
 
-    @NotNull
+    @Override
+    public int getVersion() {
+        return 0; // not in v2 :-(
+    }
+
+    @Override
+    public int getMaxage() {
+        return 0; // not in v2 :-(
+    }
+
+    @Override
+    public String getIcon() {
+        if (iconMap != null) {
+            return V2IconUtil.getIconName(LanguageService.getCanonicalLocale(iconMap).get(LanguageService.FALLBACK_LOCALE));
+        }
+        return null;
+    }
+
+    @Nullable
     public Map<String, V2AntiFeature> getAntiFeatures() {
         return this.antiFeatures;
     }
 
-    @NotNull
+    @Nullable
     public Map<String, V2Category> getCategories() {
         return this.categories;
     }
 
-    @NotNull
+    @Nullable
     public Map<String, V2ReleaseChannel> getReleaseChannels() {
         return this.releaseChannels;
     }
 
-    @NotNull
+    @Nullable
     public String toString() {
-        return "V2Repo{name=" + this.name + ", icon=" + this.icon + ", address=" + this.address + ", webBaseUrl=" + this.webBaseUrl + ", description=" + this.description + ", mirrors=" + this.mirrors + ", timestamp=" + this.timestamp + ", antiFeatures=" + this.antiFeatures + ", categories=" + this.categories + ", releaseChannels=" + this.releaseChannels + "}";
+        return "V2Repo{name=" + this.nameMap + ", icon=" + this.iconMap + ", address=" + this.address + ", webBaseUrl=" + this.webBaseUrl + ", description=" + this.descriptionMap + ", mirrors=" + this.mirrorsList + ", timestamp=" + this.timestamp + ", antiFeatures=" + this.antiFeatures + ", categories=" + this.categories + ", releaseChannels=" + this.releaseChannels + "}";
     }
 }

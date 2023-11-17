@@ -30,6 +30,7 @@ import de.k3b.fdroid.v2domain.entity.packagev2.V2App;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2AppCatalog;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2AppInfo;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2PackageVersion;
+import de.k3b.fdroid.v2domain.entity.repo.V2Repo;
 
 public class V2TestData {
     public static final String UNITTEST_TEST_DATA = "exampledata/V2TestData-index-v2.json";
@@ -38,12 +39,14 @@ public class V2TestData {
     public final V2App app;
     public final V2AppInfo appInfo;
     public final V2PackageVersion version;
+    public final V2Repo repo;
 
     public V2TestData() {
         try (InputStream resourceAsStream = V2TestData.class.getClassLoader().getResourceAsStream(UNITTEST_TEST_DATA);
              InputStreamReader is = new InputStreamReader(Objects.requireNonNull(resourceAsStream, "Cannot read json from " + UNITTEST_TEST_DATA))) {
             Gson gson = new Gson();
             appCatalog = gson.fromJson(is, V2AppCatalog.class);
+            repo = appCatalog.getRepo();
             app = appCatalog.getPackages().entrySet().iterator().next().getValue();
             appInfo = app.getMetadata();
             version = app.getVersions().entrySet().iterator().next().getValue();

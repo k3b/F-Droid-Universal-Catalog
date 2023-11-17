@@ -193,4 +193,24 @@ public class V2UpdateServiceTest {
         assertEquals(expected, app.toString());
 
     }
+
+    @Test
+    public void updateRepo() {
+        // arrange
+        V2RepoUpdateService sut = new V2RepoUpdateService(null).init();
+
+        // act
+        sut.update(repo, testData.repo);
+
+        // assert: v1import and v2import shout create the same result
+        String expected;
+        expected = "Repo[id=4712,name=repo-test-name,timestamp=2022-02-06" +
+                // ",version=20001,maxage=14" + // not in v2
+                ",icon=repo-icon.png" +
+                ",address=https://f-droid.org/test" +
+                ",description=repo-test-description" +
+                ",mirrors=https://f-droid.org/test1,https://f-droid.org/test2" +
+                "]";
+        assertEquals(expected, repo.toString());
+    }
 }

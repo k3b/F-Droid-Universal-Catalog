@@ -40,6 +40,7 @@ import de.k3b.fdroid.domain.service.LocalizedService;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.Java8Util;
 import de.k3b.fdroid.domain.util.StringUtil;
+import de.k3b.fdroid.v2domain.entity.V2IconUtil;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2App;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2AppInfo;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2PackageVersion;
@@ -167,7 +168,7 @@ public class V2LocalizedUpdateService {
 
         converter.convert(v2AppInfo.getVideo(), Localized::getVideo, Localized::setVideo);
 
-        converter.convert(Java8Util.getKeyValueMap(v2AppInfo.getIcon(), f -> V2AppInfo.getIconName(f)),
+        converter.convert(Java8Util.getKeyValueMap(v2AppInfo.getIcon(), V2IconUtil::getIconName),
                 Localized::getIcon, Localized::setIcon);
 
         V2Screenshots screenshots = v2AppInfo.getScreenshots();

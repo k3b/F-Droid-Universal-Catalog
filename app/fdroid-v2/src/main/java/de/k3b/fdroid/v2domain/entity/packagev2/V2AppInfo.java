@@ -90,16 +90,6 @@ public class V2AppInfo implements IAppCommon {
     @Nullable
     private V2Screenshots screenshots;
 
-    public static String getIconName(V2File icon) {
-        String iconName = (icon == null) ? null : icon.getName();
-        if (iconName != null) {
-            //  && iconName.startsWith("/"))
-            int lastSeperator = iconName.lastIndexOf("/");
-            iconName = iconName.substring(lastSeperator + 1);
-        }
-        return iconName;
-    }
-
     @Nullable
     public Map<String, String> getName() {
         return this.name;

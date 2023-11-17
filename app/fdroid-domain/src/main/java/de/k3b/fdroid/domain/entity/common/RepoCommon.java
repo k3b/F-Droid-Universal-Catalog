@@ -29,7 +29,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
  */
 @javax.persistence.MappedSuperclass
 @SuppressWarnings("unused")
-public class RepoCommon extends EntityCommon {
+public class RepoCommon extends EntityCommon implements IRepoCommon {
     public static final String V1_JAR_NAME = "index-v1.jar";
     public static final String V1_JSON_NAME = "index-v1.json";
 
@@ -62,7 +62,7 @@ public class RepoCommon extends EntityCommon {
             example = "The official F-Droid Free Software repository.  Everything in this repository ...")
     private String description;
 
-    public static void copyCommon(RepoCommon dest, RepoCommon src) {
+    public static void copyCommon(RepoCommon dest, IRepoCommon src) {
         dest.setName(src.getName());
         dest.setTimestamp(src.getTimestamp());
         dest.setVersion(src.getVersion());
@@ -73,6 +73,7 @@ public class RepoCommon extends EntityCommon {
         dest.setDescription(description);
     }
 
+    @Override
     public String getName() {
         return name;
     }
@@ -98,6 +99,7 @@ public class RepoCommon extends EntityCommon {
         return getV1JarFileName(this.getName());
     }
 
+    @Override
     public long getTimestamp() {
         return timestamp;
     }
@@ -113,6 +115,7 @@ public class RepoCommon extends EntityCommon {
         this.timestamp = timestamp;
     }
 
+    @Override
     public int getVersion() {
         return version;
     }
@@ -121,6 +124,7 @@ public class RepoCommon extends EntityCommon {
         this.version = version;
     }
 
+    @Override
     public int getMaxage() {
         return maxage;
     }
@@ -129,6 +133,7 @@ public class RepoCommon extends EntityCommon {
         this.maxage = maxage;
     }
 
+    @Override
     public String getIcon() {
         return icon;
     }
@@ -137,6 +142,7 @@ public class RepoCommon extends EntityCommon {
         this.icon = maxlen(icon);
     }
 
+    @Override
     public String getAddress() {
         return address;
     }
@@ -145,6 +151,7 @@ public class RepoCommon extends EntityCommon {
         this.address = maxlen(address);
     }
 
+    @Override
     public String getDescription() {
         return description;
     }

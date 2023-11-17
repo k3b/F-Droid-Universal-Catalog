@@ -41,6 +41,7 @@ import de.k3b.fdroid.domain.service.AppCategoryUpdateService;
 import de.k3b.fdroid.domain.service.LanguageService;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.StringUtil;
+import de.k3b.fdroid.v2domain.entity.V2IconUtil;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2App;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2AppInfo;
 import de.k3b.fdroid.v2domain.entity.packagev2.V2Manifest;
@@ -76,7 +77,7 @@ public class V2AppUpdateService implements ProgressObservable {
     private static String getIconName(V2AppInfo metadata, String locale) {
         Map<String, V2File> iconMap = LanguageService.getCanonicalLocale(metadata.getIcon());
         V2File icon = (iconMap == null) ? null : iconMap.get(locale);
-        return V2AppInfo.getIconName(icon);
+        return V2IconUtil.getIconName(icon);
     }
 
     public V2AppUpdateService init() {

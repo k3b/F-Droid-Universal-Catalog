@@ -28,6 +28,7 @@ import java.util.Objects;
 
 import de.k3b.fdroid.v1domain.entity.V1App;
 import de.k3b.fdroid.v1domain.entity.V1AppCatalog;
+import de.k3b.fdroid.v1domain.entity.V1Repo;
 import de.k3b.fdroid.v1domain.entity.V1Version;
 
 public class V1TestData {
@@ -36,12 +37,14 @@ public class V1TestData {
     public final V1AppCatalog appCatalog;
     public final V1App app;
     public final V1Version version;
+    public final V1Repo repo;
 
     public V1TestData() {
         try (InputStream resourceAsStream = V1TestData.class.getClassLoader().getResourceAsStream(UNITTEST_TEST_DATA);
              InputStreamReader is = new InputStreamReader(Objects.requireNonNull(resourceAsStream, "Cannot read json from " + UNITTEST_TEST_DATA))) {
             Gson gson = new Gson();
             appCatalog = gson.fromJson(is, V1AppCatalog.class);
+            repo = appCatalog.getRepo();
             app = appCatalog.getApps().get(0);
             version = appCatalog.getPackages().get(app.getPackageName()).get(0);
         } catch (IOException e) {
