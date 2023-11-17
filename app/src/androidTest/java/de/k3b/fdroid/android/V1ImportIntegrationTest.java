@@ -40,10 +40,10 @@ import java.util.List;
 
 import de.k3b.fdroid.android.db.FDroidDatabase;
 import de.k3b.fdroid.android.v1.service.V1UpdateServiceAndroid;
+import de.k3b.fdroid.catalog.v1domain.service.V1RepoVerifyJarParser;
+import de.k3b.fdroid.catalog.v1domain.service.V1UpdateService;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.repository.RepoRepository;
-import de.k3b.fdroid.v1domain.service.V1RepoVerifyJarParser;
-import de.k3b.fdroid.v1domain.service.V1UpdateService;
 
 @RunWith(AndroidJUnit4.class)
 public class V1ImportIntegrationTest {

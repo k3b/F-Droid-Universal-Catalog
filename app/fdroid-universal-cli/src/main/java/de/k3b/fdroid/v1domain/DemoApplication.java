@@ -43,13 +43,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
+import de.k3b.fdroid.catalog.v1domain.service.HttpV1JarDownloadService;
+import de.k3b.fdroid.catalog.v1domain.service.V1CommandService;
 import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.repository.LocalizedRepository;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.html.service.ResourceBundleMustacheContext;
 import de.k3b.fdroid.html.util.MustacheEx;
-import de.k3b.fdroid.v1domain.service.HttpV1JarDownloadService;
-import de.k3b.fdroid.v1domain.service.V1CommandService;
 import de.k3b.fdroid.v1domain.service.V1UpdateServiceEx;
 
 /**

@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.k3b.fdroid.Global;
+import de.k3b.fdroid.catalog.v1domain.service.V1UpdateService;
 import de.k3b.fdroid.domain.repository.AppCategoryRepository;
 import de.k3b.fdroid.domain.repository.AppHardwareRepository;
 import de.k3b.fdroid.domain.repository.AppRepository;

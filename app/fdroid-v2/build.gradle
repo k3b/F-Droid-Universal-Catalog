@@ -19,6 +19,7 @@ java {
 
 dependencies {
     implementation project(path: ':app:fdroid-domain')
+    implementation project(path: ':app:fdroid-catalog')
 
     // -------
     // os-dependent annotations
