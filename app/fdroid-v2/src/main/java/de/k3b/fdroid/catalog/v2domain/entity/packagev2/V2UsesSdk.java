@@ -22,6 +22,7 @@ package de.k3b.fdroid.catalog.v2domain.entity.packagev2;
 
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("unused")
 public class V2UsesSdk {
     private int minSdkVersion;
     private int targetSdkVersion;

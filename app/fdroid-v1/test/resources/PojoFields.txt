@@ -35,15 +35,14 @@ de.k3b.fdroid.catalog.v1domain.entity.V1Repo
 	timestamp
 de.k3b.fdroid.catalog.v1domain.entity.V1Version
 	added
-	apkName(9)
+	apkName(8)
 	hash(4)
 	hashType(5)
 	maxSdkVersion(03)
 	minSdkVersion(01)
-	sig(6)
-	signer(7)
-	size(13)
-	srcname(8)
+	signer(6)
+	size(12)
+	srcname(7)
 	targetSdkVersion(02)
-	versionCode(10)
-	versionName(11)
+	versionCode(09)
+	versionName(10)

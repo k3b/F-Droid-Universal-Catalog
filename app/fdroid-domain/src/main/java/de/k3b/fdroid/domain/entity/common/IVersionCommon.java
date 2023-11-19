@@ -27,8 +27,6 @@ public interface IVersionCommon extends IProfileCommon {
 
     int getMaxSdkVersion();
 
-    String getSig();
-
     String getSigner();
 
     String getSrcname();

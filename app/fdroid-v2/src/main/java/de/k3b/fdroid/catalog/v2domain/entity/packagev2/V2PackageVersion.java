@@ -28,6 +28,7 @@ import java.util.Map;
 import de.k3b.fdroid.catalog.v2domain.entity.repo.V2File;
 import de.k3b.fdroid.domain.entity.common.IVersionCommon;
 
+@SuppressWarnings("unused")
 public class V2PackageVersion implements IVersionCommon {
     // private int versionCode;
 
@@ -79,32 +80,15 @@ public class V2PackageVersion implements IVersionCommon {
     }
 
     @Override
-    public String getSig() {
-        return null; // not available in v2
-    }
-
-    @Override
     public String getSigner() {
         V2Signer signer = getSignerObject();
         return (signer == null) ? null : signer.getSha256().get(0);
     }
 
     @Nullable
-    // @JsonProperty("signer")
-    // @SerializedName("signer")
     public V2Signer getSignerObject() {
-        V2Signer signer = (manifest == null) ? null : manifest.getSigner();
-        // if (signer == null) signer = this.signerObject;
-        return signer;
+        return (manifest == null) ? null : manifest.getSigner();
     }
-
-    /*
-    // @JsonProperty("signer")
-    // @SerializedName("signer")
-    public void setSignerObject(@Nullable V2Signer signerObject) {
-        this.signerObject = signerObject;
-    }
-     */
 
     @Nullable
     public V2Manifest getPackageManifest() {

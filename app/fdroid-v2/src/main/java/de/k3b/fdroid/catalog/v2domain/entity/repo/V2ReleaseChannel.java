@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class V2ReleaseChannel {
     @NotNull
     private final Map<String, String> name;

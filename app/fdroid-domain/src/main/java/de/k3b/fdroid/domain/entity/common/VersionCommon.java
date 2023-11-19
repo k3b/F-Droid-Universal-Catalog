@@ -48,7 +48,6 @@ public class VersionCommon extends ProfileCommon implements IVersionCommon {
 
     private String hash;
     private String hashType;
-    private String sig;
     private String signer;
     @Schema(description = "filename of the sourcecode.",
             example = "de.k3b.android.androFotoFinder_44_src.tar.gz")
@@ -60,7 +59,6 @@ public class VersionCommon extends ProfileCommon implements IVersionCommon {
 
         dest.setHash(src.getHash());
         dest.setHashType(src.getHashType());
-        dest.setSig(src.getSig());
         dest.setSigner(src.getSigner());
 
         dest.setSdk(src.getMinSdkVersion(), src.getTargetSdkVersion(), src.getMaxSdkVersion());
@@ -117,15 +115,6 @@ public class VersionCommon extends ProfileCommon implements IVersionCommon {
     }
 
     @Override
-    public String getSig() {
-        return sig;
-    }
-
-    public void setSig(String sig) {
-        this.sig = maxlen(sig);
-    }
-
-    @Override
     public String getSigner() {
         return signer;
     }
@@ -167,7 +156,6 @@ public class VersionCommon extends ProfileCommon implements IVersionCommon {
         toStringBuilder(sb, "srcname", this.srcname);
         toStringBuilder(sb, "hash", this.hash, 14);
         toStringBuilder(sb, "hashType", this.hashType, 14);
-        toStringBuilder(sb, "sig", this.sig, 14);
         toStringBuilder(sb, "signer", this.signer, 14);
     }
 }

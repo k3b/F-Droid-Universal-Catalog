@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "2a67ef20ed62cc3e3661ae91d8644052",
+    "identityHash": "bcd6f1acfcd5f2fea1b37b3bcec3b2a4",
     "entities": [
       {
         "tableName": "App",
@@ -641,7 +641,7 @@
       },
       {
         "tableName": "AppVersion",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `repoId` INTEGER NOT NULL, `nativecode` TEXT, `minSdkVersion` INTEGER NOT NULL, `targetSdkVersion` INTEGER NOT NULL, `maxSdkVersion` INTEGER NOT NULL, `hash` TEXT, `hashType` TEXT, `sig` TEXT, `signer` TEXT, `srcname` TEXT, `apkName` TEXT, `versionCode` INTEGER NOT NULL, `versionName` TEXT, `added` INTEGER NOT NULL, `size` INTEGER NOT NULL, FOREIGN KEY(`appId`) REFERENCES `App`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`repoId`) REFERENCES `Repo`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `repoId` INTEGER NOT NULL, `nativecode` TEXT, `minSdkVersion` INTEGER NOT NULL, `targetSdkVersion` INTEGER NOT NULL, `maxSdkVersion` INTEGER NOT NULL, `hash` TEXT, `hashType` TEXT, `signer` TEXT, `srcname` TEXT, `apkName` TEXT, `versionCode` INTEGER NOT NULL, `versionName` TEXT, `added` INTEGER NOT NULL, `size` INTEGER NOT NULL, FOREIGN KEY(`appId`) REFERENCES `App`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`repoId`) REFERENCES `Repo`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -694,12 +694,6 @@
           {
             "fieldPath": "hashType",
             "columnName": "hashType",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "sig",
-            "columnName": "sig",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -1013,7 +1007,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2a67ef20ed62cc3e3661ae91d8644052')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bcd6f1acfcd5f2fea1b37b3bcec3b2a4')"
     ]
   }
 }

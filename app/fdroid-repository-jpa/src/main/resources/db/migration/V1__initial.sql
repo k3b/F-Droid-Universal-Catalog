@@ -109,7 +109,6 @@ CREATE TABLE AppVersion (
   versionName VARCHAR(255),
   hash VARCHAR(255),
   hashType VARCHAR(255),
-  sig VARCHAR(255),
   signer VARCHAR(255),
   size INT,
   nativecode VARCHAR(255),

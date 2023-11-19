@@ -23,6 +23,7 @@ package de.k3b.fdroid.catalog.v2domain.entity.repo;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("unused")
 public class V2Mirror {
     @NotNull
     private final String url;

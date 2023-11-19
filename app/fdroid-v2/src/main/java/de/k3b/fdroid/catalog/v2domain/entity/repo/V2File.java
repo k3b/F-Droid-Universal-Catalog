@@ -25,8 +25,9 @@ import org.jetbrains.annotations.Nullable;
 
 import de.k3b.fdroid.catalog.v2domain.entity.common.IV2IndexFile;
 
+@SuppressWarnings("unused")
 public class V2File implements IV2IndexFile {
-    @NotNull
+    @Nullable
     private String name;
     @Nullable
     private String sha256;
@@ -39,7 +40,7 @@ public class V2File implements IV2IndexFile {
         setName(name);
     }
 
-    @NotNull
+    @Nullable
     public String getName() {
         return this.name;
     }

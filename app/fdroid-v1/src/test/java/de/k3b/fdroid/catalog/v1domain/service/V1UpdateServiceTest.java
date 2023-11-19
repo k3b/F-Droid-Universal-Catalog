@@ -175,7 +175,7 @@ public class V1UpdateServiceTest {
         expected = "Version[appId=4711,repoId=4712,apkName=/my.test.app_47.apk,added=2020-03-14" +
                 ",versionCode=123,versionName=1.2.3,size=1493080,minSdkVersion=14,targetSdkVersion=21" +
                 ",maxSdkVersion=32,srcname=my.test.app_10401_src.tar.gz,hash=77bf8dd...4179" +
-                ",hashType=sha256,sig=c6c0dcf...c4cf,signer=666d4e0...31a5" +
+                ",hashType=sha256,signer=666d4e0...31a5" +
                 "]";
         assertEquals(expected, version.toString());
 

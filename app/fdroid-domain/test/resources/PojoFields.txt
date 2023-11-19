@@ -84,7 +84,7 @@ de.k3b.fdroid.domain.entity.Repo
 	timestamp
 de.k3b.fdroid.domain.entity.Version
 	added
-	apkName(13)
+	apkName(12)
 	appId(02)
 	hash(8)
 	hashType(9)
@@ -93,10 +93,9 @@ de.k3b.fdroid.domain.entity.Version
 	minSdkVersion(05)
 	nativecode(4)
 	repoId(03)
-	sig(10)
-	signer(11)
-	size(17)
-	srcname(12)
+	signer(10)
+	size(16)
+	srcname(11)
 	targetSdkVersion(06)
-	versionCode(14)
-	versionName(15)
+	versionCode(13)
+	versionName(14)

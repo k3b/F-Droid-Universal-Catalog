@@ -23,6 +23,7 @@ package de.k3b.fdroid.catalog.v2domain.entity.packagev2;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("unused")
 public class V2Permission {
     @NotNull
     private final String name;

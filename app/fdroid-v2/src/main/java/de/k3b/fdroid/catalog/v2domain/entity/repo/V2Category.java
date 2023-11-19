@@ -19,39 +19,39 @@
 package de.k3b.fdroid.catalog.v2domain.entity.repo;
 // V2Category.java
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class V2Category {
     @Nullable
     private Map<String, V2File> icon;
-    @NotNull
+    @Nullable
     private final Map<String, String> name;
     @Nullable
     private Map<String, String> description;
 
-    public V2Category(@NotNull Map<String, String> name) {
+    public V2Category(@Nullable Map<String, String> name) {
         this.name = name;
     }
 
-    @NotNull
+    @Nullable
     public Map<String, V2File> getIcon() {
         return this.icon;
     }
 
-    @NotNull
+    @Nullable
     public Map<String, String> getName() {
         return this.name;
     }
 
-    @NotNull
+    @Nullable
     public Map<String, String> getDescription() {
         return this.description;
     }
 
-    @NotNull
+    @Nullable
     public String toString() {
         return "V2Category{icon=" + this.icon + ", name=" + this.name + ", description=" + this.description + "}";
     }

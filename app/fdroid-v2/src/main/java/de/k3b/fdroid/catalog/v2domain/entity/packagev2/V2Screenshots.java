@@ -27,6 +27,7 @@ import java.util.Map;
 
 import de.k3b.fdroid.catalog.v2domain.entity.repo.V2File;
 
+@SuppressWarnings("unused")
 public class V2Screenshots {
 
     /**
@@ -55,7 +56,7 @@ public class V2Screenshots {
         return this.phone;
     }
 
-    public void setPhone(Map<String, List<V2File>> phone) {
+    public void setPhone(@Nullable Map<String, List<V2File>> phone) {
         this.phone = phone;
     }
 
@@ -64,7 +65,7 @@ public class V2Screenshots {
         return this.phoneDir;
     }
 
-    public void setPhoneDir(Map<String, String> phoneDir) {
+    public void setPhoneDir(@Nullable Map<String, String> phoneDir) {
         this.phoneDir = phoneDir;
     }
 

@@ -31,6 +31,7 @@ import de.k3b.fdroid.catalog.v2domain.entity.V2IconUtil;
 import de.k3b.fdroid.domain.entity.common.IRepoCommon;
 import de.k3b.fdroid.domain.service.LanguageService;
 
+@SuppressWarnings("unused")
 public class V2Repo implements IRepoCommon {
 
     /**

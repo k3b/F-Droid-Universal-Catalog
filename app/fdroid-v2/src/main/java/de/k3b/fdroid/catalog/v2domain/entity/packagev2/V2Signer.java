@@ -24,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class V2Signer {
     @NotNull
     private final List<String> sha256;
