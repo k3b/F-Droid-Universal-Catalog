@@ -106,16 +106,6 @@ public class V2Repo implements IRepoCommon {
     }
 
     @Override
-    public int getVersion() {
-        return 0; // not in v2 :-(
-    }
-
-    @Override
-    public int getMaxage() {
-        return 0; // not in v2 :-(
-    }
-
-    @Override
     public String getIcon() {
         if (iconMap != null) {
             return V2IconUtil.getIconName(LanguageService.getCanonicalLocale(iconMap).get(LanguageService.FALLBACK_LOCALE));

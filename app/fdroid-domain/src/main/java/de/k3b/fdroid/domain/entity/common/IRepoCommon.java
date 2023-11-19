@@ -27,10 +27,6 @@ public interface IRepoCommon {
 
     long getTimestamp();
 
-    int getVersion();
-
-    int getMaxage();
-
     String getIcon();
 
     String getAddress();

@@ -43,14 +43,6 @@ public class RepoCommon extends EntityCommon implements IRepoCommon {
             example = "1654792862000")
     private long timestamp;
 
-    @androidx.room.ColumnInfo(defaultValue = "0")
-    private int version;
-
-    @androidx.room.ColumnInfo(defaultValue = "0")
-    @Schema(description = "After [xxx=14] Days the repository-content should be reloaded.",
-            example = "14")
-    private int maxage;
-
     @Schema(description = "Used to calculate the url from [Address].",
             example = "fdroid-icon.png")
     private String icon;
@@ -65,8 +57,6 @@ public class RepoCommon extends EntityCommon implements IRepoCommon {
     public static void copyCommon(RepoCommon dest, IRepoCommon src) {
         dest.setName(src.getName());
         dest.setTimestamp(src.getTimestamp());
-        dest.setVersion(src.getVersion());
-        dest.setMaxage(src.getMaxage());
         dest.setIcon(src.getIcon());
         dest.setAddress(src.getAddress());
         String description = src.getDescription();
@@ -113,24 +103,6 @@ public class RepoCommon extends EntityCommon implements IRepoCommon {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
-    }
-
-    @Override
-    public int getVersion() {
-        return version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
-    }
-
-    @Override
-    public int getMaxage() {
-        return maxage;
-    }
-
-    public void setMaxage(int maxage) {
-        this.maxage = maxage;
     }
 
     @Override
@@ -183,8 +155,6 @@ public class RepoCommon extends EntityCommon implements IRepoCommon {
     protected void toStringBuilder(StringBuilder sb) {
         toStringBuilder(sb, "name", this.name);
         toDateStringBuilder(sb, "timestamp", this.timestamp);
-        toStringBuilder(sb, "version", this.version);
-        toStringBuilder(sb, "maxage", this.maxage);
         toStringBuilder(sb, "icon", this.icon);
         toStringBuilder(sb, "address", this.address);
         toStringBuilder(sb, "description", this.description, 40);

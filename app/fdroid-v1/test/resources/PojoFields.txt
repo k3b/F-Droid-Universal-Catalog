@@ -28,13 +28,11 @@ de.k3b.fdroid.domain.entity.common.ProfileCommon
 	versionCode(02)
 	versionName(3)
 de.k3b.fdroid.catalog.v1domain.entity.V1Repo
-	address(6)
-	description(7)
-	icon(5)
-	maxage(04)
+	address(4)
+	description(5)
+	icon(3)
 	name(1)
 	timestamp
-	version(03)
 de.k3b.fdroid.catalog.v1domain.entity.V1Version
 	added
 	apkName(9)
