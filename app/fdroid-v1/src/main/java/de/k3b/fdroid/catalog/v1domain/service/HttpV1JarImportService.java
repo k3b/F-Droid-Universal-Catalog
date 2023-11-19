@@ -28,6 +28,7 @@ import java.io.InputStream;
 
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.catalog.CatalogJarException;
+import de.k3b.fdroid.catalog.interfaces.IFDroidCatalogJsonStreamParser;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.domain.repository.RepoRepository;
@@ -55,7 +56,7 @@ public class HttpV1JarImportService extends HttpV1JarDownloadService
     }
 
     @Override
-    protected FDroidCatalogJsonStreamParserBase createParser() {
+    protected IFDroidCatalogJsonStreamParser createParser() {
         return v1UpdateService.init();
     }
 

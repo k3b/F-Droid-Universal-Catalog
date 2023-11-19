@@ -35,6 +35,7 @@ import java.util.jar.JarInputStream;
 import java.util.zip.ZipEntry;
 
 import de.k3b.fdroid.Global;
+import de.k3b.fdroid.catalog.interfaces.IFDroidCatalogJsonStreamParser;
 import de.k3b.fdroid.catalog.v1domain.entity.V1App;
 import de.k3b.fdroid.catalog.v1domain.entity.V1Repo;
 import de.k3b.fdroid.catalog.v1domain.entity.V1Version;
@@ -49,7 +50,7 @@ import de.k3b.fdroid.domain.util.NoCloseInputStream;
  * To implement overwrite the abstract methods
  * {@link #onRepo(V1Repo)}, {@link #onApp(V1App)}, {@link #onVersion(String, V1Version)}
  */
-public abstract class FDroidCatalogJsonStreamParserBase {
+public abstract class FDroidCatalogJsonStreamParserBase implements IFDroidCatalogJsonStreamParser {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
     public static String charsetName = "UTF-8";
 
@@ -60,6 +61,7 @@ public abstract class FDroidCatalogJsonStreamParserBase {
      * @param jsonInputStream uncompressed Json inputstream
      * @throws IOException if there are errors in the InputStream or the JSON v1 format.
      */
+    @Override
     public void readJsonStream(InputStream jsonInputStream) throws IOException {
         if (jsonInputStream == null) throw new NullPointerException();
 
@@ -86,6 +88,7 @@ public abstract class FDroidCatalogJsonStreamParserBase {
      * @param jarInputStream jar-/zip-compressed inputstream containing json data
      * @throws IOException if there are errors in the InputStream, the jar-compression or the JSON v1 format.
      */
+    @Override
     public void readFromJar(InputStream jarInputStream) throws IOException {
         if (jarInputStream == null) throw new NullPointerException();
 

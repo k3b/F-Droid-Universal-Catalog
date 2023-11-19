@@ -22,7 +22,7 @@ package de.k3b.fdroid.catalog.v1domain;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
-import de.k3b.fdroid.catalog.v1domain.service.FDroidCatalogJsonStreamParserBase;
+import de.k3b.fdroid.catalog.interfaces.IFDroidCatalogJsonStreamParser;
 import de.k3b.fdroid.catalog.v1domain.service.FDroidCatalogJsonStreamParserDemo;
 import de.k3b.fdroid.catalog.v1domain.service.HttpV1JarDownloadService;
 import de.k3b.fdroid.catalog.v1domain.service.V1RepoVerifyJarParser;
@@ -90,7 +90,7 @@ public class V1JarDemoCli {
 
     private static void testParserWithConsoleOutput(String path) {
         try {
-            FDroidCatalogJsonStreamParserBase repo = new FDroidCatalogJsonStreamParserDemo();
+            IFDroidCatalogJsonStreamParser repo = new FDroidCatalogJsonStreamParserDemo();
 
 
             // repo.readJsonStream(is);

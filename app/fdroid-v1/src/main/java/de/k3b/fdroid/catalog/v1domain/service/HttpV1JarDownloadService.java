@@ -19,11 +19,11 @@
 
 package de.k3b.fdroid.catalog.v1domain.service;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedInputStream;
@@ -37,6 +37,7 @@ import java.net.URL;
 import java.util.Date;
 
 import de.k3b.fdroid.Global;
+import de.k3b.fdroid.catalog.interfaces.IFDroidCatalogJsonStreamParser;
 import de.k3b.fdroid.catalog.util.DateUtils;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
@@ -51,7 +52,7 @@ public class HttpV1JarDownloadService implements ProgressObservable {
     public static final String HTTP_LAST_MODIFIED = "Last-Modified";
     public static final String HTTP_IF_MODIFIED_SINCE = "If-Modified-Since";
 
-    @NonNull
+    @NotNull
     private final String downloadPath;
 
     protected Repo repoInDatabase;
@@ -60,7 +61,7 @@ public class HttpV1JarDownloadService implements ProgressObservable {
     private ProgressObserver progressObserver = null;
 
     public HttpV1JarDownloadService(
-            @Value("${de.k3b.fdroid.downloads:~/.fdroid/downloads}") @NonNull String downloadPath) {
+            @Value("${de.k3b.fdroid.downloads:~/.fdroid/downloads}") @NotNull String downloadPath) {
         if (downloadPath == null) throw new NullPointerException();
 
         this.downloadPath = downloadPath.replace("~", System.getProperty("user.home"));
@@ -74,11 +75,13 @@ public class HttpV1JarDownloadService implements ProgressObservable {
         return name;
     }
 
-    public File download(@NonNull Repo repo) throws IOException {
+    /*
+    public File download(@NotNull Repo repo) throws IOException {
         return downloadHttps(repo.getV1Url(), repo.getLastUsedDownloadDateTimeUtc(), repo);
     }
+     */
 
-    public File downloadHttps(String downloadUrl, long lastModified, @NonNull Repo repo) throws IOException {
+    public File downloadHttps(String downloadUrl, long lastModified, @NotNull Repo repo) throws IOException {
         if (repo == null || downloadUrl == null) throw new NullPointerException();
 
         downloadUrl = Repo.getV1Url(downloadUrl);
@@ -139,13 +142,13 @@ public class HttpV1JarDownloadService implements ProgressObservable {
     }
 
     protected void parseAndDownload(InputStream inputStream, OutputStream downloadFileOut) throws IOException {
-        FDroidCatalogJsonStreamParserBase repoParser = createParser();
+        IFDroidCatalogJsonStreamParser repoParser = createParser();
         try (InputStream in = open(inputStream, downloadFileOut)) {
             repoParser.readFromJar(in);
         }
     }
 
-    protected FDroidCatalogJsonStreamParserBase createParser() {
+    protected IFDroidCatalogJsonStreamParser createParser() {
         V1RepoVerifyJarParser result = new V1RepoVerifyJarParser(repoInDatabase);
         result.setProgressObserver(this.progressObserver);
         return result;
