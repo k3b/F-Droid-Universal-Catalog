@@ -35,4 +35,5 @@ dependencies {
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.hamcrest:hamcrest:2.2'
+    testImplementation "org.mockito:mockito-core:$rootProject.ext.MOCKITO_VERSION"
 }
