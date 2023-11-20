@@ -46,7 +46,7 @@ public class AppSearchParameter extends EntityCommon implements Serializable {
     public int categoryId = 0;
     public String orderBy = null;
 
-    // supported by sqLite and hsqldb: SELECT ... FROM ... LIMIT 150 https://www.sqlitetutorial.net/sqlite-limit/
+    // supported by sqLite and hsqldb: SELECT ... FROM ... LIMIT 150 @see <a href="https://www.sqlitetutorial.net/sqlite-limit/">sqlite-limit</a>
     public int maxRowCount = 150;
 
     /**

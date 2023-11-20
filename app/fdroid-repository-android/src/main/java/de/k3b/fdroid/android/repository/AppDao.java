@@ -58,7 +58,7 @@ public interface AppDao { // extends AppRepository {
 
     //!!! TODO
     // @Query("SELECT id FROM App WHERE App.id in (:searchText)")
-    // see https://microeducate.tech/how-to-dynamically-query-the-room-database-at-runtime/
+    // see @see <a href="https://microeducate.tech/how-to-dynamically-query-the-room-database-at-runtime/">how-to-dynamically-query-the-room-database-at-runtime</a>
     @RawQuery
     List<Integer> findDynamic(SupportSQLiteQuery query);
 

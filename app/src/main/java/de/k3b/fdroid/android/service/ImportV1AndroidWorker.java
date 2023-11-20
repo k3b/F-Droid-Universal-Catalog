@@ -42,7 +42,7 @@ import de.k3b.fdroid.domain.interfaces.ProgressObserver;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.util.StringUtil;
 
-// see https://developer.android.com/topic/libraries/architecture/workmanager/basics
+// see @see <a href="https://developer.android.com/topic/libraries/architecture/workmanager/basics">architecture/workmanager/basics</a>
 public class ImportV1AndroidWorker extends Worker {
 
     private static final String KEY_REPO_ID = "repoId";

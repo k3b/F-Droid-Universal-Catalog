@@ -25,7 +25,7 @@ import java.math.BigInteger;
 /**
  * fill testdata to objects via Java reflection:
  * All primitive fields get a reproducable value based on baseValue
- * inspired by https://tuhrig.de/create-random-test-objects-with-java-reflection/
+ * inspired by @see <a href="https://tuhrig.de/create-random-test-objects-with-java-reflection/">create-random-test-objects-with-java-reflection/</a>
  */
 public class TestDataGenerator {
 

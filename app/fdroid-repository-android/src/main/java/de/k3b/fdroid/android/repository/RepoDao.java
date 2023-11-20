@@ -73,7 +73,7 @@ public interface RepoDao extends RepoRepository {
         List<Repo> result = findAllEx();
         if (result.size() == 0) {
             // should be done with Room-Migratoins but the migratons-sql was never called
-            // https://developer.android.com/training/data-storage/room/migrating-db-versions
+            // @see <a href="https://developer.android.com/training/data-storage/room/migrating-db-versions">room/migrating-db-versions</a>
             Repo fdroid = new Repo("f-droid.org", "https://f-droid.org/repo", "s");
             fdroid.setAutoDownloadEnabled(true);
             add(result,

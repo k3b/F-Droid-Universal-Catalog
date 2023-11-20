@@ -96,7 +96,7 @@ public class AndroidStringResourceMustacheContextTest {
         Log.i(Global.LOG_TAG_HTML, format);
     }
 
-    // Locale during unit test on Android see https://stackoverflow.com/questions/16760194/locale-during-unit-test-on-android/21810126
+    // Locale during unit test on Android see @see <a href="https://stackoverflow.com/questions/16760194/locale-during-unit-test-on-android/21810126">locale-during-unit-test-on-android</a>
     private void setLocale(String language, String country) {
         Locale locale = new Locale(language, country);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

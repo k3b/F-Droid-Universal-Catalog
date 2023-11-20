@@ -59,7 +59,7 @@ public class AndroidServiceFactory {
     }
 
     private File getTempDir(String subDirName) {
-        // https://stackoverflow.com/questions/3425906/creating-temporary-files-in-android
+        // @see <a href="https://stackoverflow.com/questions/3425906/creating-temporary-files-in-android">stackoverflow creating-temporary-files-in-android</a>
         File outputDir = context.getCacheDir();
         if (subDirName != null) outputDir = new File(outputDir, subDirName);
         outputDir.mkdirs();

@@ -130,7 +130,8 @@ public class Localized extends LocalizedCommon implements AppDetail {
      * {@link Repo} identified by {@link App#getResourceRepoId()}
      * <p>
      * Example phoneScreenshot "1-game.jpg" can be downloaded from
-     * https://f-droid.org/repo/dev.lonami.klooni/en-US/phoneScreenshots/1-game.jpg
+     *
+     * @see <a href="https://f-droid.org/repo/dev.lonami.klooni/en-US/phoneScreenshots/1-game.jpg">https://f-droid.org/repo/dev.lonami.klooni/en-US/phoneScreenshots/1-game.jpg</a>
      */
     public String getPhoneScreenshots() {
         return phoneScreenshots;

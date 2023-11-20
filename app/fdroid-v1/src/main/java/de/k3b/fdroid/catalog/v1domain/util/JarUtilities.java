@@ -57,24 +57,24 @@ public class JarUtilities {
      * Gets Signing Cert from jarEntry.
      * <p>
      * Code inspired by getSigningCertFromJar in
-     * https://git.bubu1.eu/Bubu/fdroidclassic/-/blob/main/app/src/main/java/org/fdroid/fdroid/IndexUpdater.java .
+     *
+     * @return null if there is no certificate
+     * @throws CatalogJarException if cert-info does not confrom to v1-fdroid-security-cert-restrictions.
+     * @see <a href="https://git.bubu1.eu/Bubu/fdroidclassic/-/blob/main/app/src/main/java/org/fdroid/fdroid/IndexUpdater.java">Bubu IndexUpdater.java</a> .
      * <p>
      * FDroid's index.jar is signed using a particular format and does not allow lots of
      * signing setups that would be valid for a regular jar.  This code validates those
      * restrictions.
-     *
-     * @return null if there is no certificate
-     * @throws CatalogJarException if cert-info does not confrom to v1-fdroid-security-cert-restrictions.
      */
     public static X509Certificate getSigningCertFromJar(Repo repo, JarEntry jarEntry) throws CatalogJarException {
-        // https://developer.android.com/reference/java/util/jar/JarEntry#getCodeSigners() api since android-api 1
+        // @see <a href="https://developer.android.com/reference/java/util/jar/JarEntry#getCodeSigners()">JarEntry#getCodeSigners()</a> api since android-api 1
         // always returns null on android-4.2 and android-4.4 devices, works on android-7.0 and android-10
         //
-        // fromhttps://docs.oracle.com/javase/8/docs/api/java/util/jar/JarEntry.html#getCodeSigners--
+        // from @see <a href="https://docs.oracle.com/javase/8/docs/api/java/util/jar/JarEntry.html#getCodeSigners--">JarEntry.html#getCodeSigners</a>
         //  This method can only be called once the JarEntry has been completely verified by
         //  reading from the entry input stream until the end of the stream has been reached.
         //
-        // https://github.com/k3b/F-Droid-Universal-Catalog/issues/4
+        // @see <a href="https://github.com/k3b/F-Droid-Universal-Catalog/issues/4">fuc#4</a>
         final CodeSigner[] codeSigners = jarEntry.getCodeSigners();
 
         if (codeSigners == null || codeSigners.length == 0) {
@@ -93,7 +93,7 @@ public class JarUtilities {
 
     /**
      * Inspired by verifySigningCertificate in
-     * https://git.bubu1.eu/Bubu/fdroidclassic/-/blob/main/app/src/main/java/org/fdroid/fdroid/IndexV1Updater.java .
+     * @see <a href="https://git.bubu1.eu/Bubu/fdroidclassic/-/blob/main/app/src/main/java/org/fdroid/fdroid/IndexV1Updater.java">IndexV1Updater.java</a> .
      * <p>
      * Verify that the signing certificate used to sign index-v1.jar
      * matches the signing stored in the database for this repo.  {@link Repo} and
@@ -167,7 +167,7 @@ public class JarUtilities {
 
     /*
      * Inspired by calcFingerprint in
-     * https://git.bubu1.eu/Bubu/fdroidclassic/-/blob/main/app/src/main/java/org/fdroid/fdroid/Utils.java .
+     * @see <a href="https://git.bubu1.eu/Bubu/fdroidclassic/-/blob/main/app/src/main/java/org/fdroid/fdroid/Utils.java">Utils.java</a> .
      */
     public static String calcFingerprint(Repo repo, Certificate cert) {
         if (cert == null) {
@@ -183,7 +183,7 @@ public class JarUtilities {
 
     /*
      * Inspired by calcFingerprint in
-     * https://git.bubu1.eu/Bubu/fdroidclassic/-/blob/main/app/src/main/java/org/fdroid/fdroid/Utils.java .
+     * @see <a href="https://git.bubu1.eu/Bubu/fdroidclassic/-/blob/main/app/src/main/java/org/fdroid/fdroid/Utils.java">src/main/java/org/fdroid/fdroid/Utils.java</a> .
      */
     public static String calcFingerprint(Repo repo, byte[] key) {
         if (key == null) {

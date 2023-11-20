@@ -27,7 +27,7 @@ public class AndroidVersionName {
     static {
         ID_TO_NAME.put(0, new Item(0, ""));
         // from android.os.Build.VERSION_CODES
-        // see also https://apilevels.com/
+        // see also @see <a href="https://apilevels.com/">https://apilevels.com/</a>
         register(1, "Android 1.0", null, "September 2008");
         register(2, "Android 1.1", null, "February 2009");
         register(3, "Android 1.5", "CUPCAKE", "April 2009");

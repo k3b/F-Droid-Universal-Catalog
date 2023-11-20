@@ -38,13 +38,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * <p>
  * Some repo-s
  * <p>
- * https://guardianproject.info/fdroid/repo/index-v1.jar
- * https://apt.izzysoft.de/fdroid/repo/index-v1.jar
- * https://f-droid.org/repo/index-v1.jar
- * https://f-droid.org/archive/index-v1.jar
+ *
+ * @see <a href="https://guardianproject.info/fdroid/repo/index-v1.jar">https://guardianproject.info/fdroid/repo/index-v1.jar</a>
+ * @see <a href="https://apt.izzysoft.de/fdroid/repo/index-v1.jar">https://apt.izzysoft.de/fdroid/repo/index-v1.jar</a>
+ * @see <a href="https://f-droid.org/repo/index-v1.jar">https://f-droid.org/repo/index-v1.jar</a>
+ * @see <a href="https://f-droid.org/archive/index-v1.jar">https://f-droid.org/archive/index-v1.jar</a>
  * <p>
- * https://fdroid.cgeo.org/repo/index-v1.jar
- * https://fdroid.cgeo.org/nightly/index-v1.jar with wrong repo.address
+ * @see <a href="https://fdroid.cgeo.org/repo/index-v1.jar">https://fdroid.cgeo.org/repo/index-v1.jar</a>
+ * @see <a href="https://fdroid.cgeo.org/nightly/index-v1.jar">https://fdroid.cgeo.org/nightly/index-v1.jar</a> with wrong repo.address
  */
 @androidx.room.Entity(indices = {@androidx.room.Index("id")})
 @javax.persistence.Entity

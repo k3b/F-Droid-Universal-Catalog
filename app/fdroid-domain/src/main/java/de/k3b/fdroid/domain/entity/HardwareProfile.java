@@ -37,7 +37,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
  * * name="my android-7.0", SdkVersion=24(=Android-7.0), nativecode=[arme64-v8a, armeabi-v7a, armeabi].
  * * name="my android-4.2 Tablet", SdkVersion=17 (=Android-4.2), nativecode=[armeabi-v7a].
  * <p>
- * (Hardware data can be taken from App-Manager(397=2.6.5.1) https://f-droid.org/packages/io.github.muntashirakon.AppManager/)
+ * (Hardware data can be taken from App-Manager(397=2.6.5.1) @see <a href="https://f-droid.org/packages/io.github.muntashirakon.AppManager/">muntashirakon.AppManager</a>)
  * <p>
  * Android independent: Pojo-s with all properties that are persisted in the Database.
  * Only primitives, primaryKeys and foreignKeys. No Relations or Objects or lists.
@@ -125,7 +125,7 @@ public class HardwareProfile extends EntityCommon implements DatabaseEntityWithI
             if (!StringUtil.isEmpty(nativecode) && nativecode.contains("arme")) {
                 // Note: a armeabi processer can execute armabi code but not vice versa .
                 // eabi stands for Extended Application Binary Interface.
-                // See https://stackoverflow.com/questions/8060174/what-are-the-purposes-of-the-arm-abi-and-eabi
+                // See @see <a href="https://stackoverflow.com/questions/8060174/what-are-the-purposes-of-the-arm-abi-and-eabi">what-are-the-purposes-of-the-arm-abi-and-eabi</a>
                 nativecode += "," + nativecode.replace("arme", "arm");
             }
             nativecodeArray = StringUtil.toStringArray(nativecode);

@@ -92,7 +92,7 @@ public class HardwareProfileService implements ProgressObservable {
 
     /**
      * Note: a armeabi processer can execute armabi code but not vice versa .
-     * See https://stackoverflow.com/questions/8060174/what-are-the-purposes-of-the-arm-abi-and-eabi
+     * See @see <a href="https://stackoverflow.com/questions/8060174/what-are-the-purposes-of-the-arm-abi-and-eabi">what-are-the-purposes-of-the-arm-abi-and-eabi</a>
      */
     public static boolean isCompatibleNativecode(String[] appVersionNativecodes, String[] profileNativecodes) {
         if (StringUtil.isEmpty(appVersionNativecodes) || StringUtil.isEmpty(profileNativecodes))

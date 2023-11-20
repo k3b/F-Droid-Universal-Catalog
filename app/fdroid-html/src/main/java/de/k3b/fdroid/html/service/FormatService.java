@@ -29,8 +29,9 @@ import de.k3b.fdroid.html.util.MustacheEx;
 
 /**
  * Generate html snipptes from "Mustache Templates".
- * See http://mustache.github.io/mustache.5.html and
- * https://github.com/samskivert/jmustache
+ * See @see <a href="http://mustache.github.io/mustache.5.html">mustache.5.html</a> and
+ *
+ * @see <a href="https://github.com/samskivert/jmustache">jmustache</a>
  * <p>
  * This is an abstraction from the JMustache implementation.
  * <p>
@@ -38,8 +39,8 @@ import de.k3b.fdroid.html.util.MustacheEx;
  * limited css-color support to TextView
  * <p>
  * For android specific textview:
- * * https://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html
- * * https://stackoverflow.com/questions/9754076/which-html-tags-are-supported-by-android-textview
+ * * @see <a href="https://commonsware.com/blog/Android/2010/05/26/html-tags-supported-by-textview.html">html-tags-supported-by-textview.html</a>
+ * * @see <a href="https://stackoverflow.com/questions/9754076/which-html-tags-are-supported-by-android-textview">which-html-tags-are-supported-by-android-textview</a>
  */
 public class FormatService {
     final Template tmpl;

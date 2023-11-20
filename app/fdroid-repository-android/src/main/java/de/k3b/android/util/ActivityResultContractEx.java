@@ -42,10 +42,11 @@ public abstract class ActivityResultContractEx<I, O> extends ActivityResultContr
 
         /* Lint warning
             "Consider adding a `<queries>` declaration to your manifest when calling this
-            method; see https://g.co/dev/packagevisibility
+            method; see @see <a href="https://g.co/dev/packagevisibility">packagevisibility</a>
             for details"
 
-            https://g.co/dev/packagevisibility = https://developer.android.com/training/package-visibility/declaring
+            @see <a href="https://g.co/dev/packagevisibility">packagevisibility</a> =
+            @see <a href="https://developer.android.com/training/package-visibility/declaring">package-visibility/declaring</a>
 
             From the docs:
             If your app targets Android 11 (api 30) or higher Manifest may need a <queries> element.

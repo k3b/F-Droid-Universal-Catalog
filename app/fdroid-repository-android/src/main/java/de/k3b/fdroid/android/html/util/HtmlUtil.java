@@ -75,7 +75,7 @@ public class HtmlUtil extends de.k3b.fdroid.html.util.HtmlUtil {
     }
 
     public static int getDefaultBackgroundColor(Context context) {
-        // https://stackoverflow.com/questions/67749943/programmatically-set-a-views-color-to-androidattr-color-attributes
+        // @see <a href="https://stackoverflow.com/questions/67749943/programmatically-set-a-views-color-to-androidattr-color-attributes">programmatically-set-a-views-color-to-androidattr-color-attributes</a>
         // ?android:attr/colorBackground == android.R.attr.colorSecondary
         int colorId = android.R.attr.colorForegroundInverse;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
@@ -87,7 +87,7 @@ public class HtmlUtil extends de.k3b.fdroid.html.util.HtmlUtil {
     }
 
     public static int getDefaultForegroundColor(Context context) {
-        // https://stackoverflow.com/questions/67749943/programmatically-set-a-views-color-to-androidattr-color-attributes
+        // @see <a href="https://stackoverflow.com/questions/67749943/programmatically-set-a-views-color-to-androidattr-color-attributes"programmatically-set-a-views-color-to-androidattr-color-attributes></a>
         // ?android:attr/colorBackground == android.R.attr.colorSecondary
         int colorId = android.R.attr.colorForeground;
         TypedValue typedValue = new TypedValue();

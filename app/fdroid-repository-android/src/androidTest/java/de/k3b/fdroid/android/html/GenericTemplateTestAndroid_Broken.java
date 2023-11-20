@@ -91,7 +91,7 @@ public class GenericTemplateTestAndroid_Broken {
         Log.i(Global.LOG_TAG_HTML, format);
     }
 
-    // Locale during unit test on Android see https://stackoverflow.com/questions/16760194/locale-during-unit-test-on-android/21810126
+    // Locale during unit test on Android see @see <a href="https://stackoverflow.com/questions/16760194/locale-during-unit-test-on-android/21810126">locale-during-unit-test-on-android</a>
     private void setLocale(String language, String country) {
         oldDefault = Locale.getDefault(Locale.Category.DISPLAY);
         Locale locale = new Locale(language, country);

@@ -34,7 +34,8 @@ import de.k3b.fdroid.domain.service.CacheServiceInteger;
  * Translates local url to repo relative url.
  * <p>
  * Example {{#getUrl}}{{apkName}}{{/getUrl}} becomes
- * https://apt.izzysoft.de/fdroid/repo/com.inator.calculator_4.apk
+ *
+ * @see <a href="https://apt.izzysoft.de/fdroid/repo/com.inator.calculator_4.apk">com.inator.calculator_4.apk</a>
  * if context is Version
  */
 public class GetUrlMustacheLamdaService implements Mustache.Lambda {

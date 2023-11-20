@@ -68,7 +68,7 @@ public class AppRepositoryAdapter implements AppRepository {
 
     @Override
     public List<Integer> findDynamic(AppSearchParameter appSearchParameter) {
-        // https://microeducate.tech/how-to-dynamically-query-the-room-database-at-runtime/
+        // @see <a href="https://microeducate.tech/how-to-dynamically-query-the-room-database-at-runtime/">how-to-dynamically-query-the-room-database-at-runtime</a>
         // use TreeMap to preserve insert order.
         TreeMap<String, Object> params = new TreeMap<>();
         String sql = AppIdSql.getSql(appSearchParameter, params, true);
