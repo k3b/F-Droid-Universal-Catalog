@@ -129,7 +129,7 @@ public class AppWithDetails extends EntityCommon implements AppDetail, Aggregate
     }
 
     @Override
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         toStringBuilder(sb, "app",
                 app.getPackageName() + "(A:" + app.getId() + ")");
         super.toStringBuilder(sb);

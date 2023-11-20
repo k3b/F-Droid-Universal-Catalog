@@ -75,7 +75,7 @@ public class V2AppUpdateService implements ProgressObservable {
     }
 
     private static String getIconName(V2AppInfo metadata, String locale) {
-        Map<String, V2File> iconMap = LanguageService.getCanonicalLocale(metadata.getIcon());
+        Map<String, V2File> iconMap = LanguageService.getCanonicalLocale(metadata.getIconMap());
         V2File icon = (iconMap == null) ? null : iconMap.get(locale);
         return V2IconUtil.getIconName(icon);
     }

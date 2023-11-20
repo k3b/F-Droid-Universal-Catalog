@@ -62,7 +62,7 @@ public class Locale extends EntityCommon {
     // translation order highest first; -1 == hidden (Translations are NOT contained in Database)
     private int languagePriority;
 
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         super.toStringBuilder(sb);
         toStringBuilder(sb, "symbol", this.symbol);

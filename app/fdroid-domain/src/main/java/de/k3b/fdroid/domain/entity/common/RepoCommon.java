@@ -19,6 +19,9 @@
 
 package de.k3b.fdroid.domain.entity.common;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -152,11 +155,19 @@ public class RepoCommon extends EntityCommon implements IRepoCommon {
 
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
-        toStringBuilder(sb, "name", this.name);
-        toDateStringBuilder(sb, "timestamp", this.timestamp);
-        toStringBuilder(sb, "icon", this.icon);
-        toStringBuilder(sb, "address", this.address);
-        toStringBuilder(sb, "description", this.description, 40);
+    public static void toStringBuilder(
+            @NotNull StringBuilder sb, @Nullable IRepoCommon content) {
+        if (content != null) {
+            toStringBuilder(sb, "name", content.getName());
+            toDateStringBuilder(sb, "timestamp", content.getTimestamp());
+            toStringBuilder(sb, "icon", content.getIcon());
+            toStringBuilder(sb, "address", content.getAddress());
+            toStringBuilder(sb, "description", content.getDescription(), 40);
+        }
+    }
+
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
+        super.toStringBuilder(sb);
+        toStringBuilder(sb, this);
     }
 }

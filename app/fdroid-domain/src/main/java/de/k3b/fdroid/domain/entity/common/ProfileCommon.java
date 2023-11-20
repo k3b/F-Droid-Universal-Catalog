@@ -19,6 +19,9 @@
 
 package de.k3b.fdroid.domain.entity.common;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import de.k3b.fdroid.domain.entity.HardwareProfile;
 import de.k3b.fdroid.domain.entity.Version;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -122,12 +125,19 @@ public class ProfileCommon extends EntityCommon implements IProfileCommon {
         this.versionName = maxlen(versionName);
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    public static void toStringBuilder(
+            @NotNull StringBuilder sb, @Nullable IProfileCommon content) {
+        if (content != null) {
+            toStringBuilder(sb, "apkName", content.getApkName());
+            toDateStringBuilder(sb, "added", content.getAdded());
+            toStringBuilder(sb, "versionCode", content.getVersionCode());
+            toStringBuilder(sb, "versionName", content.getVersionName());
+            toStringBuilder(sb, "size", content.getSize());
+        }
+    }
+
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         super.toStringBuilder(sb);
-        toStringBuilder(sb, "apkName", this.apkName);
-        toDateStringBuilder(sb, "added", this.added);
-        toStringBuilder(sb, "versionCode", this.versionCode);
-        toStringBuilder(sb, "versionName", this.versionName);
-        toStringBuilder(sb, "size", this.size);
+        toStringBuilder(sb, this);
     }
 }

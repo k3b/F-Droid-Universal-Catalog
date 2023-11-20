@@ -30,6 +30,8 @@ import androidx.room.ForeignKey;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.entity.common.AppCommon;
@@ -117,7 +119,7 @@ public class App extends AppCommon implements AppDetail {
         setPackageName(packageName);
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         toStringBuilder(sb, "resourceRepoId", resourceRepoId);
         super.toStringBuilder(sb);

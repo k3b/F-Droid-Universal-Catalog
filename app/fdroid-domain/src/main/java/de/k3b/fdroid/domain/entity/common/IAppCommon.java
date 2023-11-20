@@ -19,6 +19,10 @@
 
 package de.k3b.fdroid.domain.entity.common;
 
+import io.swagger.v3.oas.annotations.ExternalDocumentation;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@SuppressWarnings("unused")
 public interface IAppCommon {
     String getChangelog();
 
@@ -33,4 +37,26 @@ public interface IAppCommon {
     long getAdded();
 
     long getLastUpdated();
+
+    String getPackageName();
+
+    String getSuggestedVersionName();
+
+    String getSuggestedVersionCode();
+
+    String getIcon();
+
+    @Schema(description = "When the app was last updated in the [Repo].",
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Repo"),
+            example = "2020-03-14")
+    default String getLastUpdatedDate() {
+        return EntityCommon.asDateString(getLastUpdated());
+    }
+
+    @Schema(description = "When the app was added to the [Repo].",
+            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Repo"),
+            example = "2015-07-30")
+    default String getAddedDate() {
+        return EntityCommon.asDateString(getAdded());
+    }
 }

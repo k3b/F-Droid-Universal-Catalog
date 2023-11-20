@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2023 by k3b.
  *
  * This file is part of org.fdroid.v1domain the fdroid json catalog-format-v1 parser.
  *
@@ -19,6 +19,8 @@
 
 package de.k3b.fdroid.catalog.v1domain.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import javax.annotation.Generated;
@@ -32,6 +34,7 @@ import de.k3b.fdroid.domain.entity.common.VersionCommon;
  * {@link de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId} {@link de.k3b.fdroid.domain.entity.Version}.
  */
 @Generated("jsonschema2pojo")
+@SuppressWarnings("unused")
 public class V1Version extends VersionCommon implements V1JsonEntity {
     private List<String> nativecode = null;
 
@@ -43,7 +46,7 @@ public class V1Version extends VersionCommon implements V1JsonEntity {
         this.nativecode = nativecode;
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         super.toStringBuilder(sb);
         toStringBuilder(sb, "nativecode", this.nativecode);
     }

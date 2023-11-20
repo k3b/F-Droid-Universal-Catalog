@@ -65,7 +65,7 @@ public class TranslationPK extends EntityCommon implements Serializable {
         this.localeId = localeId;
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         toStringBuilder(sb, "typ", this.typ);
         toStringBuilder(sb, "id", this.id);
         toStringBuilder(sb, "localeId", this.localeId);

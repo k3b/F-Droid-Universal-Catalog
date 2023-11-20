@@ -21,6 +21,8 @@ package de.k3b.fdroid.catalog.v2domain.entity.packagev2;
 
 // V2AppInfo.java
 
+import com.google.gson.annotations.SerializedName;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -30,6 +32,7 @@ import java.util.Map;
 import de.k3b.fdroid.catalog.v2domain.entity.repo.V2File;
 import de.k3b.fdroid.domain.entity.common.IAppCommon;
 
+@SuppressWarnings("unused")
 public class V2AppInfo implements IAppCommon {
     @Nullable
     private Map<String, String> name;
@@ -78,7 +81,8 @@ public class V2AppInfo implements IAppCommon {
     @Nullable
     private String flattrID;
     @Nullable
-    private Map<String, V2File> icon;
+    @SerializedName("icon")
+    private Map<String, V2File> iconMap;
     @Nullable
     private Map<String, V2File> featureGraphic;
     @Nullable
@@ -111,6 +115,26 @@ public class V2AppInfo implements IAppCommon {
 
     public long getLastUpdated() {
         return this.lastUpdated;
+    }
+
+    @Override
+    public String getPackageName() {
+        return null;
+    }
+
+    @Override
+    public String getSuggestedVersionName() {
+        return null;
+    }
+
+    @Override
+    public String getSuggestedVersionCode() {
+        return null;
+    }
+
+    @Override
+    public String getIcon() {
+        return null;
     }
 
     @Nullable
@@ -209,8 +233,8 @@ public class V2AppInfo implements IAppCommon {
     }
 
     @Nullable
-    public Map<String, V2File> getIcon() {
-        return this.icon;
+    public Map<String, V2File> getIconMap() {
+        return this.iconMap;
     }
 
     @Nullable
@@ -240,6 +264,6 @@ public class V2AppInfo implements IAppCommon {
 
     @NotNull
     public String toString() {
-        return "V2AppInfo{name=" + this.name + ", summary=" + this.summary + ", description=" + this.description + ", added=" + this.added + ", lastUpdated=" + this.lastUpdated + ", webSite=" + this.webSite + ", changelog=" + this.changelog + ", license=" + this.license + ", sourceCode=" + this.sourceCode + ", issueTracker=" + this.issueTracker + ", translation=" + this.translation + ", preferredSigner=" + this.preferredSigner + ", categories=" + this.categories + ", authorName=" + this.authorName + ", authorEmail=" + this.authorEmail + ", authorWebSite=" + this.authorWebSite + ", authorPhone=" + this.authorPhone + ", donate=" + this.donate + ", liberapayID=" + this.liberapayID + ", liberapay=" + this.liberapay + ", openCollective=" + this.openCollective + ", bitcoin=" + this.bitcoin + ", litecoin=" + this.litecoin + ", flattrID=" + this.flattrID + ", icon=" + this.icon + ", featureGraphic=" + this.featureGraphic + ", promoGraphic=" + this.promoGraphic + ", tvBanner=" + this.tvBanner + ", video=" + this.video + ", screenshots=" + this.screenshots + "}";
+        return "V2AppInfo{name=" + this.name + ", summary=" + this.summary + ", description=" + this.description + ", added=" + this.added + ", lastUpdated=" + this.lastUpdated + ", webSite=" + this.webSite + ", changelog=" + this.changelog + ", license=" + this.license + ", sourceCode=" + this.sourceCode + ", issueTracker=" + this.issueTracker + ", translation=" + this.translation + ", preferredSigner=" + this.preferredSigner + ", categories=" + this.categories + ", authorName=" + this.authorName + ", authorEmail=" + this.authorEmail + ", authorWebSite=" + this.authorWebSite + ", authorPhone=" + this.authorPhone + ", donate=" + this.donate + ", liberapayID=" + this.liberapayID + ", liberapay=" + this.liberapay + ", openCollective=" + this.openCollective + ", bitcoin=" + this.bitcoin + ", litecoin=" + this.litecoin + ", flattrID=" + this.flattrID + ", icon=" + this.iconMap + ", featureGraphic=" + this.featureGraphic + ", promoGraphic=" + this.promoGraphic + ", tvBanner=" + this.tvBanner + ", video=" + this.video + ", screenshots=" + this.screenshots + "}";
     }
 }

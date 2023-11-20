@@ -19,6 +19,8 @@
 
 package de.k3b.fdroid.catalog.v1domain.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import javax.annotation.Generated;
@@ -32,6 +34,7 @@ import de.k3b.fdroid.domain.entity.common.LocalizedCommon;
  * {@link de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId} {@link de.k3b.fdroid.domain.entity.Localized}.
  */
 @Generated("jsonschema2pojo")
+@SuppressWarnings("unused")
 public class V1Localized extends LocalizedCommon implements V1JsonEntity {
     private String phoneScreenshotDir;
     private List<String> phoneScreenshots = null;
@@ -49,7 +52,7 @@ public class V1Localized extends LocalizedCommon implements V1JsonEntity {
         this.phoneScreenshots = phoneScreenshots;
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         super.toStringBuilder(sb);
         toStringBuilder(sb, "phoneScreenshotDir", phoneScreenshotDir);
         toStringBuilder(sb, "phoneScreenshots", this.phoneScreenshots);

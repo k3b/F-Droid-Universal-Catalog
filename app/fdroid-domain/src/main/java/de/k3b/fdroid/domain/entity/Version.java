@@ -20,6 +20,8 @@ package de.k3b.fdroid.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.jetbrains.annotations.NotNull;
+
 import de.k3b.fdroid.domain.entity.common.ExtDoc;
 import de.k3b.fdroid.domain.entity.common.VersionCommon;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
@@ -86,7 +88,7 @@ public class Version extends VersionCommon implements AppDetail {
         setNativecode(nativecode);
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         toStringBuilder(sb, "appId", this.appId);
         toStringBuilder(sb, "repoId", this.repoId);

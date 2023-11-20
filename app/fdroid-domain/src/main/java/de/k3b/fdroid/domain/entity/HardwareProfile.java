@@ -20,6 +20,8 @@ package de.k3b.fdroid.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.jetbrains.annotations.NotNull;
+
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.domain.entity.common.ExtDoc;
 import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
@@ -139,7 +141,7 @@ public class HardwareProfile extends EntityCommon implements DatabaseEntityWithI
         this.deleteIfNotCompatible = deleteIfNotCompatible;
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         toStringBuilder(sb, "name", this.name);
         super.toStringBuilder(sb);

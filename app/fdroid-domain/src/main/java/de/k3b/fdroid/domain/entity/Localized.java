@@ -90,7 +90,7 @@ public class Localized extends LocalizedCommon implements AppDetail {
         setLocaleId(localeId);
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         toStringBuilder(sb, "appId", this.appId);
         toStringBuilder(sb, "localeId", this.localeId);

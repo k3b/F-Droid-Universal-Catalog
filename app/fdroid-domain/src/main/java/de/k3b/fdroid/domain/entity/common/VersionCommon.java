@@ -19,6 +19,9 @@
 
 package de.k3b.fdroid.domain.entity.common;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Comparator;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -130,20 +133,27 @@ public class VersionCommon extends ProfileCommon implements IVersionCommon {
         this.targetSdkVersion = targetSdkVersion;
     }
 
-    public static <T extends VersionCommon> Comparator<T> compareByVersionCodeDescending() {
+    public static <T extends IVersionCommon> Comparator<T> compareByVersionCodeDescending() {
         // requires api 24. not compatible with api 14
         // equivalent to java.util.Comparator.comparing(T::versionCode)
 
         return (v1, v2) -> v2.getVersionCode() - v1.getVersionCode();
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    public static void toStringBuilder(
+            @NotNull StringBuilder sb, @Nullable IVersionCommon content) {
+        if (content != null) {
+            toStringBuilder(sb, "minSdkVersion", content.getMinSdkVersion());
+            toStringBuilder(sb, "targetSdkVersion", content.getTargetSdkVersion());
+            toStringBuilder(sb, "maxSdkVersion", content.getMaxSdkVersion());
+            toStringBuilder(sb, "srcname", content.getSrcname());
+            toStringBuilder(sb, "hash", content.getHash(), 14);
+            toStringBuilder(sb, "signer", content.getSigner(), 14);
+        }
+    }
+
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         super.toStringBuilder(sb);
-        toStringBuilder(sb, "minSdkVersion", this.minSdkVersion);
-        toStringBuilder(sb, "targetSdkVersion", this.targetSdkVersion);
-        toStringBuilder(sb, "maxSdkVersion", this.maxSdkVersion);
-        toStringBuilder(sb, "srcname", this.srcname);
-        toStringBuilder(sb, "hash", this.hash, 14);
-        toStringBuilder(sb, "signer", this.signer, 14);
+        toStringBuilder(sb, this);
     }
 }

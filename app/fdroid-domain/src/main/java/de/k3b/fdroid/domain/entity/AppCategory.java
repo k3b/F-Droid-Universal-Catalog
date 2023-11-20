@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.domain.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.domain.entity.common.ExtDoc;
 import de.k3b.fdroid.domain.interfaces.AppDetail;
@@ -59,7 +61,7 @@ public class AppCategory extends EntityCommon implements AppDetail {
         this.categoryId = categoryId;
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         toStringBuilder(sb, "appId", this.appId);
         toStringBuilder(sb, "categoryId", this.categoryId);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid project.
  *
@@ -18,6 +18,9 @@
  */
 
 package de.k3b.fdroid.domain.entity.common;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -77,6 +80,11 @@ public class AppCommon extends EntityCommon implements IAppCommon {
         dest.setAdded(ifNotNull(src.getAdded(), dest.getAdded()));
         dest.setLastUpdated(ifNotNull(src.getLastUpdated(), dest.getLastUpdated()));
 
+        dest.setIcon(ifNotNull(src.getIcon(), dest.getIcon()));
+        dest.setPackageName(ifNotNull(src.getPackageName(), dest.getPackageName()));
+        dest.setSuggestedVersionName(ifNotNull(src.getSuggestedVersionName(), dest.getSuggestedVersionName()));
+        dest.setSuggestedVersionCode(ifNotNull(src.getSuggestedVersionCode(), dest.getSuggestedVersionCode()));
+
         if (src2 != null) {
             dest.setIcon(ifNotNull(src2.getIcon(), dest.getIcon()));
             dest.setPackageName(ifNotNull(src2.getPackageName(), dest.getPackageName()));
@@ -94,16 +102,30 @@ public class AppCommon extends EntityCommon implements IAppCommon {
         this.changelog = maxlen(changelog);
     }
 
-    public String getSuggestedVersionName() {
-        return suggestedVersionName;
+    public static void toStringBuilder(
+            @NotNull StringBuilder sb, @Nullable IAppCommon content) {
+        if (content != null) {
+            toStringBuilder(sb, "packageName", content.getPackageName());
+            toStringBuilder(sb, "changelog", content.getChangelog());
+            toStringBuilder(sb, "suggestedVersionName", content.getSuggestedVersionName());
+            toStringBuilder(sb, "suggestedVersionCode", content.getSuggestedVersionCode());
+            toStringBuilder(sb, "issueTracker", content.getIssueTracker());
+            toStringBuilder(sb, "license", content.getLicense());
+            toStringBuilder(sb, "sourceCode", content.getSourceCode());
+            toStringBuilder(sb, "webSite", content.getWebSite());
+            toDateStringBuilder(sb, "added", content.getAdded());
+            toDateStringBuilder(sb, "lastUpdated", content.getLastUpdated());
+            toStringBuilder(sb, "icon", content.getIcon());
+        }
     }
 
     public void setSuggestedVersionName(String suggestedVersionName) {
         this.suggestedVersionName = maxlen(suggestedVersionName);
     }
 
-    public String getSuggestedVersionCode() {
-        return suggestedVersionCode;
+    @Override
+    public String getSuggestedVersionName() {
+        return suggestedVersionName;
     }
 
     public void setSuggestedVersionCode(String suggestedVersionCode) {
@@ -155,15 +177,9 @@ public class AppCommon extends EntityCommon implements IAppCommon {
         this.added = added;
     }
 
-    @Schema(description = "When the app was added to the [Repo].",
-            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Repo"),
-            example = "2015-07-30")
-    public String getAddedDate() {
-        return EntityCommon.asDateString(added);
-    }
-
-    public String getIcon() {
-        return icon;
+    @Override
+    public String getSuggestedVersionCode() {
+        return suggestedVersionCode;
     }
 
     public void setIcon(String icon) {
@@ -179,13 +195,12 @@ public class AppCommon extends EntityCommon implements IAppCommon {
         this.lastUpdated = lastUpdated;
     }
 
-    @Schema(description = "When the app was last updated in the [Repo].",
-            externalDocs = @ExternalDocumentation(url = ExtDoc.GLOSSAR_URL + "Repo"),
-            example = "2020-03-14")
-    public String getLastUpdatedDate() {
-        return asDateString(lastUpdated);
+    @Override
+    public String getIcon() {
+        return icon;
     }
 
+    @Override
     public String getPackageName() {
         return packageName;
     }
@@ -194,19 +209,9 @@ public class AppCommon extends EntityCommon implements IAppCommon {
         this.packageName = maxlen(packageName);
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         super.toStringBuilder(sb);
-        toStringBuilder(sb, "packageName", this.packageName);
-        toStringBuilder(sb, "changelog", this.changelog);
-        toStringBuilder(sb, "suggestedVersionName", this.suggestedVersionName);
-        toStringBuilder(sb, "suggestedVersionCode", this.suggestedVersionCode);
-        toStringBuilder(sb, "issueTracker", this.issueTracker);
-        toStringBuilder(sb, "license", this.license);
-        toStringBuilder(sb, "sourceCode", this.sourceCode);
-        toStringBuilder(sb, "webSite", this.webSite);
-        toDateStringBuilder(sb, "added", this.added);
-        toDateStringBuilder(sb, "lastUpdated", this.lastUpdated);
-        toStringBuilder(sb, "icon", this.icon);
+        toStringBuilder(sb, this);
     }
 
 }

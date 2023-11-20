@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.domain.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 // @ExternalDocumentation(description = "Translation of content", url = ExtDoc.GLOSSAR_URL + "Category")
 @androidx.room.Entity(primaryKeys = {"typ", "id", "localeId"},
         indices = {@androidx.room.Index({"typ", "id", "localeId"})})
@@ -37,7 +39,7 @@ public class Translation extends TranslationPK {
         super(typ, id, localeId);
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         super.toStringBuilder(sb);
         toStringBuilder(sb, "localizedText", this.localizedText);
     }

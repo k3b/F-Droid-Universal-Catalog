@@ -19,6 +19,8 @@
 package de.k3b.fdroid.domain.entity;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Comparator;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
@@ -59,7 +61,7 @@ public class Category extends EntityCommon implements DatabaseEntityWithId {
         this.name = name;
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         toStringBuilder(sb, "name", this.name);
         super.toStringBuilder(sb);

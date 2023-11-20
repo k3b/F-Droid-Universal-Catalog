@@ -19,6 +19,9 @@
 
 package de.k3b.fdroid.domain.entity.common;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import javax.persistence.Column;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -113,14 +116,21 @@ public class LocalizedCommon extends EntityCommon implements ILocalizedCommon {
         this.whatsNew = maxlen(whatsNew, MAX_LEN_AGGREGATED);
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    public static void toStringBuilder(
+            @NotNull StringBuilder sb, @Nullable ILocalizedCommon content) {
+        if (content != null) {
+            toStringBuilder(sb, "name", content.getName());
+            toStringBuilder(sb, "summary", content.getSummary());
+            toStringBuilder(sb, "description", content.getDescription());
+            toStringBuilder(sb, "icon", content.getIcon());
+            toStringBuilder(sb, "video", content.getVideo());
+            toStringBuilder(sb, "whatsNew", content.getWhatsNew());
+        }
+    }
+
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         super.toStringBuilder(sb);
-        toStringBuilder(sb, "name", this.name);
-        toStringBuilder(sb, "summary", this.summary);
-        toStringBuilder(sb, "description", this.description);
-        toStringBuilder(sb, "icon", this.icon);
-        toStringBuilder(sb, "video", this.video);
-        toStringBuilder(sb, "whatsNew", this.whatsNew);
+        toStringBuilder(sb, this);
     }
 
 }

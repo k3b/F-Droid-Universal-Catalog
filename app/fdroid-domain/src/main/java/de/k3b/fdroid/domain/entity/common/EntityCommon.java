@@ -19,6 +19,8 @@
 
 package de.k3b.fdroid.domain.entity.common;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -107,7 +109,7 @@ public class EntityCommon implements Enitity {
         }
     }
 
-    protected void toStringBuilder(StringBuilder sb, String name, Object value, int maxLen) {
+    protected static void toStringBuilder(StringBuilder sb, String name, Object value, int maxLen) {
         if (value != null) {
             String strValue = value.toString();
             int length = strValue.length();
@@ -120,13 +122,13 @@ public class EntityCommon implements Enitity {
         }
     }
 
-    protected void toStringBuilder(StringBuilder sb, String name, Object value) {
+    protected static void toStringBuilder(StringBuilder sb, String name, Object value) {
         if (value != null) {
             sb.append(name).append('=').append(value).append(',');
         }
     }
 
-    protected void toStringBuilder(StringBuilder sb, String name, Object[] values) {
+    protected static void toStringBuilder(StringBuilder sb, String name, Object[] values) {
         if (values != null && values.length > 0) {
             sb.append(name).append("= [");
             String delimiter = "";
@@ -140,35 +142,51 @@ public class EntityCommon implements Enitity {
         }
     }
 
-    protected void toStringBuilder(StringBuilder sb, String name, EntityCommon value) {
+    protected static void toStringBuilder(StringBuilder sb, String name, EntityCommon value) {
         if (value != null) {
             sb.append(name).append("=").append(value).append(",");
         }
     }
 
-    protected void toStringBuilder(StringBuilder sb, String name, long value) {
+    protected static void toStringBuilder(StringBuilder sb, String name, long value) {
         if (value != 0 && value != -1)
             sb.append(name).append('=').append(value).append(',');
     }
 
-    protected void toStringBuilder(StringBuilder sb, String name, boolean value) {
+    protected static void toStringBuilder(StringBuilder sb, String name, boolean value) {
         if (value) {
             sb.append(name).append('=').append(value).append(',');
         }
     }
 
-    public void toDateStringBuilder(StringBuilder sb, String name, long value) {
-        if (value != 0) {
+    public static void toDateStringBuilder(StringBuilder sb, String name, long value) {
+        if (!isEmpty(value)) {
             sb.append(name).append('=').append(asDateString(value)).append(',');
         }
     }
 
     public static long ifNotNull(long val, long defaultValue) {
-        return val != 0 ? val : defaultValue;
+        return !isEmpty(val) ? val : defaultValue;
     }
 
     public static String ifNotNull(String val, String defaultValue) {
-        return val != null && val.length() > 0 ? val : defaultValue;
+        return !isEmpty(val) ? val : defaultValue;
+    }
+
+    public static boolean isEmpty(long val) {
+        return val == 0L;
+    }
+
+    public static boolean isEmpty(int val) {
+        return val == 0;
+    }
+
+    public static boolean isEmpty(String val) {
+        return val == null || val.isEmpty();
+    }
+
+    public static boolean isEmpty(Object val) {
+        return val == null;
     }
 
     @Override
@@ -196,6 +214,6 @@ public class EntityCommon implements Enitity {
         return s;
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
     }
 }

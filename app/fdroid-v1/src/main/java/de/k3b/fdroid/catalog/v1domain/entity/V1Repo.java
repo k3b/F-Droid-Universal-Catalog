@@ -19,6 +19,8 @@
 
 package de.k3b.fdroid.catalog.v1domain.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 import javax.annotation.Generated;
@@ -32,6 +34,7 @@ import de.k3b.fdroid.domain.entity.common.RepoCommon;
  * {@link de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId} {@link de.k3b.fdroid.domain.entity.Repo}.
  */
 @Generated("jsonschema2pojo")
+@SuppressWarnings("unused")
 public class V1Repo extends RepoCommon implements V1JsonEntity {
 
     private List<String> mirrors = null;
@@ -44,7 +47,7 @@ public class V1Repo extends RepoCommon implements V1JsonEntity {
         this.mirrors = mirrors;
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         super.toStringBuilder(sb);
         toStringBuilder(sb, "mirrors", this.mirrors);
     }

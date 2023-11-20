@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.domain.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
@@ -86,7 +88,7 @@ public class AppSearchParameter extends EntityCommon implements Serializable {
     }
 
     @Override
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         super.toStringBuilder(sb);
         toStringBuilder(sb, "searchText", this.searchText);
         toStringBuilder(sb, "versionSdk", this.versionSdk);

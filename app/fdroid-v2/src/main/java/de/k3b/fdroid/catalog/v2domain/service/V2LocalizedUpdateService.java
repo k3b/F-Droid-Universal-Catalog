@@ -168,7 +168,7 @@ public class V2LocalizedUpdateService {
 
         converter.convert(v2AppInfo.getVideo(), Localized::getVideo, Localized::setVideo);
 
-        converter.convert(Java8Util.getKeyValueMap(v2AppInfo.getIcon(), V2IconUtil::getIconName),
+        converter.convert(Java8Util.getKeyValueMap(v2AppInfo.getIconMap(), V2IconUtil::getIconName),
                 Localized::getIcon, Localized::setIcon);
 
         V2Screenshots screenshots = v2AppInfo.getScreenshots();

@@ -18,6 +18,8 @@
  */
 package de.k3b.fdroid.domain.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 
@@ -109,7 +111,7 @@ public class AppHardware extends EntityCommon implements AppDetail {
         this.max = max;
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         toStringBuilder(sb, "appId", this.appId);
         super.toStringBuilder(sb);

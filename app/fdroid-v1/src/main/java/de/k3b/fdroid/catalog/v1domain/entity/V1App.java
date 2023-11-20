@@ -19,6 +19,8 @@
 
 package de.k3b.fdroid.catalog.v1domain.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -78,7 +80,7 @@ public class V1App extends AppCommon implements V1JsonEntity {
     }
 
     @Override
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         super.toStringBuilder(sb);
         toStringBuilder(sb, "summary", this.summary);
         toStringBuilder(sb, "description", this.description);

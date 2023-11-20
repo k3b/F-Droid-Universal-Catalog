@@ -20,6 +20,8 @@ package de.k3b.fdroid.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.jetbrains.annotations.NotNull;
+
 import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.entity.common.ExtDoc;
@@ -219,7 +221,7 @@ public class Repo extends RepoCommon implements DatabaseEntityWithId {
         this.lastUsedDownloadMirror = maxlen(removeName(lastUsedDownloadMirror));
     }
 
-    protected void toStringBuilder(StringBuilder sb) {
+    protected void toStringBuilder(@NotNull StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         toStringBuilder(sb, "autoDownloadEnabled", this.autoDownloadEnabled);
         toStringBuilder(sb, "lastErrorMessage", this.lastErrorMessage);
