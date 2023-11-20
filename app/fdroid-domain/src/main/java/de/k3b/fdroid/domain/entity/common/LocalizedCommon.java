@@ -53,13 +53,25 @@ public class LocalizedCommon extends EntityCommon implements ILocalizedCommon {
             example = "#168: Bugfix crash in  ...")
     private String whatsNew;
 
-    public static void copyCommon(LocalizedCommon dest, LocalizedCommon src) {
-        dest.setName(ifNotNull(src.getName(), dest.getName()));
-        dest.setIcon(ifNotNull(src.getIcon(), dest.getIcon()));
-        dest.setDescription(ifNotNull(src.getDescription(), dest.getDescription()));
-        dest.setSummary(ifNotNull(src.getSummary(),dest.getSummary()));
-        dest.setVideo(ifNotNull(src.getVideo(),dest.getVideo()));
-        dest.setWhatsNew(ifNotNull(src.getWhatsNew(),dest.getWhatsNew()));
+    public LocalizedCommon() {
+        super();
+    }
+
+    @androidx.room.Ignore
+    public LocalizedCommon(@Nullable ILocalizedCommon src) {
+        super();
+        copyCommon(this, src);
+    }
+
+    public static void copyCommon(@NotNull LocalizedCommon dest, @Nullable ILocalizedCommon src) {
+        if (src != null) {
+            dest.setName(ifNotNull(src.getName(), dest.getName()));
+            dest.setIcon(ifNotNull(src.getIcon(), dest.getIcon()));
+            dest.setDescription(ifNotNull(src.getDescription(), dest.getDescription()));
+            dest.setSummary(ifNotNull(src.getSummary(), dest.getSummary()));
+            dest.setVideo(ifNotNull(src.getVideo(), dest.getVideo()));
+            dest.setWhatsNew(ifNotNull(src.getWhatsNew(), dest.getWhatsNew()));
+        }
     }
 
     @Override

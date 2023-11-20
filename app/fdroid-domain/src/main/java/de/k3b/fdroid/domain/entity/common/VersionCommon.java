@@ -55,22 +55,26 @@ public class VersionCommon extends ProfileCommon implements IVersionCommon {
             example = "de.k3b.android.androFotoFinder_44_src.tar.gz")
     private String srcname;
 
-    public static void copyCommon(VersionCommon dest, IVersionCommon src) {
-        ProfileCommon.copyCommon(dest, src);
-        dest.setSrcname(src.getSrcname());
-
-        dest.setHash(src.getHash());
-        dest.setSigner(src.getSigner());
-
-        dest.setSdk(src.getMinSdkVersion(), src.getTargetSdkVersion(), src.getMaxSdkVersion());
-    }
-
     public VersionCommon() {
+        super();
     }
 
     @androidx.room.Ignore
-    public VersionCommon(VersionCommon src) {
-        if (src != null) copyCommon(this, src);
+    public VersionCommon(@Nullable IVersionCommon src) {
+        super();
+        copyCommon(this, src);
+    }
+
+    public static void copyCommon(@NotNull VersionCommon dest, @Nullable IVersionCommon src) {
+        if (src != null) {
+            ProfileCommon.copyCommon(dest, src);
+            dest.setSrcname(src.getSrcname());
+
+            dest.setHash(src.getHash());
+            dest.setSigner(src.getSigner());
+
+            dest.setSdk(src.getMinSdkVersion(), src.getTargetSdkVersion(), src.getMaxSdkVersion());
+        }
     }
 
     @Override

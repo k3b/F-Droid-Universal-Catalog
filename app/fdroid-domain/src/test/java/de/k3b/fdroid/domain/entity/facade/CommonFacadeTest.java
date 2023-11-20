@@ -31,6 +31,9 @@ import de.k3b.fdroid.domain.util.TestDataGenerator;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
+/**
+ * tests that XxxCommon.toString() == XxxCommonFacade.toString().
+ */
 @RunWith(JUnitParamsRunner.class)
 public class CommonFacadeTest {
     private static final LocalizedCommon LOCALIZED_COMMON_EMPTY = new LocalizedCommon();

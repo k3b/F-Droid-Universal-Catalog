@@ -57,13 +57,26 @@ public class RepoCommon extends EntityCommon implements IRepoCommon {
             example = "The official F-Droid Free Software repository.  Everything in this repository ...")
     private String description;
 
-    public static void copyCommon(RepoCommon dest, IRepoCommon src) {
-        dest.setName(src.getName());
-        dest.setTimestamp(src.getTimestamp());
-        dest.setIcon(src.getIcon());
-        dest.setAddress(src.getAddress());
-        String description = src.getDescription();
-        dest.setDescription(description);
+    public RepoCommon() {
+        super();
+    }
+
+    @androidx.room.Ignore
+    public RepoCommon(@Nullable IRepoCommon src) {
+        super();
+        copyCommon(this, src);
+    }
+
+
+    public static void copyCommon(@NotNull RepoCommon dest, @Nullable IRepoCommon src) {
+        if (src != null) {
+            dest.setName(src.getName());
+            dest.setTimestamp(src.getTimestamp());
+            dest.setIcon(src.getIcon());
+            dest.setAddress(src.getAddress());
+            String description = src.getDescription();
+            dest.setDescription(description);
+        }
     }
 
     @Override

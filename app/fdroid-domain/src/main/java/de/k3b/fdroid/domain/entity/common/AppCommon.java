@@ -71,19 +71,31 @@ public class AppCommon extends EntityCommon implements IAppCommon {
             example = "1584144000000")
     private long lastUpdated;
 
-    public static void copyCommon(AppCommon dest, IAppCommon src, AppCommon src2) {
-        dest.setChangelog(ifNotNull(src.getChangelog(), dest.getChangelog()));
-        dest.setIssueTracker(ifNotNull(src.getIssueTracker(), dest.getIssueTracker()));
-        dest.setLicense(ifNotNull(src.getLicense(), dest.getLicense()));
-        dest.setSourceCode(ifNotNull(src.getSourceCode(), dest.getSourceCode()));
-        dest.setWebSite(ifNotNull(src.getWebSite(), dest.getWebSite()));
-        dest.setAdded(ifNotNull(src.getAdded(), dest.getAdded()));
-        dest.setLastUpdated(ifNotNull(src.getLastUpdated(), dest.getLastUpdated()));
+    public AppCommon() {
+        super();
+    }
 
-        dest.setIcon(ifNotNull(src.getIcon(), dest.getIcon()));
-        dest.setPackageName(ifNotNull(src.getPackageName(), dest.getPackageName()));
-        dest.setSuggestedVersionName(ifNotNull(src.getSuggestedVersionName(), dest.getSuggestedVersionName()));
-        dest.setSuggestedVersionCode(ifNotNull(src.getSuggestedVersionCode(), dest.getSuggestedVersionCode()));
+    @androidx.room.Ignore
+    public AppCommon(@Nullable IAppCommon src) {
+        super();
+        copyCommon(this, src, null);
+    }
+
+    public static void copyCommon(@NotNull AppCommon dest, @Nullable IAppCommon src, @Nullable AppCommon src2) {
+        if (src != null) {
+            dest.setChangelog(ifNotNull(src.getChangelog(), dest.getChangelog()));
+            dest.setIssueTracker(ifNotNull(src.getIssueTracker(), dest.getIssueTracker()));
+            dest.setLicense(ifNotNull(src.getLicense(), dest.getLicense()));
+            dest.setSourceCode(ifNotNull(src.getSourceCode(), dest.getSourceCode()));
+            dest.setWebSite(ifNotNull(src.getWebSite(), dest.getWebSite()));
+            dest.setAdded(ifNotNull(src.getAdded(), dest.getAdded()));
+            dest.setLastUpdated(ifNotNull(src.getLastUpdated(), dest.getLastUpdated()));
+
+            dest.setIcon(ifNotNull(src.getIcon(), dest.getIcon()));
+            dest.setPackageName(ifNotNull(src.getPackageName(), dest.getPackageName()));
+            dest.setSuggestedVersionName(ifNotNull(src.getSuggestedVersionName(), dest.getSuggestedVersionName()));
+            dest.setSuggestedVersionCode(ifNotNull(src.getSuggestedVersionCode(), dest.getSuggestedVersionCode()));
+        }
 
         if (src2 != null) {
             dest.setIcon(ifNotNull(src2.getIcon(), dest.getIcon()));
