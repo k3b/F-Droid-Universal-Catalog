@@ -45,12 +45,14 @@ import de.k3b.fdroid.html.util.MustacheEx;
 public class FormatService {
     final Template tmpl;
     public FormatService(String templateId, Class<?> itemclass, Mustache.CustomContext resourceTranslator) {
+        MustacheEx.addFixedProperty("t", resourceTranslator);
         tmpl = MustacheEx
                 .createMustacheCompiler()
                 .compile(loadTemplate(templateId, itemclass));
     }
 
     public FormatService(String template, Mustache.CustomContext resourceTranslator) {
+        MustacheEx.addFixedProperty("t", resourceTranslator);
         tmpl = MustacheEx
                 .createMustacheCompiler()
                 .compile(template);

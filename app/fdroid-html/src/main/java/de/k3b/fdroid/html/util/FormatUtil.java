@@ -51,7 +51,7 @@ public class FormatUtil {
     public static Collection<Object[]> getTestCases() throws Exception {
         List<Object[]> result = new ArrayList<>();
         String namespace = getNamespace(Repo.class);
-        for (File dir : getResourceFolderFiles("html")) {
+        for (File dir : getResourceFolderFiles("templates")) {
             if (!dir.getName().startsWith(".") && dir.isDirectory()) {
                 Class<?> itemClass = Class.forName(namespace + dir.getName());
                 Object exampleItem = TestDataGenerator.fill(itemClass.getConstructor().newInstance(), 4);
@@ -60,6 +60,11 @@ public class FormatUtil {
             }
         }
         return result;
+    }
+
+    public static Object[] getTestCaseArray() throws Exception {
+        Collection<Object[]> result = getTestCases();
+        return result.toArray(new Object[0]);
     }
 
     // to make lint happy about null pointer exceptions

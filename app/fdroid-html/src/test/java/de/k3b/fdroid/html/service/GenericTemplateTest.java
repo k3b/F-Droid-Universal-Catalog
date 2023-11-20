@@ -22,12 +22,12 @@ import com.samskivert.mustache.Mustache;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 
-import java.util.Collection;
 import java.util.Locale;
 
 import de.k3b.fdroid.html.util.FormatUtil;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 
 /**
  * iterates over all mustache templates *.hbs and executes it-s formatter.
@@ -36,27 +36,21 @@ import de.k3b.fdroid.html.util.FormatUtil;
  * * .../FDroidUniversal/app/fdroid-html/src/test/java/de/k3b/fdroid/html/service
  * * .../FDroidUniversal/app/fdroid-html/build/resources/main/html/Repo/list_repo.hbs
  */
-@RunWith(Parameterized.class)
+@RunWith(JUnitParamsRunner.class)
 public class GenericTemplateTest {
     private static Mustache.CustomContext translator;
 
-    private final Object testParamExampleItem;
-    private final String testParamTemplateId;
-
-    public GenericTemplateTest(Object exampleItem, String templateId) {
-        super();
-        this.testParamExampleItem = exampleItem;
-        this.testParamTemplateId = templateId;
-    }
-
-    @Parameterized.Parameters
-    public static Collection<Object[]> input() throws Exception {
+    // @Parameterized.Parameters
+    @SuppressWarnings("unused")
+    public static Object[] getExamples() throws Exception {
         translator = new ResourceBundleMustacheContext(Locale.US);
-        return FormatUtil.getTestCases();
+        return FormatUtil.getTestCaseArray();
     }
 
     @Test
-    public void domainTemplateTest() {
+    @Parameters(method = "getExamples")
+    @SuppressWarnings("JUNIT")
+    public void domainTemplateTest(Object testParamExampleItem, String testParamTemplateId) {
         System.out.println("<!-- running template " + testParamExampleItem.getClass().getSimpleName() + "/" + testParamTemplateId + " -->");
         FormatService formatService = new FormatService(
                 testParamTemplateId, testParamExampleItem.getClass(), translator);
