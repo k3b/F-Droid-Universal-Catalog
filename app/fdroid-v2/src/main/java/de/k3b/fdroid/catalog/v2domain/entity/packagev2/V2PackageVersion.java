@@ -164,9 +164,4 @@ public class V2PackageVersion implements IVersionCommon {
         return (file == null) ? null : file.getSha256();
     }
 
-    @Override
-    public String getHashType() {
-        return (file == null) ? null : "sha256";
-    }
-
 }

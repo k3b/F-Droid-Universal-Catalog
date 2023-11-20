@@ -179,8 +179,6 @@ public class V2UpdateServiceTest {
                 ",versionName=1.2.3,size=1493080" +
                 ",minSdkVersion=14,targetSdkVersion=21" +
                 ",maxSdkVersion=32,srcname=my.test.app_10401_src.tar.gz,hash=77bf8dd...4179" +
-                ",hashType=sha256" +
-                // ",sig=c6c0dcf...c4cf" + // not found in v2 data
                 ",signer=666d4e0...31a5" +
                 "]";
         assertEquals(expected, version.toString());

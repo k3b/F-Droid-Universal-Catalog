@@ -21,8 +21,6 @@ package de.k3b.fdroid.domain.entity.common;
 public interface IVersionCommon extends IProfileCommon {
     String getHash();
 
-    String getHashType();
-
     int getMinSdkVersion();
 
     int getMaxSdkVersion();
