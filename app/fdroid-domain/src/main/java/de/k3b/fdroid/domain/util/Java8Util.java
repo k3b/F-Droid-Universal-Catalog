@@ -47,6 +47,15 @@ public class Java8Util {
         return result;
     }
 
+    public static <K, T, R> Map<K, R> reduce(Map<K, T> list, Getter<T, R> getter) {
+        if (list == null) return null;
+        TreeMap<K, R> result = new TreeMap<>();
+        for (Map.Entry<K, T> entry : list.entrySet()) {
+            result.put(entry.getKey(), getter.get(entry.getValue()));
+        }
+        return result;
+    }
+
     // java 8 supports lamda expressions but not yet generic parameters java.util.functions//
     public interface Getter<T, R> {
         R get(T l);

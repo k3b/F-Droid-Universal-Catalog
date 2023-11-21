@@ -19,6 +19,7 @@
 
 package de.k3b.fdroid.catalog.v2domain.service;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,11 +27,15 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.PersistenceException;
 
 import de.k3b.fdroid.Global;
+import de.k3b.fdroid.catalog.v2domain.entity.V2IconUtil;
 import de.k3b.fdroid.catalog.v2domain.entity.repo.V2Mirror;
 import de.k3b.fdroid.catalog.v2domain.entity.repo.V2Repo;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
 import de.k3b.fdroid.domain.repository.RepoRepository;
+import de.k3b.fdroid.domain.repository.TranslationRepository;
+import de.k3b.fdroid.domain.service.LanguageService;
+import de.k3b.fdroid.domain.service.TranslationService;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.Java8Util;
 import de.k3b.fdroid.domain.util.StringUtil;
@@ -44,11 +49,35 @@ public class V2RepoUpdateService {
 
     @Nullable
     private final RepoRepository repoRepository;
+    @Nullable
+    private final V2CategoryUpdateService categoryUpdateService;
+    @NotNull
+    private final TranslationService categoryIconService;
+    @NotNull
+    private final TranslationService categoryNameService;
+    @NotNull
+    private final TranslationService categoryDescriptionService;
 
     private int nextMockAppId = 200142;
 
-    public V2RepoUpdateService(@Nullable RepoRepository repoRepository) {
+    public V2RepoUpdateService(@Nullable RepoRepository repoRepository,
+                               @Nullable TranslationRepository translationRepository,
+                               @Nullable V2CategoryUpdateService categoryUpdateService) {
         this.repoRepository = repoRepository;
+        this.categoryUpdateService = categoryUpdateService;
+        this.categoryNameService = new TranslationService(TranslationService.TYP_REPOSITORY_NAME, translationRepository);
+        this.categoryDescriptionService = new TranslationService(TranslationService.TYP_REPOSITORY_DESCRIPTION, translationRepository);
+        this.categoryIconService = new TranslationService(TranslationService.TYP_REPOSITORY_ICON, translationRepository);
+
+    }
+
+
+    public V2RepoUpdateService init() {
+        if (categoryUpdateService != null) categoryUpdateService.init();
+        categoryNameService.init();
+        categoryDescriptionService.init();
+        categoryIconService.init();
+        return this;
     }
 
     public Repo update(Repo roomRepoOrNull, V2Repo v2Repo)
@@ -70,6 +99,7 @@ public class V2RepoUpdateService {
                 copy(roomRepo, v2Repo);
                 if (repoRepository != null) repoRepository.update(roomRepo);
             }
+            updateDetails(roomRepo, v2Repo);
             return roomRepo;
         } catch (PersistenceException ex) {
             // thrown by j2se hibernate database problem
@@ -87,6 +117,15 @@ public class V2RepoUpdateService {
         }
     }
 
+    private void updateDetails(Repo repo, @NotNull V2Repo v2Repo) {
+        if (categoryUpdateService != null) categoryUpdateService.update(v2Repo.getCategories());
+        this.categoryNameService.update(repo.getId(), repo.getName(), v2Repo.getNameMap());
+        this.categoryDescriptionService.update(repo.getId(), repo.getDescription(), v2Repo.getDescriptionMap());
+        this.categoryIconService.update(repo.getId(), repo.getIcon(),
+                Java8Util.reduce(LanguageService.getCanonicalLocale(v2Repo.getIconMap())
+                        , V2IconUtil::getIconName));
+    }
+
     private void copy(Repo dest, V2Repo src) {
         RepoCommon.copyCommon(dest, src);
 
@@ -96,7 +135,14 @@ public class V2RepoUpdateService {
         }
     }
 
-    public V2RepoUpdateService init() {
-        return this;
+    @Override
+    public String toString() {
+        return "V2RepoUpdateService{" +
+                "categoryUpdateService=" + categoryUpdateService +
+                ", categoryIconService=" + categoryIconService +
+                ", categoryNameService=" + categoryNameService +
+                ", categoryDescriptionService=" + categoryDescriptionService +
+                ", nextMockAppId=" + nextMockAppId +
+                '}';
     }
 }

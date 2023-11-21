@@ -34,8 +34,12 @@ import de.k3b.fdroid.domain.repository.TranslationRepository;
 import de.k3b.fdroid.domain.util.StringUtil;
 
 public class TranslationService {
-    public static final String TYP_REPOSITORY_ICON = "RI";
     public static final String TYP_REPOSITORY_NAME = "RN";
+    public static final String TYP_REPOSITORY_DESCRIPTION = "RD";
+    public static final String TYP_REPOSITORY_ICON = "RI";
+    public static final String TYP_CATEGORY_NAME = "CN";
+    public static final String TYP_CATEGORY_DESCRIPTION = "CD";
+    public static final String TYP_CATEGORY_ICON = "CI";
     private final String typ;
     private final TranslationRepository translationRepository;
 
@@ -44,6 +48,10 @@ public class TranslationService {
     public TranslationService(@NotNull String typ, @Nullable TranslationRepository translationRepository) {
         this.typ = typ;
         this.translationRepository = translationRepository;
+    }
+
+    public void init() {
+        loadAll();
     }
 
     private static void put(Map<String, Translation> result, Translation t) {
@@ -129,9 +137,36 @@ public class TranslationService {
     private Map<String, Translation> getLocaleMap(Integer id, boolean createIfNotFound) {
         Map<String, Translation> idMap = all.get(id);
         if (idMap == null && createIfNotFound) {
-            idMap = new TreeMap<String, Translation>();
+            idMap = new TreeMap<>();
             all.put(id, idMap);
         }
         return idMap;
+    }
+
+    public void update(int id, @Nullable String name, Map<String, String> localeMap) {
+        if (localeMap != null) {
+            for (Map.Entry<String, String> entry : localeMap.entrySet()) {
+                String translation = entry.getValue();
+                if (translation != null && (name == null || name.compareTo(translation) != 0)) {
+                    save(id, entry.getKey(), translation);
+                }
+            }
+        }
+    }
+
+    public void updateIcon(int categoryId, Map<String, String> iconMap) {
+        String fallbackIcon = iconMap.get(LanguageService.FALLBACK_LOCALE);
+
+        // fallbackIcon is added for FALLBACK_LOCALE but not for the other locales
+        save(categoryId, LanguageService.FALLBACK_LOCALE, fallbackIcon);
+        update(categoryId, fallbackIcon, iconMap);
+    }
+
+    @Override
+    public String toString() {
+        return "TranslationService{" +
+                "'" + typ +
+                "' : " + all +
+                '}';
     }
 }

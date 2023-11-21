@@ -30,6 +30,7 @@ import de.k3b.fdroid.catalog.v2domain.entity.packagev2.V2App;
 import de.k3b.fdroid.catalog.v2domain.entity.packagev2.V2AppCatalog;
 import de.k3b.fdroid.catalog.v2domain.entity.packagev2.V2AppInfo;
 import de.k3b.fdroid.catalog.v2domain.entity.packagev2.V2PackageVersion;
+import de.k3b.fdroid.catalog.v2domain.entity.repo.V2Category;
 import de.k3b.fdroid.catalog.v2domain.entity.repo.V2Repo;
 
 public class V2TestData {
@@ -40,6 +41,7 @@ public class V2TestData {
     public final V2AppInfo appInfo;
     public final V2PackageVersion version;
     public final V2Repo repo;
+    public final V2Category category;
 
     public V2TestData() {
         try (InputStream resourceAsStream = V2TestData.class.getClassLoader().getResourceAsStream(UNITTEST_TEST_DATA);
@@ -47,9 +49,16 @@ public class V2TestData {
             Gson gson = new Gson();
             appCatalog = gson.fromJson(is, V2AppCatalog.class);
             repo = appCatalog.getRepo();
-            app = appCatalog.getPackages().entrySet().iterator().next().getValue();
-            appInfo = app.getMetadata();
-            version = app.getVersions().entrySet().iterator().next().getValue();
+            if (repo != null && repo.getCategories() != null) {
+                category = repo.getCategories().entrySet().iterator().next().getValue();
+            }
+            if (appCatalog != null && appCatalog.getPackages() != null) {
+                app = appCatalog.getPackages().entrySet().iterator().next().getValue();
+                if (app != null) {
+                    appInfo = app.getMetadata();
+                    version = app.getVersions().entrySet().iterator().next().getValue();
+                }
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

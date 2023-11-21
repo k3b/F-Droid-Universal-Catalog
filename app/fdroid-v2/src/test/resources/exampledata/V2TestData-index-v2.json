@@ -68,9 +68,13 @@
             "size": 21698
           }
         },
+        "description": {
+          "de": "testCategory-de-description",
+          "en-US": "testCategory-description"
+        },
         "name": {
           "de": "testCategory-de-name",
-          "en-US": "testCategory-name"
+          "en-US": "testCategory"
         }
       }
     },

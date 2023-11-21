@@ -18,6 +18,7 @@
  */
 package de.k3b.fdroid.domain.service;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -65,23 +66,32 @@ public class CategoryService extends CacheServiceInteger<Category> {
         return (category == null) ? null : category.getName();
     }
 
-    public int getOrCreateCategoryId(String categoryName) {
-        if (categoryName != null) {
-            Category category = name2Category.get(categoryName);
-            if (category == null) {
-                // create on demand
-                category = new Category();
-                category.setName(categoryName);
-                if (categoryRepository != null) {
-                    categoryRepository.insert(category);
-                } else {
-                    category.setId(mockId++);
-                }
-                init(category);
+    @NotNull
+    public Category getOrCreateCategory(@NotNull String categoryName) {
+        Category category = name2Category.get(categoryName);
+        if (category == null) {
+            // create on demand
+            category = new Category();
+            category.setName(categoryName);
+            if (categoryRepository != null) {
+                categoryRepository.insert(category);
+            } else {
+                category.setId(mockId++);
             }
-            return category.getId();
+            init(category);
         }
-        return 0;
+        return category;
     }
 
+    public int getOrCreateCategoryId(@NotNull String categoryName) {
+        return getOrCreateCategory(categoryName).getId();
+    }
+
+    @Override
+    public String toString() {
+        return "CategoryService{" +
+                "name2Category=" + name2Category +
+                ", mockId=" + mockId +
+                '}';
+    }
 }

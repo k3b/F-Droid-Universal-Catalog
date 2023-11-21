@@ -195,7 +195,7 @@ public class V2UpdateServiceTest {
     @Test
     public void updateRepo() {
         // arrange
-        V2RepoUpdateService sut = new V2RepoUpdateService(null).init();
+        V2RepoUpdateService sut = new V2RepoUpdateService(null, null, null).init();
 
         // act
         sut.update(repo, testData.repo);
@@ -210,5 +210,59 @@ public class V2UpdateServiceTest {
                 ",mirrors=https://f-droid.org/test1,https://f-droid.org/test2" +
                 "]";
         assertEquals(expected, repo.toString());
+    }
+
+    @Test
+    public void updateRepoDetails() {
+        // arrange
+        V2RepoUpdateService sut = new V2RepoUpdateService(null, null, null).init();
+
+        // act
+        sut.update(repo, testData.repo);
+
+        // assert: v1import and v2import shout create the same result
+        String expected;
+        expected = "V2RepoUpdateService{categoryUpdateService=null" +
+                ", categoryIconService=TranslationService{'RI' : {4712={" +
+                // en-translation is filtered out because en-values are equal to default.
+                "de=Translation[typ=RI,id=4712,localeId=de,localizedText=repo-de-icon.png]}}}" +
+                ", categoryNameService=TranslationService{'RN' : {4712={" +
+                // en-translation is filtered out because en-values are equal to default.
+                "de=Translation[typ=RN,id=4712,localeId=de,localizedText=repo-test-de-name]}}}" +
+                ", categoryDescriptionService=TranslationService{'RD' : {4712={" +
+                "de=Translation[typ=RD,id=4712,localeId=de,localizedText=repo-test-de-description]}}}" +
+                ", nextMockAppId=200142}";
+        assertEquals(expected, sut.toString());
+    }
+
+    @Test
+    public void updateCategory() {
+        V2CategoryUpdateService sut = new V2CategoryUpdateService(
+                null,
+                new CategoryService(null)).init();
+
+        // act
+        sut.update(testData.repo.getCategories());
+
+        // assert: v1import and v2import shout create the same result
+        String expected;
+        expected = "V2CategoryUpdateService{" +
+                "categoryService=CategoryService{name2Category={testCategory=Category[id=12100,name=testCategory]}, mockId=12101}, " +
+                "categoryNameService=TranslationService{'CN' : {" +
+                "12100={" +
+                "de=Translation[typ=CN,id=12100,localeId=de,localizedText=testCategory-de-name]}" +
+                "}}, " +
+                "categoryDescriptionService=TranslationService{'CD' : {" +
+                "12100={" +
+                "de=Translation[typ=CD,id=12100,localeId=de,localizedText=testCategory-de-description], " +
+                "en=Translation[typ=CD,id=12100,localeId=en,localizedText=testCategory-description]}" +
+                "}}, " +
+                "categoryIconService=TranslationService{'CI' : {" +
+                "12100={" +
+                "de=Translation[typ=CI,id=12100,localeId=de,localizedText=testCategory-de-icon.png], " +
+                "en=Translation[typ=CI,id=12100,localeId=en,localizedText=testCategory-icon.png]" +
+                "}}}" +
+                "}";
+        assertEquals(expected, sut.toString());
     }
 }
