@@ -36,12 +36,12 @@ import de.k3b.fdroid.catalog.v2domain.entity.repo.V2Repo;
 public class V2TestData {
     public static final String UNITTEST_TEST_DATA = "exampledata/V2TestData-index-v2.json";
 
-    public final V2AppCatalog appCatalog;
-    public final V2App app;
-    public final V2AppInfo appInfo;
-    public final V2PackageVersion version;
-    public final V2Repo repo;
-    public final V2Category category;
+    public V2AppCatalog appCatalog = null;
+    public V2Repo repo = null;
+    public V2App app = null;
+    public V2AppInfo appInfo = null;
+    public V2PackageVersion version = null;
+    public V2Category category = null;
 
     public V2TestData() {
         try (InputStream resourceAsStream = V2TestData.class.getClassLoader().getResourceAsStream(UNITTEST_TEST_DATA);
