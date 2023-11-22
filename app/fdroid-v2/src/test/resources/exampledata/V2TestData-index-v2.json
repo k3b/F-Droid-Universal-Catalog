@@ -36,8 +36,12 @@
     "timestamp": 1644169232000,
     "antiFeatures": {
       "testAntiFeature": {
+        "name": {
+          "de": "testAntiFeature-name-de",
+          "en-US": "testAntiFeature"
+        },
         "description": {
-          "de": "\"testAntiFeature-description\"-description-de",
+          "de": "testAntiFeature-description-de",
           "en-US": "testAntiFeature-description"
         },
         "icon": {

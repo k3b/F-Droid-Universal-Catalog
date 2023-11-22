@@ -40,7 +40,7 @@ public class AppListViewModel extends StatusViewModel {
 
     private final AppWithDetailsPagerService pager = new AppWithDetailsPagerService(
             new AppRepositoryAdapterImpl(appRepository),
-            null, null, null);
+            null, null, null, null);
 
     private final MutableLiveData<AppSearchParameter> filter
             // = new MutableLiveData<>(new AppSearchParameter().text("k3b"));

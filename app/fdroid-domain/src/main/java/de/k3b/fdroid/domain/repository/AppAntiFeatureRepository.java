@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 by k3b.
+ * Copyright (c) 2023 by k3b.
  *
  * This file is part of org.fdroid project.
  *
@@ -16,30 +16,24 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.repository;
+package de.k3b.fdroid.domain.repository;
 
-import de.k3b.fdroid.domain.repository.AppRepository;
+import java.util.List;
 
-public interface FDroidDatabaseFactory {
-    AppRepository appRepository();
+import de.k3b.fdroid.domain.entity.AppAntiFeature;
+import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 
-    AppCategoryDao appCategoryRepository();
+/**
+ * Android independent interfaces to use the Database.
+ * <p>
+ * Persists {@link AppAntiFeature} (that implements {@link DatabaseEntityWithId}) in the Database.
+ */
+public interface AppAntiFeatureRepository extends Repository {
+    void insert(AppAntiFeature appAntiFeature);
 
-    CategoryDao categoryRepository();
+    void update(AppAntiFeature appAntiFeature);
 
-    AppAntiFeatureDao appAntiFeatureRepository();
+    void delete(AppAntiFeature appAntiFeature);
 
-    AntiFeatureDao antiFeatureRepository();
-
-    LocaleDao localeRepository();
-
-    LocalizedDao localizedRepository();
-
-    RepoDao repoRepository();
-
-    VersionDao versionRepository();
-
-    AppHardwareDao appHardwareRepository();
-
-    HardwareProfileDao hardwareProfileRepository();
+    List<AppAntiFeature> findByAppId(int appId);
 }

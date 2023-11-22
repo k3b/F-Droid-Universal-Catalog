@@ -101,7 +101,7 @@ public class AppDetailController {
 
         appWithDetailsPagerService = new AppWithDetailsPagerService(
                 appAppDetailRepository, localizedRepositoryAdapter, versionRepositoryWithMinSdkFilter,
-                null);
+                null, null);
 
         CacheServiceInteger<Repo> repoCacheService = new CacheServiceInteger<>(repoRepository.findAll());
         getUrl = new GetUrlMustacheLamdaService(repoCacheService);

@@ -42,12 +42,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @SuppressWarnings({"unchecked", "unsafe", "unused"})
 @ExternalDocumentation(description = "Information about an Android [App] that is available in a [Repo] or [Mirror]",
         url = ExtDoc.GLOSSAR_URL + "App")
+
 public class AppWithDetails extends EntityCommon implements AppDetail, AggregateRoot {
     @NotNull
     private final App app;
     private final List<Localized> localizedList = new ArrayList<>();
     private final List<Version> versionList = new ArrayList<>();
     private final List<LinkedDatabaseEntity<AppCategory, Category>> categoryList = new ArrayList<>();
+    private final List<LinkedDatabaseEntity<AppAntiFeature, AntiFeature>> antiFeatureList = new ArrayList<>();
 
     // does not work with key=string
     //private final List<LinkedDatabaseEntity<Localized, Locale>> localeList = new ArrayList<>();
@@ -122,6 +124,7 @@ public class AppWithDetails extends EntityCommon implements AppDetail, Aggregate
         if (classz.equals(Localized.class)) return (List<T>) localizedList;
         if (classz.equals(Version.class)) return (List<T>) versionList;
         if (classz.equals(Category.class)) return (List<T>) categoryList;
+        if (classz.equals(AntiFeature.class)) return (List<T>) antiFeatureList;
 
         // does not work with key=string
         // if (classz.equals(Locale.class)) return (List<T>) localeList;
@@ -136,6 +139,7 @@ public class AppWithDetails extends EntityCommon implements AppDetail, Aggregate
         toStringBuilder(sb, "localizedList", this.localizedList.size());
         toStringBuilder(sb, "versionList", this.versionList.size());
         toStringBuilder(sb, "categoryList", this.categoryList.size());
+        toStringBuilder(sb, "antiFeatureList", this.antiFeatureList.size());
     }
 
 }

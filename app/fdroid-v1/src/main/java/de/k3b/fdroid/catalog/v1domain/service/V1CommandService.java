@@ -115,7 +115,7 @@ public class V1CommandService {
         AppWithDetailsPagerService details = new AppWithDetailsPagerService(
                 new AppRepositoryAdapterImpl(appRepository),
                 null, // new LocalizedRepositoryAdapterImpl(localizedRepository),
-                null, null);
+                null, null, null);
 
         details.init(appIdList, 10, null);
 

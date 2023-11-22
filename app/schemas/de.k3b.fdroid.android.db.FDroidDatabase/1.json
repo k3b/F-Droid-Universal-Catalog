@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "7c7927bb5933165dfb1bb5828a8aa20a",
+    "identityHash": "bd210e118aab2bec8a4a9d25a7f89f72",
     "entities": [
       {
         "tableName": "App",
@@ -309,6 +309,135 @@
             ],
             "orders": [],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Category_name` ON `${TABLE_NAME}` (`name`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "AppAntiFeature",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `appId` INTEGER NOT NULL, `antiFeatureId` INTEGER NOT NULL, FOREIGN KEY(`appId`) REFERENCES `App`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`antiFeatureId`) REFERENCES `AntiFeature`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "appId",
+            "columnName": "appId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "antiFeatureId",
+            "columnName": "antiFeatureId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_AppAntiFeature_appId_antiFeatureId",
+            "unique": false,
+            "columnNames": [
+              "appId",
+              "antiFeatureId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_AppAntiFeature_appId_antiFeatureId` ON `${TABLE_NAME}` (`appId`, `antiFeatureId`)"
+          },
+          {
+            "name": "index_AppAntiFeature_appId",
+            "unique": false,
+            "columnNames": [
+              "appId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_AppAntiFeature_appId` ON `${TABLE_NAME}` (`appId`)"
+          },
+          {
+            "name": "index_AppAntiFeature_antiFeatureId",
+            "unique": false,
+            "columnNames": [
+              "antiFeatureId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_AppAntiFeature_antiFeatureId` ON `${TABLE_NAME}` (`antiFeatureId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "App",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "appId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          },
+          {
+            "table": "AntiFeature",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "antiFeatureId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "AntiFeature",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_AntiFeature_id",
+            "unique": false,
+            "columnNames": [
+              "id"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_AntiFeature_id` ON `${TABLE_NAME}` (`id`)"
+          },
+          {
+            "name": "index_AntiFeature_name",
+            "unique": true,
+            "columnNames": [
+              "name"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_AntiFeature_name` ON `${TABLE_NAME}` (`name`)"
           }
         ],
         "foreignKeys": []
@@ -991,6 +1120,58 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "Translation",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`localizedText` TEXT, `typ` TEXT NOT NULL, `id` INTEGER NOT NULL, `localeId` TEXT NOT NULL, PRIMARY KEY(`typ`, `id`, `localeId`))",
+        "fields": [
+          {
+            "fieldPath": "localizedText",
+            "columnName": "localizedText",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "typ",
+            "columnName": "typ",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "localeId",
+            "columnName": "localeId",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "typ",
+            "id",
+            "localeId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Translation_typ_id_localeId",
+            "unique": false,
+            "columnNames": [
+              "typ",
+              "id",
+              "localeId"
+            ],
+            "orders": [],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Translation_typ_id_localeId` ON `${TABLE_NAME}` (`typ`, `id`, `localeId`)"
+          }
+        ],
+        "foreignKeys": []
       }
     ],
     "views": [
@@ -1001,7 +1182,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7c7927bb5933165dfb1bb5828a8aa20a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bd210e118aab2bec8a4a9d25a7f89f72')"
     ]
   }
 }

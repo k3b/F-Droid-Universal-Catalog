@@ -31,6 +31,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import de.k3b.fdroid.catalog.service.AppAntiFeatureUpdateService;
 import de.k3b.fdroid.catalog.service.AppCategoryUpdateService;
 import de.k3b.fdroid.catalog.v1domain.entity.V1App;
 import de.k3b.fdroid.catalog.v1domain.entity.V1Localized;
@@ -40,6 +41,7 @@ import de.k3b.fdroid.domain.entity.Localized;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.entity.Version;
 import de.k3b.fdroid.domain.repository.AppRepository;
+import de.k3b.fdroid.domain.service.AntiFeatureService;
 import de.k3b.fdroid.domain.service.CategoryService;
 import de.k3b.fdroid.domain.service.LanguageService;
 import de.k3b.fdroid.domain.util.Java8Util;
@@ -79,6 +81,9 @@ public class V1UpdateServiceTest {
                 new AppCategoryUpdateService(
                         new CategoryService(null),
                         null),
+                new AppAntiFeatureUpdateService(
+                        new AntiFeatureService(null),
+                        null),
                 new V1FixLocaleService()
         ).init();
 
@@ -102,6 +107,7 @@ public class V1UpdateServiceTest {
     public void updateApp() {
         // arrange
         V1AppUpdateService sut = new V1AppUpdateService(
+                null,
                 null,
                 null,
                 null,

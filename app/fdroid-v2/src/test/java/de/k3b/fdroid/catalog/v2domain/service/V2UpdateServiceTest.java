@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import de.k3b.fdroid.catalog.service.AppAntiFeatureUpdateService;
 import de.k3b.fdroid.catalog.service.AppCategoryUpdateService;
 import de.k3b.fdroid.catalog.v2domain.entity.packagev2.V2PackageVersion;
 import de.k3b.fdroid.domain.entity.App;
@@ -38,6 +39,7 @@ import de.k3b.fdroid.domain.entity.Localized;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.entity.Version;
 import de.k3b.fdroid.domain.repository.AppRepository;
+import de.k3b.fdroid.domain.service.AntiFeatureService;
 import de.k3b.fdroid.domain.service.CategoryService;
 import de.k3b.fdroid.domain.service.LanguageService;
 import de.k3b.fdroid.domain.util.Java8Util;
@@ -78,6 +80,7 @@ public class V2UpdateServiceTest {
         V2AppUpdateService sut = new V2AppUpdateService(
                 null,
                 null,
+                null,
                 null
         );
 
@@ -107,6 +110,9 @@ public class V2UpdateServiceTest {
                 createLocalizedUpdateService(),
                 new AppCategoryUpdateService(
                         new CategoryService(null),
+                        null),
+                new AppAntiFeatureUpdateService(
+                        new AntiFeatureService(null),
                         null)
         ).init();
 
@@ -195,7 +201,9 @@ public class V2UpdateServiceTest {
     @Test
     public void updateRepo() {
         // arrange
-        V2RepoUpdateService sut = new V2RepoUpdateService(null, null, null).init();
+        V2RepoUpdateService sut = new V2RepoUpdateService(
+                null, null,
+                null, null).init();
 
         // act
         sut.update(repo, testData.repo);
@@ -215,7 +223,8 @@ public class V2UpdateServiceTest {
     @Test
     public void updateRepoDetails() {
         // arrange
-        V2RepoUpdateService sut = new V2RepoUpdateService(null, null, null).init();
+        V2RepoUpdateService sut = new V2RepoUpdateService(null,
+                null, null, null).init();
 
         // act
         sut.update(repo, testData.repo);
@@ -231,7 +240,7 @@ public class V2UpdateServiceTest {
                 "de=Translation[typ=RN,id=4712,localeId=de,localizedText=repo-test-de-name]}}}" +
                 ", categoryDescriptionService=TranslationService{'RD' : {4712={" +
                 "de=Translation[typ=RD,id=4712,localeId=de,localizedText=repo-test-de-description]}}}" +
-                ", nextMockAppId=200142}";
+                ", antiFeatureUpdateService=null, nextMockAppId=200142}";
         assertEquals(expected, sut.toString());
     }
 
@@ -263,6 +272,30 @@ public class V2UpdateServiceTest {
                 "en=Translation[typ=CI,id=12100,localeId=en,localizedText=testCategory-icon.png]" +
                 "}}}" +
                 "}";
+        assertEquals(expected, sut.toString());
+    }
+
+    @Test
+    public void updateAntiFeature() {
+        V2AntiFeatureUpdateService sut = new V2AntiFeatureUpdateService(
+                null,
+                new AntiFeatureService(null)).init();
+
+        // act
+        sut.update(testData.repo.getAntiFeatures());
+
+        // assert: v1import and v2import shout create the same result
+        String expected;
+        expected = "V2AntiFeatureUpdateService{" +
+                "antiFeatureService=AntiFeatureService{name2AntiFeature={testAntiFeature=AntiFeature[id=12100,name=testAntiFeature]}, mockId=12101}, " +
+                "antiFeatureNameService=TranslationService{'AN' : {12100={" +
+                "de=Translation[typ=AN,id=12100,localeId=de,localizedText=testAntiFeature-name-de]}}}, " +
+                "antiFeatureDescriptionService=TranslationService{'AD' : {12100={" +
+                "de=Translation[typ=AD,id=12100,localeId=de,localizedText=testAntiFeature-description-de], " +
+                "en=Translation[typ=AD,id=12100,localeId=en,localizedText=testAntiFeature-description]}}}, " +
+                "antiFeatureIconService=TranslationService{'AI' : {12100={" +
+                "de=Translation[typ=AI,id=12100,localeId=de,localizedText=testAntiFeature-icon-de.png], " +
+                "en=Translation[typ=AI,id=12100,localeId=en,localizedText=testAntiFeature-icon.png]}}}}";
         assertEquals(expected, sut.toString());
     }
 }

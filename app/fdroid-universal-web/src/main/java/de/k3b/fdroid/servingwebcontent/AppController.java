@@ -81,7 +81,7 @@ public class AppController {
 
         AppDetailRepository<App> appAppDetailRepository = new AppRepositoryAdapterImpl(appRepository);
         appWithDetailsPagerService = new AppWithDetailsPagerService(
-                appAppDetailRepository, null, null, null);
+                appAppDetailRepository, null, null, null, null);
         CacheServiceInteger<Repo> cache = new CacheServiceInteger<>(repoRepository.findAll());
 
         ArrayList<Category> categoryList = new ArrayList<>(categoryRepository.findAll());

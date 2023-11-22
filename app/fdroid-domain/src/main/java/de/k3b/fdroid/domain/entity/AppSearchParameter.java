@@ -44,6 +44,7 @@ public class AppSearchParameter extends EntityCommon implements Serializable {
      */
     public Integer minimumScore = null;
     public int categoryId = 0;
+    public int antiFeatureId = 0;
     public String orderBy = null;
 
     // supported by sqLite and hsqldb: SELECT ... FROM ... LIMIT 150 @see <a href="https://www.sqlitetutorial.net/sqlite-limit/">sqlite-limit</a>
@@ -76,6 +77,11 @@ public class AppSearchParameter extends EntityCommon implements Serializable {
         return this;
     }
 
+    public AppSearchParameter antiFeatureId(int antiFeatureId) {
+        this.antiFeatureId = antiFeatureId;
+        return this;
+    }
+
     public AppSearchParameter orderBy(String orderBy) {
         this.orderBy = orderBy;
         return this;
@@ -93,6 +99,7 @@ public class AppSearchParameter extends EntityCommon implements Serializable {
         toStringBuilder(sb, "searchText", this.searchText);
         toStringBuilder(sb, "versionSdk", this.versionSdk);
         toStringBuilder(sb, "categoryId", this.categoryId);
+        toStringBuilder(sb, "antiFeatureId", this.antiFeatureId);
         toStringBuilder(sb, "orderBy", this.orderBy);
         toStringBuilder(sb, "locales", this.locales);
         // toStringBuilder(sb, "maxRowCount", this.maxRowCount);

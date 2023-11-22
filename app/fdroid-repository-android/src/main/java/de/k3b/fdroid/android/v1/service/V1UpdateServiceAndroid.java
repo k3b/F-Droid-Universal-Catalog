@@ -23,6 +23,7 @@ import android.util.Log;
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.android.repository.FDroidDatabaseFactory;
 import de.k3b.fdroid.catalog.v1domain.service.V1UpdateService;
+import de.k3b.fdroid.domain.repository.AppAntiFeatureRepository;
 import de.k3b.fdroid.domain.repository.AppCategoryRepository;
 import de.k3b.fdroid.domain.repository.AppHardwareRepository;
 import de.k3b.fdroid.domain.repository.AppRepository;
@@ -31,6 +32,7 @@ import de.k3b.fdroid.domain.repository.LocaleRepository;
 import de.k3b.fdroid.domain.repository.LocalizedRepository;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.repository.VersionRepository;
+import de.k3b.fdroid.domain.service.AntiFeatureService;
 import de.k3b.fdroid.domain.service.CategoryService;
 import de.k3b.fdroid.domain.service.LanguageService;
 
@@ -41,19 +43,25 @@ public class V1UpdateServiceAndroid extends V1UpdateService {
     public V1UpdateServiceAndroid(
             RepoRepository repoRepository, AppRepository appRepository,
             CategoryService categoryService, AppCategoryRepository appCategoryRepository,
+            AntiFeatureService antiFeatureService, AppAntiFeatureRepository appAntiFeatureRepository,
             VersionRepository versionRepository, LocalizedRepository localizedRepository,
             LocaleRepository localeRepository, HardwareProfileRepository hardwareProfileRepository,
             AppHardwareRepository appHardwareRepository, LanguageService languageService) {
-        super(repoRepository, appRepository, categoryService, appCategoryRepository,
+        super(repoRepository, appRepository,
+                categoryService, appCategoryRepository,
+                antiFeatureService, appAntiFeatureRepository,
                 versionRepository, localizedRepository, hardwareProfileRepository,
                 appHardwareRepository, languageService);
     }
 
     public static V1UpdateServiceAndroid create(FDroidDatabaseFactory db) {
         CategoryService categoryService = new CategoryService(db.categoryRepository());
+        AntiFeatureService antiFeatureService = new AntiFeatureService(db.antiFeatureRepository());
         LanguageService languageService = new LanguageService(db.localeRepository());
-        return new V1UpdateServiceAndroid(db.repoRepository(), db.appRepository(), categoryService,
-                db.appCategoryRepository(), db.versionRepository(), db.localizedRepository(), db.localeRepository(),
+        return new V1UpdateServiceAndroid(db.repoRepository(), db.appRepository(),
+                categoryService, db.appCategoryRepository(),
+                antiFeatureService, db.appAntiFeatureRepository(),
+                db.versionRepository(), db.localizedRepository(), db.localeRepository(),
                 db.hardwareProfileRepository(), db.appHardwareRepository(), languageService) {
 
         };

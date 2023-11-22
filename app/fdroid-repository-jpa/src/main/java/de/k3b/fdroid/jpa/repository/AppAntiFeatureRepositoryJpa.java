@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 by k3b.
+ * Copyright (c) 2023 by k3b.
  *
  * This file is part of org.fdroid project.
  *
@@ -16,30 +16,23 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.repository;
+package de.k3b.fdroid.jpa.repository;
 
-import de.k3b.fdroid.domain.repository.AppRepository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface FDroidDatabaseFactory {
-    AppRepository appRepository();
+import java.util.List;
 
-    AppCategoryDao appCategoryRepository();
+import de.k3b.fdroid.domain.entity.AppAntiFeature;
 
-    CategoryDao categoryRepository();
-
-    AppAntiFeatureDao appAntiFeatureRepository();
-
-    AntiFeatureDao antiFeatureRepository();
-
-    LocaleDao localeRepository();
-
-    LocalizedDao localizedRepository();
-
-    RepoDao repoRepository();
-
-    VersionDao versionRepository();
-
-    AppHardwareDao appHardwareRepository();
-
-    HardwareProfileDao hardwareProfileRepository();
+/**
+ * Spring-Boot-Jpa (Non-Android) specific Database-Repository implementation:
+ * Entity-Pojo-s are transfered from/to database using Spring-Boot-Jpa.
+ * XxxxRepositoryJpa implements the Database transfer.
+ * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
+ */
+@Repository
+public interface AppAntiFeatureRepositoryJpa extends CrudRepository<AppAntiFeature, Integer> {
+    List<AppAntiFeature> findByAppId(int appId);
 }
+

@@ -28,6 +28,7 @@ import java.util.Objects;
 import javax.persistence.PersistenceException;
 
 import de.k3b.fdroid.Global;
+import de.k3b.fdroid.catalog.service.AppAntiFeatureUpdateService;
 import de.k3b.fdroid.catalog.service.AppCategoryUpdateService;
 import de.k3b.fdroid.catalog.v1domain.entity.IV1UpdateService;
 import de.k3b.fdroid.catalog.v1domain.entity.V1App;
@@ -51,6 +52,7 @@ public class V1AppUpdateService implements IV1UpdateService, ProgressObservable 
     private final AppRepository appRepository;
     @Nullable
     private final AppCategoryUpdateService appCategoryUpdateService;
+    private final AppAntiFeatureUpdateService appAntiFeatureUpdateService;
     @Nullable
     private final V1LocalizedUpdateService v1LocalizedUpdateService;
     @Nullable
@@ -64,15 +66,18 @@ public class V1AppUpdateService implements IV1UpdateService, ProgressObservable 
             @Nullable AppRepository appRepository,
             @Nullable V1LocalizedUpdateService v1LocalizedUpdateService,
             @Nullable AppCategoryUpdateService appCategoryUpdateService,
+            @Nullable AppAntiFeatureUpdateService appAntiFeatureUpdateService,
             @Nullable V1FixLocaleService v1FixLocaleService) {
         this.appRepository = appRepository;
         this.appCategoryUpdateService = appCategoryUpdateService;
+        this.appAntiFeatureUpdateService = appAntiFeatureUpdateService;
         this.v1LocalizedUpdateService = v1LocalizedUpdateService;
         this.v1FixLocaleService = v1FixLocaleService;
     }
 
     public V1AppUpdateService init() {
         if (appCategoryUpdateService != null) this.appCategoryUpdateService.init();
+        if (appAntiFeatureUpdateService != null) this.appAntiFeatureUpdateService.init();
         if (v1LocalizedUpdateService != null) this.v1LocalizedUpdateService.init();
         progressCounter = 0;
         progressCountdown = 0;
@@ -132,6 +137,9 @@ public class V1AppUpdateService implements IV1UpdateService, ProgressObservable 
 
         if (appCategoryUpdateService != null) {
             appCategoryUpdateService.update(roomApp.getId(), v1App.getCategories());
+        }
+        if (appAntiFeatureUpdateService != null) {
+            appAntiFeatureUpdateService.update(roomApp.getId(), v1App.getCategories());
         }
         if (v1LocalizedUpdateService != null) {
             v1LocalizedUpdateService.update(repoId, roomApp.getId(), roomApp, v1App.getLocalized());

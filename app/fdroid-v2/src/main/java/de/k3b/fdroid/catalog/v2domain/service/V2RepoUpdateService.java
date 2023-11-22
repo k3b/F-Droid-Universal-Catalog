@@ -58,17 +58,23 @@ public class V2RepoUpdateService {
     @NotNull
     private final TranslationService categoryDescriptionService;
 
+
+    @Nullable
+    private final V2AntiFeatureUpdateService antiFeatureUpdateService;
+
     private int nextMockAppId = 200142;
 
     public V2RepoUpdateService(@Nullable RepoRepository repoRepository,
                                @Nullable TranslationRepository translationRepository,
-                               @Nullable V2CategoryUpdateService categoryUpdateService) {
+                               @Nullable V2CategoryUpdateService categoryUpdateService,
+                               @Nullable V2AntiFeatureUpdateService v2AntiFeatureUpdateService) {
         this.repoRepository = repoRepository;
         this.categoryUpdateService = categoryUpdateService;
         this.categoryNameService = new TranslationService(TranslationService.TYP_REPOSITORY_NAME, translationRepository);
         this.categoryDescriptionService = new TranslationService(TranslationService.TYP_REPOSITORY_DESCRIPTION, translationRepository);
         this.categoryIconService = new TranslationService(TranslationService.TYP_REPOSITORY_ICON, translationRepository);
 
+        this.antiFeatureUpdateService = v2AntiFeatureUpdateService;
     }
 
 
@@ -77,6 +83,8 @@ public class V2RepoUpdateService {
         categoryNameService.init();
         categoryDescriptionService.init();
         categoryIconService.init();
+
+        if (antiFeatureUpdateService != null) antiFeatureUpdateService.init();
         return this;
     }
 
@@ -124,6 +132,9 @@ public class V2RepoUpdateService {
         this.categoryIconService.update(repo.getId(), repo.getIcon(),
                 Java8Util.reduce(LanguageService.getCanonicalLocale(v2Repo.getIconMap())
                         , V2IconUtil::getIconName));
+
+        if (antiFeatureUpdateService != null)
+            antiFeatureUpdateService.update(v2Repo.getAntiFeatures());
     }
 
     private void copy(Repo dest, V2Repo src) {
@@ -142,6 +153,8 @@ public class V2RepoUpdateService {
                 ", categoryIconService=" + categoryIconService +
                 ", categoryNameService=" + categoryNameService +
                 ", categoryDescriptionService=" + categoryDescriptionService +
+
+                ", antiFeatureUpdateService=" + antiFeatureUpdateService +
                 ", nextMockAppId=" + nextMockAppId +
                 '}';
     }

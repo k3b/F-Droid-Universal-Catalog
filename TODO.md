@@ -1,9 +1,14 @@
 todo
 
 > v2 import
-> v app, localized
-> version+profile
+> v app, localized,version+profile, repo, category, antiFeatures, translations
+> todo language via language-Service
+
 * cascade delete
+
+* TranslationService -> TranslationUpdateService (in Import)
+* LanguageService -> LanguageUpdateService must be injected to Translation(Update)Service
+  to create new language on demand when normalising languageId
 
 v screenshots only from prefered locale(s)
 v app-search with language picker

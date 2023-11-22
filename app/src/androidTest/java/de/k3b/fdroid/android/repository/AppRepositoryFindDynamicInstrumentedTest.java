@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid project.
  *
@@ -35,6 +35,7 @@ import java.util.List;
 
 import de.k3b.fdroid.android.db.FDroidDatabase;
 import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.entity.AppAntiFeature;
 import de.k3b.fdroid.domain.entity.AppCategory;
 import de.k3b.fdroid.domain.entity.AppSearchParameter;
 import de.k3b.fdroid.domain.entity.Repo;
@@ -58,6 +59,7 @@ public class AppRepositoryFindDynamicInstrumentedTest {
     private RepoRepository repoRepository;
     private RoomTestHelper testHelper;
     private int categoryId;
+    private int antiFeatureId;
 
     @Before
     public void setUp() {
@@ -73,6 +75,8 @@ public class AppRepositoryFindDynamicInstrumentedTest {
         testHelper.createVersion(app, repo, SDK, SDK, 0, null);
         AppCategory appCategory = testHelper.createAppCategory(app, null);
         categoryId = appCategory.getCategoryId();
+        AppAntiFeature appAntiFeature = testHelper.createAppAntiFeature(app, null);
+        antiFeatureId = appAntiFeature.getAntiFeatureId();
 
     }
 
@@ -114,6 +118,17 @@ public class AppRepositoryFindDynamicInstrumentedTest {
     }
 
     @Test
+    public void findDynamic_antiFeature() {
+        // additional app/antiFeature not found
+        testHelper.createAppAntiFeature(null, null);
+
+        AppSearchParameter searchParameter = new AppSearchParameter()
+                .antiFeatureId(antiFeatureId);
+        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
+        assertThat(appIdList.size(), equalTo(1));
+    }
+
+    @Test
     public void findDynamic_textPlusVersionPlusCategory() {
         // additional version not found
         testHelper.createVersion(
@@ -123,6 +138,20 @@ public class AppRepositoryFindDynamicInstrumentedTest {
                 .searchText("acka my")
                 .versionSdk(SDK)
                 .categoryId(categoryId);
+        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
+        assertThat(appIdList.size(), equalTo(1));
+    }
+
+    @Test
+    public void findDynamic_textPlusVersionPlusAntiFeature() {
+        // additional version not found
+        testHelper.createVersion(
+                null, null, SDK - 1, SDK - 1, SDK - 1, null);
+
+        AppSearchParameter searchParameter = new AppSearchParameter()
+                .searchText("acka my")
+                .versionSdk(SDK)
+                .antiFeatureId(antiFeatureId);
         List<Integer> appIdList = appRepository.findDynamic(searchParameter);
         assertThat(appIdList.size(), equalTo(1));
     }

@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.security.cert.X509Certificate;
 import java.util.jar.JarEntry;
 
+import de.k3b.fdroid.catalog.service.AppAntiFeatureUpdateService;
 import de.k3b.fdroid.catalog.service.AppCategoryUpdateService;
 import de.k3b.fdroid.catalog.v1domain.entity.IV1UpdateService;
 import de.k3b.fdroid.catalog.v1domain.entity.V1App;
@@ -34,6 +35,7 @@ import de.k3b.fdroid.catalog.v1domain.entity.V1Version;
 import de.k3b.fdroid.catalog.v1domain.util.JarUtilities;
 import de.k3b.fdroid.domain.interfaces.ProgressObservable;
 import de.k3b.fdroid.domain.interfaces.ProgressObserver;
+import de.k3b.fdroid.domain.repository.AppAntiFeatureRepository;
 import de.k3b.fdroid.domain.repository.AppCategoryRepository;
 import de.k3b.fdroid.domain.repository.AppHardwareRepository;
 import de.k3b.fdroid.domain.repository.AppRepository;
@@ -41,6 +43,7 @@ import de.k3b.fdroid.domain.repository.HardwareProfileRepository;
 import de.k3b.fdroid.domain.repository.LocalizedRepository;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.repository.VersionRepository;
+import de.k3b.fdroid.domain.service.AntiFeatureService;
 import de.k3b.fdroid.domain.service.CategoryService;
 import de.k3b.fdroid.domain.service.HardwareProfileService;
 import de.k3b.fdroid.domain.service.LanguageService;
@@ -64,6 +67,8 @@ public abstract class V1UpdateService implements IV1UpdateService, ProgressObser
     public V1UpdateService(RepoRepository repoRepository, AppRepository appRepository,
                            CategoryService categoryService,
                            AppCategoryRepository appCategoryRepository,
+                           AntiFeatureService antiFeatureService,
+                           AppAntiFeatureRepository appAntiFeatureRepository,
                            VersionRepository versionRepository,
                            LocalizedRepository localizedRepository,
                            HardwareProfileRepository hardwareProfileRepository,
@@ -73,12 +78,15 @@ public abstract class V1UpdateService implements IV1UpdateService, ProgressObser
 
         AppCategoryUpdateService appCategoryUpdateService = new AppCategoryUpdateService(
                 categoryService, appCategoryRepository);
+        AppAntiFeatureUpdateService appAntiFeatureUpdateService = new AppAntiFeatureUpdateService(
+                antiFeatureService, appAntiFeatureRepository);
         V1LocalizedUpdateService v1LocalizedUpdateService = new V1LocalizedUpdateService(
                 localizedRepository, languageService);
         v1AppUpdateService = new V1AppUpdateService(
                 appRepository,
                 v1LocalizedUpdateService,
                 appCategoryUpdateService,
+                appAntiFeatureUpdateService,
                 new V1FixLocaleService());
 
         hardwareProfileService = new HardwareProfileService(appRepository, hardwareProfileRepository, appHardwareRepository);

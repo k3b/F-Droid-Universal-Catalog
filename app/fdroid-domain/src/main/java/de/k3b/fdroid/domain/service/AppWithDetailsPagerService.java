@@ -26,7 +26,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.k3b.fdroid.domain.entity.AntiFeature;
 import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.entity.AppAntiFeature;
 import de.k3b.fdroid.domain.entity.AppCategory;
 import de.k3b.fdroid.domain.entity.AppSearchParameter;
 import de.k3b.fdroid.domain.entity.AppWithDetails;
@@ -46,6 +48,7 @@ public class AppWithDetailsPagerService {
     private final AppDetailRepository<Localized> localizedRepository;
     private final AppDetailRepository<Version> versionRepository;
     private final AppDetailRepository<LinkedDatabaseEntity<AppCategory, Category>> categoryRepository;
+    private final AppDetailRepository<LinkedDatabaseEntity<AppAntiFeature, AntiFeature>> antiFeatureRepository;
 
     /**
      * all matching appIds
@@ -63,11 +66,13 @@ public class AppWithDetailsPagerService {
             AppDetailRepository<App> appRepository,
             AppDetailRepository<Localized> localizedRepository,
             AppDetailRepository<Version> versionRepository,
-            AppDetailRepository<LinkedDatabaseEntity<AppCategory, Category>> categoryRepository) {
+            AppDetailRepository<LinkedDatabaseEntity<AppCategory, Category>> categoryRepository,
+            AppDetailRepository<LinkedDatabaseEntity<AppAntiFeature, AntiFeature>> antiFeatureRepository) {
         this.appRepository = appRepository;
         this.localizedRepository = localizedRepository;
         this.versionRepository = versionRepository;
         this.categoryRepository = categoryRepository;
+        this.antiFeatureRepository = antiFeatureRepository;
     }
 
     public AppWithDetailsPagerService init(List<Integer> appIds, int pageSize, AppSearchParameter appSearchParameter) {
@@ -177,6 +182,7 @@ public class AppWithDetailsPagerService {
         load(Localized.class, appIdList, localizedRepository, id2AppLocalizedList);
         load(Version.class, appIdList, versionRepository, id2AppLocalizedList);
         load(Category.class, appIdList, categoryRepository, id2AppLocalizedList);
+        load(AntiFeature.class, appIdList, antiFeatureRepository, id2AppLocalizedList);
     }
 
     private App findByAppId(@NotNull List<App> apps, int appId) {

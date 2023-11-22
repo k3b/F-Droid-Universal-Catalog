@@ -20,7 +20,9 @@ package de.k3b.fdroid.android.repository;
 
 import androidx.annotation.NonNull;
 
+import de.k3b.fdroid.domain.entity.AntiFeature;
 import de.k3b.fdroid.domain.entity.App;
+import de.k3b.fdroid.domain.entity.AppAntiFeature;
 import de.k3b.fdroid.domain.entity.AppCategory;
 import de.k3b.fdroid.domain.entity.Category;
 import de.k3b.fdroid.domain.entity.HardwareProfile;
@@ -98,6 +100,21 @@ public class RoomTestHelper {
         AppCategory appCategory = new AppCategory(app.getId(), category.getId());
         db.appCategoryRepository().insert(appCategory);
         return appCategory;
+    }
+
+    public AntiFeature createAntiFeature() {
+        AntiFeature antiFeature = new AntiFeature();
+        antiFeature.setName("name" + nextNo++);
+        db.antiFeatureRepository().insert(antiFeature);
+        return antiFeature;
+    }
+
+    public AppAntiFeature createAppAntiFeature(App app, AntiFeature antiFeature) {
+        if (antiFeature == null) antiFeature = createAntiFeature();
+        if (app == null) app = createApp();
+        AppAntiFeature appAntiFeature = new AppAntiFeature(app.getId(), antiFeature.getId());
+        db.appAntiFeatureRepository().insert(appAntiFeature);
+        return appAntiFeature;
     }
 
     public HardwareProfile createHardwareProfile() {

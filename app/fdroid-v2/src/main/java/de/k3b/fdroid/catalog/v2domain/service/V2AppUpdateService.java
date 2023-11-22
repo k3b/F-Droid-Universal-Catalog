@@ -32,6 +32,7 @@ import java.util.Objects;
 import javax.persistence.PersistenceException;
 
 import de.k3b.fdroid.Global;
+import de.k3b.fdroid.catalog.service.AppAntiFeatureUpdateService;
 import de.k3b.fdroid.catalog.service.AppCategoryUpdateService;
 import de.k3b.fdroid.catalog.v2domain.entity.V2IconUtil;
 import de.k3b.fdroid.catalog.v2domain.entity.packagev2.V2App;
@@ -59,6 +60,7 @@ public class V2AppUpdateService implements ProgressObservable {
     private final V2LocalizedUpdateService v2LocalizedUpdateService;
     @Nullable
     private final AppCategoryUpdateService appCategoryUpdateService;
+    private final AppAntiFeatureUpdateService appAntiFeatureUpdateService;
 
     private ProgressObserver progressObserver = null;
     private int progressCounter = 0;
@@ -67,11 +69,12 @@ public class V2AppUpdateService implements ProgressObservable {
     public V2AppUpdateService(
             @Nullable AppRepository appRepository,
             @Nullable V2LocalizedUpdateService v2LocalizedUpdateService,
-            @Nullable AppCategoryUpdateService appCategoryUpdateService) {
+            @Nullable AppCategoryUpdateService appCategoryUpdateService,
+            @Nullable AppAntiFeatureUpdateService appAntiFeatureUpdateService) {
         this.appRepository = appRepository;
         this.v2LocalizedUpdateService = v2LocalizedUpdateService;
         this.appCategoryUpdateService = appCategoryUpdateService;
-
+        this.appAntiFeatureUpdateService = appAntiFeatureUpdateService;
     }
 
     private static String getIconName(V2AppInfo metadata, String locale) {
@@ -83,6 +86,8 @@ public class V2AppUpdateService implements ProgressObservable {
     public V2AppUpdateService init() {
         if (v2LocalizedUpdateService != null) this.v2LocalizedUpdateService.init();
         if (appCategoryUpdateService != null) this.appCategoryUpdateService.init();
+        if (appAntiFeatureUpdateService != null) this.appAntiFeatureUpdateService.init();
+
         // if (localizedUpdateService != null) this.localizedUpdateService.init();
         progressCounter = 0;
         progressCountdown = 0;

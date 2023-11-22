@@ -40,6 +40,9 @@ public class TranslationService {
     public static final String TYP_CATEGORY_NAME = "CN";
     public static final String TYP_CATEGORY_DESCRIPTION = "CD";
     public static final String TYP_CATEGORY_ICON = "CI";
+    public static final String TYP_AntiFeature_NAME = "AN";
+    public static final String TYP_AntiFeature_DESCRIPTION = "AD";
+    public static final String TYP_AntiFeature_ICON = "AI";
     private final String typ;
     private final TranslationRepository translationRepository;
 
