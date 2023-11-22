@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid project.
  *
@@ -34,13 +34,16 @@ public interface RepoRepository extends Repository {
 
     void update(Repo repo);
 
-    default void save(Repo repo) {
-        Integer id = repo.getId();
-        if (id == null || id.intValue() == 0) {
-            insert(repo);
+    default void save(Repo o) {
+        if (mustInsert(o)) {
+            insert(o);
         } else {
-            update(repo);
+            update(o);
         }
+    }
+
+    default boolean mustInsert(Repo o) {
+        return o.getId() == 0;
     }
 
     void delete(Repo repo);

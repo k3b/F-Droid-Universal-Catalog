@@ -18,90 +18,14 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityManager;
+import de.k3b.fdroid.domain.util.TestHelper;
 
-import de.k3b.fdroid.domain.entity.App;
-import de.k3b.fdroid.domain.entity.AppCategory;
-import de.k3b.fdroid.domain.entity.Category;
-import de.k3b.fdroid.domain.entity.HardwareProfile;
-import de.k3b.fdroid.domain.entity.Locale;
-import de.k3b.fdroid.domain.entity.Repo;
-import de.k3b.fdroid.domain.entity.Version;
-
-@Service
-public class JpaTestHelper {
-    @Autowired // working with SPRING_BOOT_VERSION = '5.3.29' with Java8
-    // with 6.0.0 not working any more
-    // maybe @PersistenceUnit
-    EntityManager entityManager;
-
-    private int nextNo = 1;
-
-    public App createApp() {
-        return createApp("test.app." + nextNo++, null);
+@Component
+public class JpaTestHelper extends TestHelper {
+    public JpaTestHelper(FDroidDatabaseService db) {
+        super(db);
     }
 
-    public App createApp(String packageName, String icon) {
-        App app = new App();
-        app.setPackageName(packageName);
-        app.setIcon(icon);
-        return save(app);
-    }
-
-    public <T> T save(T entity) {
-        entityManager.persist(entity);
-        return entity;
-    }
-
-    public Repo createRepo() {
-        Repo repo = new Repo();
-        repo.setName("test-repo-" + nextNo++);
-        repo.setAddress("testrepo.org." + nextNo++);
-        return save(repo);
-    }
-
-    public Version createVersion(App app, Repo repo, int minSdk, int targetSdk, int maxSdk, String nativecode) {
-        if (repo == null) repo = createRepo();
-        if (app == null) app = createApp();
-        Version version = new Version(app.getId(), repo.getId());
-        version.setMaxSdkVersion(maxSdk);
-        version.setMinSdkVersion(minSdk);
-        version.setTargetSdkVersion(targetSdk);
-        version.setNativecode(nativecode);
-
-        return save(version);
-    }
-
-    public Version createVersion(App app, Repo repo) {
-        return createVersion(app, repo, 0, 0, 0, null);
-    }
-
-    public Locale createLocale(String code) {
-        Locale locale = new Locale();
-        locale.setId(code);
-        return save(locale);
-    }
-
-    public Category createCategory() {
-        Category category = new Category();
-        category.setName("name" + nextNo++);
-        return save(category);
-    }
-
-    public AppCategory createAppCategory(App app, Category category) {
-        if (category == null) category = createCategory();
-        if (app == null) app = createApp();
-        AppCategory appCategory = new AppCategory(app.getId(), category.getId());
-
-        return save(appCategory);
-    }
-
-    public HardwareProfile createHardwareProfile() {
-        HardwareProfile hardwareProfile = new HardwareProfile();
-        hardwareProfile.setName("name" + nextNo++);
-        return save(hardwareProfile);
-    }
 }

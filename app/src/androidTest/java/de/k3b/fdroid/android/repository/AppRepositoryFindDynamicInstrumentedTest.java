@@ -39,8 +39,11 @@ import de.k3b.fdroid.domain.entity.AppAntiFeature;
 import de.k3b.fdroid.domain.entity.AppCategory;
 import de.k3b.fdroid.domain.entity.AppSearchParameter;
 import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.repository.AntiFeatureRepository;
 import de.k3b.fdroid.domain.repository.AppRepository;
+import de.k3b.fdroid.domain.repository.CategoryRepository;
 import de.k3b.fdroid.domain.repository.RepoRepository;
+import de.k3b.fdroid.domain.util.TestHelper;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -57,9 +60,11 @@ public class AppRepositoryFindDynamicInstrumentedTest {
 
     private App app = null;
     private RepoRepository repoRepository;
-    private RoomTestHelper testHelper;
+    private TestHelper testHelper;
     private int categoryId;
     private int antiFeatureId;
+    private CategoryRepository categoryRepository;
+    private AntiFeatureRepository antiFeatureRepository;
 
     @Before
     public void setUp() {
@@ -68,8 +73,10 @@ public class AppRepositoryFindDynamicInstrumentedTest {
         FDroidDatabaseFactory factory = FDroidDatabase.getINSTANCE(context, true);
         appRepository = factory.appRepository();
         repoRepository = factory.repoRepository();
+        categoryRepository = factory.categoryRepository();
+        antiFeatureRepository = factory.antiFeatureRepository();
 
-        testHelper = new RoomTestHelper(factory);
+        testHelper = new TestHelper(new RoomFDroidDatabaseFacade(factory));
         app = testHelper.createApp(MY_PACKAGE_NAME, MY_ICON);
         repo = testHelper.createRepo();
         testHelper.createVersion(app, repo, SDK, SDK, 0, null);
@@ -84,6 +91,8 @@ public class AppRepositoryFindDynamicInstrumentedTest {
     public void finish() {
         appRepository.delete(app);
         repoRepository.delete(repo);
+        categoryRepository.deleteById(categoryId);
+        antiFeatureRepository.deleteById(antiFeatureId);
     }
 
     @Test
@@ -109,7 +118,7 @@ public class AppRepositoryFindDynamicInstrumentedTest {
     @Test
     public void findDynamic_category() {
         // additional app/category not found
-        testHelper.createAppCategory(null, null);
+        testHelper.createAppCategory(app, null);
 
         AppSearchParameter searchParameter = new AppSearchParameter()
                 .categoryId(categoryId);
@@ -120,7 +129,7 @@ public class AppRepositoryFindDynamicInstrumentedTest {
     @Test
     public void findDynamic_antiFeature() {
         // additional app/antiFeature not found
-        testHelper.createAppAntiFeature(null, null);
+        testHelper.createAppAntiFeature(app, null);
 
         AppSearchParameter searchParameter = new AppSearchParameter()
                 .antiFeatureId(antiFeatureId);

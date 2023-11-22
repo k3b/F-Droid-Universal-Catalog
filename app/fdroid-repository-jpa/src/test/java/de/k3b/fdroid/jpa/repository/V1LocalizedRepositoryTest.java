@@ -41,18 +41,18 @@ public class V1LocalizedRepositoryTest {
     private String localeId;
 
     @Autowired
-    JpaTestHelper jpaTestHelper;
+    JpaTestHelper testHelper;
 
     @Autowired
     private LocalizedRepository repo;
 
     @BeforeEach
     public void init() {
-        appId = jpaTestHelper.createApp().getId();
+        appId = testHelper.createApp().getId();
 
-        Locale locale = jpaTestHelper.createLocale( "@+");
+        Locale locale = testHelper.createLocale("@+");
         locale.setLanguagePriority(5);
-        localeId = jpaTestHelper.save(locale).getId();
+        localeId = testHelper.save(locale).getId();
 
         Localized localized = new Localized(appId, localeId);
         localized.setSummary(MY_Summary);
@@ -64,7 +64,7 @@ public class V1LocalizedRepositoryTest {
     @Test
     public void injectedComponentsAreNotNull() {
         Assert.notNull(repo, "repo");
-        Assert.notNull(jpaTestHelper, "jpaTestHelper");
+        Assert.notNull(testHelper, "jpaTestHelper");
     }
 
     @Test
@@ -87,15 +87,15 @@ public class V1LocalizedRepositoryTest {
 
     @Test
     public void findNonHiddenByAppIds() {
-        int a2 = jpaTestHelper.createApp().getId();
+        int a2 = testHelper.createApp().getId();
 
-        Locale l2 = jpaTestHelper.createLocale("@-");
+        Locale l2 = testHelper.createLocale("@-");
         l2.setLanguagePriority(LanguageService.LANGUAGE_PRIORITY_HIDDEN);
-        jpaTestHelper.save(l2);
+        testHelper.save(l2);
 
         Localized al2 = new Localized(a2, l2.getId());
         al2.setName("@-");
-        jpaTestHelper.save(al2);
+        testHelper.save(al2);
 
         List<Localized> localized = repo.findNonHiddenByAppIds(Arrays.asList(appId, a2));
         Assert.isTrue(localized.size() == 1, "found 1");

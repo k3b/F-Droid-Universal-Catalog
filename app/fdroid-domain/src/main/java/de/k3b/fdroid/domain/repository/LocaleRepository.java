@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid project.
  *
@@ -36,4 +36,16 @@ public interface LocaleRepository extends Repository {
     void delete(Locale locale);
 
     List<Locale> findAll();
+
+    default void save(Locale locale) {
+        if (mustInsert(locale)) {
+            insert(locale);
+        } else {
+            update(locale);
+        }
+    }
+
+    default boolean mustInsert(Locale locale) {
+        return locale.getId() == null;
+    }
 }

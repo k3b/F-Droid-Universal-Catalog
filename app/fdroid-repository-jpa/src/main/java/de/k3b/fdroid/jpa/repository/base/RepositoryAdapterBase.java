@@ -46,6 +46,10 @@ public class RepositoryAdapterBase<KEY, T, R extends CrudRepository<T, KEY>> {
         jpa.delete(roomApp);
     }
 
+    public void deleteById(KEY id) {
+        jpa.deleteById(id);
+    }
+
     public T findById(KEY repoId) {
         Optional<T> result = jpa.findById(repoId);
         if (result.isPresent()) return result.get();

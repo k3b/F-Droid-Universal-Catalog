@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid project.
  *
@@ -35,7 +35,22 @@ public interface CategoryRepository extends Repository {
 
     void delete(Category category);
 
+    void deleteById(Integer id);
+
     List<Category> findAll();
 
     Category findByName(String name);
+
+    default void save(Category o) {
+        if (mustInsert(o)) {
+            insert(o);
+        } else {
+            update(o);
+        }
+    }
+
+    default boolean mustInsert(Category o) {
+        return o.getId() == 0;
+    }
+
 }

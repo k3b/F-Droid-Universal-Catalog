@@ -45,6 +45,7 @@ dependencies {
     // jpa entity annotations that are not used by android but must exisit
     implementation 'javax.persistence:javax.persistence-api:2.2'
     implementation 'androidx.work:work-runtime:2.7.1'
+    implementation 'org.jetbrains:annotations:15.0'
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.hamcrest:hamcrest:2.2'

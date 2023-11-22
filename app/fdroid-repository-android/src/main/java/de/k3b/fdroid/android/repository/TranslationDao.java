@@ -16,39 +16,51 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.domain.repository;
+package de.k3b.fdroid.android.repository;
+
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
 import de.k3b.fdroid.domain.entity.Translation;
+import de.k3b.fdroid.domain.repository.TranslationRepository;
 
-/**
- * Android independent interfaces to use the Database.
- * <p>
- * Persists {@link Translation} in the Database.
- */
-public interface TranslationRepository extends Repository {
-    void insert(Translation translation);
+@Dao
+public interface TranslationDao extends TranslationRepository {
+    default void insert(Translation translation) {
+        int result = (int) insertEx(translation);
+        translation.setId(result);
+    }
 
+    @Insert
+    long insertEx(Translation translation);
+
+    @Update
     void update(Translation translation);
 
+    @Delete
     void delete(Translation translation);
 
+    @Query("SELECT * FROM Translation")
+    List<Translation> findAll();
+
+    @Query("SELECT * FROM Translation where Translation.typ = :typ")
     List<Translation> findByTyp(String typ);
 
+    @Query("SELECT * FROM Translation where Translation.typ = :typ and Translation.id = :id")
     List<Translation> findByTypAndId(String typ, int id);
 
+    @Query("SELECT * FROM Translation where Translation.typ = :typ and Translation.id = :id and Translation.localeId in (:localeIds)")
     List<Translation> findByTypAndIdAndLocaleId(String typ, int id, String... localeIds);
 
+    @Query("SELECT * FROM Translation where Translation.typ = :typ and Translation.localeId in (:localeIds)")
     List<Translation> findByTypAndLocaleId(String typ, String... localeIds);
 
+    @Query("SELECT * FROM Translation where Translation.typ in (:typs) and Translation.localeId in (:localeIds)")
     List<Translation> findByTypAndLocaleId(String[] typs, String... localeIds);
 
-    default void save(Translation o) {
-        update(o);
-    }
-
-    default boolean mustInsert(Translation o) {
-        return false;
-    }
 }

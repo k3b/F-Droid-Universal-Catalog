@@ -87,6 +87,7 @@ dependencies {
     implementation(project(path: ':app:fdroid-v2'))
     implementation(project(path: ':app:fdroid-html'))
     implementation(project(path: ':app:fdroid-repository-android'))
+
     testImplementation(project(path: ':app:fdroid-v1'))
 
     // because app contains more than 65535 methods

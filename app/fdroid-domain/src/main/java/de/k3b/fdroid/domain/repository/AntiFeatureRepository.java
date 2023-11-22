@@ -35,7 +35,23 @@ public interface AntiFeatureRepository extends Repository {
 
     void delete(AntiFeature antiFeature);
 
+    void deleteById(Integer id);
+
     List<AntiFeature> findAll();
 
     AntiFeature findByName(String name);
+
+
+    default void save(AntiFeature o) {
+        if (mustInsert(o)) {
+            insert(o);
+        } else {
+            update(o);
+        }
+    }
+
+    default boolean mustInsert(AntiFeature o) {
+        return o.getId() == 0;
+    }
+
 }

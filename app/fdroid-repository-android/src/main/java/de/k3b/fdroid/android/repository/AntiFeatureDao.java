@@ -45,6 +45,9 @@ public interface AntiFeatureDao extends AntiFeatureRepository {
     @Delete
     void delete(AntiFeature antiFeature);
 
+    @Query("DELETE FROM AntiFeature where AntiFeature.id = :id")
+    void deleteById(Integer id);
+
     @Query("SELECT * FROM AntiFeature")
     List<AntiFeature> findAll();
 

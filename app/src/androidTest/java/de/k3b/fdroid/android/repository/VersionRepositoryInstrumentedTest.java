@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2022-2023 by k3b.
  *
  * This file is part of org.fdroid project.
  *
@@ -39,6 +39,7 @@ import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.entity.Version;
 import de.k3b.fdroid.domain.entity.common.VersionCommon;
 import de.k3b.fdroid.domain.repository.VersionRepository;
+import de.k3b.fdroid.domain.util.TestHelper;
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -66,7 +67,7 @@ public class VersionRepositoryInstrumentedTest {
         versionRepository = factory.versionRepository();
 
 
-        RoomTestHelper h = new RoomTestHelper(factory);
+        TestHelper h = new TestHelper(new RoomFDroidDatabaseFacade(factory));
         repo = h.createRepo();
         repo2 = h.createRepo();
         app = h.createApp();
@@ -84,7 +85,6 @@ public class VersionRepositoryInstrumentedTest {
         factory.repoRepository().delete(repo2);
         // version deleted through cascade delete
     }
-
 
     @Test
     public void findBestBySdkVersion_noVersionAndNoNativeCode() {

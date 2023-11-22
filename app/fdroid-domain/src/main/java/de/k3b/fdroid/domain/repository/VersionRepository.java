@@ -46,4 +46,17 @@ public interface VersionRepository extends AppDetailRepository<Version> {
     List<Version> findBestBySdkAndNative(int sdkversion, String nativeCode);
 
     List<Version> findByMinSdkAndAppIds(int minSdk, List<Integer> appIds);
+
+    default void save(Version o) {
+        if (mustInsert(o)) {
+            insert(o);
+        } else {
+            update(o);
+        }
+    }
+
+    default boolean mustInsert(Version o) {
+        return o.getId() == 0;
+    }
+
 }

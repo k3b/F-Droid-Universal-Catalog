@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 by k3b.
+ * Copyright (c) 2023 by k3b.
  *
  * This file is part of org.fdroid project.
  *
@@ -16,32 +16,30 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.repository;
+package de.k3b.fdroid.domain.repository;
 
-import de.k3b.fdroid.domain.repository.AppRepository;
-
-public interface FDroidDatabaseFactory {
+public interface IFDroidDatabase {
     AppRepository appRepository();
 
-    AppCategoryDao appCategoryRepository();
+    AppCategoryRepository appCategoryRepository();
 
-    CategoryDao categoryRepository();
+    CategoryRepository categoryRepository();
 
-    TranslationDao translationRepository();
+    TranslationRepository translationRepository();
 
-    AppAntiFeatureDao appAntiFeatureRepository();
+    AppAntiFeatureRepository appAntiFeatureRepository();
 
-    AntiFeatureDao antiFeatureRepository();
+    AntiFeatureRepository antiFeatureRepository();
 
-    LocaleDao localeRepository();
+    LocaleRepository localeRepository();
 
-    LocalizedDao localizedRepository();
+    LocalizedRepository localizedRepository();
 
-    RepoDao repoRepository();
+    RepoRepository repoRepository();
 
-    VersionDao versionRepository();
+    VersionRepository versionRepository();
 
-    AppHardwareDao appHardwareRepository();
+    AppHardwareRepository appHardwareRepository();
 
-    HardwareProfileDao hardwareProfileRepository();
+    HardwareProfileRepository hardwareProfileRepository();
 }

@@ -45,6 +45,9 @@ public interface CategoryDao extends CategoryRepository {
     @Delete
     void delete(Category category);
 
+    @Query("delete FROM Category where Category.id = :id")
+    void deleteById(Integer id);
+
     @Query("SELECT * FROM Category")
     List<Category> findAll();
 

@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.repository;
+package de.k3b.fdroid.domain.util;
 
-import androidx.annotation.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 import de.k3b.fdroid.domain.entity.AntiFeature;
 import de.k3b.fdroid.domain.entity.App;
@@ -27,17 +27,20 @@ import de.k3b.fdroid.domain.entity.AppCategory;
 import de.k3b.fdroid.domain.entity.Category;
 import de.k3b.fdroid.domain.entity.HardwareProfile;
 import de.k3b.fdroid.domain.entity.Locale;
+import de.k3b.fdroid.domain.entity.Localized;
 import de.k3b.fdroid.domain.entity.Repo;
+import de.k3b.fdroid.domain.entity.Translation;
 import de.k3b.fdroid.domain.entity.Version;
+import de.k3b.fdroid.domain.repository.IFDroidDatabase;
 
 /**
  * helper to create database entries for automated tests.
  */
-public class RoomTestHelper {
-    private final FDroidDatabaseFactory db;
+public class TestHelper {
+    private final IFDroidDatabase db;
     private int nextNo = 1;
 
-    public RoomTestHelper(FDroidDatabaseFactory db) {
+    public TestHelper(IFDroidDatabase db) {
         this.db = db;
     }
 
@@ -45,7 +48,7 @@ public class RoomTestHelper {
         return createApp("test.app." + nextNo++, null);
     }
 
-    @NonNull
+    @NotNull
     public App createApp(String packageName, String icon) {
         App app = new App();
         app.setPackageName(packageName);
@@ -122,5 +125,40 @@ public class RoomTestHelper {
         hardwareProfile.setName("name" + nextNo++);
         db.hardwareProfileRepository().insert(hardwareProfile);
         return hardwareProfile;
+    }
+
+    public Locale save(Locale o) {
+        db.localeRepository().save(o);
+        return o;
+    }
+
+    public Localized save(Localized o) {
+        db.localizedRepository().save(o);
+        return o;
+    }
+
+    public Repo save(Repo o) {
+        db.repoRepository().save(o);
+        return o;
+    }
+
+    public Category save(Category o) {
+        db.categoryRepository().save(o);
+        return o;
+    }
+
+    public AntiFeature save(AntiFeature o) {
+        db.antiFeatureRepository().save(o);
+        return o;
+    }
+
+    public Translation save(Translation o) {
+        db.translationRepository().save(o);
+        return o;
+    }
+
+    public Version save(Version o) {
+        db.versionRepository().save(o);
+        return o;
     }
 }

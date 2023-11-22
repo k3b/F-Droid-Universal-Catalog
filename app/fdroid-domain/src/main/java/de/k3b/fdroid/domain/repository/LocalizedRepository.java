@@ -33,13 +33,16 @@ public interface LocalizedRepository extends Repository {
 
     void update(Localized localized);
 
-    default void save(Localized localized) {
-        Integer id = localized.getId();
-        if (id == null || id == 0) {
-            insert(localized);
+    default void save(Localized o) {
+        if (mustInsert(o)) {
+            insert(o);
         } else {
-            update(localized);
+            update(o);
         }
+    }
+
+    default boolean mustInsert(Localized o) {
+        return o.getId() == 0;
     }
 
     void delete(Localized localized);

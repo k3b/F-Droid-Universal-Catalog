@@ -16,24 +16,23 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.domain.repository;
+package de.k3b.fdroid.jpa.repository;
+
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 import de.k3b.fdroid.domain.entity.Translation;
 
 /**
- * Android independent interfaces to use the Database.
- * <p>
- * Persists {@link Translation} in the Database.
+ * Spring-Boot-Jpa (Non-Android) specific Database-Repository implementation:
+ * Entity-Pojo-s are transfered from/to database using Spring-Boot-Jpa.
+ * XxxxRepositoryJpa implements the Database transfer.
+ * XxxxRepositoryAdapter makes XxxxRepositoryJpa compatible with XxxxRepository.
  */
-public interface TranslationRepository extends Repository {
-    void insert(Translation translation);
-
-    void update(Translation translation);
-
-    void delete(Translation translation);
-
+@Repository
+public interface TranslationRepositoryJpa extends CrudRepository<Translation, Integer> {
     List<Translation> findByTyp(String typ);
 
     List<Translation> findByTypAndId(String typ, int id);
@@ -43,12 +42,5 @@ public interface TranslationRepository extends Repository {
     List<Translation> findByTypAndLocaleId(String typ, String... localeIds);
 
     List<Translation> findByTypAndLocaleId(String[] typs, String... localeIds);
-
-    default void save(Translation o) {
-        update(o);
-    }
-
-    default boolean mustInsert(Translation o) {
-        return false;
-    }
 }
+

@@ -39,6 +39,12 @@ public class Translation extends TranslationPK {
         super(typ, id, localeId);
     }
 
+    @androidx.room.Ignore
+    public Translation(String typ, int id, String localeId, String localizedText) {
+        super(typ, id, localeId);
+        setLocalizedText(localizedText);
+    }
+
     protected void toStringBuilder(@NotNull StringBuilder sb) {
         super.toStringBuilder(sb);
         toStringBuilder(sb, "localizedText", this.localizedText);
