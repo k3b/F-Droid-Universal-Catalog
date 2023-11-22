@@ -31,13 +31,8 @@ import de.k3b.fdroid.domain.repository.TranslationRepository;
 
 @Dao
 public interface TranslationDao extends TranslationRepository {
-    default void insert(Translation translation) {
-        int result = (int) insertEx(translation);
-        translation.setId(result);
-    }
-
     @Insert
-    long insertEx(Translation translation);
+    void insert(Translation translation);
 
     @Update
     void update(Translation translation);
@@ -55,12 +50,9 @@ public interface TranslationDao extends TranslationRepository {
     List<Translation> findByTypAndId(String typ, int id);
 
     @Query("SELECT * FROM Translation where Translation.typ = :typ and Translation.id = :id and Translation.localeId in (:localeIds)")
-    List<Translation> findByTypAndIdAndLocaleId(String typ, int id, String... localeIds);
-
-    @Query("SELECT * FROM Translation where Translation.typ = :typ and Translation.localeId in (:localeIds)")
-    List<Translation> findByTypAndLocaleId(String typ, String... localeIds);
+    List<Translation> findByTypAndIdAndLocales(String typ, int id, String... localeIds);
 
     @Query("SELECT * FROM Translation where Translation.typ in (:typs) and Translation.localeId in (:localeIds)")
-    List<Translation> findByTypAndLocaleId(String[] typs, String... localeIds);
+    List<Translation> findByTypsAndLocales(String[] typs, String... localeIds);
 
 }

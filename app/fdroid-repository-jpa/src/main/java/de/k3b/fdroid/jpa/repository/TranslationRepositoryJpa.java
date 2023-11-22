@@ -18,6 +18,7 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -37,10 +38,11 @@ public interface TranslationRepositoryJpa extends CrudRepository<Translation, In
 
     List<Translation> findByTypAndId(String typ, int id);
 
+    @Query("select t from Translation t WHERE t.typ= :typ and t.id = :id and t.localeId in (:localeIds)")
+        // List<Person> getAllByCars...(@Param("car") String car)
     List<Translation> findByTypAndIdAndLocaleId(String typ, int id, String... localeIds);
 
-    List<Translation> findByTypAndLocaleId(String typ, String... localeIds);
-
-    List<Translation> findByTypAndLocaleId(String[] typs, String... localeIds);
+    @Query("select t from Translation t WHERE t.typ in (:typs) and t.localeId in (:localeIds)")
+    List<Translation> findByTypsAndLocales(String[] typs, String... localeIds);
 }
 

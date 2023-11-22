@@ -49,17 +49,12 @@ public class TranslationRepositoryAdapter extends RepositoryAdapterBase<Integer,
     }
 
     @Override
-    public List<Translation> findByTypAndIdAndLocaleId(String typ, int id, String... localeIds) {
+    public List<Translation> findByTypAndIdAndLocales(String typ, int id, String... localeIds) {
         return jpa.findByTypAndIdAndLocaleId(typ, id, localeIds);
     }
 
     @Override
-    public List<Translation> findByTypAndLocaleId(String typ, String... localeIds) {
-        return jpa.findByTypAndLocaleId(typ, localeIds);
-    }
-
-    @Override
-    public List<Translation> findByTypAndLocaleId(String[] typs, String... localeIds) {
-        return jpa.findByTypAndLocaleId(typs, localeIds);
+    public List<Translation> findByTypsAndLocales(String[] typs, String... localeIds) {
+        return jpa.findByTypsAndLocales(typs, localeIds);
     }
 }

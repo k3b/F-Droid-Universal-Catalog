@@ -38,11 +38,13 @@ public interface TranslationRepository extends Repository {
 
     List<Translation> findByTypAndId(String typ, int id);
 
-    List<Translation> findByTypAndIdAndLocaleId(String typ, int id, String... localeIds);
+    List<Translation> findByTypAndIdAndLocales(String typ, int id, String... localeIds);
 
-    List<Translation> findByTypAndLocaleId(String typ, String... localeIds);
+    default List<Translation> findByTypAndLocales(String typ, String... localeIds) {
+        return findByTypsAndLocales(new String[]{typ}, localeIds);
+    }
 
-    List<Translation> findByTypAndLocaleId(String[] typs, String... localeIds);
+    List<Translation> findByTypsAndLocales(String[] typs, String... localeIds);
 
     default void save(Translation o) {
         update(o);

@@ -105,6 +105,12 @@ public class TestHelper {
         return appCategory;
     }
 
+    public Translation createTranslation(String typ, int id, String localeId) {
+        Translation translation = new Translation(typ, id, localeId, "name" + nextNo++);
+        db.translationRepository().insert(translation);
+        return translation;
+    }
+
     public AntiFeature createAntiFeature() {
         AntiFeature antiFeature = new AntiFeature();
         antiFeature.setName("name" + nextNo++);
