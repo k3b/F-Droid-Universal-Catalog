@@ -40,6 +40,19 @@ public interface TranslationDao extends TranslationRepository {
     @Delete
     void delete(Translation translation);
 
+
+    @Query("DELETE FROM Translation where Translation.typ = :typ")
+    void deleteByTyp(String typ);
+
+    @Query("DELETE FROM Translation where Translation.typ = :typ and Translation.id = :id")
+    void deleteByTypAndId(String typ, int id);
+
+    @Query("DELETE FROM Translation where Translation.typ = :typ and Translation.id = :id and Translation.localeId = :localeId")
+    void deleteByTypAndIdAndLocale(String typ, int id, String localeId);
+
+    @Query("DELETE FROM Translation where Translation.typ = :typ and Translation.localeId = :localeId")
+    void deleteByTypAndLocale(String typ, String localeId);
+
     @Query("SELECT * FROM Translation")
     List<Translation> findAll();
 

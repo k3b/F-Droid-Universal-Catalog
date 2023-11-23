@@ -18,6 +18,7 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -38,11 +39,27 @@ public interface TranslationRepositoryJpa extends CrudRepository<Translation, In
 
     List<Translation> findByTypAndId(String typ, int id);
 
-    @Query("select t from Translation t WHERE t.typ= :typ and t.id = :id and t.localeId in (:localeIds)")
+    @Query("select t from Translation t WHERE t.typ= ?1 and t.id = ?2 and t.localeId in (?3)")
         // List<Person> getAllByCars...(@Param("car") String car)
-    List<Translation> findByTypAndIdAndLocaleId(String typ, int id, String... localeIds);
+    List<Translation> findByTypAndIdAndLocales(String typ, int id, String... localeIds);
 
-    @Query("select t from Translation t WHERE t.typ in (:typs) and t.localeId in (:localeIds)")
+    @Query("select t from Translation t WHERE t.typ in (?1) and t.localeId in (?2)")
     List<Translation> findByTypsAndLocales(String[] typs, String... localeIds);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "delete from Translation t where t.typ = ?1")
+    void deleteByTyp(String typ);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "DELETE FROM Translation t where t.typ = ?1 and t.id = ?2")
+    void deleteByTypAndId(String typ, int id);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "DELETE FROM Translation t where t.typ = ?1 and t.id = ?2 and t.localeId = ?3")
+    void deleteByTypAndIdAndLocale(String typ, int id, String localeId);
+
+    @Modifying
+    @Query(nativeQuery = true, value = "DELETE FROM Translation t where t.typ = ?1 and t.localeId = ?2")
+    void deleteTypsAndLocale(String typ, String localeId);
 }
 

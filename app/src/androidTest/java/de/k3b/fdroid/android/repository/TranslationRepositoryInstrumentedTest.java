@@ -25,7 +25,6 @@ import android.content.Context;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,63 +35,103 @@ import de.k3b.fdroid.domain.service.TranslationService;
 import de.k3b.fdroid.domain.util.TestHelper;
 
 /**
- * Instrumented test, which will execute on an Android device.
+ * Database Repository Instrumented test, which will execute on an Android device.
+ * <p>
+ * Note: ...android.repository.XxxRepositoryInstrumentedTest should do the same as ...jpa.repository.XxxRepositoryTest
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
 public class TranslationRepositoryInstrumentedTest {
-    public static final String TYP = TranslationService.TYP_REPOSITORY_NAME;
+    // testdata
+    private static final String MY_TYP = TranslationService.TYP_REPOSITORY_NAME;
+    private static final String OTHER_TYP = MY_TYP + "_";
+    private static final String[] SEARCH_TYPS = {"aa", MY_TYP, "bb"};
+    private static final String MY_LOCALE = "zz";
+    private static final String OTHER_LOCALE = "zq";
+    private static final String[] SEARCH_LOCALES = {"QQ", MY_LOCALE, "RR"};
+
+    private static final int MY_ID = 42;
+    private static final int OTHER_ID = MY_ID + 1;
+
+    // Android Room Test specific
     TestHelper testHelper;
-    private String localeId;
-    private int appId;
     private TranslationRepository translationRepository;
 
     private FDroidDatabaseFactory factory = null;
 
-    @Before
-    public void setUp() {
+    private void setupAndroid() {
+        // Android Room Test specific
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         factory = FDroidDatabase.getINSTANCE(context, true);
         translationRepository = factory.translationRepository();
-
         testHelper = new TestHelper(new RoomFDroidDatabaseFacade(factory));
-        this.localeId = testHelper.createLocale("zz").getId();
-        this.appId = testHelper.createApp().getAppId();
-
-        // found
-        testHelper.createTranslation(TYP, appId, localeId);
-
-        // other-non-found
-        testHelper.createTranslation(TYP + "_", appId, localeId);
-        testHelper.createTranslation(TYP, appId + 1, localeId);
-        testHelper.createTranslation(TYP, appId, localeId + '_');
     }
 
-    @After
-    public void finish() {
+    @Before
+    public void init() {
+        setupAndroid();
+
+        // common code
+        testHelper.createLocale(MY_LOCALE).getId();
+        testHelper.createLocale(OTHER_LOCALE).getId();
+
+        // exact match
+        testHelper.createTranslation(MY_TYP, MY_ID, MY_LOCALE);
+
+        // one vale differ from exact match
+        testHelper.createTranslation(OTHER_TYP, MY_ID, MY_LOCALE);
+        testHelper.createTranslation(MY_TYP, OTHER_ID, MY_LOCALE);
+        testHelper.createTranslation(MY_TYP, MY_ID, OTHER_LOCALE);
     }
 
     @Test
     public void findByTyp() {
-        assertEquals(3, translationRepository.findByTyp(TYP).size());
+        assertEquals(3, translationRepository.findByTyp(MY_TYP).size());
     }
 
     @Test
     public void findByTypAndId() {
-        assertEquals(2, translationRepository.findByTypAndId(TYP, appId).size());
+        assertEquals(2, translationRepository.findByTypAndId(MY_TYP, MY_ID).size());
     }
 
     @Test
-    public void findByTypAndIdAndLocalesId() {
-        assertEquals(1, translationRepository.findByTypAndIdAndLocales(TYP, appId, localeId).size());
+    public void findByTypAndIdAndLocales() {
+        assertEquals(1, translationRepository.findByTypAndIdAndLocales(MY_TYP, MY_ID, MY_LOCALE).size());
     }
 
     @Test
     public void findByTypsAndLocaleIds() {
+        assertEquals(2, translationRepository.findByTypsAndLocales(SEARCH_TYPS, SEARCH_LOCALES).size());
+    }
 
-        String[] typs = {"aa", TYP, "bb"};
-        assertEquals(2, translationRepository.findByTypsAndLocales(typs, "QQ", localeId, "RR").size());
+    @Test
+    public void findall() {
+        assertEquals(4, translationRepository.findAll().size());
+    }
+
+    @Test
+    public void deleteByTyp() {
+        translationRepository.deleteByTyp(MY_TYP);
+        assertEquals(1, translationRepository.findAll().size());
+    }
+
+    @Test
+    public void deleteByIdAndTyps() {
+        translationRepository.deleteByTypAndId(MY_TYP, MY_ID);
+        assertEquals(2, translationRepository.findAll().size());
+    }
+
+    @Test
+    public void deleteByIdAndTypsAndLocales() {
+        translationRepository.deleteByTypAndIdAndLocale(MY_TYP, MY_ID, MY_LOCALE);
+        assertEquals(3, translationRepository.findAll().size());
+    }
+
+    @Test
+    public void deleteTypsAndLocales() {
+        translationRepository.deleteByTypAndLocale(MY_TYP, MY_LOCALE);
+        assertEquals(2, translationRepository.findAll().size());
     }
 }

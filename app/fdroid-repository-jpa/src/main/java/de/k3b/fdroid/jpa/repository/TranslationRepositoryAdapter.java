@@ -39,6 +39,26 @@ public class TranslationRepositoryAdapter extends RepositoryAdapterBase<Integer,
     }
 
     @Override
+    public void deleteByTyp(String typ) {
+        jpa.deleteByTyp(typ);
+    }
+
+    @Override
+    public void deleteByTypAndId(String typ, int id) {
+        jpa.deleteByTypAndId(typ, id);
+    }
+
+    @Override
+    public void deleteByTypAndIdAndLocale(String typ, int id, String localeId) {
+        jpa.deleteByTypAndIdAndLocale(typ, id, localeId);
+    }
+
+    @Override
+    public void deleteByTypAndLocale(String typ, String localeId) {
+        jpa.deleteTypsAndLocale(typ, localeId);
+    }
+
+    @Override
     public List<Translation> findByTyp(String typ) {
         return jpa.findByTyp(typ);
     }
@@ -50,7 +70,7 @@ public class TranslationRepositoryAdapter extends RepositoryAdapterBase<Integer,
 
     @Override
     public List<Translation> findByTypAndIdAndLocales(String typ, int id, String... localeIds) {
-        return jpa.findByTypAndIdAndLocaleId(typ, id, localeIds);
+        return jpa.findByTypAndIdAndLocales(typ, id, localeIds);
     }
 
     @Override

@@ -34,6 +34,17 @@ public interface TranslationRepository extends Repository {
 
     void delete(Translation translation);
 
+
+    void deleteByTyp(String typ);
+
+    void deleteByTypAndId(String typ, int id);
+
+    void deleteByTypAndIdAndLocale(String typ, int id, String localeId);
+
+    void deleteByTypAndLocale(String typ, String localeId);
+
+    List<Translation> findAll();
+
     List<Translation> findByTyp(String typ);
 
     List<Translation> findByTypAndId(String typ, int id);
