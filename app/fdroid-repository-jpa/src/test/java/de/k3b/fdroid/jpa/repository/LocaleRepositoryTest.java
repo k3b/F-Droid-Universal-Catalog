@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 by k3b.
+ * Copyright (c) 2023 by k3b.
  *
  * This file is part of org.fdroid project.
  *
@@ -18,10 +18,7 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,9 +29,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.entity.App;
-import de.k3b.fdroid.domain.entity.Repo;
-import de.k3b.fdroid.domain.repository.RepoRepository;
+import de.k3b.fdroid.domain.entity.Locale;
+import de.k3b.fdroid.domain.repository.LocaleRepository;
 
 /**
  * Database Repository Instrumented test, which will execute in Spring/JPA.
@@ -43,56 +39,23 @@ import de.k3b.fdroid.domain.repository.RepoRepository;
  */
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class RepoRepositoryTest {
+public class LocaleRepositoryTest {
     // testdata
-    private String myName;
-    private String myAddress;
-    // i.e: "my.package.name";
-
-    // JPA specific
+    private static final String MY_CODE = "XY";
     @Autowired
     JpaTestHelper testHelper;
-
+    // JPA specific
     @Autowired
-    private RepoRepository repo;
+    private LocaleRepository repo;
 
     @BeforeEach
     public void setUp() {
-        Repo r = testHelper.createRepo();
-        myAddress = r.getAddress();
-        myName = r.getName();
+        testHelper.createLocale(MY_CODE);
     }
 
     @Test
-    public void findByName() {
-        Repo r = repo.findByName(myName);
-        assertThat(r, is(notNullValue()));
-    }
-
-    @Test
-    public void findByAddress() {
-        Repo r = repo.findByAddress(myAddress);
-        assertThat(r, is(notNullValue()));
-    }
-
-    @Test
-    public void findByBusy() {
-        testHelper.createRepo();
-        Repo r = testHelper.createRepo();
-        r.setDownloadTaskId("notEmpty");
-        testHelper.save(r);
-
-        List<Repo> repoList = repo.findByBusy();
-        assertThat(repoList.size(), is(1));
-    }
-
-    @Test
-    public void findByAppId() {
-        App app = testHelper.createApp();
-        Repo r = testHelper.createRepo();
-        testHelper.createVersion(app, r);
-
-        Repo found = repo.findFirstByAppId(app.getId());
-        assertThat(found.getId(), is(r.getId()));
+    public void findByRepoIdAndPackageName() {
+        List<Locale> result = repo.findAll();
+        assertEquals(1, result.size());
     }
 }

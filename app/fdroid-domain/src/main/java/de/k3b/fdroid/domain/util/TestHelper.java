@@ -84,8 +84,7 @@ public class TestHelper {
     }
 
     public Locale createLocale(String code) {
-        Locale locale = new Locale();
-        locale.setId(code);
+        Locale locale = new Locale(code);
         db.localeRepository().insert(locale);
         return locale;
     }

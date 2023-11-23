@@ -83,10 +83,10 @@ public class LocalizedServiceTest {
     //--------------
 
     private Locale createLocale(int id, String code) {
-        Locale l = new Locale();
-        l.setId(code);
+        Locale l = new Locale(code);
         l.setLanguagePriority(id);
         l.setNameEnglish("NameEnglish-" + code);
+        l.setNameNative("setNameNative-" + code);
 
         languageService.init(l);
         return l;

@@ -62,6 +62,14 @@ public class Locale extends EntityCommon {
     // translation order highest first; -1 == hidden (Translations are NOT contained in Database)
     private int languagePriority;
 
+    public Locale() {
+    }
+
+    @androidx.room.Ignore
+    public Locale(String localeCode) {
+        setId(localeCode);
+    }
+
     protected void toStringBuilder(@NotNull StringBuilder sb) {
         toStringBuilder(sb, "id", this.id);
         super.toStringBuilder(sb);

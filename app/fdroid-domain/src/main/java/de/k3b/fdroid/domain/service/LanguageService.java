@@ -347,8 +347,7 @@ public class LanguageService extends CacheService<String, Locale> {
 
     private Locale createNewLocale(String localeCode) {
         Locale locale;
-        locale = new Locale();
-        locale.setId(localeCode);
+        locale = new Locale(localeCode);
         locale.setLanguagePriority(getLanguagePriorityNewItem(localeCode));
 
         setTranslations(localeCode, locale);

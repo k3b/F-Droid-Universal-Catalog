@@ -18,9 +18,7 @@
  */
 package de.k3b.fdroid.android.repository;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
 
 import android.content.Context;
 
@@ -34,9 +32,8 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 import de.k3b.fdroid.android.db.FDroidDatabase;
-import de.k3b.fdroid.domain.entity.App;
-import de.k3b.fdroid.domain.entity.Repo;
-import de.k3b.fdroid.domain.repository.RepoRepository;
+import de.k3b.fdroid.domain.entity.Locale;
+import de.k3b.fdroid.domain.repository.LocaleRepository;
 import de.k3b.fdroid.domain.util.TestHelper;
 
 /**
@@ -47,21 +44,18 @@ import de.k3b.fdroid.domain.util.TestHelper;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class RepoRepositoryInstrumentedTest {
+public class LocaleRepositoryInstrumentedTest {
     // testdata
-    private String myName;
-    private String myAddress;
-    // i.e: "my.package.name";
-
-    // JPA specific
+    private static final String MY_CODE = "XY";
     TestHelper testHelper;
-    private RepoRepository repo;
+    // JPA specific
+    private LocaleRepository repo;
 
     private void setupAndroid() {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         FDroidDatabaseFactory factory = FDroidDatabase.getINSTANCE(context, true);
-        repo = factory.repoRepository();
+        repo = factory.localeRepository();
 
         testHelper = new TestHelper(new RoomFDroidDatabaseFacade(factory));
     }
@@ -69,41 +63,12 @@ public class RepoRepositoryInstrumentedTest {
     @Before
     public void setUp() {
         setupAndroid();
-        Repo r = testHelper.createRepo();
-        myAddress = r.getAddress();
-        myName = r.getName();
+        testHelper.createLocale(MY_CODE);
     }
 
     @Test
-    public void findByName() {
-        Repo r = repo.findByName(myName);
-        assertThat(r, is(notNullValue()));
-    }
-
-    @Test
-    public void findByAddress() {
-        Repo r = repo.findByAddress(myAddress);
-        assertThat(r, is(notNullValue()));
-    }
-
-    @Test
-    public void findByBusy() {
-        testHelper.createRepo();
-        Repo r = testHelper.createRepo();
-        r.setDownloadTaskId("notEmpty");
-        testHelper.save(r);
-
-        List<Repo> repoList = repo.findByBusy();
-        assertThat(repoList.size(), is(1));
-    }
-
-    @Test
-    public void findByAppId() {
-        App app = testHelper.createApp();
-        Repo r = testHelper.createRepo();
-        testHelper.createVersion(app, r);
-
-        Repo found = repo.findFirstByAppId(app.getId());
-        assertThat(found.getId(), is(r.getId()));
+    public void findByRepoIdAndPackageName() {
+        List<Locale> result = repo.findAll();
+        assertEquals(1, result.size());
     }
 }
