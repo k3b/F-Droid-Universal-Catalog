@@ -47,7 +47,7 @@ dependencies {
     implementation 'androidx.work:work-runtime:2.7.1'
     implementation 'org.jetbrains:annotations:15.0'
 
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation "junit:junit:$rootProject.ext.JUNIT4_VERSION"
     testImplementation 'org.hamcrest:hamcrest:2.2'
 
     androidTestImplementation "androidx.test.ext:junit:$rootProject.ext.ANDROIDX_JUNIT"

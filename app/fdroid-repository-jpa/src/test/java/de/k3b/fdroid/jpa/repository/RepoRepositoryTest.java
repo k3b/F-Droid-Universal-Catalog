@@ -20,13 +20,15 @@ package de.k3b.fdroid.jpa.repository;
 
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.util.Assert;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
@@ -34,40 +36,43 @@ import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 
+/**
+ * Database Repository Instrumented test, which will execute in Spring/JPA.
+ * <p>
+ * Note: ...android.repository.XxxRepositoryInstrumentedTest should do the same as ...jpa.repository.XxxRepositoryTest
+ */
+@RunWith(SpringRunner.class)
 @DataJpaTest
-public class V1RepoRepositoryTest {
-    private static String myAddress = "my.package.name";
+public class RepoRepositoryTest {
+    // testdata
+    private static String myAddress;
+    // i.e: "my.package.name";
 
+    // JPA specific
     @Autowired
-    JpaTestHelper jpaTestHelper;
+    JpaTestHelper testHelper;
 
     @Autowired
     private RepoRepository repo;
 
     @BeforeEach
-    public void init() {
-        Repo r = jpaTestHelper.createRepo();
+    public void setUp() {
+        Repo r = testHelper.createRepo();
         myAddress = r.getAddress();
-    }
-
-    @Test
-    public void injectedComponentsAreNotNull() {
-        Assert.notNull(repo, "repo");
-        Assert.notNull(jpaTestHelper, "jpaTestHelper");
     }
 
     @Test
     public void findByAddress() {
         Repo r = repo.findByAddress(myAddress);
-        Assert.notNull(r, "found");
+        assertThat(r, is(notNullValue()));
     }
 
     @Test
     public void findByBusy() {
-        jpaTestHelper.createRepo();
-        Repo r = jpaTestHelper.createRepo();
+        testHelper.createRepo();
+        Repo r = testHelper.createRepo();
         r.setDownloadTaskId("notEmpty");
-        jpaTestHelper.save(r);
+        testHelper.save(r);
 
         List<Repo> repoList = repo.findByBusy();
         assertThat(repoList.size(), is(1));
@@ -75,11 +80,11 @@ public class V1RepoRepositoryTest {
 
     @Test
     public void findByAppId() {
-        App app = jpaTestHelper.createApp();
-        Repo r = jpaTestHelper.createRepo();
-        jpaTestHelper.createVersion(app, r);
+        App app = testHelper.createApp();
+        Repo r = testHelper.createRepo();
+        testHelper.createVersion(app, r);
 
         Repo found = repo.findFirstByAppId(app.getId());
-        assertThat(found, is(r));
+        assertThat(found.getId(), is(r.getId()));
     }
 }

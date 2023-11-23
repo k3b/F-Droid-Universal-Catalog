@@ -18,11 +18,15 @@
  */
 package de.k3b.fdroid.jpa.repository;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.util.Assert;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,23 +37,28 @@ import de.k3b.fdroid.domain.entity.AppSearchParameter;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.repository.AppRepository;
 
+/**
+ * Database Repository Instrumented test, which will execute in Spring/JPA.
+ * <p>
+ * Note: ...android.repository.XxxRepositoryInstrumentedTest should do the same as ...jpa.repository.XxxRepositoryTest
+ */
+@RunWith(SpringRunner.class)
 @DataJpaTest
 public class AppRepositoryTest {
+    // testdata
     private static final String MY_PACKAGE_NAME = "my.package.name";
     private static final String MY_ICON = "myIcon.ico";
     public static final int SDK = 8;
-
+    // JPA specific
     @Autowired
     JpaTestHelper testHelper;
-
-    @Autowired
-    private AppRepository appRepository;
-
     private int appId;
     private int categoryId;
+    @Autowired
+    private AppRepository repo;
 
     @BeforeEach
-    public void init() {
+    public void setUp() {
         App app = testHelper.createApp(MY_PACKAGE_NAME, MY_ICON);
         appId = app.getId();
 
@@ -62,31 +71,25 @@ public class AppRepositoryTest {
     }
 
     @Test
-    public void injectedComponentsAreNotNull() {
-        Assert.notNull(appRepository, "repo");
-        Assert.notNull(testHelper, "jpaTestHelper");
-    }
-
-    @Test
     public void findByRepoIdAndPackageName() {
-        App app = appRepository.findByPackageName(MY_PACKAGE_NAME);
-        Assert.notNull(app, "found");
+        App app = repo.findByPackageName(MY_PACKAGE_NAME);
+        assertNotNull(app);
     }
 
     @Test
     public void findByIds() {
-        List<App> appIdList = appRepository.findByIds(Collections.singletonList(appId));
-        Assert.notNull(appIdList, "found");
-        Assert.isTrue(appIdList.size() == 1, "found 1");
+        List<App> appIdList = repo.findByIds(Collections.singletonList(appId));
+        assertNotNull(appIdList);
+        assertEquals(1, appIdList.size());
     }
 
     @Test
     public void findDynamic_search() {
         AppSearchParameter searchParameter = new AppSearchParameter()
                 .searchText("acka my");
-        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
-        Assert.notNull(appIdList, "found");
-        Assert.isTrue(appIdList.size() == 1, "found 1");
+        List<Integer> appIdList = repo.findDynamic(searchParameter);
+        assertNotNull(appIdList);
+        assertEquals(1, appIdList.size());
     }
 
     @Test
@@ -97,9 +100,9 @@ public class AppRepositoryTest {
 
         AppSearchParameter searchParameter = new AppSearchParameter()
                 .versionSdk(SDK);
-        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
-        Assert.notNull(appIdList, "found");
-        Assert.isTrue(appIdList.size() == 1, "found 1");
+        List<Integer> appIdList = repo.findDynamic(searchParameter);
+        assertNotNull(appIdList);
+        assertEquals(1, appIdList.size());
     }
 
     @Test
@@ -109,9 +112,9 @@ public class AppRepositoryTest {
 
         AppSearchParameter searchParameter = new AppSearchParameter()
                 .categoryId(categoryId);
-        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
-        Assert.notNull(appIdList, "found");
-        Assert.isTrue(appIdList.size() == 1, "found 1");
+        List<Integer> appIdList = repo.findDynamic(searchParameter);
+        assertNotNull(appIdList);
+        assertEquals(1, appIdList.size());
     }
 
     @Test
@@ -124,15 +127,15 @@ public class AppRepositoryTest {
                 .searchText("acka my")
                 .categoryId(categoryId)
                 .versionSdk(SDK);
-        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
-        Assert.notNull(appIdList, "found");
-        Assert.isTrue(appIdList.size() == 1, "found 1");
+        List<Integer> appIdList = repo.findDynamic(searchParameter);
+        assertNotNull(appIdList);
+        assertEquals(1, appIdList.size());
     }
 
     @Test
     public void findDynamic_default() {
-        List<Integer> appIdList = appRepository.findDynamic(new AppSearchParameter());
-        Assert.notNull(appIdList, "found");
-        Assert.isTrue(appIdList.size() == 1, "found 1");
+        List<Integer> appIdList = repo.findDynamic(new AppSearchParameter());
+        assertNotNull(appIdList);
+        assertEquals(1, appIdList.size());
     }
 }

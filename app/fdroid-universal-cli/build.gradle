@@ -25,21 +25,21 @@ dependencies {
 	// https://github.com/samskivert/jmustache to generate html
 	implementation 'com.samskivert:jmustache:1.15'
 
-	implementation 'javax.persistence:javax.persistence-api:2.2'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'javax.persistence:javax.persistence-api:2.2'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-	// runtimeOnly 'org.hsqldb:hsqldb'
+    // runtimeOnly 'org.hsqldb:hsqldb'
 
-	def HSQLDB_VERSION = rootProject.ext.HSQLDB_VERSION
-	implementation "org.hsqldb:hsqldb:$HSQLDB_VERSION"
+    def HSQLDB_VERSION = rootProject.ext.HSQLDB_VERSION
+    implementation "org.hsqldb:hsqldb:$HSQLDB_VERSION"
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	def JUNIT_VERSION = rootProject.ext.JUNIT_VERSION
-	testImplementation "org.junit.jupiter:junit-jupiter-api:$JUNIT_VERSION"
-	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$JUNIT_VERSION"
+    def JUNIT5_VERSION = rootProject.ext.JUNIT5_VERSION
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$JUNIT5_VERSION"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$JUNIT5_VERSION"
 
-	testImplementation 'org.hamcrest:hamcrest:2.2'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
 }
 
 tasks.named('test') {

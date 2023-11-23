@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 by k3b.
+ * Copyright (c) 2023 by k3b.
  *
  * This file is part of org.fdroid project.
  *
@@ -16,38 +16,61 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.jpa.repository;
+package de.k3b.fdroid.android.repository;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.util.Assert;
+import static org.junit.Assert.assertEquals;
+
+import android.content.Context;
+
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import de.k3b.fdroid.android.db.FDroidDatabase;
 import de.k3b.fdroid.domain.entity.Locale;
 import de.k3b.fdroid.domain.entity.Localized;
 import de.k3b.fdroid.domain.repository.LocalizedRepository;
 import de.k3b.fdroid.domain.service.LanguageService;
+import de.k3b.fdroid.domain.util.TestHelper;
 
-@DataJpaTest
-public class V1LocalizedRepositoryTest {
+/**
+ * Database Repository Instrumented test, which will execute on an Android device.
+ * <p>
+ * Note: ...android.repository.XxxRepositoryInstrumentedTest should do the same as ...jpa.repository.XxxRepositoryTest
+ *
+ * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ */
+@RunWith(AndroidJUnit4.class)
+public class LocalizedRepositoryInstrumentedTest {
+    // testdata
     private static final String MY_Summary = "my.package.name";
     private static final String MY_ICON = "myIcon.ico";
+    // JPA specific
+    TestHelper testHelper;
     private int appId;
     private String localeId;
-
-    @Autowired
-    JpaTestHelper testHelper;
-
-    @Autowired
     private LocalizedRepository repo;
 
-    @BeforeEach
-    public void init() {
+    private void setupAndroid() {
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+
+        FDroidDatabaseFactory factory = FDroidDatabase.getINSTANCE(context, true);
+        repo = factory.localizedRepository();
+
+        testHelper = new TestHelper(new RoomFDroidDatabaseFacade(factory));
+    }
+
+    @Before
+    public void setUp() {
+        setupAndroid();
+
         appId = testHelper.createApp().getId();
 
         Locale locale = testHelper.createLocale("@+");
@@ -62,27 +85,21 @@ public class V1LocalizedRepositoryTest {
     }
 
     @Test
-    public void injectedComponentsAreNotNull() {
-        Assert.notNull(repo, "repo");
-        Assert.notNull(testHelper, "jpaTestHelper");
-    }
-
-    @Test
     public void findByAppId() {
         List<Localized> localized = repo.findByAppId(appId);
-        Assert.isTrue(localized.size() == 1, "found 1");
+        assertEquals(1, localized.size());
     }
 
     @Test
     public void findByAppIdAndLocaleIds_found() {
         List<Localized> localized = repo.findByAppIdAndLocaleIds(appId, Collections.singletonList(localeId));
-        Assert.isTrue(localized.size() == 1, "found 1");
+        assertEquals(1, localized.size());
     }
 
     @Test
     public void findByAppIdAndLocaleIds_notfound() {
         List<Localized> localized = repo.findByAppIdAndLocaleIds(appId, Collections.singletonList(""));
-        Assert.isTrue(localized.size() == 0, "found 0");
+        assertEquals(0, localized.size());
     }
 
     @Test
@@ -98,7 +115,7 @@ public class V1LocalizedRepositoryTest {
         testHelper.save(al2);
 
         List<Localized> localized = repo.findNonHiddenByAppIds(Arrays.asList(appId, a2));
-        Assert.isTrue(localized.size() == 1, "found 1");
-        Assert.isTrue(localized.get(0).getName().equals("@+"), "#1 ok");
+        assertEquals("found 1", 1, localized.size());
+        assertEquals("#1 ok", "@+", localized.get(0).getName());
     }
 }

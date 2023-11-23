@@ -56,21 +56,20 @@ public class TranslationRepositoryInstrumentedTest {
 
     // Android Room Test specific
     TestHelper testHelper;
-    private TranslationRepository translationRepository;
+    private TranslationRepository repo;
 
     private FDroidDatabaseFactory factory = null;
 
     private void setupAndroid() {
-        // Android Room Test specific
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         factory = FDroidDatabase.getINSTANCE(context, true);
-        translationRepository = factory.translationRepository();
+        repo = factory.translationRepository();
         testHelper = new TestHelper(new RoomFDroidDatabaseFacade(factory));
     }
 
     @Before
-    public void init() {
+    public void setUp() {
         setupAndroid();
 
         // common code
@@ -88,50 +87,50 @@ public class TranslationRepositoryInstrumentedTest {
 
     @Test
     public void findByTyp() {
-        assertEquals(3, translationRepository.findByTyp(MY_TYP).size());
+        assertEquals(3, repo.findByTyp(MY_TYP).size());
     }
 
     @Test
     public void findByTypAndId() {
-        assertEquals(2, translationRepository.findByTypAndId(MY_TYP, MY_ID).size());
+        assertEquals(2, repo.findByTypAndId(MY_TYP, MY_ID).size());
     }
 
     @Test
     public void findByTypAndIdAndLocales() {
-        assertEquals(1, translationRepository.findByTypAndIdAndLocales(MY_TYP, MY_ID, MY_LOCALE).size());
+        assertEquals(1, repo.findByTypAndIdAndLocales(MY_TYP, MY_ID, MY_LOCALE).size());
     }
 
     @Test
     public void findByTypsAndLocaleIds() {
-        assertEquals(2, translationRepository.findByTypsAndLocales(SEARCH_TYPS, SEARCH_LOCALES).size());
+        assertEquals(2, repo.findByTypsAndLocales(SEARCH_TYPS, SEARCH_LOCALES).size());
     }
 
     @Test
     public void findall() {
-        assertEquals(4, translationRepository.findAll().size());
+        assertEquals(4, repo.findAll().size());
     }
 
     @Test
     public void deleteByTyp() {
-        translationRepository.deleteByTyp(MY_TYP);
-        assertEquals(1, translationRepository.findAll().size());
+        repo.deleteByTyp(MY_TYP);
+        assertEquals(1, repo.findAll().size());
     }
 
     @Test
     public void deleteByIdAndTyps() {
-        translationRepository.deleteByTypAndId(MY_TYP, MY_ID);
-        assertEquals(2, translationRepository.findAll().size());
+        repo.deleteByTypAndId(MY_TYP, MY_ID);
+        assertEquals(2, repo.findAll().size());
     }
 
     @Test
     public void deleteByIdAndTypsAndLocales() {
-        translationRepository.deleteByTypAndIdAndLocale(MY_TYP, MY_ID, MY_LOCALE);
-        assertEquals(3, translationRepository.findAll().size());
+        repo.deleteByTypAndIdAndLocale(MY_TYP, MY_ID, MY_LOCALE);
+        assertEquals(3, repo.findAll().size());
     }
 
     @Test
     public void deleteTypsAndLocales() {
-        translationRepository.deleteByTypAndLocale(MY_TYP, MY_LOCALE);
-        assertEquals(2, translationRepository.findAll().size());
+        repo.deleteByTypAndLocale(MY_TYP, MY_LOCALE);
+        assertEquals(2, repo.findAll().size());
     }
 }

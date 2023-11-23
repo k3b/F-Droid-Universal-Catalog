@@ -29,7 +29,7 @@ dependencies {
 
     implementation "org.slf4j:slf4j-api:$rootProject.ext.SLF4J_VERSION"
 
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation "junit:junit:$rootProject.ext.JUNIT4_VERSION"
     testImplementation 'org.hamcrest:hamcrest:2.2'
 
 }

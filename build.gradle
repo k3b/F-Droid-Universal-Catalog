@@ -60,9 +60,9 @@ ext {
     // not available at org.slf4j:slf4j-api but at uk.uuid.slf4j:slf4j-android
     //  SLF4J_VERSION = '2.0.9' // has no support for android yet
 
-    JUNIT_VERSION = '5.8.2'
-    // 4.13.2
-    // JUNIT_VERSION = '5.10.1' // currently does not work
+    JUNIT4_VERSION = '4.13.2'
+    JUNIT5_VERSION = '5.8.2'
+    // JUNIT5_VERSION = '5.10.1' // currently does not work
 
     JACKSON_ANNOTATIONS_VERSION = '2.13.5'
 

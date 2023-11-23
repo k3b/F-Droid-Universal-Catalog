@@ -19,12 +19,13 @@
 package de.k3b.fdroid.jpa.repository;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,71 +33,75 @@ import java.util.List;
 import de.k3b.fdroid.domain.entity.Version;
 import de.k3b.fdroid.domain.repository.VersionRepository;
 
+/**
+ * Database Repository Instrumented test, which will execute in Spring/JPA.
+ * <p>
+ * Note: ...android.repository.XxxRepositoryInstrumentedTest should do the same as ...jpa.repository.XxxRepositoryTest
+ */
+@RunWith(SpringRunner.class)
 @DataJpaTest
 public class VersionRepositoryTest {
+    // testdata
     private static final String MY_NAME = "my.name";
     private final int MY_VERSION_CODE = 2075;
     private final int MY_SDK = 8;
-    @Autowired
-    JpaTestHelper jpaTestHelper;
+
     private int appId;
     private int repoId;
 
+    // JPA specific
     @Autowired
-    private VersionRepository versionRepository;
+    JpaTestHelper testHelper;
+    @Autowired
+    private VersionRepository repo;
 
     @BeforeEach
-    public void init() {
-        repoId = jpaTestHelper.createRepo().getId();
-        appId = jpaTestHelper.createApp().getId();
+    public void setup() {
+        repoId = testHelper.createRepo().getId();
+        appId = testHelper.createApp().getId();
 
-        Version version = new Version(appId,repoId);
+        Version version = new Version(appId, repoId);
         version.setVersionCode(MY_VERSION_CODE);
         version.setApkName(MY_NAME);
         version.setSrcname("my source name");
         version.setNativecode("helloWorldCpu");
         version.setSdk(MY_SDK, MY_SDK, MY_SDK);
-        this.versionRepository.insert(version);
-    }
-
-    @Test
-    public void injectedComponentsAreNotNull() {
-        assertNotNull(versionRepository, "repo");
+        this.repo.insert(version);
     }
 
     @Test
     public void findByAppId() {
-        List<Version> versionList = versionRepository.findByAppId(appId);
-        assertEquals(1, versionList.size(), "found 1");
+        List<Version> versionList = repo.findByAppId(appId);
+        assertEquals(1, versionList.size());
     }
 
     @Test
     public void findByAppIds() {
-        List<Version> versionList = versionRepository.findByAppIds(Collections.singletonList(appId));
-        assertEquals(1, versionList.size(), "found 1");
+        List<Version> versionList = repo.findByAppIds(Collections.singletonList(appId));
+        assertEquals(1, versionList.size());
     }
 
     @Test
     public void findByMinSdkAndAppIds() {
-        List<Version> versionList = versionRepository.findByMinSdkAndAppIds(MY_SDK, Collections.singletonList(appId));
-        assertEquals(1, versionList.size(), "found 1");
+        List<Version> versionList = repo.findByMinSdkAndAppIds(MY_SDK, Collections.singletonList(appId));
+        assertEquals(1, versionList.size());
     }
 
     @Test
     public void findBestBySdkVersion_noVersionAndNoNativeCode() {
-        List<Version> versionList = versionRepository.findBestBySdkAndNative(0, null);
+        List<Version> versionList = repo.findBestBySdkAndNative(0, null);
         assertEquals(1, versionList.size());
     }
 
     @Test
     public void findBestBySdkVersion_noNativeCode() {
-        List<Version> versionList = versionRepository.findBestBySdkAndNative(8, null);
+        List<Version> versionList = repo.findBestBySdkAndNative(8, null);
         assertEquals(versionList.size(), 1);
     }
 
     @Test
     public void findBestBySdkVersion_withNativeCode() {
-        List<Version> versionList = versionRepository.findBestBySdkAndNative(8, "%arm7%");
+        List<Version> versionList = repo.findBestBySdkAndNative(8, "%arm7%");
         assertEquals(versionList.size(), 0);
     }
 }

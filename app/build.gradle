@@ -134,7 +134,7 @@ dependencies {
     implementation "org.slf4j:slf4j-android:$rootProject.ext.SLF4J_VERSION"
     // implementation "uk.uuid.slf4j:slf4j-android:(rootProject.ext.SLF4J_VERSION)-0"
 
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation "junit:junit:$rootProject.ext.JUNIT4_VERSION"
     testImplementation 'org.hamcrest:hamcrest:2.2'
 
     androidTestImplementation "androidx.work:work-testing:$rootProject.ext.WORK_VERSION"

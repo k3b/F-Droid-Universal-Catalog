@@ -38,21 +38,21 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	implementation 'javax.persistence:javax.persistence-api:2.2'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-	def HSQLDB_VERSION = rootProject.ext.HSQLDB_VERSION
-	// runtimeOnly 'org.hsqldb:hsqldb'
-	implementation "org.hsqldb:hsqldb:$HSQLDB_VERSION"
+    def HSQLDB_VERSION = rootProject.ext.HSQLDB_VERSION
+    // runtimeOnly 'org.hsqldb:hsqldb'
+    implementation "org.hsqldb:hsqldb:$HSQLDB_VERSION"
 
-	implementation "commons-io:commons-io:$rootProject.ext.COMMONS_IO_VERSION"
+    implementation "commons-io:commons-io:$rootProject.ext.COMMONS_IO_VERSION"
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	def JUNIT_VERSION = rootProject.ext.JUNIT_VERSION
-	testImplementation "org.junit.jupiter:junit-jupiter-api:$JUNIT_VERSION"
-	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$JUNIT_VERSION"
+    def JUNIT5_VERSION = rootProject.ext.JUNIT5_VERSION
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$JUNIT5_VERSION"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$JUNIT5_VERSION"
 
-	testImplementation 'org.hamcrest:hamcrest:2.2'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
 }
 
 tasks.named('test') {

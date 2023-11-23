@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 by k3b.
+ * Copyright (c) 2023 by k3b.
  *
  * This file is part of org.fdroid project.
  *
@@ -18,8 +18,8 @@
  */
 package de.k3b.fdroid.android.repository;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import android.content.Context;
 
@@ -30,11 +30,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collections;
 import java.util.List;
 
 import de.k3b.fdroid.android.db.FDroidDatabase;
 import de.k3b.fdroid.domain.entity.App;
-import de.k3b.fdroid.domain.entity.AppAntiFeature;
 import de.k3b.fdroid.domain.entity.AppCategory;
 import de.k3b.fdroid.domain.entity.AppSearchParameter;
 import de.k3b.fdroid.domain.entity.Repo;
@@ -49,26 +49,22 @@ import de.k3b.fdroid.domain.util.TestHelper;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class AppRepositoryFindDynamicInstrumentedTest {
+public class AppRepositoryInstrumentedTest {
+    public static final int SDK = 8;
     // testdata
     private static final String MY_PACKAGE_NAME = "my.package.name";
     private static final String MY_ICON = "myIcon.ico";
-    public static final int SDK = 8;
-
-    private Repo repo = null;
-    private App app = null;
+    TestHelper testHelper;
+    private int appId;
     private int categoryId;
-    private int antiFeatureId;
-
-    // Android Room Test specific
-    private AppRepository appRepository;
-    private TestHelper testHelper;
+    // JPA specific
+    private AppRepository repo;
 
     private void setupAndroid() {
         Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
         FDroidDatabaseFactory factory = FDroidDatabase.getINSTANCE(context, true);
-        appRepository = factory.appRepository();
+        repo = factory.appRepository();
 
         testHelper = new TestHelper(new RoomFDroidDatabaseFacade(factory));
     }
@@ -76,23 +72,37 @@ public class AppRepositoryFindDynamicInstrumentedTest {
     @Before
     public void setUp() {
         setupAndroid();
+        App app = testHelper.createApp(MY_PACKAGE_NAME, MY_ICON);
+        appId = app.getId();
 
-        app = testHelper.createApp(MY_PACKAGE_NAME, MY_ICON);
-        repo = testHelper.createRepo();
-        testHelper.createVersion(app, repo, SDK, SDK, 0, null);
+        Repo repo = testHelper.createRepo();
+        testHelper.createVersion(
+                app, repo, SDK, SDK, 0, null);
+
         AppCategory appCategory = testHelper.createAppCategory(app, null);
         categoryId = appCategory.getCategoryId();
-        AppAntiFeature appAntiFeature = testHelper.createAppAntiFeature(app, null);
-        antiFeatureId = appAntiFeature.getAntiFeatureId();
-
     }
 
     @Test
-    public void findDynamic_text() {
+    public void findByRepoIdAndPackageName() {
+        App app = repo.findByPackageName(MY_PACKAGE_NAME);
+        assertNotNull(app);
+    }
+
+    @Test
+    public void findByIds() {
+        List<App> appIdList = repo.findByIds(Collections.singletonList(appId));
+        assertNotNull(appIdList);
+        assertEquals(1, appIdList.size());
+    }
+
+    @Test
+    public void findDynamic_search() {
         AppSearchParameter searchParameter = new AppSearchParameter()
                 .searchText("acka my");
-        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
-        assertThat(appIdList.size(), equalTo(1));
+        List<Integer> appIdList = repo.findDynamic(searchParameter);
+        assertNotNull(appIdList);
+        assertEquals(1, appIdList.size());
     }
 
     @Test
@@ -103,64 +113,42 @@ public class AppRepositoryFindDynamicInstrumentedTest {
 
         AppSearchParameter searchParameter = new AppSearchParameter()
                 .versionSdk(SDK);
-        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
-        assertThat(appIdList.size(), equalTo(1));
+        List<Integer> appIdList = repo.findDynamic(searchParameter);
+        assertNotNull(appIdList);
+        assertEquals(1, appIdList.size());
     }
 
     @Test
     public void findDynamic_category() {
         // additional app/category not found
-        testHelper.createAppCategory(app, null);
+        testHelper.createAppCategory(null, null);
 
         AppSearchParameter searchParameter = new AppSearchParameter()
                 .categoryId(categoryId);
-        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
-        assertThat(appIdList.size(), equalTo(1));
+        List<Integer> appIdList = repo.findDynamic(searchParameter);
+        assertNotNull(appIdList);
+        assertEquals(1, appIdList.size());
     }
 
     @Test
-    public void findDynamic_antiFeature() {
-        // additional app/antiFeature not found
-        testHelper.createAppAntiFeature(app, null);
-
-        AppSearchParameter searchParameter = new AppSearchParameter()
-                .antiFeatureId(antiFeatureId);
-        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
-        assertThat(appIdList.size(), equalTo(1));
-    }
-
-    @Test
-    public void findDynamic_textPlusVersionPlusCategory() {
+    public void findDynamic_searchPlusVersionPlusCategory() {
         // additional version not found
         testHelper.createVersion(
                 null, null, SDK - 1, SDK - 1, SDK - 1, null);
 
         AppSearchParameter searchParameter = new AppSearchParameter()
                 .searchText("acka my")
-                .versionSdk(SDK)
-                .categoryId(categoryId);
-        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
-        assertThat(appIdList.size(), equalTo(1));
+                .categoryId(categoryId)
+                .versionSdk(SDK);
+        List<Integer> appIdList = repo.findDynamic(searchParameter);
+        assertNotNull(appIdList);
+        assertEquals(1, appIdList.size());
     }
 
     @Test
-    public void findDynamic_textPlusVersionPlusAntiFeature() {
-        // additional version not found
-        testHelper.createVersion(
-                null, null, SDK - 1, SDK - 1, SDK - 1, null);
-
-        AppSearchParameter searchParameter = new AppSearchParameter()
-                .searchText("acka my")
-                .versionSdk(SDK)
-                .antiFeatureId(antiFeatureId);
-        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
-        assertThat(appIdList.size(), equalTo(1));
-    }
-
-    @Test
-    public void findDynamic_noCondition() {
-        AppSearchParameter searchParameter = new AppSearchParameter();
-        List<Integer> appIdList = appRepository.findDynamic(searchParameter);
-        assertThat(appIdList.size(), equalTo(1));
+    public void findDynamic_default() {
+        List<Integer> appIdList = repo.findDynamic(new AppSearchParameter());
+        assertNotNull(appIdList);
+        assertEquals(1, appIdList.size());
     }
 }

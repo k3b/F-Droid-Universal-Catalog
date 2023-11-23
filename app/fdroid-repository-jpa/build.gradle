@@ -34,7 +34,6 @@ dependencies {
 
     // implementation 'org.flywaydb:flyway-core:10.0.0' does not work
     implementation 'org.flywaydb:flyway-core:8.5.7'
-
     runtimeOnly 'org.hsqldb:hsqldb'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -43,10 +42,11 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-test-autoconfigure:2.6.6'
     // last working version.
 
-    def JUNIT_VERSION = rootProject.ext.JUNIT_VERSION
-    testImplementation "org.junit.jupiter:junit-jupiter-api:$JUNIT_VERSION"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$JUNIT_VERSION"
+    def JUNIT5_VERSION = rootProject.ext.JUNIT5_VERSION
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$JUNIT5_VERSION"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$JUNIT5_VERSION"
 
+    testImplementation "junit:junit:$rootProject.ext.JUNIT4_VERSION"
     testImplementation 'org.hamcrest:hamcrest:2.2'
 }
 

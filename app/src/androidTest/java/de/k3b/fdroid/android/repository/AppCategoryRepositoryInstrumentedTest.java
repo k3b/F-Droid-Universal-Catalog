@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 by k3b.
+ * Copyright (c) 2023 by k3b.
  *
  * This file is part of org.fdroid project.
  *
@@ -16,41 +16,54 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.jpa.repository;
+package de.k3b.fdroid.android.repository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import android.content.Context;
+
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
+
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
+import de.k3b.fdroid.android.db.FDroidDatabase;
 import de.k3b.fdroid.domain.entity.AppCategory;
 import de.k3b.fdroid.domain.repository.AppCategoryRepository;
+import de.k3b.fdroid.domain.util.TestHelper;
 
 /**
- * Database Repository Instrumented test, which will execute in Spring/JPA.
+ * Database Repository Instrumented test, which will execute on an Android device.
  * <p>
  * Note: ...android.repository.XxxRepositoryInstrumentedTest should do the same as ...jpa.repository.XxxRepositoryTest
+ *
+ * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-@RunWith(SpringRunner.class)
-@DataJpaTest
-public class AppCategoryRepositoryTest {
-    @Autowired
-    JpaTestHelper testHelper;
+@RunWith(AndroidJUnit4.class)
+public class AppCategoryRepositoryInstrumentedTest {
+    TestHelper testHelper;
     // testdata
     private int appId;
     private int categoryId;
     // JPA specific
-    @Autowired
     private AppCategoryRepository repo;
 
-    @BeforeEach
+    private void setupAndroid() {
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+
+        FDroidDatabaseFactory factory = FDroidDatabase.getINSTANCE(context, true);
+        repo = factory.appCategoryRepository();
+
+        testHelper = new TestHelper(new RoomFDroidDatabaseFacade(factory));
+    }
+
+    @Before
     public void setUp() {
+        setupAndroid();
         appId = testHelper.createApp().getId();
         categoryId = testHelper.createCategory().getId();
 

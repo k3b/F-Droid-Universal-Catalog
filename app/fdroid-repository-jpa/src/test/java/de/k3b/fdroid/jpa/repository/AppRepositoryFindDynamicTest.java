@@ -16,66 +16,52 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
-package de.k3b.fdroid.android.repository;
+package de.k3b.fdroid.jpa.repository;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import android.content.Context;
-
-import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
 
-import de.k3b.fdroid.android.db.FDroidDatabase;
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.AppAntiFeature;
 import de.k3b.fdroid.domain.entity.AppCategory;
 import de.k3b.fdroid.domain.entity.AppSearchParameter;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.repository.AppRepository;
-import de.k3b.fdroid.domain.util.TestHelper;
 
 /**
- * Database Repository Instrumented test, which will execute on an Android device.
+ * Database Repository Instrumented test, which will execute in Spring/JPA.
  * <p>
  * Note: ...android.repository.XxxRepositoryInstrumentedTest should do the same as ...jpa.repository.XxxRepositoryTest
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-@RunWith(AndroidJUnit4.class)
-public class AppRepositoryFindDynamicInstrumentedTest {
+@RunWith(SpringRunner.class)
+@DataJpaTest
+public class AppRepositoryFindDynamicTest {
+    public static final int SDK = 8;
     // testdata
     private static final String MY_PACKAGE_NAME = "my.package.name";
     private static final String MY_ICON = "myIcon.ico";
-    public static final int SDK = 8;
-
+    @Autowired
+    JpaTestHelper testHelper;
     private Repo repo = null;
     private App app = null;
     private int categoryId;
     private int antiFeatureId;
-
     // Android Room Test specific
+    @Autowired
     private AppRepository appRepository;
-    private TestHelper testHelper;
 
-    private void setupAndroid() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-
-        FDroidDatabaseFactory factory = FDroidDatabase.getINSTANCE(context, true);
-        appRepository = factory.appRepository();
-
-        testHelper = new TestHelper(new RoomFDroidDatabaseFacade(factory));
-    }
-
-    @Before
+    @BeforeEach
     public void setUp() {
-        setupAndroid();
+        Repo r = testHelper.createRepo();
 
         app = testHelper.createApp(MY_PACKAGE_NAME, MY_ICON);
         repo = testHelper.createRepo();

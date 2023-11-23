@@ -32,7 +32,7 @@ dependencies {
 
     implementation("com.google.code.findbugs:jsr305:3.0.2")
 
-    testImplementation 'junit:junit:4.13.2'
+    testImplementation "junit:junit:$rootProject.ext.JUNIT4_VERSION"
     testImplementation 'org.hamcrest:hamcrest:2.2'
 
     testImplementation "org.mockito:mockito-core:$rootProject.ext.MOCKITO_VERSION"

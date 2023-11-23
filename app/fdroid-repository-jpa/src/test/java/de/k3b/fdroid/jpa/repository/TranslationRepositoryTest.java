@@ -22,8 +22,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import de.k3b.fdroid.domain.repository.TranslationRepository;
 import de.k3b.fdroid.domain.service.TranslationService;
@@ -32,10 +34,9 @@ import de.k3b.fdroid.domain.service.TranslationService;
  * Database Repository Instrumented test, which will execute in Spring/JPA.
  * <p>
  * Note: ...android.repository.XxxRepositoryInstrumentedTest should do the same as ...jpa.repository.XxxRepositoryTest
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 
+@RunWith(SpringRunner.class)
 @DataJpaTest
 public class TranslationRepositoryTest {
     // testdata
@@ -54,7 +55,7 @@ public class TranslationRepositoryTest {
     JpaTestHelper testHelper;
 
     @Autowired
-    private TranslationRepository translationRepository;
+    private TranslationRepository repo;
 
     @BeforeEach
     public void setUp() {
@@ -75,50 +76,50 @@ public class TranslationRepositoryTest {
 
     @Test
     public void findByTyp() {
-        assertEquals(3, translationRepository.findByTyp(MY_TYP).size());
+        assertEquals(3, repo.findByTyp(MY_TYP).size());
     }
 
     @Test
     public void findByTypAndId() {
-        assertEquals(2, translationRepository.findByTypAndId(MY_TYP, MY_ID).size());
+        assertEquals(2, repo.findByTypAndId(MY_TYP, MY_ID).size());
     }
 
     @Test
     public void findByTypAndIdAndLocales() {
-        assertEquals(1, translationRepository.findByTypAndIdAndLocales(MY_TYP, MY_ID, MY_LOCALE).size());
+        assertEquals(1, repo.findByTypAndIdAndLocales(MY_TYP, MY_ID, MY_LOCALE).size());
     }
 
     @Test
     public void findByTypsAndLocaleIds() {
-        assertEquals(2, translationRepository.findByTypsAndLocales(SEARCH_TYPS, SEARCH_LOCALES).size());
+        assertEquals(2, repo.findByTypsAndLocales(SEARCH_TYPS, SEARCH_LOCALES).size());
     }
 
     @Test
     public void findall() {
-        assertEquals(4, translationRepository.findAll().size());
+        assertEquals(4, repo.findAll().size());
     }
 
     @Test
     public void deleteByTyp() {
-        translationRepository.deleteByTyp(MY_TYP);
-        assertEquals(1, translationRepository.findAll().size());
+        repo.deleteByTyp(MY_TYP);
+        assertEquals(1, repo.findAll().size());
     }
 
     @Test
     public void deleteByTypAndId() {
-        translationRepository.deleteByTypAndId(MY_TYP, MY_ID);
-        assertEquals(2, translationRepository.findAll().size());
+        repo.deleteByTypAndId(MY_TYP, MY_ID);
+        assertEquals(2, repo.findAll().size());
     }
 
     @Test
     public void deleteByTypAndIdAndLocale() {
-        translationRepository.deleteByTypAndIdAndLocale(MY_TYP, MY_ID, MY_LOCALE);
-        assertEquals(3, translationRepository.findAll().size());
+        repo.deleteByTypAndIdAndLocale(MY_TYP, MY_ID, MY_LOCALE);
+        assertEquals(3, repo.findAll().size());
     }
 
     @Test
     public void deleteTypAndLocale() {
-        translationRepository.deleteByTypAndLocale(MY_TYP, MY_LOCALE);
-        assertEquals(2, translationRepository.findAll().size());
+        repo.deleteByTypAndLocale(MY_TYP, MY_LOCALE);
+        assertEquals(2, repo.findAll().size());
     }
 }
