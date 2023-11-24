@@ -29,39 +29,56 @@ public class LanguageServiceTest {
 
     @Test
     public void getCanonicalLocale() {
-        testCanonical("en-US", "en");
+        assertCanonical("en-US", "en");
 
-        testCanonical("de", "de");
-        testCanonical("de-DE", "de");
-        testCanonical("de_DE", "de");
-        testCanonical("de-rDE", "de");
-        testCanonical("de-AT", "de");
+        assertCanonical("de", "de");
+        assertCanonical("de-DE", "de");
+        assertCanonical("de_DE", "de");
+        assertCanonical("de-rDE", "de");
+        assertCanonical("de-AT", "de");
 
         // special case chineese
-        testCanonical("zh-rTW", "zh-TW");
+        assertCanonical("zh-rTW", "zh-TW");
 
         // special case non-2-letter-language (plattdütsch, ancient german)
-        testCanonical("nds-DE", "nds-DE");
+        assertCanonical("nds-DE", "nds-DE");
 
         // error non-locale
-        testCanonical(null, (String) null);
-        testCanonical("", "");
-        testCanonical("heLLo World", "heLLo World");
-
-        testCanonical("en-US,de-DE", "en", "de");
-        testCanonical(null, (String[]) null);
+        assertCanonical(null, null);
+        assertCanonical("", "");
+        assertCanonical("heLLo World", "heLLo World");
     }
 
-    private void testCanonical(String fdroidLocale, String expected) {
+    @Test
+    public void splitToCanonicalLanguageArray() {
+        // happy day
+        assertSplitToCanonicalLanguageArray("en-US,de-DE", "en", "de");
+
+        // corner cases: duplicate
+        assertSplitToCanonicalLanguageArray("en-US,de-DE,en-AU", "en", "de", "en");
+
+        // corner cases: empty element
+        assertSplitToCanonicalLanguageArray("en-US,,de-DE", "en", "", "de");
+
+        // null/empty handling
+        assertSplitToCanonicalLanguageArray(null, (String[]) null);
+        assertSplitToCanonicalLanguageArray("", (String[]) null);
+    }
+
+    private void assertCanonical(String fdroidLocale, String expected) {
         assertEquals("LanguageService.getCanonicalLocale(" + fdroidLocale + ")", expected, LanguageService.getCanonicalLocale(fdroidLocale));
     }
 
-    private void testCanonical(String fdroidLocale, String... expected) {
-        String[] result = LanguageService.getCanonicalLocalesArray(fdroidLocale);
-        assertArrayEquals("LanguageService.getCanonicalLocalesArray(" + fdroidLocale + ")", expected, result);
+    private void assertSplitToCanonicalLanguageArray(String fdroidLocale, String... expected) {
+        String message = "LanguageService.getCanonicalLocalesArray(" + fdroidLocale + ")";
+        String[] result = LanguageService.splitToCanonicalLanguageArray(fdroidLocale);
+        if (result == null) {
+            assertNull(message, expected);
+        } else {
+            assertArrayEquals(message, expected, result);
+        }
     }
 
-    // getCanonicalLocalesArray
     @Test
     public void getCanonicalLocaleChangeIndex() {
         String[] keys = new String[]{
@@ -69,22 +86,23 @@ public class LanguageServiceTest {
         Integer[] index = LanguageService.getCanonicalLocaleChangeIndex(keys);
         assertArrayEquals("sorted keys", new String[]{
                 "ar-SA", "de", "de-DE", "de-rDE", "en-us", "zh-TW"}, keys);
+
         assertArrayEquals("index", new Integer[]{0, 1, 4, 5, 6}, index);
     }
 
     @Test
     public void getLanguageTranslation() {
-        String[] translation = LanguageService.getLanguageTranslation("de");
+        String[] translation = LanguageService.getHardcodedPredefinedLanguageDefinition("de");
         /** "de|German|Deutsch|symbol" + */
         assertEquals("de size", 4, translation.length);
         assertEquals("de native", "Deutsch", translation[2]);
 
-        translation = LanguageService.getLanguageTranslation("zh-CN");
+        translation = LanguageService.getHardcodedPredefinedLanguageDefinition("zh-CN");
         /** "zh-CN|Simplified Chinese|简体中文||" */
         assertEquals("zh-CN size", 3, translation.length);
         assertEquals("zh-CN english", "Simplified Chinese", translation[1]);
 
-        translation = LanguageService.getLanguageTranslation("nds");
+        translation = LanguageService.getHardcodedPredefinedLanguageDefinition("nds");
         assertNull("nds not found", translation);
     }
 }

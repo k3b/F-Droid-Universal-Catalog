@@ -50,7 +50,7 @@ public class LanguageService extends CacheService<String, Locale> {
     /* See {@link #getLanguagePriorityNewItem(String)} */
     public static final int LANGUAGE_PRIORITY_HIDDEN = -1;
 
-    private static final Map<String, String> LANGUAGE_DEFINITIONS = defineLanguages();
+    private static final Map<String, String> HARDCODED_LANGUAGE_DEFINITIONS = getHardcodedPredefinedLanguageDefinitions();
     public static final String FALLBACK_LOCALE = "en";
 
     /**
@@ -65,7 +65,7 @@ public class LanguageService extends CacheService<String, Locale> {
     /* See {@link #getLanguagePriorityNewItem(String)} */
     private final int languagePriorityNewItem = 0;
 
-    Map<String, Locale> code2Locale = null;
+    private Map<String, Locale> code2Locale = null;
 
     public LanguageService(@Nullable LocaleRepository localeRepository) {
         this.localeRepository = localeRepository;
@@ -104,23 +104,27 @@ public class LanguageService extends CacheService<String, Locale> {
         code2Locale.put(locale.getId(), locale);
     }
 
-    private static boolean setTranslations(String localeCode, Locale locale) {
-        // "de|German|Deutsch|symbol"
-        String[] languageTranslation = getLanguageTranslation(localeCode);
+    private static boolean setLocaleDefaults(String localeCode, Locale locale) {
+        // example: "de|German|Deutsch|symbol"
+        String[] languageTranslation = getHardcodedPredefinedLanguageDefinition(localeCode);
         if (languageTranslation != null) {
             if (locale.getNameEnglish() == null) locale.setNameEnglish(languageTranslation[1]);
             if (locale.getNameNative() == null) locale.setNameNative(languageTranslation[2]);
-            if (locale.getSymbol() == null && languageTranslation.length >= 4)
+            if (locale.getSymbol() == null && languageTranslation.length >= 4) {
+                // Every emoji-flag-symbol consists of 4 bytes
                 locale.setSymbol(languageTranslation[3]);
+            }
         }
         return languageTranslation != null;
     }
 
     /**
-     * Replace locale-key in map with it-s canonical counterpart.
-     * Preserves order, removes duplicates (first wins), keeps null-values
+     * Creates a new locale map where the locale-key is replaced with it-s canonical counterpart.
+     * Preserves order, removes duplicates (first wins), keeps null-values.
+     * <p/>
+     * Example: map["en_US"] becomes map["en"]
      */
-    public static <T> Map<String, T> getCanonicalLocale(Map<String, T> localeMap) {
+    public static <T> Map<String, T> asCanonicalLocaleMap(Map<String, T> localeMap) {
         if (localeMap == null || localeMap.isEmpty()) return localeMap;
 
         Map<String, T> result = new TreeMap<>(); // Treemap to preserve item order
@@ -175,7 +179,15 @@ public class LanguageService extends CacheService<String, Locale> {
         return normalized;
     }
 
-    public static String[] getCanonicalLocalesArray(String localesString) {
+    /**
+     * Preserves order, duplicates are not removed, keeps null-values.
+     * <p/>
+     * Example: "en,de_DE,en_GB" => ["en","de"]
+     *
+     * @param localesString
+     * @return
+     */
+    public static String[] splitToCanonicalLanguageArray(String localesString) {
         if (!StringUtil.isEmpty(localesString)) {
             String[] locales = localesString.split("[,]");
             String[] canonicals = new String[locales.length];
@@ -188,7 +200,11 @@ public class LanguageService extends CacheService<String, Locale> {
     }
 
     public static boolean isHidden(Locale locale) {
-        if (locale == null) return false; // special case unknown locale is not hidden.
+        if (locale == null) {
+            // special case unknown locale is not hidden:
+            // so new locales(previosly unknown translations) will always be added to database.
+            return false;
+        }
         return locale.getLanguagePriority() == LANGUAGE_PRIORITY_HIDDEN;
     }
 
@@ -228,7 +244,13 @@ public class LanguageService extends CacheService<String, Locale> {
         return result.toArray(new Integer[0]);
     }
 
-    private static Map<String, String> defineLanguages() {
+    /**
+     * 2-letter-isocode (and 5-letter-chinese)
+     * + english language name
+     * + native language name
+     * + unicode for emoji-language-symbol(s)
+     */
+    private static Map<String, String> getHardcodedPredefinedLanguageDefinitions() {
         String definitions = "ar|Arabic|العربية|\uD83C\uDDF8\uD83C\uDDE6|\n" +
                 "be|Belarusian|Беларуская||\n" +
                 "bg|Bulgarian|Български||\n" +
@@ -308,10 +330,11 @@ public class LanguageService extends CacheService<String, Locale> {
     }
 
     /**
+     * Example:
      * "de|German|Deutsch|symbol" +
      */
-    public static String[] getLanguageTranslation(String languageCode) {
-        String line = LANGUAGE_DEFINITIONS.get(languageCode);
+    protected static String[] getHardcodedPredefinedLanguageDefinition(String languageCode) {
+        String line = HARDCODED_LANGUAGE_DEFINITIONS.get(languageCode);
         if (line == null) return null;
         return line.split("\\|");
     }
@@ -334,7 +357,7 @@ public class LanguageService extends CacheService<String, Locale> {
                 }
                 init(locale);
             } else if (StringUtil.isEmpty(locale.getNameEnglish())) {
-                if (setTranslations(localeCode, locale) && localeRepository != null) {
+                if (setLocaleDefaults(localeCode, locale) && localeRepository != null) {
                     localeRepository.update(locale);
                 }
             }
@@ -350,7 +373,7 @@ public class LanguageService extends CacheService<String, Locale> {
         locale = new Locale(localeCode);
         locale.setLanguagePriority(getLanguagePriorityNewItem(localeCode));
 
-        setTranslations(localeCode, locale);
+        setLocaleDefaults(localeCode, locale);
         return locale;
     }
 
@@ -364,8 +387,8 @@ public class LanguageService extends CacheService<String, Locale> {
      * 99 (highest priority) is used for system.display language of the operation system.
      */
     private int getLanguagePriorityNewItem(String localeCode) {
-        if (localeCode.equals(FALLBACK_LOCALE)) return 1;
-        if (localeCode.equals(getMyLocale())) return 99;
+        if (localeCode.equals(FALLBACK_LOCALE)) return Locale.PRIORITY_FALLBACK;
+        if (localeCode.equals(getMyLocale())) return Locale.PRIORITY_MAX;
         return languagePriorityNewItem;
     }
 

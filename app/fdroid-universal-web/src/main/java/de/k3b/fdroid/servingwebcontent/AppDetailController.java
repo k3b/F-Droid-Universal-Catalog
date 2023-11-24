@@ -193,7 +193,7 @@ public class AppDetailController {
             if (app != null) id = app.getId();
         }
 
-        String[] canonicalLocalesArray = LanguageService.getCanonicalLocalesArray(locales);
+        String[] canonicalLocalesArray = LanguageService.splitToCanonicalLanguageArray(locales);
         AppSearchParameter appSearchParameter = (StringUtil.isEmpty(locales))
                 ? null
                 : new AppSearchParameter()

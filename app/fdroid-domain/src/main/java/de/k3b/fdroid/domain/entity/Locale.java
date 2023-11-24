@@ -40,6 +40,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @SuppressWarnings("unused")
 @ExternalDocumentation(description = "Locale or Language of Translation of an [App]", url = ExtDoc.GLOSSAR_URL + "Locale")
 public class Locale extends EntityCommon {
+
+    /**
+     * Translation with this priority will not be added to the database.
+     */
+    public static final int PRIORITY_HIDDEN = -1;
+    /**
+     * Translation-priority of english language that should always exist.
+     */
+    public static final int PRIORITY_FALLBACK = 1;
+    /**
+     * Translation-priority highest in users-operatingsystem or web-browser.
+     */
+    public static final int PRIORITY_MAX = 99;
     @javax.persistence.Id
     @androidx.room.PrimaryKey
     @NotNull
@@ -59,7 +72,11 @@ public class Locale extends EntityCommon {
             example = "German")
     private String nameEnglish; // ie German
 
-    // translation order highest first; -1 == hidden (Translations are NOT contained in Database)
+    /**
+     * Translation order: highest first; -1 == hidden (Translations are NOT added to Database)
+     */
+    @Schema(description = "Translation order: highest first; -1 == hidden (Translations are NOT added to Database).",
+            example = "1")
     private int languagePriority;
 
     public Locale() {

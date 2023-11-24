@@ -84,12 +84,12 @@ public class V2AntiFeatureUpdateService implements ProgressObservable {
 
     public void update(@NotNull String name, @NotNull V2AntiFeature V2AntiFeature) {
         int antiFeatureId = antiFeatureService.getOrCreateAntiFeatureId(name);
-        antiFeatureNameService.update(antiFeatureId, name, LanguageService.getCanonicalLocale(V2AntiFeature.getName()));
+        antiFeatureNameService.update(antiFeatureId, name, LanguageService.asCanonicalLocaleMap(V2AntiFeature.getName()));
         antiFeatureDescriptionService.update(antiFeatureId, "",
-                LanguageService.getCanonicalLocale(V2AntiFeature.getDescription()));
+                LanguageService.asCanonicalLocaleMap(V2AntiFeature.getDescription()));
 
         this.antiFeatureIconService.updateIcon(antiFeatureId,
-                Java8Util.reduce(LanguageService.getCanonicalLocale(V2AntiFeature.getIcon()), V2IconUtil::getIconName));
+                Java8Util.reduce(LanguageService.asCanonicalLocaleMap(V2AntiFeature.getIcon()), V2IconUtil::getIconName));
     }
 
     @Override

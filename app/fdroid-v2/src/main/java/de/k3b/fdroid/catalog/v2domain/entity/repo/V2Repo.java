@@ -78,7 +78,7 @@ public class V2Repo implements IRepoCommon {
 
     @Override
     public String getDescription() {
-        return (descriptionMap == null) ? null : LanguageService.getCanonicalLocale(descriptionMap).get(LanguageService.FALLBACK_LOCALE);
+        return (descriptionMap == null) ? null : LanguageService.asCanonicalLocaleMap(descriptionMap).get(LanguageService.FALLBACK_LOCALE);
     }
 
     @Nullable
@@ -99,7 +99,7 @@ public class V2Repo implements IRepoCommon {
     @Nullable
     @Override
     public String getName() {
-        return (nameMap == null) ? null : LanguageService.getCanonicalLocale(nameMap).get(LanguageService.FALLBACK_LOCALE);
+        return (nameMap == null) ? null : LanguageService.asCanonicalLocaleMap(nameMap).get(LanguageService.FALLBACK_LOCALE);
     }
 
     public long getTimestamp() {
@@ -109,7 +109,7 @@ public class V2Repo implements IRepoCommon {
     @Override
     public String getIcon() {
         if (iconMap != null) {
-            return V2IconUtil.getIconName(LanguageService.getCanonicalLocale(iconMap).get(LanguageService.FALLBACK_LOCALE));
+            return V2IconUtil.getIconName(LanguageService.asCanonicalLocaleMap(iconMap).get(LanguageService.FALLBACK_LOCALE));
         }
         return null;
     }

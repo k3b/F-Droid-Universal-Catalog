@@ -186,7 +186,7 @@ public class AppController {
                 .versionSdk(minVersionSdk)
                 .categoryId(categoryId)
                 .orderBy(sort)
-                .locales(LanguageService.getCanonicalLocalesArray(locales));
+                .locales(LanguageService.splitToCanonicalLanguageArray(locales));
         List<Integer> appIdList = appRepository.findDynamic(appSearchParameter);
         appWithDetailsPagerService.init(appIdList, pageSize, appSearchParameter);
 

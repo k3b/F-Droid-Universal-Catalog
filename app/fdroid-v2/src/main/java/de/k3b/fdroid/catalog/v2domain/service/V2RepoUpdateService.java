@@ -130,7 +130,7 @@ public class V2RepoUpdateService {
         this.categoryNameService.update(repo.getId(), repo.getName(), v2Repo.getNameMap());
         this.categoryDescriptionService.update(repo.getId(), repo.getDescription(), v2Repo.getDescriptionMap());
         this.categoryIconService.update(repo.getId(), repo.getIcon(),
-                Java8Util.reduce(LanguageService.getCanonicalLocale(v2Repo.getIconMap())
+                Java8Util.reduce(LanguageService.asCanonicalLocaleMap(v2Repo.getIconMap())
                         , V2IconUtil::getIconName));
 
         if (antiFeatureUpdateService != null)

@@ -84,12 +84,12 @@ public class V2CategoryUpdateService implements ProgressObservable {
 
     public void update(@NotNull String name, @NotNull V2Category v2Category) {
         int categoryId = categoryService.getOrCreateCategoryId(name);
-        categoryNameService.update(categoryId, name, LanguageService.getCanonicalLocale(v2Category.getName()));
+        categoryNameService.update(categoryId, name, LanguageService.asCanonicalLocaleMap(v2Category.getName()));
         categoryDescriptionService.update(categoryId, "",
-                LanguageService.getCanonicalLocale(v2Category.getDescription()));
+                LanguageService.asCanonicalLocaleMap(v2Category.getDescription()));
 
         this.categoryIconService.updateIcon(categoryId,
-                Java8Util.reduce(LanguageService.getCanonicalLocale(v2Category.getIcon()), V2IconUtil::getIconName));
+                Java8Util.reduce(LanguageService.asCanonicalLocaleMap(v2Category.getIcon()), V2IconUtil::getIconName));
     }
 
     @Override

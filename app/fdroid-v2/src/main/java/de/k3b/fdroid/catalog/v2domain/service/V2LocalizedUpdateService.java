@@ -218,7 +218,7 @@ public class V2LocalizedUpdateService {
 
         public void convert(Map<String, String> localeMap,
                             Java8Util.Getter<Localized, String> getter, Java8Util.Setter<Localized, String> setter) {
-            localeMap = LanguageService.getCanonicalLocale(localeMap);
+            localeMap = LanguageService.asCanonicalLocaleMap(localeMap);
             if (localeMap != null) {
                 for (Map.Entry<String, String> entry : localeMap.entrySet()) {
                     Localized localized = getOrCreateLocalized(entry.getKey(), localizedMap, app);
