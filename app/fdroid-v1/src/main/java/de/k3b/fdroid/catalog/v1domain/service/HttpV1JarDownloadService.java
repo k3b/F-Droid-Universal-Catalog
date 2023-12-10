@@ -41,13 +41,13 @@ import de.k3b.fdroid.catalog.interfaces.IFDroidCatalogJsonStreamParser;
 import de.k3b.fdroid.catalog.util.DateUtils;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
-import de.k3b.fdroid.domain.interfaces.ProgressObservable;
-import de.k3b.fdroid.domain.interfaces.ProgressObserver;
+import de.k3b.fdroid.domain.interfaces.IProgressObservable;
+import de.k3b.fdroid.domain.interfaces.IProgressObserver;
 import de.k3b.fdroid.domain.util.CopyInputStream;
 
 /* download v1-jar while simultaniously checking/updating signature */
 @Service
-public class HttpV1JarDownloadService implements ProgressObservable {
+public class HttpV1JarDownloadService implements IProgressObservable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
     public static final String HTTP_LAST_MODIFIED = "Last-Modified";
     public static final String HTTP_IF_MODIFIED_SINCE = "If-Modified-Since";
@@ -58,7 +58,7 @@ public class HttpV1JarDownloadService implements ProgressObservable {
     protected Repo repoInDatabase;
 
     @Nullable
-    private ProgressObserver progressObserver = null;
+    private IProgressObserver progressObserver = null;
 
     public HttpV1JarDownloadService(
             @Value("${de.k3b.fdroid.downloads:~/.fdroid/downloads}") @NotNull String downloadPath) {
@@ -182,7 +182,7 @@ public class HttpV1JarDownloadService implements ProgressObservable {
     }
 
     @Override
-    public void setProgressObserver(ProgressObserver progressObserver) {
+    public void setProgressObserver(IProgressObserver progressObserver) {
         this.progressObserver = progressObserver;
     }
 }

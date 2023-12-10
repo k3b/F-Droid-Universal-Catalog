@@ -25,7 +25,7 @@ import java.util.Comparator;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.domain.entity.common.ExtDoc;
-import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
+import de.k3b.fdroid.domain.interfaces.IDatabaseEntityWithId;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -41,7 +41,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 @SuppressWarnings("unused")
 @ExternalDocumentation(description = "Category of an [App]", url = ExtDoc.GLOSSAR_URL + "Category")
-public class Category extends EntityCommon implements DatabaseEntityWithId {
+public class Category extends EntityCommon implements IDatabaseEntityWithId {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @androidx.room.PrimaryKey(autoGenerate = true)

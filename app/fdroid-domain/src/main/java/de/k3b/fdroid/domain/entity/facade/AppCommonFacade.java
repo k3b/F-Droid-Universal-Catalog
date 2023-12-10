@@ -25,11 +25,6 @@ import de.k3b.fdroid.domain.entity.common.AppCommon;
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.domain.entity.common.IAppCommon;
 
-/**
- * Parameterized Integration test for XxxCommon(Facade):
- * Make shure that XxxCommon[Full|Empty].toString() generate the same as XxxCommonFacade[Full|Empty].toString()
- * For details @see <a href="https://pragmatists.github.io/JUnitParams/">JUnitParams</a>
- */
 @SuppressWarnings("unused")
 public class AppCommonFacade extends EntityCommon implements IAppCommon {
     @Nullable

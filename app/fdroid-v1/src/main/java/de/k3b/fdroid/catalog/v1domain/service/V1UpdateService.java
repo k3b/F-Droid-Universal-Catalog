@@ -33,8 +33,8 @@ import de.k3b.fdroid.catalog.v1domain.entity.V1App;
 import de.k3b.fdroid.catalog.v1domain.entity.V1Repo;
 import de.k3b.fdroid.catalog.v1domain.entity.V1Version;
 import de.k3b.fdroid.catalog.v1domain.util.JarUtilities;
-import de.k3b.fdroid.domain.interfaces.ProgressObservable;
-import de.k3b.fdroid.domain.interfaces.ProgressObserver;
+import de.k3b.fdroid.domain.interfaces.IProgressObservable;
+import de.k3b.fdroid.domain.interfaces.IProgressObserver;
 import de.k3b.fdroid.domain.repository.AppAntiFeatureRepository;
 import de.k3b.fdroid.domain.repository.AppCategoryRepository;
 import de.k3b.fdroid.domain.repository.AppHardwareRepository;
@@ -51,12 +51,12 @@ import de.k3b.fdroid.domain.service.LanguageService;
 /**
  * update android-room-database from fdroid-v1-rest-gson data
  */
-public abstract class V1UpdateService implements IV1UpdateService, ProgressObservable {
+public abstract class V1UpdateService implements IV1UpdateService, IProgressObservable {
     private final RepoRepository repoRepository;
     private final HardwareProfileService hardwareProfileService;
     JsonStreamParser jsonStreamParser;
     V1RepoUpdateService repoUpdateService;
-    private ProgressObserver progressObserver;
+    private IProgressObserver progressObserver;
 
     V1AppUpdateService v1AppUpdateService;
     V1VersionUpdateService versionUpdateService;
@@ -122,7 +122,7 @@ public abstract class V1UpdateService implements IV1UpdateService, ProgressObser
 
     abstract protected String log(String s);
 
-    public void setProgressObserver(@Nullable ProgressObserver progressObserver) {
+    public void setProgressObserver(@Nullable IProgressObserver progressObserver) {
         this.progressObserver = progressObserver;
         this.v1AppUpdateService.setProgressObserver(progressObserver);
         this.versionUpdateService.setProgressObserver(progressObserver);

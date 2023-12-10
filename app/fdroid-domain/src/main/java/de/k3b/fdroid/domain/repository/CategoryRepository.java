@@ -21,12 +21,12 @@ package de.k3b.fdroid.domain.repository;
 import java.util.List;
 
 import de.k3b.fdroid.domain.entity.Category;
-import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
+import de.k3b.fdroid.domain.interfaces.IDatabaseEntityWithId;
 
 /**
  * Android independent interfaces to use the Database.
  * <p>
- * Persists {@link Category} (that implements {@link DatabaseEntityWithId}) in the Database.
+ * Persists {@link Category} (that implements {@link IDatabaseEntityWithId}) in the Database.
  */
 public interface CategoryRepository extends Repository {
     void insert(Category category);

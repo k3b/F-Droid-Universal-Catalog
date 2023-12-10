@@ -30,8 +30,8 @@ import de.k3b.fdroid.domain.entity.AppHardware;
 import de.k3b.fdroid.domain.entity.HardwareProfile;
 import de.k3b.fdroid.domain.entity.Version;
 import de.k3b.fdroid.domain.entity.common.ProfileCommon;
-import de.k3b.fdroid.domain.interfaces.ProgressObservable;
-import de.k3b.fdroid.domain.interfaces.ProgressObserver;
+import de.k3b.fdroid.domain.interfaces.IProgressObservable;
+import de.k3b.fdroid.domain.interfaces.IProgressObserver;
 import de.k3b.fdroid.domain.repository.AppHardwareRepository;
 import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.repository.HardwareProfileRepository;
@@ -41,11 +41,11 @@ import de.k3b.fdroid.domain.util.StringUtil;
  * Service to cache/find/insert HardwareProfile info.
  */
 
-public class HardwareProfileService implements ProgressObservable {
+public class HardwareProfileService implements IProgressObservable {
     private final AppRepository appRepository;
     private final HardwareProfileRepository hardwareProfileRepository;
     private final AppHardwareRepository appHardwareRepository;
-    private ProgressObserver progressObserver;
+    private IProgressObserver progressObserver;
 
     private List<HardwareProfile> hardwareProfiles;
     private boolean hpForDelete = false;
@@ -202,7 +202,7 @@ public class HardwareProfileService implements ProgressObservable {
         if (progressObserver != null) progressObserver.log(message);
     }
 
-    public void setProgressObserver(ProgressObserver progressObserver) {
+    public void setProgressObserver(IProgressObserver progressObserver) {
         this.progressObserver = progressObserver;
     }
 }

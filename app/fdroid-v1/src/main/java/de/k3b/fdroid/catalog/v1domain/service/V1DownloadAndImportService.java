@@ -33,7 +33,7 @@ import de.k3b.fdroid.Global;
 import de.k3b.fdroid.catalog.CatalogJarException;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
-import de.k3b.fdroid.domain.interfaces.ProgressObserver;
+import de.k3b.fdroid.domain.interfaces.IProgressObserver;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.util.StringUtil;
 
@@ -204,7 +204,7 @@ public class V1DownloadAndImportService implements V1DownloadAndImportServiceInt
 
 
     @Override
-    public void setProgressObserver(ProgressObserver progressObserver) {
+    public void setProgressObserver(IProgressObserver progressObserver) {
         downloadService.setProgressObserver(progressObserver);
         v1UpdateService.setProgressObserver(progressObserver);
     }

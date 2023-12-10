@@ -36,7 +36,7 @@ import de.k3b.fdroid.domain.entity.Category;
 import de.k3b.fdroid.domain.entity.LinkedDatabaseEntity;
 import de.k3b.fdroid.domain.entity.Localized;
 import de.k3b.fdroid.domain.entity.Version;
-import de.k3b.fdroid.domain.interfaces.AppDetail;
+import de.k3b.fdroid.domain.interfaces.IAppDetail;
 import de.k3b.fdroid.domain.repository.AppDetailRepository;
 
 /**
@@ -192,7 +192,7 @@ public class AppWithDetailsPagerService {
         return null;
     }
 
-    private <T extends AppDetail> void load(
+    private <T extends IAppDetail> void load(
             Class<?> clasz, ArrayList<Integer> appIdList,
             AppDetailRepository<T> repository, Map<Integer, AppWithDetails> id2AppLocalizedList) {
         if (repository != null) {

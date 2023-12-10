@@ -19,15 +19,15 @@
 
 package de.k3b.fdroid.catalog.v1domain.entity;
 
-import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 import de.k3b.fdroid.domain.interfaces.Enitity;
+import de.k3b.fdroid.domain.interfaces.IDatabaseEntityWithId;
 
 /**
  * A FDroid-Catalog-v1-Json format {@link Enitity} used to import
  * F-Drdoid Catalog Data in the "V1" json format.
  * <p>
- * Each Xxx{@link V1JsonEntity} has a corresponding Xxx{@link DatabaseEntityWithId}
- * and there is a Xxx{@link IV1UpdateService} that transfers Xxx{@link V1JsonEntity} to Xxx{@link DatabaseEntityWithId}
+ * Each Xxx{@link V1JsonEntity} has a corresponding Xxx{@link IDatabaseEntityWithId}
+ * and there is a Xxx{@link IV1UpdateService} that transfers Xxx{@link V1JsonEntity} to Xxx{@link IDatabaseEntityWithId}
  */
 public interface V1JsonEntity extends Enitity {
 }

@@ -19,12 +19,14 @@
 
 package de.k3b.fdroid.domain.interfaces;
 
-import org.jetbrains.annotations.Nullable;
+public interface IProgressObserver {
+    /**
+     * Called in a regular intervall. (i.e. every 100kBytes-Downloaded or every 100 apps-processed.
+     * Intervall decided by caller
+     */
+    void onProgress(int counter, String progressChar, String progressContext);
 
-/**
- * Classes that implements this interface can report progress info
- * via {@link ProgressObserver}
- */
-public interface ProgressObservable {
-    void setProgressObserver(@Nullable ProgressObserver progressObserver);
+    IProgressObserver setProgressContext(String progressPrefix, String progressSuffix);
+
+    void log(String message);
 }

@@ -18,12 +18,12 @@
  */
 package de.k3b.fdroid.domain.adapter;
 
-import de.k3b.fdroid.domain.interfaces.ProgressObserver;
+import de.k3b.fdroid.domain.interfaces.IProgressObserver;
 
-public class ProgressObserverAdapter implements ProgressObserver {
-    private final ProgressObserver child;
+public class ProgressObserverAdapter implements IProgressObserver {
+    private final IProgressObserver child;
 
-    public ProgressObserverAdapter(ProgressObserver child) {
+    public ProgressObserverAdapter(IProgressObserver child) {
 
         this.child = child;
     }
@@ -34,7 +34,7 @@ public class ProgressObserverAdapter implements ProgressObserver {
     }
 
     @Override
-    public ProgressObserver setProgressContext(String progressPrefix, String progressSuffix) {
+    public IProgressObserver setProgressContext(String progressPrefix, String progressSuffix) {
         return child.setProgressContext(progressPrefix, progressSuffix);
     }
 

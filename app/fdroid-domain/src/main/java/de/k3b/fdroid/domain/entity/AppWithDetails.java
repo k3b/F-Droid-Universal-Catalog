@@ -30,20 +30,20 @@ import java.util.List;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.domain.entity.common.ExtDoc;
-import de.k3b.fdroid.domain.interfaces.AggregateRoot;
-import de.k3b.fdroid.domain.interfaces.AppDetail;
+import de.k3b.fdroid.domain.interfaces.IAggregateRoot;
+import de.k3b.fdroid.domain.interfaces.IAppDetail;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 /**
- * DDD {@link AggregateRoot} for {@link App}
+ * DDD {@link IAggregateRoot} for {@link App}
  */
 @JsonInclude(Include.NON_NULL)
 @SuppressWarnings({"unchecked", "unsafe", "unused"})
 @ExternalDocumentation(description = "Information about an Android [App] that is available in a [Repo] or [Mirror]",
         url = ExtDoc.GLOSSAR_URL + "App")
 
-public class AppWithDetails extends EntityCommon implements AppDetail, AggregateRoot {
+public class AppWithDetails extends EntityCommon implements IAppDetail, IAggregateRoot {
     @NotNull
     private final App app;
     private final List<Localized> localizedList = new ArrayList<>();
@@ -120,7 +120,7 @@ public class AppWithDetails extends EntityCommon implements AppDetail, Aggregate
         return localizedArray;
     }
 
-    public <T extends AppDetail> List<T> getList(Class<?> classz) {
+    public <T extends IAppDetail> List<T> getList(Class<?> classz) {
         if (classz.equals(Localized.class)) return (List<T>) localizedList;
         if (classz.equals(Version.class)) return (List<T>) versionList;
         if (classz.equals(Category.class)) return (List<T>) categoryList;

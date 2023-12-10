@@ -21,9 +21,9 @@ package de.k3b.fdroid.catalog.v1domain.service;
 
 import de.k3b.fdroid.catalog.CatalogJarException;
 import de.k3b.fdroid.domain.entity.Repo;
-import de.k3b.fdroid.domain.interfaces.ProgressObservable;
+import de.k3b.fdroid.domain.interfaces.IProgressObservable;
 
-public interface V1DownloadAndImportServiceInterface extends ProgressObservable {
+public interface V1DownloadAndImportServiceInterface extends IProgressObservable {
     /**
      * @param downloadUrl                            where data comes from
      * @param jarSigningCertificateFingerprintOrNull optional a fingerprint

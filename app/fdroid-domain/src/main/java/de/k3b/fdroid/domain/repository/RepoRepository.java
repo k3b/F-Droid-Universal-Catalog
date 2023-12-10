@@ -22,12 +22,12 @@ import java.util.List;
 
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
-import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
+import de.k3b.fdroid.domain.interfaces.IDatabaseEntityWithId;
 
 /**
  * Android independent interfaces to use the Database.
  * <p>
- * Persists {@link Repo} (that implements {@link DatabaseEntityWithId}) in the Database.
+ * Persists {@link Repo} (that implements {@link IDatabaseEntityWithId}) in the Database.
  */
 public interface RepoRepository extends Repository {
     void insert(Repo repo);

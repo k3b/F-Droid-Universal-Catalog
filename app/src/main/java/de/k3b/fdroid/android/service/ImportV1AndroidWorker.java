@@ -38,7 +38,7 @@ import de.k3b.fdroid.android.Global;
 import de.k3b.fdroid.catalog.CatalogJarException;
 import de.k3b.fdroid.catalog.v1domain.service.V1DownloadAndImportServiceInterface;
 import de.k3b.fdroid.domain.entity.Repo;
-import de.k3b.fdroid.domain.interfaces.ProgressObserver;
+import de.k3b.fdroid.domain.interfaces.IProgressObserver;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 import de.k3b.fdroid.domain.util.StringUtil;
 
@@ -149,14 +149,14 @@ public class ImportV1AndroidWorker extends Worker {
     }
 
     /**
-     * Translates from k3b-s internal {@link ProgressObserver} to {@link Worker#setProgressAsync(Data)}
+     * Translates from k3b-s internal {@link IProgressObserver} to {@link Worker#setProgressAsync(Data)}
      */
-    private class ProgressObserverAdapter implements ProgressObserver {
+    private class ProgressObserverAdapter implements IProgressObserver {
         private String progressPrefix = "";
         private String progressSuffix = "";
 
         @Override
-        public ProgressObserver setProgressContext(String progressPrefix, String progressSuffix) {
+        public IProgressObserver setProgressContext(String progressPrefix, String progressSuffix) {
             if (progressPrefix != null) this.progressPrefix = progressPrefix;
             if (progressSuffix != null) this.progressSuffix = progressSuffix;
             return this;

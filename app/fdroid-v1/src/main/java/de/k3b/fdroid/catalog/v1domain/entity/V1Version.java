@@ -26,12 +26,13 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import de.k3b.fdroid.domain.entity.common.VersionCommon;
+import de.k3b.fdroid.domain.interfaces.IDatabaseEntityWithId;
 
 /**
  * Data for the program version of an android app (read from FDroid-Catalog-v1-Json format).
  * <p>
  * The {@link V1JsonEntity} {@link V1Version} correspond to the
- * {@link de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId} {@link de.k3b.fdroid.domain.entity.Version}.
+ * {@link IDatabaseEntityWithId} {@link de.k3b.fdroid.domain.entity.Version}.
  */
 @Generated("jsonschema2pojo")
 @SuppressWarnings("unused")

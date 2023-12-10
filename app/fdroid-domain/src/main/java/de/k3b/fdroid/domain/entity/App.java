@@ -36,7 +36,7 @@ import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.entity.common.AppCommon;
 import de.k3b.fdroid.domain.entity.common.ExtDoc;
-import de.k3b.fdroid.domain.interfaces.AppDetail;
+import de.k3b.fdroid.domain.interfaces.IAppDetail;
 import de.k3b.fdroid.domain.service.LocalizedService;
 import de.k3b.fdroid.domain.util.StringUtil;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -59,7 +59,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @SuppressWarnings("unused")
 @ExternalDocumentation(description = "Information about an Android [App] that is available in a Repo or Mirror",
         url = ExtDoc.GLOSSAR_URL + "App")
-public class App extends AppCommon implements AppDetail {
+public class App extends AppCommon implements IAppDetail {
     public static final String NOT_FOUND_VALUE = "";
 
     @javax.persistence.Id

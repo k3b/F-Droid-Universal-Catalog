@@ -42,14 +42,14 @@ import de.k3b.fdroid.catalog.v2domain.entity.packagev2.V2PackageVersion;
 import de.k3b.fdroid.catalog.v2domain.entity.repo.V2File;
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.common.AppCommon;
-import de.k3b.fdroid.domain.interfaces.ProgressObservable;
-import de.k3b.fdroid.domain.interfaces.ProgressObserver;
+import de.k3b.fdroid.domain.interfaces.IProgressObservable;
+import de.k3b.fdroid.domain.interfaces.IProgressObserver;
 import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.service.LanguageService;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.StringUtil;
 
-public class V2AppUpdateService implements ProgressObservable {
+public class V2AppUpdateService implements IProgressObservable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
 
     private static final int PROGRESS_INTERVALL = 100;
@@ -62,7 +62,7 @@ public class V2AppUpdateService implements ProgressObservable {
     private final AppCategoryUpdateService appCategoryUpdateService;
     private final AppAntiFeatureUpdateService appAntiFeatureUpdateService;
 
-    private ProgressObserver progressObserver = null;
+    private IProgressObserver progressObserver = null;
     private int progressCounter = 0;
     private int progressCountdown = 0;
 
@@ -169,7 +169,7 @@ public class V2AppUpdateService implements ProgressObservable {
 
 
     @Override
-    public void setProgressObserver(ProgressObserver progressObserver) {
+    public void setProgressObserver(IProgressObserver progressObserver) {
         this.progressObserver = progressObserver;
     }
 }

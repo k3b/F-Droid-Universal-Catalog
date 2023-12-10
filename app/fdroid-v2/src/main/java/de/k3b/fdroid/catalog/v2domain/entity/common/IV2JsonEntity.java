@@ -18,17 +18,17 @@
  */
 package de.k3b.fdroid.catalog.v2domain.entity.common;
 
-import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
 import de.k3b.fdroid.domain.interfaces.Enitity;
+import de.k3b.fdroid.domain.interfaces.IDatabaseEntityWithId;
 
 /**
  * A FDroid-Catalog-v2-Json format {@link Enitity} used to import
  * F-Drdoid Catalog Data in the "V2" json format.
  * <p>
  * Each Xxx{@link IV2JsonEntity} has a corresponding
- * Xxx{@link DatabaseEntityWithId}
+ * Xxx{@link IDatabaseEntityWithId}
  * and there is a Xxx{@link IV2UpdateService} that transfers
- * Xxx{@link IV2JsonEntity} to Xxx{@link DatabaseEntityWithId}
+ * Xxx{@link IV2JsonEntity} to Xxx{@link IDatabaseEntityWithId}
  */
 public interface IV2JsonEntity extends Enitity {
 }

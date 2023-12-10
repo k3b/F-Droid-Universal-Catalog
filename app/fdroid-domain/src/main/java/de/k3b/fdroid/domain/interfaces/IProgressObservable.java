@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 by k3b.
+ * Copyright (c) 2022 by k3b.
  *
  * This file is part of org.fdroid project.
  *
@@ -16,12 +16,15 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  */
+
 package de.k3b.fdroid.domain.interfaces;
 
-/**
- * A Detail one-to-many-detail that belongs to {@link de.k3b.fdroid.domain.entity.App}
- */
-public interface AppDetail extends DatabaseEntityWithId {
+import org.jetbrains.annotations.Nullable;
 
-    int getAppId();
+/**
+ * Classes that implements this interface can report progress info
+ * via {@link IProgressObserver}
+ */
+public interface IProgressObservable {
+    void setProgressObserver(@Nullable IProgressObserver progressObserver);
 }

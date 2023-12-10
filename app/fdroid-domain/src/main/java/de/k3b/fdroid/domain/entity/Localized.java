@@ -26,7 +26,7 @@ import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.entity.common.ExtDoc;
 import de.k3b.fdroid.domain.entity.common.LocalizedCommon;
-import de.k3b.fdroid.domain.interfaces.AppDetail;
+import de.k3b.fdroid.domain.interfaces.IAppDetail;
 import de.k3b.fdroid.domain.util.StringUtil;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,16 +39,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
  * Database Entity compatible with Android-Room and non-android-j2se-jpa
  */
 @androidx.room.Entity(foreignKeys = {@androidx.room.ForeignKey(entity = App.class,
-        parentColumns = "id", childColumns = "appId",onDelete = androidx.room.ForeignKey.CASCADE),
+        parentColumns = "id", childColumns = "appId", onDelete = androidx.room.ForeignKey.CASCADE),
         @androidx.room.ForeignKey(entity = Locale.class,
-                parentColumns = "id", childColumns = "localeId",onDelete = androidx.room.ForeignKey.CASCADE)},
+                parentColumns = "id", childColumns = "localeId", onDelete = androidx.room.ForeignKey.CASCADE)},
         indices = {@androidx.room.Index("id"),
-        @androidx.room.Index({"appId", "localeId"})})
+                @androidx.room.Index({"appId", "localeId"})})
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 @ExternalDocumentation(description = "Translation of an [App]-infos in a [Locale] or language", url = ExtDoc.GLOSSAR_URL + "Localized")
 @SuppressWarnings("unused")
-public class Localized extends LocalizedCommon implements AppDetail {
+public class Localized extends LocalizedCommon implements IAppDetail {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @androidx.room.PrimaryKey(autoGenerate = true)

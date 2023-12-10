@@ -36,8 +36,8 @@ import de.k3b.fdroid.catalog.v1domain.entity.V1Version;
 import de.k3b.fdroid.domain.entity.App;
 import de.k3b.fdroid.domain.entity.Version;
 import de.k3b.fdroid.domain.entity.common.VersionCommon;
-import de.k3b.fdroid.domain.interfaces.ProgressObservable;
-import de.k3b.fdroid.domain.interfaces.ProgressObserver;
+import de.k3b.fdroid.domain.interfaces.IProgressObservable;
+import de.k3b.fdroid.domain.interfaces.IProgressObserver;
 import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.repository.VersionRepository;
 import de.k3b.fdroid.domain.service.HardwareProfileService;
@@ -49,7 +49,7 @@ import de.k3b.fdroid.domain.util.StringUtil;
  * {@link IV1UpdateService} that updates {@link Version}
  * from {@link V1Version} using a {@link VersionRepository}
  */
-public class V1VersionUpdateService implements IV1UpdateService, ProgressObservable {
+public class V1VersionUpdateService implements IV1UpdateService, IProgressObservable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
 
     private static final int PROGRESS_INTERVALL = 100;
@@ -64,7 +64,7 @@ public class V1VersionUpdateService implements IV1UpdateService, ProgressObserva
     PackageCollector packageCollector = new PackageCollector();
     @Nullable
     private final HardwareProfileService hardwareProfileService;
-    ProgressObserver progressObserver = null;
+    IProgressObserver progressObserver = null;
     private int progressCounter = 0;
     private int progressCountdown = 0;
     private int nextMockAppId = 142;
@@ -228,7 +228,7 @@ public class V1VersionUpdateService implements IV1UpdateService, ProgressObserva
         }
     }
 
-    public void setProgressObserver(ProgressObserver progressObserver) {
+    public void setProgressObserver(IProgressObserver progressObserver) {
         this.progressObserver = progressObserver;
         if (this.hardwareProfileService != null)
             hardwareProfileService.setProgressObserver(progressObserver);

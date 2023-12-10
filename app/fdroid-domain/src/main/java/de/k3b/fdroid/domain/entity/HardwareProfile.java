@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.domain.entity.common.ExtDoc;
-import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
+import de.k3b.fdroid.domain.interfaces.IDatabaseEntityWithId;
 import de.k3b.fdroid.domain.util.StringUtil;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 
@@ -49,7 +49,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 @SuppressWarnings("unused")
 @ExternalDocumentation(description = "Named userdefined device information that can be used to determine [App-Compatibility]",
         url = ExtDoc.GLOSSAR_URL + "App-Compatibility")
-public class HardwareProfile extends EntityCommon implements DatabaseEntityWithId {
+public class HardwareProfile extends EntityCommon implements IDatabaseEntityWithId {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @androidx.room.PrimaryKey(autoGenerate = true)

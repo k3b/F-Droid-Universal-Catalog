@@ -33,8 +33,8 @@ import de.k3b.fdroid.catalog.service.AppCategoryUpdateService;
 import de.k3b.fdroid.catalog.v1domain.entity.IV1UpdateService;
 import de.k3b.fdroid.catalog.v1domain.entity.V1App;
 import de.k3b.fdroid.domain.entity.common.AppCommon;
-import de.k3b.fdroid.domain.interfaces.ProgressObservable;
-import de.k3b.fdroid.domain.interfaces.ProgressObserver;
+import de.k3b.fdroid.domain.interfaces.IProgressObservable;
+import de.k3b.fdroid.domain.interfaces.IProgressObserver;
 import de.k3b.fdroid.domain.repository.AppRepository;
 import de.k3b.fdroid.domain.util.ExceptionUtils;
 import de.k3b.fdroid.domain.util.StringUtil;
@@ -43,7 +43,7 @@ import de.k3b.fdroid.domain.util.StringUtil;
  * {@link IV1UpdateService} that updates {@link de.k3b.fdroid.domain.entity.App}
  * from {@link V1App} using a {@link AppRepository}
  */
-public class V1AppUpdateService implements IV1UpdateService, ProgressObservable {
+public class V1AppUpdateService implements IV1UpdateService, IProgressObservable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
 
     private static final int PROGRESS_INTERVALL = 100;
@@ -58,7 +58,7 @@ public class V1AppUpdateService implements IV1UpdateService, ProgressObservable 
     @Nullable
     private final V1FixLocaleService v1FixLocaleService;
 
-    private ProgressObserver progressObserver = null;
+    private IProgressObserver progressObserver = null;
     private int progressCounter = 0;
     private int progressCountdown = 0;
 
@@ -150,7 +150,7 @@ public class V1AppUpdateService implements IV1UpdateService, ProgressObservable 
     }
 
     @Override
-    public void setProgressObserver(ProgressObserver progressObserver) {
+    public void setProgressObserver(IProgressObserver progressObserver) {
         this.progressObserver = progressObserver;
     }
 }

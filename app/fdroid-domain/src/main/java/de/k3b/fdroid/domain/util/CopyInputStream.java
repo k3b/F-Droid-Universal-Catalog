@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import de.k3b.fdroid.domain.interfaces.ProgressObservable;
-import de.k3b.fdroid.domain.interfaces.ProgressObserver;
+import de.k3b.fdroid.domain.interfaces.IProgressObservable;
+import de.k3b.fdroid.domain.interfaces.IProgressObserver;
 
 /**
  * reading and processing {@link InputStream} and also
@@ -32,7 +32,7 @@ import de.k3b.fdroid.domain.interfaces.ProgressObserver;
  * <p>
  * Example: Simultanious parsing a zip from https and saving it as a file.
  */
-public class CopyInputStream extends InputStream implements ProgressObservable {
+public class CopyInputStream extends InputStream implements IProgressObservable {
     // MAX_SKIP_BUFFER_SIZE is used to determine the maximum buffer size to
     // use when skipping.
     private static final int MAX_SKIP_BUFFER_SIZE = 2048;
@@ -40,7 +40,7 @@ public class CopyInputStream extends InputStream implements ProgressObservable {
 
     private final InputStream in;
     private final OutputStream out;
-    private ProgressObserver progressObserver;
+    private IProgressObserver progressObserver;
     private int byteCount = 0;
 
     /**
@@ -76,7 +76,7 @@ public class CopyInputStream extends InputStream implements ProgressObservable {
         in.close();
     }
 
-    public void setProgressObserver(ProgressObserver progressObserver) {
+    public void setProgressObserver(IProgressObserver progressObserver) {
         this.progressObserver = progressObserver;
     }
 

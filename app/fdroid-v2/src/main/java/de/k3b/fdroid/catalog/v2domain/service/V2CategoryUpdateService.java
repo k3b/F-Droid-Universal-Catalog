@@ -29,8 +29,8 @@ import java.util.Map;
 import de.k3b.fdroid.Global;
 import de.k3b.fdroid.catalog.v2domain.entity.V2IconUtil;
 import de.k3b.fdroid.catalog.v2domain.entity.repo.V2Category;
-import de.k3b.fdroid.domain.interfaces.ProgressObservable;
-import de.k3b.fdroid.domain.interfaces.ProgressObserver;
+import de.k3b.fdroid.domain.interfaces.IProgressObservable;
+import de.k3b.fdroid.domain.interfaces.IProgressObserver;
 import de.k3b.fdroid.domain.repository.TranslationRepository;
 import de.k3b.fdroid.domain.service.CategoryService;
 import de.k3b.fdroid.domain.service.LanguageService;
@@ -38,7 +38,7 @@ import de.k3b.fdroid.domain.service.TranslationService;
 import de.k3b.fdroid.domain.util.Java8Util;
 
 @SuppressWarnings("unused")
-public class V2CategoryUpdateService implements ProgressObservable {
+public class V2CategoryUpdateService implements IProgressObservable {
     private static final Logger LOGGER = LoggerFactory.getLogger(Global.LOG_TAG_IMPORT);
 
     private static final int PROGRESS_INTERVALL = 100;
@@ -50,7 +50,7 @@ public class V2CategoryUpdateService implements ProgressObservable {
     private final TranslationService categoryDescriptionService;
     private final TranslationService categoryIconService;
 
-    private ProgressObserver progressObserver = null;
+    private IProgressObserver progressObserver = null;
     private int progressCounter = 0;
     private int progressCountdown = 0;
 
@@ -93,7 +93,7 @@ public class V2CategoryUpdateService implements ProgressObservable {
     }
 
     @Override
-    public void setProgressObserver(ProgressObserver progressObserver) {
+    public void setProgressObserver(IProgressObserver progressObserver) {
         this.progressObserver = progressObserver;
     }
 

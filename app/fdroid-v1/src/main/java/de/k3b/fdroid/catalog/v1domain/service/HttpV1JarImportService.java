@@ -30,7 +30,7 @@ import de.k3b.fdroid.Global;
 import de.k3b.fdroid.catalog.CatalogJarException;
 import de.k3b.fdroid.catalog.interfaces.IFDroidCatalogJsonStreamParser;
 import de.k3b.fdroid.domain.entity.Repo;
-import de.k3b.fdroid.domain.interfaces.ProgressObserver;
+import de.k3b.fdroid.domain.interfaces.IProgressObserver;
 import de.k3b.fdroid.domain.repository.RepoRepository;
 
 /**
@@ -61,7 +61,7 @@ public class HttpV1JarImportService extends HttpV1JarDownloadService
     }
 
     @Override
-    public void setProgressObserver(ProgressObserver progressObserver) {
+    public void setProgressObserver(IProgressObserver progressObserver) {
         super.setProgressObserver(progressObserver);
         v1UpdateService.setProgressObserver(progressObserver);
     }

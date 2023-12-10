@@ -19,9 +19,9 @@
 
 package de.k3b.fdroid.domain.service;
 
-import de.k3b.fdroid.domain.interfaces.ProgressObserver;
+import de.k3b.fdroid.domain.interfaces.IProgressObserver;
 
-public class ConsoleProgressUpdateObserver implements ProgressObserver {
+public class ConsoleProgressUpdateObserver implements IProgressObserver {
 //  private String progressPrefix = "";
 //  private String progressSuffix = "";
 
@@ -31,7 +31,7 @@ public class ConsoleProgressUpdateObserver implements ProgressObserver {
     }
 
     @Override
-    public ProgressObserver setProgressContext(String progressPrefix, String progressSuffix) {
+    public IProgressObserver setProgressContext(String progressPrefix, String progressSuffix) {
 //      if (progressPrefix != null) this.progressPrefix = progressPrefix;
 //      if (progressSuffix != null) this.progressSuffix = progressSuffix;
         return this;

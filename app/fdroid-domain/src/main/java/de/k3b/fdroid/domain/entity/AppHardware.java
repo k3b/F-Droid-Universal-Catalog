@@ -25,7 +25,7 @@ import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.domain.entity.common.ProfileCommon;
-import de.k3b.fdroid.domain.interfaces.AppDetail;
+import de.k3b.fdroid.domain.interfaces.IAppDetail;
 
 /**
  * One Database Entity per {@link App} that is compatible with a {@link HardwareProfile}.
@@ -43,7 +43,7 @@ import de.k3b.fdroid.domain.interfaces.AppDetail;
 @javax.persistence.Entity
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 @SuppressWarnings("unused")
-public class AppHardware extends EntityCommon implements AppDetail {
+public class AppHardware extends EntityCommon implements IAppDetail {
     @androidx.room.Embedded
     @javax.persistence.Embedded
     ProfileCommon max = new ProfileCommon();

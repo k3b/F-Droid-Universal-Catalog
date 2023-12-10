@@ -21,13 +21,13 @@ package de.k3b.fdroid.domain.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.k3b.fdroid.domain.interfaces.AppDetail;
+import de.k3b.fdroid.domain.interfaces.IAppDetail;
 import de.k3b.fdroid.domain.repository.AppDetailRepository;
 
 /**
  * Fake implementation of {@link AppDetailRepository} that does not load.
  */
-public class DoNotLoadAppDetailRepositoryImpl<T extends AppDetail> implements AppDetailRepository<T> {
+public class DoNotLoadAppDetailRepositoryImpl<T extends IAppDetail> implements AppDetailRepository<T> {
     @Override
     public List<T> findByAppIds(List<Integer> appIds) {
         return new ArrayList<>();

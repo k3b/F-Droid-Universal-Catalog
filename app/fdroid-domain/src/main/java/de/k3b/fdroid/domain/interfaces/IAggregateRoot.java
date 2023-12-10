@@ -21,5 +21,5 @@ package de.k3b.fdroid.domain.interfaces;
 /**
  * The DDD-Root-Aggregate contains master-detail-infos.
  */
-public interface AggregateRoot {
+public interface IAggregateRoot {
 }

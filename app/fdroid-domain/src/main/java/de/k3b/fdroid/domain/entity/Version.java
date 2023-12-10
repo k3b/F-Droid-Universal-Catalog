@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 import de.k3b.fdroid.domain.entity.common.ExtDoc;
 import de.k3b.fdroid.domain.entity.common.VersionCommon;
-import de.k3b.fdroid.domain.interfaces.AppDetail;
+import de.k3b.fdroid.domain.interfaces.IAppDetail;
 import de.k3b.fdroid.domain.util.AndroidVersionName;
 import de.k3b.fdroid.domain.util.StringUtil;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
@@ -47,7 +47,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @javax.persistence.Entity(name = "AppVersion")
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 @SuppressWarnings("unused")
-public class Version extends VersionCommon implements AppDetail {
+public class Version extends VersionCommon implements IAppDetail {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @androidx.room.PrimaryKey(autoGenerate = true)

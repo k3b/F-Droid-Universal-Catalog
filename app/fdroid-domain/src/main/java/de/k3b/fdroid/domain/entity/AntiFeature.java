@@ -25,7 +25,7 @@ import java.util.Comparator;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.domain.entity.common.ExtDoc;
-import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
+import de.k3b.fdroid.domain.interfaces.IDatabaseEntityWithId;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -41,7 +41,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 @SuppressWarnings("unused")
 @ExternalDocumentation(description = "AntiFeature of an [App]", url = ExtDoc.GLOSSAR_URL + "AntiFeature")
-public class AntiFeature extends EntityCommon implements DatabaseEntityWithId {
+public class AntiFeature extends EntityCommon implements IDatabaseEntityWithId {
     public static final Comparator<AntiFeature> COMPARE_BY_NAME = (o1, o2) -> o1.getName().compareTo(o2.getName());
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)

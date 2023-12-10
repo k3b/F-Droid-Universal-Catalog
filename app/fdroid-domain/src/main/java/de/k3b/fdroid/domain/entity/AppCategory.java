@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 import de.k3b.fdroid.domain.entity.common.EntityCommon;
 import de.k3b.fdroid.domain.entity.common.ExtDoc;
-import de.k3b.fdroid.domain.interfaces.AppDetail;
+import de.k3b.fdroid.domain.interfaces.IAppDetail;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 
 /**
@@ -40,7 +40,7 @@ import io.swagger.v3.oas.annotations.ExternalDocumentation;
 @javax.persistence.Inheritance(strategy = javax.persistence.InheritanceType.SINGLE_TABLE)
 @SuppressWarnings("unused")
 @ExternalDocumentation(description = "Category of an App", url = ExtDoc.GLOSSAR_URL + "Category")
-public class AppCategory extends EntityCommon implements AppDetail {
+public class AppCategory extends EntityCommon implements IAppDetail {
     @javax.persistence.Id
     @javax.persistence.GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
     @androidx.room.PrimaryKey(autoGenerate = true)

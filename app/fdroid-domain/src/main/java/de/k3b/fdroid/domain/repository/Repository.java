@@ -18,12 +18,12 @@
  */
 package de.k3b.fdroid.domain.repository;
 
-import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
+import de.k3b.fdroid.domain.interfaces.IDatabaseEntityWithId;
 
 /**
  * Android independent interfaces to use the Database.
  * <p>
- * For each de.k3b.fdroid.domain.Xxx (that implements {@link DatabaseEntityWithId})
+ * For each de.k3b.fdroid.domain.Xxx (that implements {@link IDatabaseEntityWithId})
  * there is a corresponding XxxRepository to persist Xxx in the database.
  */
 public interface Repository {

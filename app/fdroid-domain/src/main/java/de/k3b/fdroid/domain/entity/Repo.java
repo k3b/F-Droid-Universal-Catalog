@@ -26,7 +26,7 @@ import javax.persistence.Column;
 
 import de.k3b.fdroid.domain.entity.common.ExtDoc;
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
-import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
+import de.k3b.fdroid.domain.interfaces.IDatabaseEntityWithId;
 import de.k3b.fdroid.domain.util.StringUtil;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -54,7 +54,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
         description = "An Android [App] Repository that contains a catalogue of Android apps. " +
                 "A [Repo] allows to download APK-File in one or more [Version]-s")
 @SuppressWarnings("unused")
-public class Repo extends RepoCommon implements DatabaseEntityWithId {
+public class Repo extends RepoCommon implements IDatabaseEntityWithId {
     public static final String STATE_BUSY = "busy"; // while downloding. bg-color=yellow
     public static final String STATE_ERROR = "error"; // download failed bg-color=red
     public static final String STATE_ENABLED = "enabled"; // bg-color=green

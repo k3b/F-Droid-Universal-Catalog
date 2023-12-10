@@ -29,12 +29,13 @@ import java.util.TreeMap;
 import javax.annotation.Generated;
 
 import de.k3b.fdroid.domain.entity.common.AppCommon;
+import de.k3b.fdroid.domain.interfaces.IDatabaseEntityWithId;
 
 /**
  * Data for an android app (read from FDroid-Catalog-v1-Json format).
  * <p>
  * The {@link V1JsonEntity} {@link V1App} correspond to the
- * {@link de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId} {@link de.k3b.fdroid.domain.App}.
+ * {@link IDatabaseEntityWithId} {@link de.k3b.fdroid.domain.App}.
  */
 @Generated("jsonschema2pojo")
 public class V1App extends AppCommon implements V1JsonEntity {

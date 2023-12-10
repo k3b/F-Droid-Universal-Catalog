@@ -36,20 +36,20 @@ import de.k3b.fdroid.catalog.v1domain.entity.V1Version;
 import de.k3b.fdroid.catalog.v1domain.util.JarUtilities;
 import de.k3b.fdroid.domain.entity.Repo;
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
-import de.k3b.fdroid.domain.interfaces.ProgressObservable;
-import de.k3b.fdroid.domain.interfaces.ProgressObserver;
+import de.k3b.fdroid.domain.interfaces.IProgressObservable;
+import de.k3b.fdroid.domain.interfaces.IProgressObserver;
 
 /**
  * Reads and verfies the jar.
  * throws {@link CatalogJarException} if something goes wrong.
  */
-public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase implements ProgressObservable {
+public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase implements IProgressObservable {
     @NonNull
     private final Repo repoInDatabase;
     private V1Repo repoInJar = null;
     private int lastAppCount = 0;
     private int lastVersionCount = 0;
-    private ProgressObserver progressObserver;
+    private IProgressObserver progressObserver;
 
 
     public V1RepoVerifyJarParser(@NonNull Repo repoInDatabase) {
@@ -58,7 +58,7 @@ public class V1RepoVerifyJarParser extends FDroidCatalogJsonStreamParserBase imp
         this.repoInDatabase = repoInDatabase;
     }
 
-    public void setProgressObserver(@Nullable ProgressObserver progressObserver) {
+    public void setProgressObserver(@Nullable IProgressObserver progressObserver) {
         this.progressObserver = progressObserver;
     }
 

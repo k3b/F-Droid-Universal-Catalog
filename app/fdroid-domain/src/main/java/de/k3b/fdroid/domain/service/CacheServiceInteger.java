@@ -22,9 +22,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
+import de.k3b.fdroid.domain.interfaces.IDatabaseEntityWithId;
 
-public class CacheServiceInteger<T extends DatabaseEntityWithId> extends CacheService<Integer, T> {
+public class CacheServiceInteger<T extends IDatabaseEntityWithId> extends CacheService<Integer, T> {
     public CacheServiceInteger() {
     }
 

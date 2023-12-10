@@ -26,12 +26,13 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import de.k3b.fdroid.domain.entity.common.RepoCommon;
+import de.k3b.fdroid.domain.interfaces.IDatabaseEntityWithId;
 
 /**
  * Data for a FDroid-Repository (read from FDroid-Catalog-v1-Json format).
  * <p>
  * The {@link V1JsonEntity} {@link V1Repo} correspond to the
- * {@link de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId} {@link de.k3b.fdroid.domain.entity.Repo}.
+ * {@link IDatabaseEntityWithId} {@link de.k3b.fdroid.domain.entity.Repo}.
  */
 @Generated("jsonschema2pojo")
 @SuppressWarnings("unused")

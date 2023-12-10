@@ -20,14 +20,14 @@ package de.k3b.fdroid.domain.repository;
 
 import java.util.List;
 
-import de.k3b.fdroid.domain.interfaces.AppDetail;
-import de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId;
+import de.k3b.fdroid.domain.interfaces.IAppDetail;
+import de.k3b.fdroid.domain.interfaces.IDatabaseEntityWithId;
 
 /**
  * load the Details for one or more {@link de.k3b.fdroid.domain.entity.App} identified by appId.
  * <p>
- * Persists a {@link DatabaseEntityWithId}) that relates to a app {@link de.k3b.fdroid.domain.entity.App} in the Database.
+ * Persists a {@link IDatabaseEntityWithId}) that relates to a app {@link de.k3b.fdroid.domain.entity.App} in the Database.
  */
-public interface AppDetailRepository<T extends AppDetail> extends Repository {
+public interface AppDetailRepository<T extends IAppDetail> extends Repository {
     List<T> findByAppIds(List<Integer> appIds);
 }

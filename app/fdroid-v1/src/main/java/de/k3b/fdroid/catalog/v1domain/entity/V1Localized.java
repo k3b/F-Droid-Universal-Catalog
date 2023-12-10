@@ -26,12 +26,13 @@ import java.util.List;
 import javax.annotation.Generated;
 
 import de.k3b.fdroid.domain.entity.common.LocalizedCommon;
+import de.k3b.fdroid.domain.interfaces.IDatabaseEntityWithId;
 
 /**
  * Data for a Localisation (Translation) of an android app (read from FDroid-Catalog-v1-Json format).
  * <p>
  * The {@link V1JsonEntity} {@link V1Localized} correspond to the
- * {@link de.k3b.fdroid.domain.interfaces.DatabaseEntityWithId} {@link de.k3b.fdroid.domain.entity.Localized}.
+ * {@link IDatabaseEntityWithId} {@link de.k3b.fdroid.domain.entity.Localized}.
  */
 @Generated("jsonschema2pojo")
 @SuppressWarnings("unused")
